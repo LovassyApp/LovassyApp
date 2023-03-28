@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using WebApi.Helpers.Cryptography;
 using WebApi.Helpers.Cryptography.Services;
 using WebApi.Helpers.Cryptography.Services.Options;
 
@@ -9,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v1" }); });
-builder.Services.AddDataProtection();
+builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" }); });
+builder.Services.AddCryptographyServices(builder.Configuration);
 
 var app = builder.Build();
 
