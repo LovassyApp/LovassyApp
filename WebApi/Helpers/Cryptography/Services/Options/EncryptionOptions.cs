@@ -2,5 +2,5 @@ namespace WebApi.Helpers.Cryptography.Services.Options;
 
 public class EncryptionOptions
 {
-    public string Purpose { get; set; } = "Blueboard";
+    public string DataProtectionPurpose { get; set; } = "Blueboard";
 }

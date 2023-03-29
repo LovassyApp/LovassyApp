@@ -13,7 +13,7 @@ public class EncryptionService : IEncryptionService
     
     public EncryptionService(IDataProtectionProvider dataProtectionProvider, IOptions<EncryptionOptions> encryptionOptions)
     {
-        _dataProtector = dataProtectionProvider.CreateProtector(encryptionOptions.Value.Purpose);
+        _dataProtector = dataProtectionProvider.CreateProtector(encryptionOptions.Value.DataProtectionPurpose);
     }
 
     public string Encrypt(string data, string key)
@@ -72,7 +72,7 @@ public class EncryptionService : IEncryptionService
         return JsonSerializer.Deserialize<T>(serializedData);
     }
     
-    private byte[] GenerateIV()
+    private static byte[] GenerateIV()
     {
         var aesAlgorithm = Aes.Create();
         aesAlgorithm.GenerateIV();

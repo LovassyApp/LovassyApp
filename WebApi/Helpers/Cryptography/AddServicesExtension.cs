@@ -11,5 +11,8 @@ public static class AddServicesExtension
         
         services.Configure<EncryptionOptions>(configuration.GetSection("Cryptography"));
         services.AddSingleton<IEncryptionService, EncryptionService>();
+        
+        services.Configure<HashOptions>(configuration.GetSection("Cryptography"));
+        services.AddSingleton<IHashService, HashService>();
     }
 }
