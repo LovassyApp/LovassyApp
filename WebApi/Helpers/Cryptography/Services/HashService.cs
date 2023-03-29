@@ -17,17 +17,17 @@ public class HashService : IHashService
     {
         _rng = hashOptions.Value.DefaultRng;
         
-        if (_passwordHashIterations < 1)
+        if (hashOptions.Value.PasswordHashIterations < 1)
             throw new ArgumentException("Password hash iterations must be greater than 0", nameof(hashOptions));
         
         _passwordHashIterations = hashOptions.Value.PasswordHashIterations;
         
-        if (_passwordSaltLength < 1)
+        if (hashOptions.Value.PasswordSaltLength < 1)
             throw new ArgumentException("Password salt length must be greater than 0", nameof(hashOptions));
         
         _passwordSaltLength = hashOptions.Value.PasswordSaltLength;
         
-        if (_passwordBytesRequested < 1)
+        if (hashOptions.Value.PasswordBytesRequested < 1)
             throw new ArgumentException("Password bytes requested must be greater than 0", nameof(hashOptions));
         
         _passwordBytesRequested = hashOptions.Value.PasswordBytesRequested;
@@ -74,7 +74,7 @@ public class HashService : IHashService
         
         byte[] subkey = KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA512, _passwordHashIterations, _passwordBytesRequested);
         
-        byte[] outputBytes = new byte[1 + salt.Length + subkey.Length];
+        byte[] outputBytes = new byte[13 + salt.Length + subkey.Length];
         outputBytes[0] = 0x01;
         WriteNetworkByteOrder(outputBytes, 1, (uint)KeyDerivationPrf.HMACSHA512);
         WriteNetworkByteOrder(outputBytes, 5, (uint)_passwordHashIterations);
