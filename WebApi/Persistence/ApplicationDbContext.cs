@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi.Persistence.Entities;
 
 namespace WebApi.Persistence;
 
@@ -6,9 +7,10 @@ public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        
     }
-    
+
+    public DbSet<User> Users { get; set; }
+
     public override int SaveChanges()
     {
         UpdateTimestamps();

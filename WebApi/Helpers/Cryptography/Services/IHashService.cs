@@ -9,4 +9,5 @@ public interface IHashService
     public string HashPassword(string password);
     public bool VerifyPassword(string password, string hash);
     public string GenerateBasicKey(string data, string salt);
+    public string GenerateSalt();
 }
