@@ -1,7 +1,6 @@
 using Microsoft.OpenApi.Models;
+using WebApi.Contexts.Status;
 using WebApi.Helpers.Cryptography;
-using WebApi.Helpers.Cryptography.Services;
-using WebApi.Helpers.Cryptography.Services.Options;
 using WebApi.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +10,8 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddCryptographyServices(builder.Configuration);
+
+builder.Services.AddStatusContext(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
