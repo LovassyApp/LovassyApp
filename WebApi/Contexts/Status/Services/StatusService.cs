@@ -46,6 +46,8 @@ public class StatusService : IStatusService
 
     public bool IsReady()
     {
-        return true;
+        var serviceStatus = GetServiceStatus();
+
+        return serviceStatus is { Database: true, Cache: true, Realtime: true };
     }
 }
