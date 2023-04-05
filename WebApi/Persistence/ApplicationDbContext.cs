@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<ImportKey> ImportKeys { get; set; }
 
     public override int SaveChanges()
     {
