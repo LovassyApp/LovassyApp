@@ -9,9 +9,9 @@ public interface IImportKeyService
     public ValueTask<(ImportKey? importKey, string? key)> GetImportKeyAsync(int id);
 
     public Task<string> CreateImportKeyAsync(CreateImportKeyDto data);
-    public Task DeleteImportKeyAsync(int id);
+    public Task DeleteImportKeyAsync(ImportKey importKey);
 
-    public Task UpdateImportKeyAsync(ImportKey key, UpdateImportKeyDto data);
+    public Task UpdateImportKeyAsync(ImportKey importKey, UpdateImportKeyDto data);
 
     public Task<bool> IsImportKeyValidAsync(string key);
 }

@@ -35,14 +35,9 @@ public class ImportKeyService : IImportKeyService
         return (importKey, key);
     }
 
-    public async Task DeleteImportKeyAsync(int id)
+    public async Task UpdateImportKeyAsync(ImportKey importKey, UpdateImportKeyDto data)
     {
-        await _context.ImportKeys.Where(i => i.Id == id).ExecuteDeleteAsync();
-    }
-
-    public async Task UpdateImportKeyAsync(ImportKey key, UpdateImportKeyDto data)
-    {
-        data.Adapt(key);
+        data.Adapt(importKey);
         await _context.SaveChangesAsync();
     }
 
@@ -67,5 +62,11 @@ public class ImportKeyService : IImportKeyService
         await _context.SaveChangesAsync();
 
         return key;
+    }
+
+    public async Task DeleteImportKeyAsync(ImportKey importKey)
+    {
+        _context.ImportKeys.Remove(importKey);
+        await _context.SaveChangesAsync();
     }
 }
