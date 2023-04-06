@@ -28,4 +28,6 @@ public class User : BaseEntity
     public string? Class { get; set; }
 
     [Required] public bool ImportAvailable { get; set; }
+
+    public List<GradeImport> GradeImports { get; set; }
 }

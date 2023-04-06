@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WebApi.Contexts.Import.Models;
 
 public class UpdateImportKeyRequest
 {
-    public string Name { get; set; }
-    public bool Enabled { get; set; }
+    [Required] public string Name { get; set; }
+    [Required] public bool Enabled { get; set; }
 }
