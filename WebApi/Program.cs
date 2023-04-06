@@ -17,7 +17,13 @@ builder.Services.AddImportContext();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" }); });
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" });
+    c.EnableAnnotations();
+
+    c.AddImportContextOperationFilters();
+});
 
 var app = builder.Build();
 
