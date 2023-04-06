@@ -6,9 +6,9 @@ namespace WebApi.Contexts.Import.Controllers;
 [ApiController]
 [Route("/Api/[controller]")]
 [Produces("application/json")]
+[ServiceFilter(typeof(RequireImportKeyFilter))]
 public class ImportController : Controller
 {
-    [ServiceFilter(typeof(RequireImportKeyFilter))]
     [HttpGet]
     public async Task<ActionResult> Index()
     {

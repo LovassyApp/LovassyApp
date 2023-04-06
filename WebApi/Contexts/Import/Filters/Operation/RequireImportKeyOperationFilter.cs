@@ -9,11 +9,13 @@ public class RequireImportKeyOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        // Policy names map to scopes
         var requiresImportKey = context.MethodInfo
-            .GetCustomAttributes(true)
-            .OfType<ServiceFilterAttribute>()
-            .Any(f => f.ServiceType == typeof(RequireImportKeyFilter));
+                                    .GetCustomAttributes(true)
+                                    .OfType<ServiceFilterAttribute>()
+                                    .Any(f => f.ServiceType == typeof(RequireImportKeyFilter)) ||
+                                context.MethodInfo.DeclaringType!
+                                    .GetCustomAttributes(true).OfType<ServiceFilterAttribute>()
+                                    .Any(f => f.ServiceType == typeof(RequireImportKeyFilter));
 
         if (requiresImportKey)
         {
