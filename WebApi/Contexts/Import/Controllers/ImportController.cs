@@ -50,7 +50,7 @@ public class ImportController : Controller
     }
 
     [HttpPatch("ResetKeyPassword")]
-    public async Task<ActionResult> ImportResetPassword([FromBody] ImportResetKeyPasswordRequest request)
+    public async Task<ActionResult> ImportResetKeyPassword([FromBody] ImportResetKeyPasswordRequest request)
     {
         _resetService.SetResetKeyPassword(request.ResetKeyPassword);
 
