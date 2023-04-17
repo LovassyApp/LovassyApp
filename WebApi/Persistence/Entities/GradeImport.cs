@@ -9,6 +9,6 @@ public class GradeImport : BaseEntity
     [Required] public Guid UserId { get; set; }
     [Required] public User User { get; set; }
 
-    [Required] public string EncryptionKey { get; set; }
+    [Required] public string KeyEncrypeted { get; set; }
     [Required] public string JsonEncrypted { get; set; }
 }
