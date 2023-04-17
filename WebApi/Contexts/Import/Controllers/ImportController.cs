@@ -1,5 +1,6 @@
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts.Import.Filters.Action;
 using WebApi.Contexts.Import.Models;
 using WebApi.Contexts.Import.Services;
@@ -22,10 +23,11 @@ public class ImportController : Controller
         _context = context;
     }
 
-    [HttpGet]
-    public async Task<ActionResult> Index()
+    [HttpGet("Users")]
+    public async Task<ActionResult<IEnumerable<IndexUsersResponse>>> IndexUsers()
     {
-        return Ok();
+        var users = await _context.Users.ToListAsync();
+        return Ok(users.Adapt<IEnumerable<IndexUsersResponse>>());
     }
 
     [HttpPost("Grades/{userId}")]
