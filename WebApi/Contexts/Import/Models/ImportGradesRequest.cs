@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WebApi.Contexts.Import.Models;
 
 public class ImportGradesRequest
 {
-    public string KeyEncrypeted { get; set; }
-    public string JsonEncrypted { get; set; }
+    [Required] public string KeyEncrypeted { get; set; }
+    [Required] public string JsonEncrypted { get; set; }
 }
