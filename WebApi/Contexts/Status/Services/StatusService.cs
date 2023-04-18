@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using WebApi.Contexts.Status.Models;
 using WebApi.Contexts.Status.Services.Options;
 using WebApi.Helpers.Configuration.Exceptions;
+using WebApi.Helpers.Cryptography.Services;
 using WebApi.Persistence;
 
 namespace WebApi.Contexts.Status.Services;
@@ -9,8 +10,9 @@ namespace WebApi.Contexts.Status.Services;
 public class StatusService : IStatusService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IResetService _resetService;
 
-    public StatusService(IOptions<StatusOptions> options, ApplicationDbContext context)
+    public StatusService(IOptions<StatusOptions> options, ApplicationDbContext context, IResetService resetService)
     {
         WhoAmI = options.Value.WhoAmI ??
                  throw new ConfigurationMissingException(nameof(options.Value.WhoAmI), "Status");
@@ -25,6 +27,7 @@ public class StatusService : IStatusService
         DotNetVersion = Environment.Version.ToString();
 
         _context = context;
+        _resetService = resetService;
     }
 
     public string WhoAmI { get; }
@@ -39,7 +42,7 @@ public class StatusService : IStatusService
         return new ServiceStatus
         {
             Database = _context.Database.CanConnect(),
-            Cache = true,
+            ResetKeyPassword = _resetService.IsResetKeyPasswordSet(),
             Realtime = true
         };
     }
@@ -48,6 +51,6 @@ public class StatusService : IStatusService
     {
         var serviceStatus = GetServiceStatus();
 
-        return serviceStatus is { Database: true, Cache: true, Realtime: true };
+        return serviceStatus is { Database: true, Realtime: true };
     }
 }
