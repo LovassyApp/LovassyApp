@@ -4,11 +4,11 @@ public class KretaGrade
 {
     private ILookup<string, int> _textGradeLookup = new Dictionary<string, int>
     {
-        { "peldas", 5 },
-        { "jo", 4 },
-        { "valtozo", 3 },
-        { "rossz", 2 },
-        { "hanyag", 1 }
+        ["peldas"] = 5,
+        ["jo"] = 4,
+        ["valtozo"] = 3,
+        ["rossz"] = 2,
+        ["hanyag"] = 1
     }.ToLookup(dict => dict.Key, dict => dict.Value);
 
     public string Uid { get; set; }
