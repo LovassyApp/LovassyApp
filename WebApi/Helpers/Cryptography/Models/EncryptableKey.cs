@@ -5,7 +5,7 @@ using WebApi.Helpers.Cryptography.Exceptions;
 
 namespace WebApi.Helpers.Cryptography.Models;
 
-public class EncryptableKey
+public class EncryptableKey : IEncryptableKey
 {
     private string? _key;
     private string? _keyEncrypted;
