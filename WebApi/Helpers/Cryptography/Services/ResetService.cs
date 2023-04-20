@@ -1,14 +1,15 @@
 using WebApi.Helpers.Cryptography.Exceptions;
+using WebApi.Helpers.Cryptography.Traits.Extensions;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
-public class ResetService : IResetService
+public class ResetService
 {
-    private readonly IEncryptionService _encryptionService;
+    private readonly EncryptionService _encryptionService;
 
     private string? _resetKeyPassword;
 
-    public ResetService(IEncryptionService encryptionService)
+    public ResetService(EncryptionService encryptionService)
     {
         _encryptionService = encryptionService;
     }

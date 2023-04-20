@@ -16,11 +16,11 @@ namespace WebApi.Contexts.Import.Controllers;
 public class ImportController : Controller
 {
     private readonly ApplicationDbContext _context;
-    private readonly IGradeImportService _gradeImportService;
-    private readonly IResetService _resetService;
+    private readonly GradeImportService _gradeImportService;
+    private readonly ResetService _resetService;
 
-    public ImportController(IGradeImportService gradeImportService, ApplicationDbContext context,
-        IResetService resetService)
+    public ImportController(GradeImportService gradeImportService, ApplicationDbContext context,
+        ResetService resetService)
     {
         _gradeImportService = gradeImportService;
         _context = context;

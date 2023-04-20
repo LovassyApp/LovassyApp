@@ -12,9 +12,9 @@ namespace WebApi.Contexts.Import.Controllers;
 [Produces("application/json")]
 public class ImportKeyController : Controller
 {
-    private readonly IImportKeyService _importKeyService;
+    private readonly ImportKeyService _importKeyService;
 
-    public ImportKeyController(IImportKeyService importKeyService)
+    public ImportKeyController(ImportKeyService importKeyService)
     {
         _importKeyService = importKeyService;
     }

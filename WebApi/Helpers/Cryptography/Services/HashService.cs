@@ -1,12 +1,12 @@
 using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers.Cryptography.Services.Options;
+using WebApi.Helpers.Cryptography.Traits.Interfaces;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
-public class HashService : IHashService
+public class HashService : IUsesHashing
 {
     private readonly int _passwordBytesRequested;
     private readonly int _passwordHashIterations;
@@ -31,40 +31,6 @@ public class HashService : IHashService
             throw new ArgumentException("Password bytes requested must be greater than 0", nameof(hashOptions));
 
         _passwordBytesRequested = hashOptions.Value.PasswordBytesRequested;
-    }
-
-    public string Hash(string data)
-    {
-        var dataBytes = Encoding.UTF8.GetBytes(data);
-
-        var hashAlgorithm = SHA256.Create();
-        var hashBytes = hashAlgorithm.ComputeHash(dataBytes);
-
-        return Convert.ToBase64String(hashBytes);
-    }
-
-    public bool Verify(string data, string hash)
-    {
-        var dataHash = Hash(data);
-
-        return dataHash == hash;
-    }
-
-    public string HashWithSalt(string data, string salt)
-    {
-        var dataBytes = Encoding.UTF8.GetBytes(data + ";" + salt);
-
-        var hashAlgorithm = SHA512.Create();
-        var hashBytes = hashAlgorithm.ComputeHash(dataBytes);
-
-        return Convert.ToBase64String(hashBytes);
-    }
-
-    public bool VerifyWithSalt(string data, string salt, string hash)
-    {
-        var dataHash = HashWithSalt(data, salt);
-
-        return dataHash == hash;
     }
 
     public string HashPassword(string password)
@@ -115,18 +81,6 @@ public class HashService : IHashService
         var actualSubkey = KeyDerivation.Pbkdf2(password, salt, prf, iterCount, expectedSubkey.Length);
 
         return CryptographicOperations.FixedTimeEquals(actualSubkey, expectedSubkey);
-    }
-
-    public string GenerateBasicKey(string data, string salt)
-    {
-        var keyBytes = KeyDerivation.Pbkdf2(data, Encoding.UTF8.GetBytes(salt), KeyDerivationPrf.HMACSHA512, 1000, 32);
-        return Convert.ToBase64String(keyBytes);
-    }
-
-    public string GenerateSalt()
-    {
-        var saltBytes = RandomNumberGenerator.GetBytes(128 / 8);
-        return Convert.ToBase64String(saltBytes);
     }
 
     private static uint ReadNetworkByteOrder(byte[] buffer, int offset)

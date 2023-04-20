@@ -6,9 +6,9 @@ namespace WebApi.Contexts.Import.Filters.Action;
 
 public class RequireImportKeyFilter : IAsyncActionFilter
 {
-    private readonly IImportKeyService _importKeyService;
+    private readonly ImportKeyService _importKeyService;
 
-    public RequireImportKeyFilter(IImportKeyService importKeyService)
+    public RequireImportKeyFilter(ImportKeyService importKeyService)
     {
         _importKeyService = importKeyService;
     }

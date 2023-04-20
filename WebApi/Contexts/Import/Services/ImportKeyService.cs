@@ -3,19 +3,20 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts.Import.Models;
 using WebApi.Helpers.Cryptography.Services;
+using WebApi.Helpers.Cryptography.Traits.Extensions;
 using WebApi.Persistence;
 using WebApi.Persistence.Entities;
 
 namespace WebApi.Contexts.Import.Services;
 
-public class ImportKeyService : IImportKeyService
+public class ImportKeyService
 {
     private readonly ApplicationDbContext _context;
-    private readonly IEncryptionService _encryptionService;
-    private readonly IHashService _hashService;
+    private readonly EncryptionService _encryptionService;
+    private readonly HashService _hashService;
 
-    public ImportKeyService(ApplicationDbContext context, IEncryptionService encryptionService,
-        IHashService hashService)
+    public ImportKeyService(ApplicationDbContext context, EncryptionService encryptionService,
+        HashService hashService)
     {
         _context = context;
         _encryptionService = encryptionService;

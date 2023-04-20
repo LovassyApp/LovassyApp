@@ -9,8 +9,8 @@ public static class AddContextExtension
 {
     public static void AddImportContext(this IServiceCollection services)
     {
-        services.AddScoped<IImportKeyService, ImportKeyService>();
-        services.AddScoped<IGradeImportService, GradeImportService>();
+        services.AddScoped<ImportKeyService>();
+        services.AddScoped<GradeImportService>();
         services.AddScoped<RequireImportKeyFilter>();
     }
 

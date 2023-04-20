@@ -5,7 +5,7 @@ using WebApi.Persistence.Entities;
 
 namespace WebApi.Contexts.Import.Services;
 
-public class GradeImportService : IGradeImportService
+public class GradeImportService
 {
     private readonly ApplicationDbContext _context;
 

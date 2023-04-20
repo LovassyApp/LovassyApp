@@ -7,12 +7,12 @@ using WebApi.Persistence;
 
 namespace WebApi.Contexts.Status.Services;
 
-public class StatusService : IStatusService
+public class StatusService
 {
     private readonly ApplicationDbContext _context;
-    private readonly IResetService _resetService;
+    private readonly ResetService _resetService;
 
-    public StatusService(IOptions<StatusOptions> options, ApplicationDbContext context, IResetService resetService)
+    public StatusService(IOptions<StatusOptions> options, ApplicationDbContext context, ResetService resetService)
     {
         WhoAmI = options.Value.WhoAmI ??
                  throw new ConfigurationMissingException(nameof(options.Value.WhoAmI), "Status");

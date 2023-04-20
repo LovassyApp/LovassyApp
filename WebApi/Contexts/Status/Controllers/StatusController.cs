@@ -9,9 +9,9 @@ namespace WebApi.Contexts.Status.Controllers;
 [Produces("application/json")]
 public class StatusController : Controller
 {
-    private readonly IStatusService _statusService;
+    private readonly StatusService _statusService;
 
-    public StatusController(IStatusService statusService)
+    public StatusController(StatusService statusService)
     {
         _statusService = statusService;
     }

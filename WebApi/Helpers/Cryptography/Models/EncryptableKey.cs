@@ -1,11 +1,11 @@
 using System.Security.Cryptography;
-using System.Text;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using WebApi.Helpers.Cryptography.Exceptions;
+using WebApi.Helpers.Cryptography.Traits.Extensions;
+using WebApi.Helpers.Cryptography.Traits.Interfaces;
 
 namespace WebApi.Helpers.Cryptography.Models;
 
-public class EncryptableKey : IEncryptableKey
+public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
 {
     private string? _key;
     private string? _keyEncrypted;
@@ -31,7 +31,7 @@ public class EncryptableKey : IEncryptableKey
         if (!_unlocked)
             throw new EncryptableKeyLockedException();
 
-        _keyEncrypted = Encrypt(_key!, GenerateBasicKey(password, salt));
+        _keyEncrypted = this.Encrypt(_key!, this.GenerateBasicKey(password, salt));
         return _keyEncrypted;
     }
 
@@ -40,7 +40,7 @@ public class EncryptableKey : IEncryptableKey
         if (_unlocked)
             throw new EncryptableKeyUnlockedException();
 
-        _key = Decrypt(_keyEncrypted!, GenerateBasicKey(password, salt));
+        _key = this.Decrypt(_keyEncrypted!, this.GenerateBasicKey(password, salt));
         _unlocked = true;
         return _key;
     }
@@ -57,51 +57,5 @@ public class EncryptableKey : IEncryptableKey
     {
         var keyBytes = RandomNumberGenerator.GetBytes(128 / 8);
         return Convert.ToBase64String(keyBytes);
-    }
-
-    private static string GenerateBasicKey(string data, string salt)
-    {
-        var keyBytes = KeyDerivation.Pbkdf2(data, Encoding.UTF8.GetBytes(salt), KeyDerivationPrf.HMACSHA512, 1000, 32);
-        return Convert.ToBase64String(keyBytes);
-    }
-
-    private static string Encrypt(string data, string key)
-    {
-        var vector = GenerateIV();
-
-        using var aesAlgorithm = Aes.Create();
-        using var encryptor = aesAlgorithm.CreateEncryptor(Encoding.UTF8.GetBytes(key), vector);
-        using var memoryStream = new MemoryStream();
-        using var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
-        using (var streamWriter = new StreamWriter(cryptoStream))
-        {
-            streamWriter.Write(data);
-        }
-
-        var encryptedData = memoryStream.ToArray();
-
-        return Convert.ToBase64String(vector) + ";" + Convert.ToBase64String(encryptedData);
-    }
-
-    private static string Decrypt(string encryptedData, string key)
-    {
-        var vector = Convert.FromBase64String(encryptedData.Split(';')[0]);
-        var encryptedDataBytes = Convert.FromBase64String(encryptedData.Split(';')[1]);
-
-        using var aesAlgorithm = Aes.Create();
-        using var decryptor = aesAlgorithm.CreateDecryptor(Encoding.UTF8.GetBytes(key), vector);
-        using var memoryStream = new MemoryStream(encryptedDataBytes);
-        using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-        using var streamReader = new StreamReader(cryptoStream);
-
-        return streamReader.ReadToEnd();
-    }
-
-    private static byte[] GenerateIV()
-    {
-        var aesAlgorithm = Aes.Create();
-        aesAlgorithm.GenerateIV();
-
-        return aesAlgorithm.IV;
     }
 }

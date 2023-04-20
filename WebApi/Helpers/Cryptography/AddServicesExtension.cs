@@ -10,11 +10,11 @@ public static class AddServicesExtension
         services.AddDataProtection();
 
         services.Configure<EncryptionOptions>(configuration.GetSection("Cryptography"));
-        services.AddSingleton<IEncryptionService, EncryptionService>();
+        services.AddSingleton<EncryptionService>();
 
         services.Configure<HashOptions>(configuration.GetSection("Cryptography"));
-        services.AddSingleton<IHashService, HashService>();
+        services.AddSingleton<HashService>();
 
-        services.AddSingleton<IResetService, ResetService>();
+        services.AddSingleton<ResetService>();
     }
 }

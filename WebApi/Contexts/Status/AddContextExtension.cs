@@ -8,6 +8,6 @@ public static class AddContextExtension
     public static void AddStatusContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<StatusOptions>(configuration.GetSection("Status"));
-        services.AddScoped<IStatusService, StatusService>();
+        services.AddScoped<StatusService>();
     }
 }
