@@ -14,7 +14,7 @@ public class GradeImportService
         _context = context;
     }
 
-    public async Task ImportGrades(ImportGradesDto data, User user)
+    public async Task ImportGradesAsync(ImportGradesDto data, User user)
     {
         var gradeImport = data.Adapt<GradeImport>();
         gradeImport.UserId = user.Id;

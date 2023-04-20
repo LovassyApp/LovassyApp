@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text;
 using WebApi.Helpers.Cryptography.Traits.Interfaces;
 
 namespace WebApi.Helpers.Cryptography.Traits.Extensions;
@@ -11,7 +10,7 @@ public static class UsesEncryptionExtension
         var vector = GenerateIV();
 
         using var aesAlgorithm = Aes.Create();
-        using var encryptor = aesAlgorithm.CreateEncryptor(Encoding.UTF8.GetBytes(key), vector);
+        using var encryptor = aesAlgorithm.CreateEncryptor(Convert.FromBase64String(key), vector);
         using var memoryStream = new MemoryStream();
         using var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
         using (var streamWriter = new StreamWriter(cryptoStream))
@@ -30,7 +29,7 @@ public static class UsesEncryptionExtension
         var encryptedDataBytes = Convert.FromBase64String(encryptedData.Split(';')[1]);
 
         using var aesAlgorithm = Aes.Create();
-        using var decryptor = aesAlgorithm.CreateDecryptor(Encoding.UTF8.GetBytes(key), vector);
+        using var decryptor = aesAlgorithm.CreateDecryptor(Convert.FromBase64String(key), vector);
         using var memoryStream = new MemoryStream(encryptedDataBytes);
         using var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
         using var streamReader = new StreamReader(cryptoStream);

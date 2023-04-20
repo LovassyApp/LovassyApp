@@ -44,7 +44,7 @@ public class ImportController : Controller
         if (user == null)
             return NotFound();
 
-        await _gradeImportService.ImportGrades(request.Adapt<ImportGradesDto>(), user);
+        await _gradeImportService.ImportGradesAsync(request.Adapt<ImportGradesDto>(), user);
 
         return StatusCode(StatusCodes.Status201Created);
     }
