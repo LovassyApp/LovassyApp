@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<ImportKey> ImportKeys { get; set; }
     public DbSet<GradeImport> GradeImports { get; set; }
+    public DbSet<PersonalAccessToken> PersonalAccessTokens { get; set; }
 
     public override int SaveChanges()
     {

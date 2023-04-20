@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using WebApi.Contexts.Import;
 using WebApi.Contexts.Status;
+using WebApi.Helpers.Auth;
 using WebApi.Helpers.Cryptography;
 using WebApi.Persistence;
 
@@ -11,6 +12,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddCryptographyServices(builder.Configuration);
+builder.Services.AddAuthServices();
 
 builder.Services.AddStatusContext(builder.Configuration);
 builder.Services.AddImportContext();
