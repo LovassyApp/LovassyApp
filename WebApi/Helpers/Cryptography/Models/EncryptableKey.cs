@@ -31,7 +31,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
         if (!_unlocked)
             throw new EncryptableKeyLockedException();
 
-        _keyEncrypted = this.Encrypt(_key!, this.GenerateBasicKey(password, salt));
+        _keyEncrypted = this._Encrypt(_key!, this._GenerateBasicKey(password, salt));
         return _keyEncrypted;
     }
 
@@ -40,7 +40,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
         if (_unlocked)
             throw new EncryptableKeyUnlockedException();
 
-        _key = this.Decrypt(_keyEncrypted!, this.GenerateBasicKey(password, salt));
+        _key = this._Decrypt(_keyEncrypted!, this._GenerateBasicKey(password, salt));
         _unlocked = true;
         return _key;
     }

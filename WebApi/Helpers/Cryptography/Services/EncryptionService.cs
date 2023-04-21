@@ -1,8 +1,8 @@
-using System.Security.Cryptography;
 using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers.Cryptography.Services.Options;
+using WebApi.Helpers.Cryptography.Traits.Extensions;
 using WebApi.Helpers.Cryptography.Traits.Interfaces;
 
 namespace WebApi.Helpers.Cryptography.Services;
@@ -71,11 +71,13 @@ public class EncryptionService : IUsesEncryption
         return JsonSerializer.Deserialize<T>(serializedData);
     }
 
-    private static byte[] GenerateIV()
+    public string Encrypt(string data, string key)
     {
-        var aesAlgorithm = Aes.Create();
-        aesAlgorithm.GenerateIV();
+        return this._Encrypt(data, key);
+    }
 
-        return aesAlgorithm.IV;
+    public string Decrypt(string encryptedData, string key)
+    {
+        return this._Decrypt(encryptedData, key);
     }
 }

@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers.Cryptography.Services.Options;
+using WebApi.Helpers.Cryptography.Traits.Extensions;
 using WebApi.Helpers.Cryptography.Traits.Interfaces;
 
 namespace WebApi.Helpers.Cryptography.Services;
@@ -31,6 +32,36 @@ public class HashService : IUsesHashing
             throw new ArgumentException("Password bytes requested must be greater than 0", nameof(hashOptions));
 
         _passwordBytesRequested = hashOptions.Value.PasswordBytesRequested;
+    }
+
+    public string Hash(string data)
+    {
+        return this._Hash(data);
+    }
+
+    public bool Verify(string data, string hash)
+    {
+        return this._Verify(data, hash);
+    }
+
+    public string HashWithSalt(string data, string salt)
+    {
+        return this._HashWithSalt(data, salt);
+    }
+
+    public bool VerifyWithSalt(string data, string salt, string hash)
+    {
+        return this._VerifyWithSalt(data, salt, hash);
+    }
+
+    public string GenerateBasicKey(string data, string salt)
+    {
+        return this._GenerateBasicKey(data, salt);
+    }
+
+    public string GenerateSalt()
+    {
+        return this._GenerateSalt();
     }
 
     public string HashPassword(string password)

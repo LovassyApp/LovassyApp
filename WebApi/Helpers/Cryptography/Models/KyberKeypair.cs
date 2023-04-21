@@ -42,9 +42,9 @@ public class KyberKeypair : IKeypair, IUsesEncryption, IUsesHashing
         var encapsulatedSecret = kemGenerator.GenerateEncapsulated(_keypair.PublicKey);
         var encryptionKey = encapsulatedSecret.GetSecret();
 
-        var salt = this.GenerateSalt();
+        var salt = this._GenerateSalt();
         var encryptedMessage =
-            this.Encrypt(message, this.GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
+            this._Encrypt(message, this._GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
 
         return Convert.ToBase64String(encapsulatedSecret.GetEncapsulation()) + "|" + salt + "|" + encryptedMessage;
     }
@@ -58,7 +58,7 @@ public class KyberKeypair : IKeypair, IUsesEncryption, IUsesHashing
         var kemExtractor = new KyberKemExtractor(_keypair.PrivateKey);
         var encryptionKey = kemExtractor.ExtractSecret(Convert.FromBase64String(encapsulation));
 
-        return this.Decrypt(message, this.GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
+        return this._Decrypt(message, this._GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
     }
 
     private sealed class InternalKeypair

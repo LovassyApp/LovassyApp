@@ -16,12 +16,13 @@ public class ResetService
 
     public string EncryptMasterKey(string masterKey)
     {
-        return _encryptionService.Encrypt(masterKey, _resetKeyPassword ?? throw new ResetKeyPasswordMissingException());
+        return _encryptionService._Encrypt(masterKey,
+            _resetKeyPassword ?? throw new ResetKeyPasswordMissingException());
     }
 
     public string DecryptMasterKey(string encryptedMasterKey)
     {
-        return _encryptionService.Decrypt(encryptedMasterKey,
+        return _encryptionService._Decrypt(encryptedMasterKey,
             _resetKeyPassword ?? throw new ResetKeyPasswordMissingException());
     }
 

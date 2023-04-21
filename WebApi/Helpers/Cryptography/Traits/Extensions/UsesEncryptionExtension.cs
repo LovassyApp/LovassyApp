@@ -5,9 +5,9 @@ namespace WebApi.Helpers.Cryptography.Traits.Extensions;
 
 public static class UsesEncryptionExtension
 {
-    public static string Encrypt(this IUsesEncryption client, string data, string key)
+    public static string _Encrypt(this IUsesEncryption client, string data, string key)
     {
-        var vector = GenerateIV();
+        var vector = _GenerateIV();
 
         using var aesAlgorithm = Aes.Create();
         using var encryptor = aesAlgorithm.CreateEncryptor(Convert.FromBase64String(key), vector);
@@ -23,7 +23,7 @@ public static class UsesEncryptionExtension
         return Convert.ToBase64String(vector) + ";" + Convert.ToBase64String(encryptedData);
     }
 
-    public static string Decrypt(this IUsesEncryption client, string encryptedData, string key)
+    public static string _Decrypt(this IUsesEncryption client, string encryptedData, string key)
     {
         var vector = Convert.FromBase64String(encryptedData.Split(';')[0]);
         var encryptedDataBytes = Convert.FromBase64String(encryptedData.Split(';')[1]);
@@ -37,7 +37,7 @@ public static class UsesEncryptionExtension
         return streamReader.ReadToEnd();
     }
 
-    private static byte[] GenerateIV()
+    private static byte[] _GenerateIV()
     {
         var aesAlgorithm = Aes.Create();
         aesAlgorithm.GenerateIV();
