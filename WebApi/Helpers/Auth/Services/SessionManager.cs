@@ -1,34 +1,34 @@
 using System.Security.Cryptography;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using WebApi.Helpers.Auth.Exceptions;
 using WebApi.Helpers.Auth.Models;
 using WebApi.Helpers.Cryptography.Traits.Extensions;
 using WebApi.Helpers.Cryptography.Traits.Interfaces;
 using WebApi.Persistence;
 using WebApi.Persistence.Entities;
+using SessionOptions = WebApi.Helpers.Auth.Services.Options.SessionOptions;
 
 namespace WebApi.Helpers.Auth.Services;
 
 public class SessionManager : IUsesHashing, IUsesEncryption
 {
-    private static readonly int ExpiryMinutes = 30;
-
     private readonly ApplicationDbContext _context;
+    private readonly int _expiryMinute;
     private readonly IMemoryCache _memoryCache;
 
-    private bool _active;
     private string? _encryptionKey;
-    private Session? _session;
 
     private string? _token;
 
-    public SessionManager(IMemoryCache memoryCache, ApplicationDbContext context)
+    public SessionManager(IMemoryCache memoryCache, ApplicationDbContext context, IOptions<SessionOptions> options)
     {
         _memoryCache = memoryCache;
         _context = context;
-
-        _active = false;
+        _expiryMinute = options.Value.ExpiryMinutes;
     }
+
+    public Session? Session { get; set; }
 
     public void Init(string token)
     {
@@ -37,7 +37,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         var tokenHash = this.Hash(token);
         var session = _memoryCache.Get<Session>(tokenHash);
 
-        _session = session ?? throw new SessionNotFoundException();
+        Session = session ?? throw new SessionNotFoundException();
     }
 
     public async Task<string> StartSessionAsync(User user)
@@ -45,7 +45,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         var tokenBytes = RandomNumberGenerator.GetBytes(64);
         _token = Convert.ToBase64String(tokenBytes);
 
-        var expiry = DateTime.Now.AddMinutes(ExpiryMinutes);
+        var expiry = DateTime.Now.AddMinutes(_expiryMinute);
 
         var hash = this.Hash(_token);
 
@@ -56,36 +56,35 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         });
         await _context.SaveChangesAsync();
 
-        _session = new Session
+        Session = new Session
         {
             Hash = hash,
             Salt = this.GenerateSalt(),
             UserSalt = user.HasherSalt,
             Expiry = expiry
         };
-        _memoryCache.Set(hash, _session, expiry);
+        UpdateCache();
 
-        _encryptionKey = this.GenerateBasicKey(_token, _session.Salt);
-        _active = true;
+        _encryptionKey = this.GenerateBasicKey(_token, Session.Salt);
 
         return _token;
     }
 
-    public void Store(string key, string value)
+    public void Set(string key, string value)
     {
-        if (_session == null || _encryptionKey == null)
+        if (Session == null || _encryptionKey == null)
             throw new SessionNotFoundException();
 
-        _session.Data[key] = this.Encrypt(value, _encryptionKey);
+        Session.Data[key] = this.Encrypt(value, _encryptionKey);
         UpdateCache();
     }
 
-    public string? Retrieve(string key)
+    public string? Get(string key)
     {
-        if (_session == null || _encryptionKey == null)
+        if (Session == null || _encryptionKey == null)
             throw new SessionNotFoundException();
 
-        var encryptedValue = _session.Data.GetValueOrDefault(key);
+        var encryptedValue = Session.Data.GetValueOrDefault(key);
 
         if (encryptedValue == null)
             return null;
@@ -95,6 +94,6 @@ public class SessionManager : IUsesHashing, IUsesEncryption
 
     private void UpdateCache()
     {
-        _memoryCache.Set(_session.Hash, _session, _session.Expiry);
+        _memoryCache.Set(Session.Hash, Session, Session.Expiry);
     }
 }

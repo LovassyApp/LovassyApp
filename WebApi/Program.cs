@@ -12,7 +12,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddCryptographyServices(builder.Configuration);
-builder.Services.AddAuthServices();
+builder.Services.AddAuthServices(builder.Configuration);
 
 builder.Services.AddStatusContext(builder.Configuration);
 builder.Services.AddImportContext();
