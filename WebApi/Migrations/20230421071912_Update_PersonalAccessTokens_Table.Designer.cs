@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApi.Persistence;
@@ -11,9 +12,11 @@ using WebApi.Persistence;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230421071912_Update_PersonalAccessTokens_Table")]
+    partial class Update_PersonalAccessTokens_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,11 +144,11 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HasherSalt")
+                    b.Property<string>("HasherSaltEncrypted")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HasherSaltEncrypted")
+                    b.Property<string>("HasherSaltHashed")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -196,7 +199,7 @@ namespace WebApi.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("HasherSalt")
+                    b.HasIndex("HasherSaltHashed")
                         .IsUnique();
 
                     b.HasIndex("OmCodeHashed")

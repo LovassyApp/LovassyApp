@@ -13,5 +13,5 @@ public class PersonalAccessToken : BaseEntity
 
     [Required] public string Token { get; set; }
 
-    [Required] public DateTime LastUsedAt { get; set; }
+    public DateTime? LastUsedAt { get; set; }
 }
