@@ -3,8 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers.Auth.Exceptions;
 using WebApi.Helpers.Auth.Models;
-using WebApi.Helpers.Cryptography.Traits.Extensions;
-using WebApi.Helpers.Cryptography.Traits.Interfaces;
+using WebApi.Helpers.Cryptography.Traits;
 using WebApi.Persistence;
 using WebApi.Persistence.Entities;
 using SessionOptions = WebApi.Helpers.Auth.Services.Options.SessionOptions;
@@ -34,7 +33,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
     {
         _token = token;
 
-        var tokenHash = this._Hash(token);
+        var tokenHash = ((IUsesHashing)this).Hash(token);
         var session = _memoryCache.Get<Session>(tokenHash);
 
         Session = session ?? throw new SessionNotFoundException();
@@ -47,7 +46,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
 
         var expiry = DateTime.Now.AddMinutes(_expiryMinute);
 
-        var hash = this._Hash(_token);
+        var hash = ((IUsesHashing)this).Hash(_token);
 
         await _context.PersonalAccessTokens.AddAsync(new PersonalAccessToken
         {
@@ -59,13 +58,13 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         Session = new Session
         {
             Hash = hash,
-            Salt = this._GenerateSalt(),
+            Salt = ((IUsesHashing)this).GenerateSalt(),
             UserSalt = user.HasherSalt,
             Expiry = expiry
         };
         UpdateCache();
 
-        _encryptionKey = this._GenerateBasicKey(_token, Session.Salt);
+        _encryptionKey = ((IUsesHashing)this).GenerateBasicKey(_token, Session.Salt);
 
         return _token;
     }
@@ -75,7 +74,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         if (Session == null || _encryptionKey == null)
             throw new SessionNotFoundException();
 
-        Session.Data[key] = this._Encrypt(value, _encryptionKey);
+        Session.Data[key] = ((IUsesEncryption)this).Encrypt(value, _encryptionKey);
         UpdateCache();
     }
 
@@ -89,7 +88,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         if (encryptedValue == null)
             return null;
 
-        return this._Decrypt(encryptedValue, _encryptionKey);
+        return ((IUsesEncryption)this).Decrypt(encryptedValue, _encryptionKey);
     }
 
     private void UpdateCache()

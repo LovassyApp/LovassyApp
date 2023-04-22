@@ -3,7 +3,6 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts.Import.Models;
 using WebApi.Helpers.Cryptography.Services;
-using WebApi.Helpers.Cryptography.Traits.Extensions;
 using WebApi.Persistence;
 using WebApi.Persistence.Entities;
 
@@ -44,7 +43,7 @@ public class ImportKeyService
 
     public async Task<bool> IsImportKeyValidAsync(string key)
     {
-        var keyHashed = _hashService._Hash(key);
+        var keyHashed = _hashService.Hash(key);
 
         var importKey = await _context.ImportKeys.Where(i => i.KeyHashed == keyHashed).FirstOrDefaultAsync();
 
@@ -57,7 +56,7 @@ public class ImportKeyService
         var key = Convert.ToBase64String(RandomNumberGenerator.GetBytes(512 / 8));
 
         importKey.KeyProtected = _encryptionService.Protect(key);
-        importKey.KeyHashed = _hashService._Hash(key);
+        importKey.KeyHashed = _hashService.Hash(key);
 
         await _context.ImportKeys.AddAsync(importKey);
         await _context.SaveChangesAsync();

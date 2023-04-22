@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
 using WebApi.Helpers.Cryptography.Exceptions;
-using WebApi.Helpers.Cryptography.Traits.Extensions;
-using WebApi.Helpers.Cryptography.Traits.Interfaces;
+using WebApi.Helpers.Cryptography.Traits;
 
 namespace WebApi.Helpers.Cryptography.Models;
 
@@ -31,7 +30,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
         if (!_unlocked)
             throw new EncryptableKeyLockedException();
 
-        _keyEncrypted = this._Encrypt(_key!, this._GenerateBasicKey(password, salt));
+        _keyEncrypted = ((IUsesEncryption)this).Encrypt(_key!, ((IUsesHashing)this).GenerateBasicKey(password, salt));
         return _keyEncrypted;
     }
 
@@ -40,7 +39,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
         if (_unlocked)
             throw new EncryptableKeyUnlockedException();
 
-        _key = this._Decrypt(_keyEncrypted!, this._GenerateBasicKey(password, salt));
+        _key = ((IUsesEncryption)this).Decrypt(_keyEncrypted!, ((IUsesHashing)this).GenerateBasicKey(password, salt));
         _unlocked = true;
         return _key;
     }

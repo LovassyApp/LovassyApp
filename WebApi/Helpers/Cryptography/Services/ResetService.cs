@@ -1,5 +1,4 @@
 using WebApi.Helpers.Cryptography.Exceptions;
-using WebApi.Helpers.Cryptography.Traits.Extensions;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
@@ -16,13 +15,13 @@ public class ResetService
 
     public string EncryptMasterKey(string masterKey)
     {
-        return _encryptionService._Encrypt(masterKey,
+        return _encryptionService.Encrypt(masterKey,
             _resetKeyPassword ?? throw new ResetKeyPasswordMissingException());
     }
 
     public string DecryptMasterKey(string encryptedMasterKey)
     {
-        return _encryptionService._Decrypt(encryptedMasterKey,
+        return _encryptionService.Decrypt(encryptedMasterKey,
             _resetKeyPassword ?? throw new ResetKeyPasswordMissingException());
     }
 
