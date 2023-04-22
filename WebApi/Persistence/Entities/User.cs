@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WebApi.Persistence.Entities;
 
 [Index(nameof(Email), IsUnique = true)]
+[Index(nameof(MasterKeySalt), IsUnique = true)]
 [Index(nameof(OmCodeHashed), IsUnique = true)]
 [Index(nameof(HasherSaltHashed), IsUnique = true)]
 public class User : BaseEntity
@@ -17,6 +18,7 @@ public class User : BaseEntity
     [Required] public string PublicKey { get; set; }
     [Required] public string PrivateKeyEncrypted { get; set; }
     [Required] public string MasterKeyEncrypted { get; set; }
+    [Required] public string MasterKeySalt { get; set; }
     [Required] public string ResetKeyEncrypted { get; set; }
     [Required] public string HasherSaltEncrypted { get; set; }
     [Required] public string HasherSaltHashed { get; set; }
@@ -27,7 +29,7 @@ public class User : BaseEntity
     public string? RealName { get; set; }
     public string? Class { get; set; }
 
-    [Required] public bool ImportAvailable { get; set; }
+    public bool ImportAvailable { get; set; }
 
     public List<GradeImport> GradeImports { get; set; }
 }

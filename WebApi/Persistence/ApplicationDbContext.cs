@@ -14,6 +14,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<GradeImport> GradeImports { get; set; }
     public DbSet<PersonalAccessToken> PersonalAccessTokens { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>()
+            .Property(u => u.ImportAvailable)
+            .HasDefaultValue(false);
+    }
+
     public override int SaveChanges()
     {
         UpdateTimestamps();

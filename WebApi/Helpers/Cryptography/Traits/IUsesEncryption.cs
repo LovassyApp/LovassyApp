@@ -4,9 +4,9 @@ namespace WebApi.Helpers.Cryptography.Traits;
 
 public interface IUsesEncryption
 {
-    public string Encrypt(string data, string key)
+    public string _Encrypt(string data, string key)
     {
-        var vector = GenerateIV();
+        var vector = _GenerateIV();
 
         using var aesAlgorithm = Aes.Create();
         using var encryptor = aesAlgorithm.CreateEncryptor(Convert.FromBase64String(key), vector);
@@ -22,7 +22,7 @@ public interface IUsesEncryption
         return Convert.ToBase64String(vector) + ";" + Convert.ToBase64String(encryptedData);
     }
 
-    public string Decrypt(string encryptedData, string key)
+    public string _Decrypt(string encryptedData, string key)
     {
         var vector = Convert.FromBase64String(encryptedData.Split(';')[0]);
         var encryptedDataBytes = Convert.FromBase64String(encryptedData.Split(';')[1]);
@@ -36,7 +36,7 @@ public interface IUsesEncryption
         return streamReader.ReadToEnd();
     }
 
-    private static byte[] GenerateIV()
+    private static byte[] _GenerateIV()
     {
         var aesAlgorithm = Aes.Create();
         aesAlgorithm.GenerateIV();

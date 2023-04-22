@@ -35,32 +35,32 @@ public class HashService : IUsesHashing
 
     public string Hash(string data)
     {
-        return ((IUsesHashing)this).Hash(data);
+        return ((IUsesHashing)this)._Hash(data);
     }
 
     public bool Verify(string data, string hash)
     {
-        return ((IUsesHashing)this).Verify(data, hash);
+        return ((IUsesHashing)this)._Verify(data, hash);
     }
 
     public string HashWithSalt(string data, string salt)
     {
-        return ((IUsesHashing)this).HashWithSalt(data, salt);
+        return ((IUsesHashing)this)._HashWithSalt(data, salt);
     }
 
     public bool VerifyWithSalt(string data, string salt, string hash)
     {
-        return ((IUsesHashing)this).VerifyWithSalt(data, salt, hash);
+        return ((IUsesHashing)this)._VerifyWithSalt(data, salt, hash);
     }
 
     public string GenerateBasicKey(string data, string salt)
     {
-        return ((IUsesHashing)this).GenerateBasicKey(data, salt);
+        return ((IUsesHashing)this)._GenerateBasicKey(data, salt);
     }
 
     public string GenerateSalt()
     {
-        return ((IUsesHashing)this).GenerateSalt();
+        return ((IUsesHashing)this)._GenerateSalt();
     }
 
     public string HashPassword(string password)

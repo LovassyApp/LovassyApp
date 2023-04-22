@@ -33,7 +33,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
     {
         _token = token;
 
-        var tokenHash = ((IUsesHashing)this).Hash(token);
+        var tokenHash = ((IUsesHashing)this)._Hash(token);
         var session = _memoryCache.Get<Session>(tokenHash);
 
         Session = session ?? throw new SessionNotFoundException();
@@ -46,7 +46,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
 
         var expiry = DateTime.Now.AddMinutes(_expiryMinute);
 
-        var hash = ((IUsesHashing)this).Hash(_token);
+        var hash = ((IUsesHashing)this)._Hash(_token);
 
         await _context.PersonalAccessTokens.AddAsync(new PersonalAccessToken
         {
@@ -58,12 +58,12 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         Session = new Session
         {
             Hash = hash,
-            Salt = ((IUsesHashing)this).GenerateSalt(),
+            Salt = ((IUsesHashing)this)._GenerateSalt(),
             Expiry = expiry
         };
         UpdateCache();
 
-        _encryptionKey = ((IUsesHashing)this).GenerateBasicKey(_token, Session.Salt);
+        _encryptionKey = ((IUsesHashing)this)._GenerateBasicKey(_token, Session.Salt);
 
         return _token;
     }
@@ -73,7 +73,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         if (Session == null || _encryptionKey == null)
             throw new SessionNotFoundException();
 
-        Session.Data[key] = ((IUsesEncryption)this).Encrypt(value, _encryptionKey);
+        Session.Data[key] = ((IUsesEncryption)this)._Encrypt(value, _encryptionKey);
         UpdateCache();
     }
 
@@ -87,7 +87,7 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         if (encryptedValue == null)
             return null;
 
-        return ((IUsesEncryption)this).Decrypt(encryptedValue, _encryptionKey);
+        return ((IUsesEncryption)this)._Decrypt(encryptedValue, _encryptionKey);
     }
 
     private void UpdateCache()

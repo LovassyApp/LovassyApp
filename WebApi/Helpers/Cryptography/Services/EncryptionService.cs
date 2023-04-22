@@ -18,12 +18,12 @@ public class EncryptionService : IUsesEncryption
 
     public string Encrypt(string data, string key)
     {
-        return ((IUsesEncryption)this).Encrypt(data, key);
+        return ((IUsesEncryption)this)._Encrypt(data, key);
     }
 
     public string Decrypt(string encryptedData, string key)
     {
-        return ((IUsesEncryption)this).Decrypt(encryptedData, key);
+        return ((IUsesEncryption)this)._Decrypt(encryptedData, key);
     }
 
     public string Protect(string data)

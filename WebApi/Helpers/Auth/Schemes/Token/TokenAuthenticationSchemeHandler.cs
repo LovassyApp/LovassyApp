@@ -49,6 +49,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         InitializeManagers(token!, accessToken.User);
 
         //TODO: Add permission claims with Warden
+        //TODO: Run a task in a queue to update the token's last used date
 
         var claims = new List<Claim>
         {

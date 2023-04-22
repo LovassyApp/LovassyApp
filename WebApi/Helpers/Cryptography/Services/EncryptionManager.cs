@@ -57,7 +57,7 @@ public class EncryptionManager : IUsesEncryption
         if (_masterKey == null)
             throw new MasterKeyNotFoundException();
 
-        return ((IUsesEncryption)this).Encrypt(data, _masterKey);
+        return ((IUsesEncryption)this)._Encrypt(data, _masterKey);
     }
 
     public string Decrypt(string encryptedData)
@@ -65,7 +65,7 @@ public class EncryptionManager : IUsesEncryption
         if (_masterKey == null)
             throw new MasterKeyNotFoundException();
 
-        return ((IUsesEncryption)this).Decrypt(encryptedData, _masterKey);
+        return ((IUsesEncryption)this)._Decrypt(encryptedData, _masterKey);
     }
 
     public string SerializeEncrypt<T>(T data)
@@ -75,7 +75,7 @@ public class EncryptionManager : IUsesEncryption
 
         var serializedData = JsonSerializer.Serialize(data);
 
-        return ((IUsesEncryption)this).Encrypt(serializedData, _masterKey);
+        return ((IUsesEncryption)this)._Encrypt(serializedData, _masterKey);
     }
 
     public T? SerializeDecrypt<T>(string encryptedData)
@@ -83,7 +83,7 @@ public class EncryptionManager : IUsesEncryption
         if (_masterKey == null)
             throw new MasterKeyNotFoundException();
 
-        var serializedData = ((IUsesEncryption)this).Decrypt(encryptedData, _masterKey);
+        var serializedData = ((IUsesEncryption)this)._Decrypt(encryptedData, _masterKey);
 
         return JsonSerializer.Deserialize<T>(serializedData);
     }

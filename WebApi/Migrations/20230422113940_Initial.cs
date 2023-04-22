@@ -41,15 +41,15 @@ namespace WebApi.Migrations
                     PublicKey = table.Column<string>(type: "text", nullable: false),
                     PrivateKeyEncrypted = table.Column<string>(type: "text", nullable: false),
                     MasterKeyEncrypted = table.Column<string>(type: "text", nullable: false),
+                    MasterKeySalt = table.Column<string>(type: "text", nullable: false),
                     ResetKeyEncrypted = table.Column<string>(type: "text", nullable: false),
-                    IdSaltEncrypted = table.Column<string>(type: "text", nullable: false),
-                    IdSaltHashed = table.Column<string>(type: "text", nullable: false),
-                    HasherSalt = table.Column<string>(type: "text", nullable: false),
+                    HasherSaltEncrypted = table.Column<string>(type: "text", nullable: false),
+                    HasherSaltHashed = table.Column<string>(type: "text", nullable: false),
                     OmCodeEncrypted = table.Column<string>(type: "text", nullable: false),
                     OmCodeHashed = table.Column<string>(type: "text", nullable: false),
                     RealName = table.Column<string>(type: "text", nullable: true),
                     Class = table.Column<string>(type: "text", nullable: true),
-                    ImportAvailable = table.Column<bool>(type: "boolean", nullable: false),
+                    ImportAvailable = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -133,15 +133,15 @@ namespace WebApi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_HasherSalt",
+                name: "IX_Users_HasherSaltHashed",
                 table: "Users",
-                column: "HasherSalt",
+                column: "HasherSaltHashed",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_IdSaltHashed",
+                name: "IX_Users_MasterKeySalt",
                 table: "Users",
-                column: "IdSaltHashed",
+                column: "MasterKeySalt",
                 unique: true);
 
             migrationBuilder.CreateIndex(

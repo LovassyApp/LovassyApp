@@ -141,22 +141,24 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HasherSalt")
+                    b.Property<string>("HasherSaltEncrypted")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("IdSaltEncrypted")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("IdSaltHashed")
+                    b.Property<string>("HasherSaltHashed")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("ImportAvailable")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("MasterKeyEncrypted")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MasterKeySalt")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -200,10 +202,10 @@ namespace WebApi.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("HasherSalt")
+                    b.HasIndex("HasherSaltHashed")
                         .IsUnique();
 
-                    b.HasIndex("IdSaltHashed")
+                    b.HasIndex("MasterKeySalt")
                         .IsUnique();
 
                     b.HasIndex("OmCodeHashed")

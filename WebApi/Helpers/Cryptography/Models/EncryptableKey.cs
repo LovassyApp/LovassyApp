@@ -11,7 +11,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
 
     private bool _unlocked;
 
-    public EncryptableKey(string? keyEncrypted)
+    public EncryptableKey(string? keyEncrypted = null)
     {
         if (keyEncrypted == null)
         {
@@ -30,7 +30,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
         if (!_unlocked)
             throw new EncryptableKeyLockedException();
 
-        _keyEncrypted = ((IUsesEncryption)this).Encrypt(_key!, ((IUsesHashing)this).GenerateBasicKey(password, salt));
+        _keyEncrypted = ((IUsesEncryption)this)._Encrypt(_key!, ((IUsesHashing)this)._GenerateBasicKey(password, salt));
         return _keyEncrypted;
     }
 
@@ -39,7 +39,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
         if (_unlocked)
             throw new EncryptableKeyUnlockedException();
 
-        _key = ((IUsesEncryption)this).Decrypt(_keyEncrypted!, ((IUsesHashing)this).GenerateBasicKey(password, salt));
+        _key = ((IUsesEncryption)this)._Decrypt(_keyEncrypted!, ((IUsesHashing)this)._GenerateBasicKey(password, salt));
         _unlocked = true;
         return _key;
     }
@@ -54,7 +54,7 @@ public class EncryptableKey : IEncryptableKey, IUsesEncryption, IUsesHashing
 
     private static string GenerateRandomKey()
     {
-        var keyBytes = RandomNumberGenerator.GetBytes(128 / 8);
+        var keyBytes = RandomNumberGenerator.GetBytes(256 / 8);
         return Convert.ToBase64String(keyBytes);
     }
 }

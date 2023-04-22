@@ -38,7 +38,7 @@ public class HashManager : IUsesHashing
         if (cached != null)
             return cached;
 
-        var hash = ((IUsesHashing)this).HashWithSalt(payload, _userSalt);
+        var hash = ((IUsesHashing)this)._HashWithSalt(payload, _userSalt);
         _memoryCache.Set($"{_cachePrefix}:{payload}", hash);
 
         return hash;
