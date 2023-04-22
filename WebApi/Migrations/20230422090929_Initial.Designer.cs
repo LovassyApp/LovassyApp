@@ -12,8 +12,8 @@ using WebApi.Persistence;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230417104343_Update_GradeImports_Table")]
-    partial class Update_GradeImports_Table
+    [Migration("20230422090929_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,40 @@ namespace WebApi.Migrations
                     b.ToTable("ImportKeys");
                 });
 
+            modelBuilder.Entity("WebApi.Persistence.Entities.PersonalAccessToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastUsedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PersonalAccessTokens");
+                });
+
             modelBuilder.Entity("WebApi.Persistence.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -110,11 +144,15 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HasherSaltEncrypted")
+                    b.Property<string>("HasherSalt")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HasherSaltHashed")
+                    b.Property<string>("IdSaltEncrypted")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("IdSaltHashed")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -165,7 +203,10 @@ namespace WebApi.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("HasherSaltHashed")
+                    b.HasIndex("HasherSalt")
+                        .IsUnique();
+
+                    b.HasIndex("IdSaltHashed")
                         .IsUnique();
 
                     b.HasIndex("OmCodeHashed")
@@ -178,6 +219,17 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Persistence.Entities.User", "User")
                         .WithMany("GradeImports")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApi.Persistence.Entities.PersonalAccessToken", b =>
+                {
+                    b.HasOne("WebApi.Persistence.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

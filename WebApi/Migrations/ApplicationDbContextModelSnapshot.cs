@@ -145,7 +145,11 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HasherSaltEncrypted")
+                    b.Property<string>("IdSaltEncrypted")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("IdSaltHashed")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -197,6 +201,9 @@ namespace WebApi.Migrations
                         .IsUnique();
 
                     b.HasIndex("HasherSalt")
+                        .IsUnique();
+
+                    b.HasIndex("IdSaltHashed")
                         .IsUnique();
 
                     b.HasIndex("OmCodeHashed")

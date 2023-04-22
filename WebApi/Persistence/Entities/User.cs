@@ -5,6 +5,7 @@ namespace WebApi.Persistence.Entities;
 
 [Index(nameof(Email), IsUnique = true)]
 [Index(nameof(OmCodeHashed), IsUnique = true)]
+[Index(nameof(IdSaltHashed), IsUnique = true)]
 [Index(nameof(HasherSalt), IsUnique = true)]
 public class User : BaseEntity
 {
@@ -18,7 +19,9 @@ public class User : BaseEntity
     [Required] public string PrivateKeyEncrypted { get; set; }
     [Required] public string MasterKeyEncrypted { get; set; }
     [Required] public string ResetKeyEncrypted { get; set; }
-    [Required] public string HasherSaltEncrypted { get; set; }
+    [Required] public string IdSaltEncrypted { get; set; }
+    [Required] public string IdSaltHashed { get; set; }
+
     [Required] public string HasherSalt { get; set; }
 
     [Required] public string OmCodeEncrypted { get; set; }
