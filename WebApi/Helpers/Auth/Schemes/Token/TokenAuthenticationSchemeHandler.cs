@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using WebApi.Helpers.Auth.Exceptions;
 using WebApi.Helpers.Auth.Services;
 using WebApi.Helpers.Cryptography.Services;
 using WebApi.Persistence;
@@ -46,7 +47,14 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         if (accessToken == null) return AuthenticateResult.Fail("Invalid access token");
 
-        InitializeManagers(token!, accessToken.User);
+        try
+        {
+            InitializeManagers(token!, accessToken.User);
+        }
+        catch (SessionNotFoundException)
+        {
+            return AuthenticateResult.Fail("Session not found");
+        }
 
         //TODO: Add permission claims with Warden
         //TODO: Run a task in a queue to update the token's last used date
