@@ -4,6 +4,12 @@ namespace WebApi.Helpers.Cryptography.Utils;
 
 public static class EncryptionUtils
 {
+    /// <summary>
+    ///     Encrypts the given string data with the given key using AES.
+    /// </summary>
+    /// <param name="data">The string data to encrypt.</param>
+    /// <param name="key">The key to use for encrypting. Must be 32 bytes when converted from base64.</param>
+    /// <returns>The encrypted data as a string.</returns>
     public static string Encrypt(string data, string key)
     {
         var vector = _GenerateIV();
@@ -22,6 +28,12 @@ public static class EncryptionUtils
         return Convert.ToBase64String(vector) + ";" + Convert.ToBase64String(encryptedData);
     }
 
+    /// <summary>
+    ///     Decrypts the given encrypted data with the given key using AES.
+    /// </summary>
+    /// <param name="encryptedData">The encrypted data as a string.</param>
+    /// <param name="key">The key used for encrypting the data. Must be 32 bytes when converted from base64.</param>
+    /// <returns>The decrypted string data.</returns>
     public static string Decrypt(string encryptedData, string key)
     {
         var vector = Convert.FromBase64String(encryptedData.Split(';')[0]);

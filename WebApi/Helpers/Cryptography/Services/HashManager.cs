@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using WebApi.Helpers.Auth.Exceptions;
 using WebApi.Helpers.Auth.Services;
 using WebApi.Helpers.Cryptography.Exceptions;
 using WebApi.Helpers.Cryptography.Services.Options;
@@ -28,6 +27,12 @@ public class HashManager
         _cachePrefix = options.Value.HashManagerCachePrefix;
     }
 
+    /// <summary>
+    ///     Hashes a payload with the user's own encrypted salt. Primarily meant for hashing the user id.
+    /// </summary>
+    /// <param name="payload">The payload to hash.</param>
+    /// <returns>The hashed payload as a string.</returns>
+    /// <exception cref="HasherSaltNotFoundException">The exception thrown when the hash manager has not yet been initialized.</exception>
     public string HashWithHasherSalt(string payload)
     {
         if (_userSalt == null)
@@ -44,11 +49,16 @@ public class HashManager
         return hash;
     }
 
+    /// <summary>
+    ///     Initializes the hash manager with the user's encrypted salt.
+    /// </summary>
+    /// <param name="user">The user, who's salt is going to be used.</param>
+    /// <exception cref="MasterKeyNotFoundException">
+    ///     The exception thrown when the encryption manager has not yet been
+    ///     initialized.
+    /// </exception>
     public void Init(User user)
     {
-        if (_sessionManager.Session == null)
-            throw new SessionNotFoundException();
-
         if (_encryptionManager.MasterKey == null)
             throw new MasterKeyNotFoundException();
 

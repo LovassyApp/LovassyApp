@@ -34,6 +34,18 @@ public class EncryptionManager
         }
     }
 
+    /// <summary>
+    ///     Initializes the encryption manager with a master key. If no key is provided, it tries to get it from the session.
+    /// </summary>
+    /// <param name="key">The master key to be used.</param>
+    /// <exception cref="SessionNotFoundException">
+    ///     The exception thrown when there is no key provided but the session manager
+    ///     has not been initialized yet.
+    /// </exception>
+    /// <exception cref="MasterKeyNotFoundException">
+    ///     The exception thrown when no key was provided and the master key is not
+    ///     stored in the current session.
+    /// </exception>
     public void Init(string? key = null)
     {
         if (key != null)
@@ -52,6 +64,15 @@ public class EncryptionManager
         }
     }
 
+    /// <summary>
+    ///     Encrypts the data using the master key of the current user.
+    /// </summary>
+    /// <param name="data">The string data to encrypt.</param>
+    /// <returns>The encrypted data string.</returns>
+    /// <exception cref="MasterKeyNotFoundException">
+    ///     The exception thrown when the encryption manager has not been initialized
+    ///     yet.
+    /// </exception>
     public string Encrypt(string data)
     {
         if (_masterKey == null)
@@ -60,6 +81,15 @@ public class EncryptionManager
         return EncryptionUtils.Encrypt(data, _masterKey);
     }
 
+    /// <summary>
+    ///     Decrypts the given string data using the master key of the current user.
+    /// </summary>
+    /// <param name="encryptedData">The encrypted string data.</param>
+    /// <returns>The decrypted string value.</returns>
+    /// <exception cref="MasterKeyNotFoundException">
+    ///     The exception thrown when the encryption manager has not been initialized
+    ///     yet.
+    /// </exception>
     public string Decrypt(string encryptedData)
     {
         if (_masterKey == null)
@@ -68,6 +98,17 @@ public class EncryptionManager
         return EncryptionUtils.Decrypt(encryptedData, _masterKey);
     }
 
+
+    /// <summary>
+    ///     Serializes to json and encrypts the given data using the master key of the current user.
+    /// </summary>
+    /// <param name="data">The data to encrypt.</param>
+    /// <typeparam name="T">The type of the data to encrypt.</typeparam>
+    /// <returns>The encrypted data string.</returns>
+    /// <exception cref="MasterKeyNotFoundException">
+    ///     The exception thrown when the encryption manager has not been initialized
+    ///     yet.
+    /// </exception>
     public string SerializeEncrypt<T>(T data)
     {
         if (_masterKey == null)
@@ -78,7 +119,17 @@ public class EncryptionManager
         return EncryptionUtils.Encrypt(serializedData, _masterKey);
     }
 
-    public T? SerializeDecrypt<T>(string encryptedData)
+    /// <summary>
+    ///     Decrypts the given data and deserializes it to the given type.
+    /// </summary>
+    /// <param name="encryptedData">The encrypted data as a string.</param>
+    /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
+    /// <returns>The decrypted and deserialized object.</returns>
+    /// <exception cref="MasterKeyNotFoundException">
+    ///     The exception thrown when the encryption manager has not been initialized
+    ///     yet.
+    /// </exception>
+    public T? DeserializeDecrypt<T>(string encryptedData)
     {
         if (_masterKey == null)
             throw new MasterKeyNotFoundException();

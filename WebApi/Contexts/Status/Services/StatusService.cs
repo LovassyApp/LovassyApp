@@ -37,6 +37,10 @@ public class StatusService
     public string Repository { get; }
     public List<string> MOTDs { get; }
 
+    /// <summary>
+    ///     Shows a detailed summary of the service status.
+    /// </summary>
+    /// <returns>The service status broken into parts.</returns>
     public ServiceStatus GetServiceStatus()
     {
         return new ServiceStatus
@@ -47,6 +51,10 @@ public class StatusService
         };
     }
 
+    /// <summary>
+    ///     Returns weather the service is ready to be used. True does not mean that every part of the service is functional.
+    /// </summary>
+    /// <returns>Whether the app is operational or not.</returns>
     public bool IsReady()
     {
         var serviceStatus = GetServiceStatus();

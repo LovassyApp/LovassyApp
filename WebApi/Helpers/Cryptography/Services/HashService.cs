@@ -33,36 +33,75 @@ public class HashService
         _passwordBytesRequested = hashOptions.Value.PasswordBytesRequested;
     }
 
+    /// <summary>
+    ///     A wrapper around the <c>HashingUtils.Hash</c> method.
+    /// </summary>
+    /// <param name="data">The string data to hash.</param>
+    /// <returns>The hashed data as a string.</returns>
     public string Hash(string data)
     {
         return HashingUtils.Hash(data);
     }
 
+    /// <summary>
+    ///     A wrapper around the <c>HashingUtils.Verify</c> method.
+    /// </summary>
+    /// <param name="data">The original data.</param>
+    /// <param name="hash">The supposed hash of the original data.</param>
+    /// <returns>Whether it is actually the hash of the provided data or not.</returns>
     public bool Verify(string data, string hash)
     {
         return HashingUtils.Verify(data, hash);
     }
 
+    /// <summary>
+    ///     A wrapper around the <c>HashingUtils.HashWithSalt</c> method.
+    /// </summary>
+    /// <param name="data">The data to hash.</param>
+    /// <param name="salt">The salt to use for the hashing.</param>
+    /// <returns>The hashed data as a string.</returns>
     public string HashWithSalt(string data, string salt)
     {
         return HashingUtils.HashWithSalt(data, salt);
     }
 
+    /// <summary>
+    ///     A wrapper around the <c>HashingUtils.VerifyWithSalt</c> method.
+    /// </summary>
+    /// <param name="data">The original data.</param>
+    /// <param name="salt">The salt used for hashing the original data.</param>
+    /// <param name="hash">The supposed hash of the original data.</param>
+    /// <returns>Whether it is actually the hash of the provided data or not.</returns>
     public bool VerifyWithSalt(string data, string salt, string hash)
     {
         return HashingUtils.VerifyWithSalt(data, salt, hash);
     }
 
+    /// <summary>
+    ///     A wrapper around the <c>HashingUtils.GenerateBasicKey</c> method.
+    /// </summary>
+    /// <param name="data">The string, intended to be kept as a secret, from which to generate the key.</param>
+    /// <param name="salt">The salt used for generating the key.</param>
+    /// <returns>The generated key as a base64 string.</returns>
     public string GenerateBasicKey(string data, string salt)
     {
         return HashingUtils.GenerateBasicKey(data, salt);
     }
 
+    /// <summary>
+    ///     A wrapper around the <c>HashingUtils.GenerateSalt</c> method.
+    /// </summary>
+    /// <returns>The generated salt.</returns>
     public string GenerateSalt()
     {
         return HashingUtils.GenerateSalt();
     }
 
+    /// <summary>
+    ///     Hashes a password using PBKDF2 with HMAC-SHA512. It does the exact same thing as Identity Core.
+    /// </summary>
+    /// <param name="password">The password to hash.</param>
+    /// <returns>The hashed password as a string.</returns>
     public string HashPassword(string password)
     {
         var salt = new byte[_passwordSaltLength];
@@ -82,6 +121,12 @@ public class HashService
         return Convert.ToBase64String(outputBytes);
     }
 
+    /// <summary>
+    ///     Verifies a password against a hash using PBKDF2. It does the exact same thing as Identity Core.
+    /// </summary>
+    /// <param name="password">The password to verify.</param>
+    /// <param name="hash">The supposed hash.</param>
+    /// <returns>Whether it's actually the hash of the given password not.</returns>
     public bool VerifyPassword(string password, string hash)
     {
         var decodedHash = Convert.FromBase64String(hash);

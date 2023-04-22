@@ -58,7 +58,7 @@ public class ImportKeyService
     /// <summary>
     ///     Creates a new <c>ImportKey</c>.
     /// </summary>
-    /// <param name="data">The dto containing the fields of the new <c>ImportKey</c> model.</param>
+    /// <param name="data">The dto containing certain fields of the new <c>ImportKey</c> model.</param>
     /// <returns>The key string in unencrypted form.</returns>
     public async Task<string> CreateImportKeyAsync(CreateImportKeyDto data)
     {
