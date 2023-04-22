@@ -34,7 +34,7 @@ public class EncryptionManager : IUsesEncryption
         }
     }
 
-    public void Init(string? key)
+    public void Init(string? key = null)
     {
         if (key != null)
         {

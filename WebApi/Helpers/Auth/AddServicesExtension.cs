@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using WebApi.Helpers.Auth.Schemes.Token;
 using WebApi.Helpers.Auth.Services;
 using SessionOptions = WebApi.Helpers.Auth.Services.Options.SessionOptions;
 
@@ -9,5 +11,15 @@ public static class AddServicesExtension
     {
         services.Configure<SessionOptions>(configuration.GetSection("Session"));
         services.AddScoped<SessionManager>();
+
+        services.AddAuthentication()
+            .AddScheme<TokenAuthenticationSchemeOptions, TokenAuthenticationSchemeHandler>(AuthConstants.TokenScheme,
+                o => { });
+
+        services.AddAuthorization(o =>
+        {
+            o.DefaultPolicy = new AuthorizationPolicyBuilder().AddAuthenticationSchemes(AuthConstants.TokenScheme)
+                .RequireAuthenticatedUser().Build(); //TODO: Replace with the policy of Warden
+        });
     }
 }
