@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Helpers\Auth\Filters" />
       <Folder Include="Migrations" />
     </ItemGroup>
 

@@ -41,15 +41,6 @@ public class ImportKeyService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> IsImportKeyValidAsync(string key)
-    {
-        var keyHashed = _hashService.Hash(key);
-
-        var importKey = await _context.ImportKeys.Where(i => i.KeyHashed == keyHashed).FirstOrDefaultAsync();
-
-        return importKey is { Enabled: true };
-    }
-
     public async Task<string> CreateImportKeyAsync(CreateImportKeyDto data)
     {
         var importKey = data.Adapt<ImportKey>();

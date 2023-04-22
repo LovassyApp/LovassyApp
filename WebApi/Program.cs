@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" });
     c.EnableAnnotations();
-    c.AddImportContextOperationFilters();
+    c.AddAuthOperationFilters();
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

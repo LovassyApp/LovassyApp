@@ -1,9 +1,10 @@
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Contexts.Import.Filters.Action;
 using WebApi.Contexts.Import.Models;
 using WebApi.Contexts.Import.Services;
+using WebApi.Helpers.Auth;
 using WebApi.Helpers.Cryptography.Services;
 using WebApi.Persistence;
 
@@ -12,7 +13,7 @@ namespace WebApi.Contexts.Import.Controllers;
 [ApiController]
 [Route("/Api/[controller]")]
 [Produces("application/json")]
-[ServiceFilter(typeof(RequireImportKeyFilter))]
+[Authorize(AuthenticationSchemes = AuthConstants.ImportKeyScheme)]
 public class ImportController : Controller
 {
     private readonly ApplicationDbContext _context;

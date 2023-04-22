@@ -2,5 +2,6 @@ namespace WebApi.Helpers.Auth;
 
 public static class AuthConstants
 {
-    public static string TokenScheme = "Token";
+    public const string TokenScheme = "Token";
+    public const string ImportKeyScheme = "ImportKey";
 }
