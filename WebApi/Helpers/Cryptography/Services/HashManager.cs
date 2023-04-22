@@ -4,12 +4,12 @@ using WebApi.Helpers.Auth.Exceptions;
 using WebApi.Helpers.Auth.Services;
 using WebApi.Helpers.Cryptography.Exceptions;
 using WebApi.Helpers.Cryptography.Services.Options;
-using WebApi.Helpers.Cryptography.Traits;
+using WebApi.Helpers.Cryptography.Utils;
 using WebApi.Persistence.Entities;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
-public class HashManager : IUsesHashing
+public class HashManager
 {
     private readonly string _cachePrefix;
     private readonly EncryptionManager _encryptionManager;
@@ -38,7 +38,7 @@ public class HashManager : IUsesHashing
         if (cached != null)
             return cached;
 
-        var hash = ((IUsesHashing)this)._HashWithSalt(payload, _userSalt);
+        var hash = HashingUtils.HashWithSalt(payload, _userSalt);
         _memoryCache.Set($"{_cachePrefix}:{payload}", hash);
 
         return hash;

@@ -4,11 +4,11 @@ using WebApi.Helpers.Auth.Exceptions;
 using WebApi.Helpers.Auth.Services;
 using WebApi.Helpers.Cryptography.Exceptions;
 using WebApi.Helpers.Cryptography.Services.Options;
-using WebApi.Helpers.Cryptography.Traits;
+using WebApi.Helpers.Cryptography.Utils;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
-public class EncryptionManager : IUsesEncryption
+public class EncryptionManager
 {
     private readonly string _masterKeySessionKey;
     private readonly SessionManager _sessionManager;
@@ -57,7 +57,7 @@ public class EncryptionManager : IUsesEncryption
         if (_masterKey == null)
             throw new MasterKeyNotFoundException();
 
-        return ((IUsesEncryption)this)._Encrypt(data, _masterKey);
+        return EncryptionUtils.Encrypt(data, _masterKey);
     }
 
     public string Decrypt(string encryptedData)
@@ -65,7 +65,7 @@ public class EncryptionManager : IUsesEncryption
         if (_masterKey == null)
             throw new MasterKeyNotFoundException();
 
-        return ((IUsesEncryption)this)._Decrypt(encryptedData, _masterKey);
+        return EncryptionUtils.Decrypt(encryptedData, _masterKey);
     }
 
     public string SerializeEncrypt<T>(T data)
@@ -75,7 +75,7 @@ public class EncryptionManager : IUsesEncryption
 
         var serializedData = JsonSerializer.Serialize(data);
 
-        return ((IUsesEncryption)this)._Encrypt(serializedData, _masterKey);
+        return EncryptionUtils.Encrypt(serializedData, _masterKey);
     }
 
     public T? SerializeDecrypt<T>(string encryptedData)
@@ -83,7 +83,7 @@ public class EncryptionManager : IUsesEncryption
         if (_masterKey == null)
             throw new MasterKeyNotFoundException();
 
-        var serializedData = ((IUsesEncryption)this)._Decrypt(encryptedData, _masterKey);
+        var serializedData = EncryptionUtils.Decrypt(encryptedData, _masterKey);
 
         return JsonSerializer.Deserialize<T>(serializedData);
     }

@@ -1,9 +1,9 @@
 using WebApi.Helpers.Cryptography.Exceptions;
-using WebApi.Helpers.Cryptography.Traits;
+using WebApi.Helpers.Cryptography.Utils;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
-public class ResetService : IUsesHashing
+public class ResetService
 {
     private readonly EncryptionService _encryptionService;
 
@@ -19,14 +19,14 @@ public class ResetService : IUsesHashing
     public string EncryptMasterKey(string masterKey)
     {
         return _encryptionService.Encrypt(masterKey,
-            ((IUsesHashing)this)._GenerateBasicKey(_resetKeyPassword ?? throw new ResetKeyPasswordMissingException(),
+            HashingUtils.GenerateBasicKey(_resetKeyPassword ?? throw new ResetKeyPasswordMissingException(),
                 ResetPasswordSalt));
     }
 
     public string DecryptMasterKey(string encryptedMasterKey)
     {
         return _encryptionService.Decrypt(encryptedMasterKey,
-            ((IUsesHashing)this)._GenerateBasicKey(_resetKeyPassword ?? throw new ResetKeyPasswordMissingException(),
+            HashingUtils.GenerateBasicKey(_resetKeyPassword ?? throw new ResetKeyPasswordMissingException(),
                 ResetPasswordSalt));
     }
 

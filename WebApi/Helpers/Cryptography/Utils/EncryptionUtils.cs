@@ -1,10 +1,10 @@
 using System.Security.Cryptography;
 
-namespace WebApi.Helpers.Cryptography.Traits;
+namespace WebApi.Helpers.Cryptography.Utils;
 
-public interface IUsesEncryption
+public static class EncryptionUtils
 {
-    public string _Encrypt(string data, string key)
+    public static string Encrypt(string data, string key)
     {
         var vector = _GenerateIV();
 
@@ -22,7 +22,7 @@ public interface IUsesEncryption
         return Convert.ToBase64String(vector) + ";" + Convert.ToBase64String(encryptedData);
     }
 
-    public string _Decrypt(string encryptedData, string key)
+    public static string Decrypt(string encryptedData, string key)
     {
         var vector = Convert.FromBase64String(encryptedData.Split(';')[0]);
         var encryptedDataBytes = Convert.FromBase64String(encryptedData.Split(';')[1]);

@@ -2,11 +2,11 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace WebApi.Helpers.Cryptography.Traits;
+namespace WebApi.Helpers.Cryptography.Utils;
 
-public interface IUsesHashing
+public static class HashingUtils
 {
-    public string _Hash(string data)
+    public static string Hash(string data)
     {
         var dataBytes = Encoding.UTF8.GetBytes(data);
 
@@ -16,14 +16,14 @@ public interface IUsesHashing
         return Convert.ToBase64String(hashBytes);
     }
 
-    public bool _Verify(string data, string hash)
+    public static bool Verify(string data, string hash)
     {
-        var dataHash = _Hash(data);
+        var dataHash = Hash(data);
 
         return dataHash == hash;
     }
 
-    public string _HashWithSalt(string data, string salt)
+    public static string HashWithSalt(string data, string salt)
     {
         var dataBytes = Encoding.UTF8.GetBytes(data + ";" + salt);
 
@@ -33,20 +33,20 @@ public interface IUsesHashing
         return Convert.ToBase64String(hashBytes);
     }
 
-    public bool _VerifyWithSalt(string data, string salt, string hash)
+    public static bool VerifyWithSalt(string data, string salt, string hash)
     {
-        var dataHash = _HashWithSalt(data, salt);
+        var dataHash = HashWithSalt(data, salt);
 
         return dataHash == hash;
     }
 
-    public string _GenerateBasicKey(string data, string salt)
+    public static string GenerateBasicKey(string data, string salt)
     {
         var keyBytes = KeyDerivation.Pbkdf2(data, Encoding.UTF8.GetBytes(salt), KeyDerivationPrf.HMACSHA512, 1000, 32);
         return Convert.ToBase64String(keyBytes);
     }
 
-    public string _GenerateSalt()
+    public static string GenerateSalt()
     {
         var saltBytes = RandomNumberGenerator.GetBytes(128 / 8);
         return Convert.ToBase64String(saltBytes);

@@ -2,11 +2,11 @@ using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers.Cryptography.Services.Options;
-using WebApi.Helpers.Cryptography.Traits;
+using WebApi.Helpers.Cryptography.Utils;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
-public class EncryptionService : IUsesEncryption
+public class EncryptionService
 {
     private readonly IDataProtector _dataProtector;
 
@@ -18,12 +18,12 @@ public class EncryptionService : IUsesEncryption
 
     public string Encrypt(string data, string key)
     {
-        return ((IUsesEncryption)this)._Encrypt(data, key);
+        return EncryptionUtils.Encrypt(data, key);
     }
 
     public string Decrypt(string encryptedData, string key)
     {
-        return ((IUsesEncryption)this)._Decrypt(encryptedData, key);
+        return EncryptionUtils.Decrypt(encryptedData, key);
     }
 
     public string Protect(string data)

@@ -2,11 +2,11 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using WebApi.Helpers.Cryptography.Services.Options;
-using WebApi.Helpers.Cryptography.Traits;
+using WebApi.Helpers.Cryptography.Utils;
 
 namespace WebApi.Helpers.Cryptography.Services;
 
-public class HashService : IUsesHashing
+public class HashService
 {
     private readonly int _passwordBytesRequested;
     private readonly int _passwordHashIterations;
@@ -35,32 +35,32 @@ public class HashService : IUsesHashing
 
     public string Hash(string data)
     {
-        return ((IUsesHashing)this)._Hash(data);
+        return HashingUtils.Hash(data);
     }
 
     public bool Verify(string data, string hash)
     {
-        return ((IUsesHashing)this)._Verify(data, hash);
+        return HashingUtils.Verify(data, hash);
     }
 
     public string HashWithSalt(string data, string salt)
     {
-        return ((IUsesHashing)this)._HashWithSalt(data, salt);
+        return HashingUtils.HashWithSalt(data, salt);
     }
 
     public bool VerifyWithSalt(string data, string salt, string hash)
     {
-        return ((IUsesHashing)this)._VerifyWithSalt(data, salt, hash);
+        return HashingUtils.VerifyWithSalt(data, salt, hash);
     }
 
     public string GenerateBasicKey(string data, string salt)
     {
-        return ((IUsesHashing)this)._GenerateBasicKey(data, salt);
+        return HashingUtils.GenerateBasicKey(data, salt);
     }
 
     public string GenerateSalt()
     {
-        return ((IUsesHashing)this)._GenerateSalt();
+        return HashingUtils.GenerateSalt();
     }
 
     public string HashPassword(string password)

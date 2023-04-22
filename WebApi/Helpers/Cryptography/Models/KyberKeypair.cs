@@ -1,11 +1,11 @@
 using Org.BouncyCastle.Pqc.Crypto.Crystals.Kyber;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
-using WebApi.Helpers.Cryptography.Traits;
+using WebApi.Helpers.Cryptography.Utils;
 
 namespace WebApi.Helpers.Cryptography.Models;
 
-public class KyberKeypair : IKeypair, IUsesEncryption, IUsesHashing
+public class KyberKeypair : IKeypair
 {
     private readonly InternalKeypair _keypair;
     private readonly SecureRandom _random;
@@ -41,10 +41,10 @@ public class KyberKeypair : IKeypair, IUsesEncryption, IUsesHashing
         var encapsulatedSecret = kemGenerator.GenerateEncapsulated(_keypair.PublicKey);
         var encryptionKey = encapsulatedSecret.GetSecret();
 
-        var salt = ((IUsesHashing)this)._GenerateSalt();
+        var salt = HashingUtils.GenerateSalt();
         var encryptedMessage =
-            ((IUsesEncryption)this)._Encrypt(message,
-                ((IUsesHashing)this)._GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
+            EncryptionUtils.Encrypt(message,
+                HashingUtils.GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
 
         return Convert.ToBase64String(encapsulatedSecret.GetEncapsulation()) + "|" + salt + "|" + encryptedMessage;
     }
@@ -58,8 +58,8 @@ public class KyberKeypair : IKeypair, IUsesEncryption, IUsesHashing
         var kemExtractor = new KyberKemExtractor(_keypair.PrivateKey);
         var encryptionKey = kemExtractor.ExtractSecret(Convert.FromBase64String(encapsulation));
 
-        return ((IUsesEncryption)this)._Decrypt(message,
-            ((IUsesHashing)this)._GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
+        return EncryptionUtils.Decrypt(message,
+            HashingUtils.GenerateBasicKey(Convert.ToBase64String(encryptionKey), salt));
     }
 
     private sealed class InternalKeypair
