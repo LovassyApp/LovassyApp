@@ -16,5 +16,8 @@ public static class AddServicesExtension
         services.AddSingleton<HashService>();
 
         services.AddSingleton<ResetService>();
+
+        services.AddScoped<EncryptionManager>();
+        services.AddScoped<HashManager>();
     }
 }

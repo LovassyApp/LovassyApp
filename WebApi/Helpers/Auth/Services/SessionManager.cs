@@ -59,7 +59,6 @@ public class SessionManager : IUsesHashing, IUsesEncryption
         {
             Hash = hash,
             Salt = ((IUsesHashing)this).GenerateSalt(),
-            UserSalt = user.HasherSalt,
             Expiry = expiry
         };
         UpdateCache();

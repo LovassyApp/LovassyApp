@@ -6,7 +6,6 @@ public class Session
 
     public string Hash { get; set; }
     public string Salt { get; set; }
-    public string UserSalt { get; set; }
 
     public DateTime Expiry { get; set; }
 }
