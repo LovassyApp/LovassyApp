@@ -29,6 +29,14 @@ public class SessionManager
 
     public Session? Session { get; set; }
 
+    /// <summary>
+    ///     Initializes the session manager with a token. It assumes that the token is valid and a session already exists.
+    /// </summary>
+    /// <param name="token">The access token from the Authorize header.</param>
+    /// <exception cref="SessionNotFoundException">
+    ///     The exception thrown when no session exists for the token. (Or the session
+    ///     expired)
+    /// </exception>
     public void Init(string token)
     {
         _token = token;
@@ -39,6 +47,11 @@ public class SessionManager
         Session = session ?? throw new SessionNotFoundException();
     }
 
+    /// <summary>
+    ///     Starts an entirely new session.
+    /// </summary>
+    /// <param name="user">The user, for which the session is started.</param>
+    /// <returns>The access token that can later be used to initialize the session manager.</returns>
     public async Task<string> StartSessionAsync(User user)
     {
         var tokenBytes = RandomNumberGenerator.GetBytes(64);
@@ -68,6 +81,12 @@ public class SessionManager
         return _token;
     }
 
+    /// <summary>
+    ///     Stores a value in the session, encrypted with a session specific key.
+    /// </summary>
+    /// <param name="key">The key used in the internal dictionary of the session. Later used for retrieving the value.</param>
+    /// <param name="value">The value to be stored in the session.</param>
+    /// <exception cref="SessionNotFoundException">The exception thrown when the session manager has not been initialized yet.</exception>
     public void Set(string key, string value)
     {
         if (Session == null || _encryptionKey == null)
@@ -77,6 +96,12 @@ public class SessionManager
         UpdateCache();
     }
 
+    /// <summary>
+    ///     Retrieves a value from the session and decrypts it with a session specific key.
+    /// </summary>
+    /// <param name="key">The key used in the internal dictionary of the session.</param>
+    /// <returns>The decrypted value retrieved from the session.</returns>
+    /// <exception cref="SessionNotFoundException">The exception thrown when the session manager has not been initialized yet.</exception>
     public string? Get(string key)
     {
         if (Session == null || _encryptionKey == null)
