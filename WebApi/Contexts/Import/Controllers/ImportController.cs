@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts.Import.Models;
 using WebApi.Contexts.Import.Services;
-using WebApi.Helpers.Auth;
-using WebApi.Helpers.Cryptography.Services;
+using WebApi.Core.Auth;
+using WebApi.Core.Cryptography.Services;
 using WebApi.Persistence;
 
 namespace WebApi.Contexts.Import.Controllers;

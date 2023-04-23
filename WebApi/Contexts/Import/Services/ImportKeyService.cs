@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts.Import.Models;
-using WebApi.Helpers.Cryptography.Services;
+using WebApi.Core.Cryptography.Services;
 using WebApi.Persistence;
 using WebApi.Persistence.Entities;
 

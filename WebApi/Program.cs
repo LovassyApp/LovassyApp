@@ -2,8 +2,9 @@ using Microsoft.OpenApi.Models;
 using WebApi.Contexts.Import;
 using WebApi.Contexts.Status;
 using WebApi.Contexts.Users;
-using WebApi.Helpers.Auth;
-using WebApi.Helpers.Cryptography;
+using WebApi.Core.Auth;
+using WebApi.Core.Cryptography;
+using WebApi.Core.Scheduler;
 using WebApi.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddCryptographyServices(builder.Configuration);
 builder.Services.AddAuthServices(builder.Configuration);
+builder.Services.AddSchedulerServices(builder.Configuration);
 
 builder.Services.AddStatusContext(builder.Configuration);
 builder.Services.AddImportContext();

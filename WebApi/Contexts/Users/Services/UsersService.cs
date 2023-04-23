@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts.Users.Models;
-using WebApi.Helpers.Cryptography.Exceptions;
-using WebApi.Helpers.Cryptography.Models;
-using WebApi.Helpers.Cryptography.Services;
+using WebApi.Core.Cryptography.Exceptions;
+using WebApi.Core.Cryptography.Models;
+using WebApi.Core.Cryptography.Services;
 using WebApi.Persistence;
 using WebApi.Persistence.Entities;
 

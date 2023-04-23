@@ -2,7 +2,7 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Contexts.Users.Models;
 using WebApi.Contexts.Users.Services;
-using WebApi.Helpers.Cryptography.Exceptions;
+using WebApi.Core.Cryptography.Exceptions;
 
 namespace WebApi.Contexts.Users.Controllers;
 
