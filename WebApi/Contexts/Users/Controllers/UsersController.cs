@@ -21,9 +21,21 @@ public class UsersController : Controller
     [HttpPost]
     public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
-        if (!request.Email.EndsWith("lovassy.edu.hu"))
+        if (!_usersService.CheckEmailSuffix(request.Email, "@lovassy.edu.hu"))
         {
-            ModelState.AddModelError(nameof(CreateUserRequest.Email), "Only lovassy.edu.hu emails are allowed.");
+            ModelState.AddModelError(nameof(CreateUserRequest.Email), "Only lovassy.edu.hu emails are allowed");
+            return ValidationProblem();
+        }
+
+        if (await _usersService.CheckEmailRegisteredAsync(request.Email))
+        {
+            ModelState.AddModelError(nameof(CreateUserRequest.Email), "A user with this email already exists");
+            return ValidationProblem();
+        }
+
+        if (await _usersService.CheckOmCodeRegisteredAsync(request.OmCode))
+        {
+            ModelState.AddModelError(nameof(CreateUserRequest.OmCode), "A user with this OM Code already exists");
             return ValidationProblem();
         }
 

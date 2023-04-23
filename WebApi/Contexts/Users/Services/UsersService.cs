@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using WebApi.Contexts.Users.Models;
 using WebApi.Helpers.Cryptography.Exceptions;
 using WebApi.Helpers.Cryptography.Models;
@@ -23,6 +24,14 @@ public class UsersService
         _resetService = resetService;
     }
 
+    /// <summary>
+    ///     Creates a new user. (Used for registration)
+    /// </summary>
+    /// <param name="data">The name, email, password ect. of the user.</param>
+    /// <exception cref="ResetKeyPasswordMissingException">
+    ///     The exception thrown when no reset key password has been set since
+    ///     the application is running. (Without it, future password resets would be impossible)
+    /// </exception>
     public async Task CreateUserAsync(CreateUserDto data)
     {
         if (!_resetService.IsResetKeyPasswordSet()) throw new ResetKeyPasswordMissingException();
@@ -58,5 +67,36 @@ public class UsersService
         //TODO: Add user to default group
 
         await _context.SaveChangesAsync();
+    }
+
+    /// <summary>
+    ///     Checks weather the email ends with the given suffix.
+    /// </summary>
+    /// <param name="email">The email to check.</param>
+    /// <param name="suffix">The suffix to check for.</param>
+    /// <returns>A boolean indicating whether it ends with the suffix or not.</returns>
+    public bool CheckEmailSuffix(string email, string suffix)
+    {
+        return email.EndsWith(suffix);
+    }
+
+    /// <summary>
+    ///     Checks weather a user with the given email is already registered.
+    /// </summary>
+    /// <param name="email">The email to check for.</param>
+    /// <returns>A boolean indicating whether a user already exists with that email or not.</returns>
+    public async Task<bool> CheckEmailRegisteredAsync(string email)
+    {
+        return await _context.Users.AnyAsync(u => u.Email == email);
+    }
+
+    /// <summary>
+    ///     Checks weather a user with the given om code is already registered.
+    /// </summary>
+    /// <param name="omCode">The om code to check for.</param>
+    /// <returns>A boolean indicating whether a user already exists with that om code or not.</returns>
+    public async Task<bool> CheckOmCodeRegisteredAsync(string omCode)
+    {
+        return await _context.Users.AnyAsync(u => u.OmCodeHashed == _hashService.Hash(omCode));
     }
 }

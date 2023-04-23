@@ -12,7 +12,7 @@ public interface IKeypair
     ///     Encrypts the given message with the public key.
     /// </summary>
     /// <param name="message">The message string to encrypt.</param>
-    /// <returns>The encrypted message as string.</returns>
+    /// <returns>The encrypted message as a string.</returns>
     public string Encrypt(string message);
 
     /// <summary>
