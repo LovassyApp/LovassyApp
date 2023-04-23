@@ -1,20 +1,23 @@
 using WebApi.Persistence;
-using WebApi.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Jobs;
 
 public class UpdateTokenLastUsedAtJob
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IServiceProvider _serviceProvider;
 
-    public UpdateTokenLastUsedAtJob(ApplicationDbContext context)
+    public UpdateTokenLastUsedAtJob(IServiceProvider serviceProvider)
     {
-        _context = context;
+        _serviceProvider = serviceProvider;
     }
 
-    public void Run(PersonalAccessToken token)
+    public void Run(int id)
     {
+        using var serviceScope = _serviceProvider.CreateScope();
+        using var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var token = context.PersonalAccessTokens.Find(id);
+        if (token == null) return;
         token.LastUsedAt = DateTime.Now;
-        _context.SaveChanges(); // Can't use async here, because Hangfire doesn't support it
+        context.SaveChanges(); // Can't use async here, because Hangfire doesn't support it
     }
 }
