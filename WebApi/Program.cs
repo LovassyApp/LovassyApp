@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.OpenApi.Models;
 using WebApi.Contexts.Import;
 using WebApi.Contexts.Status;
@@ -67,6 +68,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard();
 
 app.MapControllers();
 

@@ -4,6 +4,7 @@ using WebApi.Core.Auth.Filters.Operation;
 using WebApi.Core.Auth.Schemes.ImportKey;
 using WebApi.Core.Auth.Schemes.Token;
 using WebApi.Core.Auth.Services;
+using WebApi.Core.Auth.Services.Hosted;
 using SessionOptions = WebApi.Core.Auth.Services.Options.SessionOptions;
 
 namespace WebApi.Core.Auth;
@@ -14,6 +15,8 @@ public static class AddServicesExtension
     {
         services.Configure<SessionOptions>(configuration.GetSection("Session"));
         services.AddScoped<SessionManager>();
+
+        services.AddHostedService<ScheduledAuthJobsService>();
 
         services.AddAuthentication()
             .AddScheme<TokenAuthenticationSchemeOptions, TokenAuthenticationSchemeHandler>(AuthConstants.TokenScheme,
@@ -26,8 +29,6 @@ public static class AddServicesExtension
             o.DefaultPolicy = new AuthorizationPolicyBuilder().AddAuthenticationSchemes(AuthConstants.TokenScheme)
                 .RequireAuthenticatedUser().Build(); //TODO: Replace with the policy of Warden
         });
-
-        //TODO: Add a job to clear tokens from the db that were not used for a long time
     }
 
     public static void AddAuthOperationFilters(this SwaggerGenOptions options)
