@@ -9,8 +9,8 @@ using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Jobs;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Persistence;
-using WebApi.Persistence.Entities;
+using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Schemes.Token;
 

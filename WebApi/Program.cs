@@ -1,28 +1,34 @@
+using System.Reflection;
+using FluentValidation;
 using Hangfire;
+using MediatR;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
-using WebApi.Contexts.Import;
-using WebApi.Contexts.Status;
-using WebApi.Contexts.Users;
+using WebApi.Common;
+using WebApi.Common.Filters;
 using WebApi.Core.Auth;
 using WebApi.Core.Cryptography;
 using WebApi.Core.Scheduler;
-using WebApi.Persistence;
+using WebApi.Features;
+using WebApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMemoryCache();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
-builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddCommon();
+builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddCryptographyServices(builder.Configuration);
 builder.Services.AddAuthServices(builder.Configuration);
 builder.Services.AddSchedulerServices(builder.Configuration);
 
-builder.Services.AddStatusContext(builder.Configuration);
-builder.Services.AddImportContext();
-builder.Services.AddUsersContext();
+builder.Services.AddFeatures(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(o => o.Filters.Add(new ExceptionFilter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -54,6 +60,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services.AddFluentValidationRulesToSwagger();
 
 var app = builder.Build();
 

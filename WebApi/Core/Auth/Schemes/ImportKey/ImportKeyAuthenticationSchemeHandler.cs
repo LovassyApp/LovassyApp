@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Persistence;
+using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Schemes.ImportKey;
 

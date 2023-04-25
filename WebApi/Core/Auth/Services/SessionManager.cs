@@ -4,8 +4,8 @@ using Microsoft.Extensions.Options;
 using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Models;
 using WebApi.Core.Cryptography.Utils;
-using WebApi.Persistence;
-using WebApi.Persistence.Entities;
+using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
 using SessionOptions = WebApi.Core.Auth.Services.Options.SessionOptions;
 
 namespace WebApi.Core.Auth.Services;
