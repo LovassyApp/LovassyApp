@@ -7,11 +7,11 @@ namespace WebApi.Common.Behaviours;
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly IValidatorFactory _validatorFactory;
+    private readonly IServiceProvider _serviceProvider;
 
-    public ValidationBehaviour(IValidatorFactory validatorFactory)
+    public ValidationBehaviour(IServiceProvider serviceProvider)
     {
-        _validatorFactory = validatorFactory;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
@@ -19,7 +19,8 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
     {
         foreach (var prop in request.GetType().GetProperties())
         {
-            var validator = _validatorFactory.GetValidator(prop.PropertyType);
+            var genericType = typeof(IValidator<>).MakeGenericType(prop.PropertyType);
+            var validator = _serviceProvider.GetService(genericType) as IValidator;
 
             if (validator == null)
                 continue;

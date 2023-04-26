@@ -4,7 +4,7 @@ namespace WebApi.Common.Behaviours;
 
 public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<TRequest> _logger;
 
     public LoggingBehaviour(ILogger<TRequest> logger)
     {
