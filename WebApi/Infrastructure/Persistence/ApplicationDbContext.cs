@@ -1,8 +1,8 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Common;
+using WebApi.Common.Services;
 using WebApi.Infrastructure.Persistence.Entities;
-using WebApi.Infrastructure.Services;
 
 namespace WebApi.Infrastructure.Persistence;
 

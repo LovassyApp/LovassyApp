@@ -35,7 +35,7 @@ public class User : TimestampedEntity, IHasDomainEvent
 
     public List<GradeImport> GradeImports { get; set; }
 
-    public List<DomainEvent> DomainEvents { get; }
+    public List<DomainEvent> DomainEvents { get; } = new();
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>

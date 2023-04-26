@@ -1,8 +1,7 @@
 using MediatR;
-using WebApi.Common;
 using WebApi.Common.Models;
 
-namespace WebApi.Infrastructure.Services;
+namespace WebApi.Common.Services;
 
 public class DomainEventService
 {

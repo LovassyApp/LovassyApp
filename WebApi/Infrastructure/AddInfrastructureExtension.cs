@@ -1,7 +1,6 @@
 using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Infrastructure.Persistence;
-using WebApi.Infrastructure.Services;
 
 namespace WebApi.Infrastructure;
 
@@ -22,8 +21,5 @@ public static class AddInfrastructureExtension
                 options.CacheAllQueries(CacheExpirationMode.Absolute, TimeSpan.FromDays(7));
             }
         );
-
-        // Services
-        services.AddScoped<DomainEventService>();
     }
 }

@@ -9,7 +9,6 @@ using WebApi.Common;
 using WebApi.Common.Filters;
 using WebApi.Core.Auth;
 using WebApi.Core.Cryptography;
-using WebApi.Core.Scheduler;
 using WebApi.Features;
 using WebApi.Infrastructure;
 
@@ -23,12 +22,11 @@ builder.Services
         ServiceProviderValidatorFactory>(); // Required for Swagger docs based on fluent validation
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
-builder.Services.AddCommon();
+builder.Services.AddCommon(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddCryptographyServices(builder.Configuration);
 builder.Services.AddAuthServices(builder.Configuration);
-builder.Services.AddSchedulerServices(builder.Configuration);
 
 builder.Services.AddFeatures(builder.Configuration);
 

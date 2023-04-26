@@ -7,6 +7,7 @@ namespace WebApi.Common.Filters;
 public class ExceptionFilter : ExceptionFilterAttribute
 {
     private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
+    private readonly ILogger<ExceptionFilter> _logger;
 
     public ExceptionFilter()
     {
@@ -19,6 +20,11 @@ public class ExceptionFilter : ExceptionFilterAttribute
             { typeof(ForbiddenException), HandleForbiddenException },
             { typeof(UnavailableException), HandleUnavailableException }
         };
+
+        var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
+            .SetMinimumLevel(LogLevel.Trace)
+            .AddConsole());
+        _logger = loggerFactory.CreateLogger<ExceptionFilter>();
     }
 
     public override void OnException(ExceptionContext context)
@@ -138,6 +144,9 @@ public class ExceptionFilter : ExceptionFilterAttribute
             Title = "An error occurred while processing your request.",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
         };
+
+        _logger.LogError(context.Exception, "Unhandled {Exception} in request at path: '{Path}'",
+            context.Exception.GetType(), context.HttpContext.Request.Path);
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status500InternalServerError };
 

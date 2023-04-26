@@ -1,4 +1,4 @@
-namespace WebApi.Core.Configuration.Exceptions;
+namespace WebApi.Common.Exceptions;
 
 [Serializable]
 public class ConfigurationMissingException : InvalidOperationException
