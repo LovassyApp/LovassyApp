@@ -19,12 +19,12 @@ public class ImportGradesBody
     public string JsonEncrypted { get; set; }
 }
 
-public class ImportGradesCommandValidator : AbstractValidator<ImportGradesCommand>
+public class ImportGradesBodyValidator : AbstractValidator<ImportGradesBody>
 {
-    public ImportGradesCommandValidator()
+    public ImportGradesBodyValidator()
     {
-        RuleFor(x => x.Body.KeyEncrypeted).NotEmpty();
-        RuleFor(x => x.Body.JsonEncrypted).NotEmpty();
+        RuleFor(x => x.KeyEncrypeted).NotEmpty();
+        RuleFor(x => x.JsonEncrypted).NotEmpty();
     }
 }
 

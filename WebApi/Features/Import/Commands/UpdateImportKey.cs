@@ -19,12 +19,12 @@ public class UpdateImportKeyBody
     public bool Enabled { get; set; }
 }
 
-public class UpdateImportKeyCommandValidator : AbstractValidator<UpdateImportKeyCommand>
+public class UpdateImportKeyBodyValidator : AbstractValidator<UpdateImportKeyBody>
 {
-    public UpdateImportKeyCommandValidator()
+    public UpdateImportKeyBodyValidator()
     {
-        RuleFor(x => x.Body.Name).NotEmpty();
-        RuleFor(x => x.Body.Enabled).NotNull();
+        RuleFor(x => x.Name).NotEmpty();
+        RuleFor(x => x.Enabled).NotNull();
     }
 }
 

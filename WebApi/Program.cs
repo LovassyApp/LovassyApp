@@ -3,6 +3,7 @@ using FluentValidation;
 using Hangfire;
 using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using WebApi.Common;
 using WebApi.Common.Filters;
@@ -17,6 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddMemoryCache();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services
+    .TryAddTransient<IValidatorFactory,
+        ServiceProviderValidatorFactory>(); // Required for Swagger docs based on fluent validation
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 builder.Services.AddCommon();

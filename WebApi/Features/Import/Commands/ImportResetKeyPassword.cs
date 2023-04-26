@@ -14,11 +14,11 @@ public class ImportResetKeyPasswordBody
     public string ResetKeyPassword { get; set; }
 }
 
-public class ImportResetKeyPasswordCommandValidator : AbstractValidator<ImportResetKeyPasswordCommand>
+public class ImportResetKeyPasswordBodyValidator : AbstractValidator<ImportResetKeyPasswordBody>
 {
-    public ImportResetKeyPasswordCommandValidator()
+    public ImportResetKeyPasswordBodyValidator()
     {
-        RuleFor(x => x.Body.ResetKeyPassword).NotEmpty();
+        RuleFor(x => x.ResetKeyPassword).NotEmpty();
     }
 }
 

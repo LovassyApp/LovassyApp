@@ -25,36 +25,36 @@ public class CreateUserBody
     public string OmCode { get; set; }
 }
 
-public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+public class CreateUserBodyValidator : AbstractValidator<CreateUserBody>
 {
     private readonly ApplicationDbContext _context;
     private readonly HashService _hashService;
 
-    public CreateUserCommandValidator(ApplicationDbContext context, HashService hashService)
+    public CreateUserBodyValidator(ApplicationDbContext context, HashService hashService)
     {
         _context = context;
         _hashService = hashService;
 
-        RuleFor(x => x.Body.Email).NotEmpty().EmailAddress()
+        RuleFor(x => x.Email).NotEmpty().EmailAddress()
             .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'")
             .MustAsync(BeUniqueEmail).WithMessage("The email is already in use");
-        RuleFor(x => x.Body.Password).NotEmpty();
-        RuleFor(x => x.Body.Name).NotEmpty();
-        RuleFor(x => x.Body.OmCode).NotEmpty()
+        RuleFor(x => x.Password).NotEmpty();
+        RuleFor(x => x.Name).NotEmpty();
+        RuleFor(x => x.OmCode).NotEmpty()
             .MustAsync(BeUniqueOmCode).WithMessage("The om code is already in use");
     }
 
-    private bool EndWithAllowedDomainEmail(CreateUserCommand model, string email)
+    private bool EndWithAllowedDomainEmail(CreateUserBody model, string email)
     {
         return email.EndsWith("@lovassy.edu.hu");
     }
 
-    private Task<bool> BeUniqueEmail(CreateUserCommand model, string email, CancellationToken cancellationToken)
+    private Task<bool> BeUniqueEmail(CreateUserBody model, string email, CancellationToken cancellationToken)
     {
         return _context.Users.AllAsync(x => x.Email != email, cancellationToken);
     }
 
-    private Task<bool> BeUniqueOmCode(CreateUserCommand model, string omCode, CancellationToken cancellationToken)
+    private Task<bool> BeUniqueOmCode(CreateUserBody model, string omCode, CancellationToken cancellationToken)
     {
         return _context.Users.AllAsync(x => x.OmCodeHashed != _hashService.Hash(omCode), cancellationToken);
     }

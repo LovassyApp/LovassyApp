@@ -20,12 +20,12 @@ public class CreateImportKeyBody
     public bool Enabled { get; set; }
 }
 
-public class CreateImportKeyCommandValidator : AbstractValidator<CreateImportKeyCommand>
+public class CreateImportKeyBodyValidator : AbstractValidator<CreateImportKeyBody>
 {
-    public CreateImportKeyCommandValidator()
+    public CreateImportKeyBodyValidator()
     {
-        RuleFor(x => x.Body.Name).NotEmpty();
-        RuleFor(x => x.Body.Enabled).NotNull();
+        RuleFor(x => x.Name).NotEmpty();
+        RuleFor(x => x.Enabled).NotNull();
     }
 }
 

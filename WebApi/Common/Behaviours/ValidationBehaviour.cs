@@ -7,23 +7,29 @@ namespace WebApi.Common.Behaviours;
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
+    private readonly IValidatorFactory _validatorFactory;
 
-    public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
+    public ValidationBehaviour(IValidatorFactory validatorFactory)
     {
-        _validators = validators;
+        _validatorFactory = validatorFactory;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (_validators.Any())
+        foreach (var prop in request.GetType().GetProperties())
         {
-            var context = new ValidationContext<TRequest>(request);
+            var validator = _validatorFactory.GetValidator(prop.PropertyType);
 
-            var validationResults =
-                await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
-            var failures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
+            if (validator == null)
+                continue;
+
+            var type = typeof(ValidationContext<>).MakeGenericType(prop.PropertyType);
+            var context = Activator.CreateInstance(type, prop.GetValue(request));
+
+            var validationResult = await validator.ValidateAsync((IValidationContext)context!, cancellationToken);
+
+            var failures = validationResult.Errors.Where(f => f != null).ToList();
 
             if (failures.Count != 0) throw new ValidationException(failures);
         }

@@ -26,12 +26,12 @@ public class ViewVersionBody
     public bool SendMOTD { get; set; } = true;
 }
 
-public class ViewVersionQueryValidator : AbstractValidator<ViewVersionQuery>
+public class ViewVersionBodyValidator : AbstractValidator<ViewVersionBody>
 {
-    public ViewVersionQueryValidator()
+    public ViewVersionBodyValidator()
     {
-        RuleFor(x => x.Body.SendOk).NotNull();
-        RuleFor(x => x.Body.SendMOTD).NotNull();
+        RuleFor(x => x.SendOk).NotNull();
+        RuleFor(x => x.SendMOTD).NotNull();
     }
 }
 
