@@ -37,7 +37,7 @@ internal sealed class ViewServiceStatusQueryHandler : IRequestHandler<ViewServic
     {
         var status = new ServiceStatus
         {
-            Database = _context.Database.CanConnect(),
+            Database = await _context.Database.CanConnectAsync(cancellationToken),
             ResetKeyPassword = _resetService.IsResetKeyPasswordSet(),
             Realtime = true
         };

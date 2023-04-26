@@ -34,10 +34,13 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         _context = context;
         _hashService = hashService;
 
-        RuleFor(x => x.Body.Email).NotEmpty().EmailAddress().Must(EndWithAllowedDomainEmail).MustAsync(BeUniqueEmail);
+        RuleFor(x => x.Body.Email).NotEmpty().EmailAddress()
+            .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'")
+            .MustAsync(BeUniqueEmail).WithMessage("The email is already in use");
         RuleFor(x => x.Body.Password).NotEmpty();
         RuleFor(x => x.Body.Name).NotEmpty();
-        RuleFor(x => x.Body.OmCode).NotEmpty().MustAsync(BeUniqueOmCode);
+        RuleFor(x => x.Body.OmCode).NotEmpty()
+            .MustAsync(BeUniqueOmCode).WithMessage("The om code is already in use");
     }
 
     private bool EndWithAllowedDomainEmail(CreateUserCommand model, string email)
