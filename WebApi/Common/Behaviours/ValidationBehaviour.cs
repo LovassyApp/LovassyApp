@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using ValidationException = WebApi.Common.Exceptions.ValidationException;
 
 namespace WebApi.Common.Behaviours;
 

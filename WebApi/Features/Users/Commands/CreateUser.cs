@@ -47,12 +47,12 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 
     private Task<bool> BeUniqueEmail(CreateUserCommand model, string email, CancellationToken cancellationToken)
     {
-        return _context.Users.AnyAsync(x => x.Email == email, cancellationToken);
+        return _context.Users.AllAsync(x => x.Email != email, cancellationToken);
     }
 
     private Task<bool> BeUniqueOmCode(CreateUserCommand model, string omCode, CancellationToken cancellationToken)
     {
-        return _context.Users.AnyAsync(x => x.OmCodeHashed == _hashService.Hash(omCode), cancellationToken);
+        return _context.Users.AllAsync(x => x.OmCodeHashed != _hashService.Hash(omCode), cancellationToken);
     }
 }
 
