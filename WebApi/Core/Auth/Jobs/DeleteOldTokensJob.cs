@@ -1,4 +1,4 @@
-using WebApi.Persistence;
+using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Jobs;
 

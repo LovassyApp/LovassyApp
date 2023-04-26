@@ -4,7 +4,7 @@ using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Exceptions;
 using WebApi.Core.Cryptography.Services.Options;
 using WebApi.Core.Cryptography.Utils;
-using WebApi.Persistence.Entities;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Cryptography.Services;
 

@@ -9,9 +9,12 @@
     <ItemGroup>
         <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.0" />
         <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.8.6" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
         <PackageReference Include="Hangfire.AspNetCore" Version="1.7.34" />
         <PackageReference Include="Hangfire.PostgreSql" Version="1.19.12" />
         <PackageReference Include="Mapster" Version="7.3.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+        <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
             <PrivateAssets>all</PrivateAssets>
@@ -24,7 +27,6 @@
 
     <ItemGroup>
       <Folder Include="Core\Auth\Filters" />
-      <Folder Include="Migrations" />
     </ItemGroup>
 
 </Project>
