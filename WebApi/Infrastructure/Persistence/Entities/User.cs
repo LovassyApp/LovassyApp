@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WebApi.Common;
 
 namespace WebApi.Infrastructure.Persistence.Entities;
 
@@ -8,7 +9,7 @@ namespace WebApi.Infrastructure.Persistence.Entities;
 [Index(nameof(MasterKeySalt), IsUnique = true)]
 [Index(nameof(OmCodeHashed), IsUnique = true)]
 [Index(nameof(HasherSaltHashed), IsUnique = true)]
-public class User : TimestampedEntity
+public class User : TimestampedEntity, IHasDomainEvent
 {
     [Key] public Guid Id { get; set; }
 
@@ -33,6 +34,8 @@ public class User : TimestampedEntity
     public bool ImportAvailable { get; set; }
 
     public List<GradeImport> GradeImports { get; set; }
+
+    public List<DomainEvent> DomainEvents { get; }
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>

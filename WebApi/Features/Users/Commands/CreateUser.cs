@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Common;
 using WebApi.Common.Exceptions;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
@@ -105,12 +106,21 @@ internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserComma
             OmCodeHashed = _hashService.Hash(request.Body.OmCode)
         };
 
+        user.DomainEvents.Add(new UserCreatedEvent(user));
+
         await _context.Users.AddAsync(user, cancellationToken);
-
-        //TODO: Add user to default group
-
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }
+}
+
+public class UserCreatedEvent : DomainEvent //TODO: Add user to default group in a handler
+{
+    public UserCreatedEvent(User user)
+    {
+        User = user;
+    }
+
+    public User User { get; set; }
 }
