@@ -37,7 +37,9 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" });
     c.EnableAnnotations();
     c.AddAuthOperationFilters();
-    c.CustomSchemaIds(type => type.ToString());
+    c.CustomSchemaIds(type => type.ToString().Replace("WebApi.Features.", string.Empty)
+        .Replace("Microsoft.AspNetCore.Mvc", string.Empty).Replace("+", string.Empty)
+        .Replace(".", string.Empty).Replace("Commands", string.Empty).Replace("Queries", string.Empty));
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
