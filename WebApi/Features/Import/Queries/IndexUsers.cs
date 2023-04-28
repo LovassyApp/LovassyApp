@@ -5,31 +5,34 @@ using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.Import.Queries;
 
-public class IndexUsersQuery : IRequest<IEnumerable<IndexUsersResponse>>
+public static class IndexUsers
 {
-}
-
-public class IndexUsersResponse
-{
-    public Guid Id { get; set; }
-    public string OmCodeHashed { get; set; }
-    public string PublicKey { get; set; }
-}
-
-internal sealed class IndexUsersQueryHandler : IRequestHandler<IndexUsersQuery, IEnumerable<IndexUsersResponse>>
-{
-    private readonly ApplicationDbContext _context;
-
-    public IndexUsersQueryHandler(ApplicationDbContext context)
+    public class Query : IRequest<IEnumerable<Response>>
     {
-        _context = context;
     }
 
-    public async Task<IEnumerable<IndexUsersResponse>> Handle(IndexUsersQuery request,
-        CancellationToken cancellationToken)
+    public class Response
     {
-        var users = await _context.Users.ToListAsync();
+        public Guid Id { get; set; }
+        public string OmCodeHashed { get; set; }
+        public string PublicKey { get; set; }
+    }
 
-        return users.Adapt<IEnumerable<IndexUsersResponse>>();
+    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    {
+        private readonly ApplicationDbContext _context;
+
+        public Handler(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Response>> Handle(Query request,
+            CancellationToken cancellationToken)
+        {
+            var users = await _context.Users.ToListAsync();
+
+            return users.Adapt<IEnumerable<Response>>();
+        }
     }
 }

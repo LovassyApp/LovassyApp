@@ -5,33 +5,36 @@ using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.Import.Queries;
 
-public class IndexImportKeysQuery : IRequest<IEnumerable<IndexImportKeyResponse>>
+public static class IndexImportKeys
 {
-}
-
-public class IndexImportKeyResponse
-{
-    public int Id { get; set; }
-
-    public string Name { get; set; }
-    public bool Enabled { get; set; }
-}
-
-internal sealed class
-    IndexImportKeysQueryHandler : IRequestHandler<IndexImportKeysQuery, IEnumerable<IndexImportKeyResponse>>
-{
-    private readonly ApplicationDbContext _context;
-
-    public IndexImportKeysQueryHandler(ApplicationDbContext context)
+    public class Query : IRequest<IEnumerable<Response>>
     {
-        _context = context;
     }
 
-    public async Task<IEnumerable<IndexImportKeyResponse>> Handle(IndexImportKeysQuery request,
-        CancellationToken cancellationToken)
+    public class Response
     {
-        var importKeys = await _context.ImportKeys.ToListAsync();
+        public int Id { get; set; }
 
-        return importKeys.Adapt<IEnumerable<IndexImportKeyResponse>>();
+        public string Name { get; set; }
+        public bool Enabled { get; set; }
+    }
+
+    internal sealed class
+        Handler : IRequestHandler<Query, IEnumerable<Response>>
+    {
+        private readonly ApplicationDbContext _context;
+
+        public Handler(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Response>> Handle(Query request,
+            CancellationToken cancellationToken)
+        {
+            var importKeys = await _context.ImportKeys.ToListAsync();
+
+            return importKeys.Adapt<IEnumerable<Response>>();
+        }
     }
 }

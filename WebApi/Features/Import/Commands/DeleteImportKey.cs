@@ -5,30 +5,33 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Import.Commands;
 
-public class DeleteImportKeyCommand : IRequest
+public static class DeleteImportKey
 {
-    public int Id { get; set; }
-}
-
-internal sealed class DeleteImportKeyCommandHandler : IRequestHandler<DeleteImportKeyCommand>
-{
-    private readonly ApplicationDbContext _context;
-
-    public DeleteImportKeyCommandHandler(ApplicationDbContext context)
+    public class Command : IRequest
     {
-        _context = context;
+        public int Id { get; set; }
     }
 
-    public async Task<Unit> Handle(DeleteImportKeyCommand request, CancellationToken cancellationToken)
+    internal sealed class Handler : IRequestHandler<Command>
     {
-        var importKey = await _context.ImportKeys.FindAsync(request.Id);
+        private readonly ApplicationDbContext _context;
 
-        if (importKey is null)
-            throw new NotFoundException(nameof(ImportKey), request.Id);
+        public Handler(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-        _context.ImportKeys.Remove(importKey);
-        await _context.SaveChangesAsync(cancellationToken);
+        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var importKey = await _context.ImportKeys.FindAsync(request.Id);
 
-        return Unit.Value;
+            if (importKey is null)
+                throw new NotFoundException(nameof(ImportKey), request.Id);
+
+            _context.ImportKeys.Remove(importKey);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
+        }
     }
 }

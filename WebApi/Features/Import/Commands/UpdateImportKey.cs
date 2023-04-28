@@ -7,46 +7,49 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Import.Commands;
 
-public class UpdateImportKeyCommand : IRequest
+public static class UpdateImportKey
 {
-    public int Id { get; set; }
-    public UpdateImportKeyBody Body { get; set; }
-}
-
-public class UpdateImportKeyBody
-{
-    public string Name { get; set; }
-    public bool Enabled { get; set; }
-}
-
-public class UpdateImportKeyBodyValidator : AbstractValidator<UpdateImportKeyBody>
-{
-    public UpdateImportKeyBodyValidator()
+    public class Command : IRequest
     {
-        RuleFor(x => x.Name).NotEmpty();
-        RuleFor(x => x.Enabled).NotNull();
-    }
-}
-
-internal sealed class UpdateImportKeyCommandHandler : IRequestHandler<UpdateImportKeyCommand>
-{
-    private readonly ApplicationDbContext _context;
-
-    public UpdateImportKeyCommandHandler(ApplicationDbContext context)
-    {
-        _context = context;
+        public int Id { get; set; }
+        public RequestBody Body { get; set; }
     }
 
-    public async Task<Unit> Handle(UpdateImportKeyCommand request, CancellationToken cancellationToken)
+    public class RequestBody
     {
-        var importKey = await _context.ImportKeys.FindAsync(request.Id);
+        public string Name { get; set; }
+        public bool Enabled { get; set; }
+    }
 
-        if (importKey is null)
-            throw new NotFoundException(nameof(ImportKey), request.Id);
+    public class RequestBodyValidator : AbstractValidator<RequestBody>
+    {
+        public RequestBodyValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Enabled).NotNull();
+        }
+    }
 
-        request.Body.Adapt(importKey);
-        await _context.SaveChangesAsync(cancellationToken);
+    internal sealed class Handler : IRequestHandler<Command>
+    {
+        private readonly ApplicationDbContext _context;
 
-        return Unit.Value;
+        public Handler(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var importKey = await _context.ImportKeys.FindAsync(request.Id);
+
+            if (importKey is null)
+                throw new NotFoundException(nameof(ImportKey), request.Id);
+
+            request.Body.Adapt(importKey);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
+        }
     }
 }

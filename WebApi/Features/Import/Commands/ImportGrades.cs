@@ -7,50 +7,53 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Import.Commands;
 
-public class ImportGradesCommand : IRequest
+public static class ImportGrades
 {
-    public Guid UserId { get; set; }
-    public ImportGradesBody Body { get; set; }
-}
-
-public class ImportGradesBody
-{
-    public string KeyEncrypeted { get; set; }
-    public string JsonEncrypted { get; set; }
-}
-
-public class ImportGradesBodyValidator : AbstractValidator<ImportGradesBody>
-{
-    public ImportGradesBodyValidator()
+    public class Command : IRequest
     {
-        RuleFor(x => x.KeyEncrypeted).NotEmpty();
-        RuleFor(x => x.JsonEncrypted).NotEmpty();
-    }
-}
-
-internal sealed class ImportGradesCommandHandler : IRequestHandler<ImportGradesCommand>
-{
-    private readonly ApplicationDbContext _context;
-
-    public ImportGradesCommandHandler(ApplicationDbContext context)
-    {
-        _context = context;
+        public Guid UserId { get; set; }
+        public RequestBody Body { get; set; }
     }
 
-    public async Task<Unit> Handle(ImportGradesCommand request, CancellationToken cancellationToken)
+    public class RequestBody
     {
-        var user = await _context.Users.FindAsync(request.UserId);
+        public string KeyEncrypeted { get; set; }
+        public string JsonEncrypted { get; set; }
+    }
 
-        if (user is null) throw new NotFoundException(nameof(User), request.UserId);
+    public class RequestBodyValidator : AbstractValidator<RequestBody>
+    {
+        public RequestBodyValidator()
+        {
+            RuleFor(x => x.KeyEncrypeted).NotEmpty();
+            RuleFor(x => x.JsonEncrypted).NotEmpty();
+        }
+    }
 
-        var gradeImport = request.Body.Adapt<GradeImport>();
+    internal sealed class Handler : IRequestHandler<Command>
+    {
+        private readonly ApplicationDbContext _context;
 
-        gradeImport.UserId = user.Id;
-        user.ImportAvailable = true;
+        public Handler(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-        await _context.AddAsync(gradeImport, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var user = await _context.Users.FindAsync(request.UserId);
 
-        return Unit.Value;
+            if (user is null) throw new NotFoundException(nameof(User), request.UserId);
+
+            var gradeImport = request.Body.Adapt<GradeImport>();
+
+            gradeImport.UserId = user.Id;
+            user.ImportAvailable = true;
+
+            await _context.AddAsync(gradeImport, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
+        }
     }
 }

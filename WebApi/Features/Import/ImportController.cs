@@ -11,9 +11,9 @@ namespace WebApi.Features.Import;
 public class ImportController : ApiControllerBase
 {
     [HttpGet("Users")]
-    public async Task<ActionResult<IEnumerable<IndexUsersResponse>>> IndexUsers()
+    public async Task<ActionResult<IEnumerable<IndexUsers.Response>>> IndexUsers()
     {
-        var users = await Mediator.Send(new IndexUsersQuery());
+        var users = await Mediator.Send(new IndexUsers.Query());
 
         return Ok(users);
     }
@@ -21,9 +21,9 @@ public class ImportController : ApiControllerBase
     [HttpPost("Grades/{userId}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult> ImportGrades([FromRoute] Guid userId, [FromBody] ImportGradesBody body)
+    public async Task<ActionResult> ImportGrades([FromRoute] Guid userId, [FromBody] ImportGrades.RequestBody body)
     {
-        await Mediator.Send(new ImportGradesCommand
+        await Mediator.Send(new ImportGrades.Command
         {
             UserId = userId,
             Body = body
@@ -33,9 +33,9 @@ public class ImportController : ApiControllerBase
     }
 
     [HttpPatch("ResetKeyPassword")]
-    public async Task<ActionResult> ImportResetKeyPassword([FromBody] ImportResetKeyPasswordBody body)
+    public async Task<ActionResult> ImportResetKeyPassword([FromBody] UpdateResetKeyPassword.RequestBody body)
     {
-        await Mediator.Send(new ImportResetKeyPasswordCommand
+        await Mediator.Send(new UpdateResetKeyPassword.Command
         {
             Body = body
         });

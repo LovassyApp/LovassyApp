@@ -7,44 +7,47 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Import.Queries;
 
-public class ViewImportKeyQuery : IRequest<ViewImportKeyResponse>
+public static class ViewImportKey
 {
-    public int Id { get; set; }
-}
-
-public class ViewImportKeyResponse
-{
-    public int Id { get; set; }
-
-    public string Name { get; set; }
-    public bool Enabled { get; set; }
-
-    public string Key { get; set; }
-}
-
-internal sealed class ViewImportKeyQueryHandler : IRequestHandler<ViewImportKeyQuery, ViewImportKeyResponse>
-{
-    private readonly ApplicationDbContext _context;
-    private readonly EncryptionService _encryptionService;
-
-    public ViewImportKeyQueryHandler(ApplicationDbContext context, EncryptionService encryptionService)
+    public class Query : IRequest<Response>
     {
-        _context = context;
-        _encryptionService = encryptionService;
+        public int Id { get; set; }
     }
 
-    public async Task<ViewImportKeyResponse> Handle(ViewImportKeyQuery request, CancellationToken cancellationToken)
+    public class Response
     {
-        var importKey = await _context.ImportKeys.FindAsync(request.Id);
+        public int Id { get; set; }
 
-        if (importKey is null)
-            throw new NotFoundException(nameof(ImportKey), request.Id);
+        public string Name { get; set; }
+        public bool Enabled { get; set; }
 
-        var key = _encryptionService.Unprotect(importKey.KeyProtected);
+        public string Key { get; set; }
+    }
 
-        var response = importKey.Adapt<ViewImportKeyResponse>();
-        response.Key = key;
+    internal sealed class Handler : IRequestHandler<Query, Response>
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly EncryptionService _encryptionService;
 
-        return response;
+        public Handler(ApplicationDbContext context, EncryptionService encryptionService)
+        {
+            _context = context;
+            _encryptionService = encryptionService;
+        }
+
+        public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+        {
+            var importKey = await _context.ImportKeys.FindAsync(request.Id);
+
+            if (importKey is null)
+                throw new NotFoundException(nameof(ImportKey), request.Id);
+
+            var key = _encryptionService.Unprotect(importKey.KeyProtected);
+
+            var response = importKey.Adapt<Response>();
+            response.Key = key;
+
+            return response;
+        }
     }
 }

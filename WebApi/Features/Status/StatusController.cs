@@ -9,9 +9,9 @@ public class StatusController : ApiControllerBase
     [HttpGet("Version")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status418ImATeapot)]
-    public async Task<ActionResult<ViewVersionResponse>> ViewVersion([FromQuery] ViewVersionBody body)
+    public async Task<ActionResult<ViewVersion.Response>> ViewVersion([FromQuery] ViewVersion.RequestBody body)
     {
-        var response = await Mediator.Send(new ViewVersionQuery { Body = body });
+        var response = await Mediator.Send(new ViewVersion.Query { Body = body });
 
         if (!body.SendOk)
             HttpContext.Response.StatusCode = StatusCodes.Status418ImATeapot;
@@ -20,9 +20,9 @@ public class StatusController : ApiControllerBase
     }
 
     [HttpGet("ServiceStatus")]
-    public async Task<ActionResult<ViewServiceStatusResponse>> ViewServiceStatus()
+    public async Task<ActionResult<ViewServiceStatus.Response>> ViewServiceStatus()
     {
-        var response = await Mediator.Send(new ViewServiceStatusQuery());
+        var response = await Mediator.Send(new ViewServiceStatus.Query());
 
         return Ok(response);
     }

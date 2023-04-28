@@ -10,9 +10,9 @@ namespace WebApi.Features.Import;
 public class ImportKeyController : ApiControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<IndexImportKeyResponse>>> Index()
+    public async Task<ActionResult<IEnumerable<IndexImportKeys.Response>>> Index()
     {
-        var importKeys = await Mediator.Send(new IndexImportKeysQuery());
+        var importKeys = await Mediator.Send(new IndexImportKeys.Query());
 
         return Ok(importKeys);
     }
@@ -20,9 +20,9 @@ public class ImportKeyController : ApiControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ViewImportKeyResponse>> View([FromRoute] int id)
+    public async Task<ActionResult<ViewImportKey.Response>> View([FromRoute] int id)
     {
-        var response = await Mediator.Send(new ViewImportKeyQuery { Id = id });
+        var response = await Mediator.Send(new ViewImportKey.Query { Id = id });
 
         return Ok(response);
     }
@@ -30,9 +30,9 @@ public class ImportKeyController : ApiControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ViewImportKeyResponse>> Create([FromBody] CreateImportKeyBody body)
+    public async Task<ActionResult<ViewImportKey.Response>> Create([FromBody] CreateImportKey.RequestBody body)
     {
-        var response = await Mediator.Send(new CreateImportKeyCommand
+        var response = await Mediator.Send(new CreateImportKey.Command
         {
             Body = body
         });
@@ -43,9 +43,9 @@ public class ImportKeyController : ApiControllerBase
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateImportKeyBody request)
+    public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateImportKey.RequestBody request)
     {
-        await Mediator.Send(new UpdateImportKeyCommand
+        await Mediator.Send(new UpdateImportKey.Command
         {
             Id = id,
             Body = request
@@ -59,7 +59,7 @@ public class ImportKeyController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> Delete([FromRoute] int id)
     {
-        await Mediator.Send(new DeleteImportKeyCommand
+        await Mediator.Send(new DeleteImportKey.Command
         {
             Id = id
         });

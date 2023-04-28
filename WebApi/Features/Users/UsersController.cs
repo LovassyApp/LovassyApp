@@ -7,9 +7,9 @@ namespace WebApi.Features.Users;
 public class UsersController : ApiControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult> CreateUser([FromBody] CreateUserBody body)
+    public async Task<ActionResult> CreateUser([FromBody] CreateUser.RequestBody body)
     {
-        await Mediator.Send(new CreateUserCommand { Body = body });
+        await Mediator.Send(new CreateUser.Command { Body = body });
 
         return Ok(); //TODO: Return created once there is a view endpoint
     }

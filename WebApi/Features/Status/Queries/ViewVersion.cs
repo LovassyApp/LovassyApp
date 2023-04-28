@@ -5,57 +5,60 @@ using WebApi.Features.Status.Options;
 
 namespace WebApi.Features.Status.Queries;
 
-public class ViewVersionQuery : IRequest<ViewVersionResponse>
+public static class ViewVersion
 {
-    public ViewVersionBody Body { get; set; }
-}
-
-public class ViewVersionResponse
-{
-    public string WhoAmI { get; set; }
-    public string Version { get; set; }
-    public string DotNetVersion { get; set; }
-    public List<string> Contributors { get; set; }
-    public string Repository { get; set; }
-    public string? MOTD { get; set; }
-}
-
-public class ViewVersionBody
-{
-    public bool SendOk { get; set; } = true;
-    public bool SendMOTD { get; set; } = true;
-}
-
-public class ViewVersionBodyValidator : AbstractValidator<ViewVersionBody>
-{
-    public ViewVersionBodyValidator()
+    public class Query : IRequest<Response>
     {
-        RuleFor(x => x.SendOk).NotNull();
-        RuleFor(x => x.SendMOTD).NotNull();
-    }
-}
-
-internal sealed class ViewVersionQueryHandler : IRequestHandler<ViewVersionQuery, ViewVersionResponse>
-{
-    private readonly StatusOptions _options;
-
-    public ViewVersionQueryHandler(IOptions<StatusOptions> options)
-    {
-        _options = options.Value;
+        public RequestBody Body { get; set; }
     }
 
-    public async Task<ViewVersionResponse> Handle(ViewVersionQuery request, CancellationToken cancellationToken)
+    public class Response
     {
-        var response = new ViewVersionResponse
+        public string WhoAmI { get; set; }
+        public string Version { get; set; }
+        public string DotNetVersion { get; set; }
+        public List<string> Contributors { get; set; }
+        public string Repository { get; set; }
+        public string? MOTD { get; set; }
+    }
+
+    public class RequestBody
+    {
+        public bool SendOk { get; set; } = true;
+        public bool SendMOTD { get; set; } = true;
+    }
+
+    public class RequestBodyValidator : AbstractValidator<RequestBody>
+    {
+        public RequestBodyValidator()
         {
-            WhoAmI = _options.WhoAmI,
-            Version = _options.Version,
-            DotNetVersion = Environment.Version.ToString(),
-            Contributors = _options.Contributors,
-            Repository = _options.Repository,
-            MOTD = request.Body.SendMOTD ? _options.MOTDs[new Random().Next(0, _options.MOTDs.Count)] : null
-        };
+            RuleFor(x => x.SendOk).NotNull();
+            RuleFor(x => x.SendMOTD).NotNull();
+        }
+    }
 
-        return response;
+    internal sealed class Handler : IRequestHandler<Query, Response>
+    {
+        private readonly StatusOptions _options;
+
+        public Handler(IOptions<StatusOptions> options)
+        {
+            _options = options.Value;
+        }
+
+        public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+        {
+            var response = new Response
+            {
+                WhoAmI = _options.WhoAmI,
+                Version = _options.Version,
+                DotNetVersion = Environment.Version.ToString(),
+                Contributors = _options.Contributors,
+                Repository = _options.Repository,
+                MOTD = request.Body.SendMOTD ? _options.MOTDs[new Random().Next(0, _options.MOTDs.Count)] : null
+            };
+
+            return response;
+        }
     }
 }
