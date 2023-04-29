@@ -4,7 +4,7 @@ using WebApi.Common.Exceptions;
 
 namespace WebApi.Common.Filters;
 
-public class ExceptionFilter : ExceptionFilterAttribute
+public class ExceptionFilter : IExceptionFilter
 {
     private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
     private readonly ILogger<ExceptionFilter> _logger;
@@ -27,11 +27,9 @@ public class ExceptionFilter : ExceptionFilterAttribute
         _logger = loggerFactory.CreateLogger<ExceptionFilter>();
     }
 
-    public override void OnException(ExceptionContext context)
+    public void OnException(ExceptionContext context)
     {
         HandleException(context);
-
-        base.OnException(context);
     }
 
     private void HandleException(ExceptionContext context)
