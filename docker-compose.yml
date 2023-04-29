@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus_dev
+    ports:
+      - "5280:9090"
+    environment:
+      - TZ=UTC
+    volumes:
+      - ./metrics_dev/prom/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana_dev
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    depends_on:
+      - prometheus
+    ports:
+      - "5281:3000"
+    volumes:
+      - ./metrics_dev/grafana_data/data:/var/lib/grafana
+    restart: unless-stopped
