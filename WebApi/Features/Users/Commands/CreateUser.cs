@@ -39,11 +39,11 @@ public static class CreateUser
 
             RuleFor(x => x.Email).NotEmpty().EmailAddress()
                 .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'")
-                .MustAsync(BeUniqueEmail).WithMessage("The email is already in use");
+                .MustAsync(BeUniqueEmailAsync).WithMessage("The email is already in use");
             RuleFor(x => x.Password).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.OmCode).NotEmpty()
-                .MustAsync(BeUniqueOmCode).WithMessage("The om code is already in use");
+                .MustAsync(BeUniqueOmCodeAsync).WithMessage("The om code is already in use");
         }
 
         private bool EndWithAllowedDomainEmail(RequestBody model, string email)
@@ -51,12 +51,12 @@ public static class CreateUser
             return email.EndsWith("@lovassy.edu.hu");
         }
 
-        private Task<bool> BeUniqueEmail(RequestBody model, string email, CancellationToken cancellationToken)
+        private Task<bool> BeUniqueEmailAsync(RequestBody model, string email, CancellationToken cancellationToken)
         {
             return _context.Users.AllAsync(x => x.Email != email, cancellationToken);
         }
 
-        private Task<bool> BeUniqueOmCode(RequestBody model, string omCode, CancellationToken cancellationToken)
+        private Task<bool> BeUniqueOmCodeAsync(RequestBody model, string omCode, CancellationToken cancellationToken)
         {
             return _context.Users.AllAsync(x => x.OmCodeHashed != _hashService.Hash(omCode), cancellationToken);
         }

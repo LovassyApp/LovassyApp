@@ -45,6 +45,7 @@ public class SessionManager
         var session = _memoryCache.Get<Session>(tokenHash);
 
         Session = session ?? throw new SessionNotFoundException();
+        _encryptionKey = HashingUtils.GenerateBasicKey(token, Session.Salt);
     }
 
     /// <summary>
@@ -72,7 +73,8 @@ public class SessionManager
         {
             Hash = hash,
             Salt = HashingUtils.GenerateSalt(),
-            Expiry = expiry
+            Expiry = expiry,
+            Data = new Dictionary<string, string>()
         };
         UpdateCache();
 

@@ -13,10 +13,10 @@ public static class ViewServiceStatus
     public class Response
     {
         public bool Ready { get; set; }
-        public ServiceStatus ServiceStatus { get; set; }
+        public ResponseServiceStatus ServiceStatus { get; set; }
     }
 
-    public class ServiceStatus
+    public class ResponseServiceStatus
     {
         public bool Database { get; set; }
         public bool Realtime { get; set; }
@@ -37,7 +37,7 @@ public static class ViewServiceStatus
         public async Task<Response> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            var status = new ServiceStatus
+            var status = new ResponseServiceStatus
             {
                 Database = await _context.Database.CanConnectAsync(cancellationToken),
                 ResetKeyPassword = _resetService.IsResetKeyPasswordSet(),
