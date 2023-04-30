@@ -63,7 +63,8 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         //TODO: Add permission claims with Warden
 
-        _backgroundJobClient.Enqueue<UpdateTokenLastUsedAtJob>(j => j.Run(accessToken.Id));
+        _backgroundJobClient.Enqueue<UpdateTokenLastUsedAtJob>(j =>
+            j.Run(accessToken.Id, DateTime.Now.ToUniversalTime()));
 
         var claims = new List<Claim>
         {
