@@ -4,6 +4,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
@@ -52,7 +53,7 @@ public static class Login
         public ResponseUser User { get; set; }
         public string Token { get; set; }
         public string? RefreshToken { get; set; }
-        public DateTime RefreshTokenExpiration { get; set; }
+        public DateTime? RefreshTokenExpiration { get; set; }
     }
 
     public class ResponseUser
@@ -109,7 +110,8 @@ public static class Login
             if (request.Body.Remember)
             {
                 var refreshToken =
-                    _encryptionService.SerializeProtect(new { request.Body.Password },
+                    _encryptionService.SerializeProtect(
+                        new RefreshTokenContents { Password = request.Body.Password, UserId = user.Id },
                         TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
                 return new Response

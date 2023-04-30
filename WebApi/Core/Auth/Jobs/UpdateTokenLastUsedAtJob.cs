@@ -17,7 +17,7 @@ public class UpdateTokenLastUsedAtJob
         using var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var token = context.PersonalAccessTokens.Find(id);
         if (token == null) return;
-        token.LastUsedAt = DateTime.Now;
+        token.LastUsedAt = DateTime.Now.ToUniversalTime();
         context.SaveChanges(); // Can't use async here, because Hangfire doesn't support it
     }
 }
