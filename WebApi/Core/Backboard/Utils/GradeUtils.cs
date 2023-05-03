@@ -46,8 +46,8 @@ public static class GradeUtils
 
         result.Uid = HashingUtils.Hash(result.EvaluationDate.ToLongDateString() + result.CreateDate.ToLongDateString() +
                                        result.Subject + result.SubjectCategory + result.Teacher + result.Name +
-                                       result.Type + result.Weight + result.TextGrade + result.ShortTextGrade +
-                                       result.GradeValue);
+                                       result.Type + result.GradeType + result.Group + result.Weight +
+                                       result.TextGrade + result.ShortTextGrade + result.GradeValue);
 
         return result;
     }
