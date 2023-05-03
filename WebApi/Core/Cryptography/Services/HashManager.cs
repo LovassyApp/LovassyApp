@@ -7,9 +7,6 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Cryptography.Services;
 
-[Obsolete(
-    "This class was brought over from 3.0 where hashed user ids were used. " +
-    "Currently no such functionality is used, and if you think you need that, you should probably reconsider.")]
 public class HashManager
 {
     private readonly string _cachePrefix;
@@ -28,7 +25,7 @@ public class HashManager
     }
 
     /// <summary>
-    ///     Hashes a payload with the user's own encrypted salt. Primarily meant for hashing the user id.
+    ///     Hashes a payload with the user's own encrypted salt. Primarily meant for hashing the user id and lolo ids.
     /// </summary>
     /// <param name="payload">The payload to hash.</param>
     /// <returns>The hashed payload as a string.</returns>

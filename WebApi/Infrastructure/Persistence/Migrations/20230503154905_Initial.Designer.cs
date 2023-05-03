@@ -12,7 +12,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230503153715_Initial")]
+    [Migration("20230503154905_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -53,8 +53,8 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("LoloId")
-                        .HasColumnType("integer");
+                    b.Property<string>("LoloIdHashed")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -91,20 +91,17 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("UserIdHashed")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Weight")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LoloId");
-
                     b.HasIndex("Uid")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Grades");
                 });
@@ -330,23 +327,6 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Grade", b =>
-                {
-                    b.HasOne("WebApi.Infrastructure.Persistence.Entities.Lolo", "Lolo")
-                        .WithMany("Grades")
-                        .HasForeignKey("LoloId");
-
-                    b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
-                        .WithMany("Grades")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lolo");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.GradeImport", b =>
                 {
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
@@ -380,16 +360,9 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Lolo", b =>
-                {
-                    b.Navigation("Grades");
-                });
-
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.User", b =>
                 {
                     b.Navigation("GradeImports");
-
-                    b.Navigation("Grades");
 
                     b.Navigation("Lolos");
                 });

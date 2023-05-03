@@ -15,14 +15,14 @@ public static class GradeUtils
         ["hanyag"] = 1
     }.ToLookup(dict => dict.Key, dict => dict.Value);
 
-    public static Grade TransformBackboardGrade(BackboardGrade grade, Guid userId)
+    public static Grade TransformBackboardGrade(BackboardGrade grade, string userIdHashed)
     {
         var recordDate = SplitDate(grade.RecordDate);
         var createDate = SplitDate(grade.CreateDate);
 
         var result = new Grade
         {
-            UserId = userId,
+            UserIdHashed = userIdHashed,
 
             EvaluationDate = new DateTime(recordDate[0], recordDate[1], recordDate[3]).ToUniversalTime(),
             CreateDate = new DateTime(createDate[0], createDate[1], createDate[3]).ToUniversalTime(),

@@ -10,11 +10,9 @@ public class Grade : TimestampedEntity, IHasDomainEvent
 {
     [Key] public int Id { get; set; }
 
-    [Required] public Guid UserId { get; set; }
-    [Required] public User User { get; set; }
+    [Required] public string UserIdHashed { get; set; }
 
-    public int? LoloId { get; set; }
-    public Lolo? Lolo { get; set; }
+    public string? LoloIdHashed { get; set; }
 
     [Required] public string Uid { get; set; }
 
