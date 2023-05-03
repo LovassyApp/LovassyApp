@@ -17,7 +17,7 @@ public class KretaGrade
     {
         var recordDate = SplitDate(grade.RecordDate);
         var createDate = SplitDate(grade.CreateDate);
-        Date = new DateTime(recordDate[0], recordDate[1], recordDate[3]).ToString("yyyy-MM-dd");
+        EvaluationDate = new DateTime(recordDate[0], recordDate[1], recordDate[3]).ToString("yyyy-MM-dd");
         CreateDate = new DateTime(createDate[0], createDate[1], createDate[3]).ToString("yyyy-MM-dd");
 
         Subject = char.ToUpper(grade.Subject[0]) + grade.Subject.Substring(1);
@@ -30,28 +30,28 @@ public class KretaGrade
         Teacher = grade.Teacher ?? "Névtelen hős";
         Name = grade.Name == " - " ? "Névtelen jegy" : char.ToUpper(grade.Name[0]) + grade.Name.Substring(1);
         Type = grade.Type ?? "Nincs leírás";
-        Group = grade.Grade;
+        Group = grade.Group;
 
         Weight = GetWeight(Type);
 
         TextGrade = ConvertTextGrade(GetTextGrade(grade));
         ShortTextGrade = ConvertTextGrade(grade.ShortTextGrade);
-        Grade = grade.Grade != null ? int.Parse(grade.Grade) : ConvertValueToInteger(grade.TextGrade);
+        GradeValue = grade.Grade != null ? int.Parse(grade.Grade) : ConvertValueToInteger(grade.TextGrade);
 
-        Uid = HashingUtils.Hash(Date + CreateDate + Subject + SubjectCategory + EvaluationType +
+        Uid = HashingUtils.Hash(EvaluationDate + CreateDate + Subject + SubjectCategory + EvaluationType +
                                 EvaluationTypeDescription + Teacher + Name + Type + Weight + TextGrade +
-                                ShortTextGrade + Grade);
+                                ShortTextGrade + GradeValue);
     }
 
     public string Uid { get; set; }
     public string Subject { get; set; }
     public string SubjectCategory { get; set; } //
     public string Teacher { get; set; }
-    public int Grade { get; set; }
+    public int GradeValue { get; set; }
     public string TextGrade { get; set; }
     public string ShortTextGrade { get; set; }
     public int Weight { get; set; }
-    public string Date { get; set; }
+    public string EvaluationDate { get; set; }
     public string CreateDate { get; set; }
     public string Name { get; set; }
     public string Type { get; set; }

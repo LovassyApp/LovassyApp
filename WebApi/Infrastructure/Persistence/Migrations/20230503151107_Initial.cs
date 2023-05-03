@@ -82,6 +82,29 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Lolos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsSpent = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    Reason = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lolos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Lolos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersonalAccessTokens",
                 columns: table => new
                 {
@@ -104,9 +127,66 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoloId = table.Column<int>(type: "integer", nullable: true),
+                    Uid = table.Column<string>(type: "text", nullable: false),
+                    Subject = table.Column<string>(type: "text", nullable: false),
+                    SubjectCategory = table.Column<string>(type: "text", nullable: false),
+                    Teacher = table.Column<string>(type: "text", nullable: false),
+                    Group = table.Column<string>(type: "text", nullable: false),
+                    GradeValue = table.Column<int>(type: "integer", nullable: false),
+                    TextGrade = table.Column<string>(type: "text", nullable: false),
+                    ShortTextGrade = table.Column<string>(type: "text", nullable: false),
+                    Weight = table.Column<int>(type: "integer", nullable: false),
+                    EvaluationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    GradeType = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Grades_Lolos_LoloId",
+                        column: x => x.LoloId,
+                        principalTable: "Lolos",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Grades_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_GradeImports_UserId",
                 table: "GradeImports",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grades_LoloId",
+                table: "Grades",
+                column: "LoloId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grades_Uid",
+                table: "Grades",
+                column: "Uid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grades_UserId",
+                table: "Grades",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -114,6 +194,11 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 table: "ImportKeys",
                 column: "KeyHashed",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Lolos_UserId",
+                table: "Lolos",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalAccessTokens_Token",
@@ -158,10 +243,16 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 name: "GradeImports");
 
             migrationBuilder.DropTable(
+                name: "Grades");
+
+            migrationBuilder.DropTable(
                 name: "ImportKeys");
 
             migrationBuilder.DropTable(
                 name: "PersonalAccessTokens");
+
+            migrationBuilder.DropTable(
+                name: "Lolos");
 
             migrationBuilder.DropTable(
                 name: "Users");

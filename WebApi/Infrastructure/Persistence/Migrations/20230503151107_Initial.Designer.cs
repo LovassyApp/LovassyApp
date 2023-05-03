@@ -12,7 +12,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230425220354_Initial")]
+    [Migration("20230503151107_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,90 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Grade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EvaluationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("GradeType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("GradeValue")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Group")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("LoloId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortTextGrade")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubjectCategory")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Teacher")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TextGrade")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Uid")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoloId");
+
+                    b.HasIndex("Uid")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Grades");
+                });
 
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.GradeImport", b =>
                 {
@@ -92,6 +176,39 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("ImportKeys");
+                });
+
+            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Lolo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsSpent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Lolos");
                 });
 
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.PersonalAccessToken", b =>
@@ -217,10 +334,38 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Grade", b =>
+                {
+                    b.HasOne("WebApi.Infrastructure.Persistence.Entities.Lolo", "Lolo")
+                        .WithMany()
+                        .HasForeignKey("LoloId");
+
+                    b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lolo");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.GradeImport", b =>
                 {
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
                         .WithMany("GradeImports")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Lolo", b =>
+                {
+                    b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

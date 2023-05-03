@@ -20,6 +20,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<ImportKey> ImportKeys { get; set; }
     public DbSet<GradeImport> GradeImports { get; set; }
     public DbSet<PersonalAccessToken> PersonalAccessTokens { get; set; }
+    public DbSet<Grade> Grades { get; set; }
+    public DbSet<Lolo> Lolos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

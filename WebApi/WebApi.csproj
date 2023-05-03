@@ -28,6 +28,7 @@
 
     <ItemGroup>
       <Folder Include="Core\Auth\Filters" />
+      <Folder Include="Infrastructure\Persistence\Migrations\" />
     </ItemGroup>
 
 </Project>
