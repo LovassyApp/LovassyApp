@@ -17,7 +17,6 @@ public static class ImportGrades
 
     public class RequestBody
     {
-        public string KeyEncrypeted { get; set; }
         public string JsonEncrypted { get; set; }
     }
 
@@ -25,7 +24,6 @@ public static class ImportGrades
     {
         public RequestBodyValidator()
         {
-            RuleFor(x => x.KeyEncrypeted).NotEmpty();
             RuleFor(x => x.JsonEncrypted).NotEmpty();
         }
     }

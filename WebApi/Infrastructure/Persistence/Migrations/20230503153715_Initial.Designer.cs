@@ -12,7 +12,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230503151107_Initial")]
+    [Migration("20230503153715_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -121,10 +121,6 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("JsonEncrypted")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("KeyEncrypeted")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -337,11 +333,11 @@ namespace WebApi.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Grade", b =>
                 {
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.Lolo", "Lolo")
-                        .WithMany()
+                        .WithMany("Grades")
                         .HasForeignKey("LoloId");
 
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Grades")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -365,7 +361,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Lolo", b =>
                 {
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Lolos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -384,9 +380,18 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Lolo", b =>
+                {
+                    b.Navigation("Grades");
+                });
+
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.User", b =>
                 {
                     b.Navigation("GradeImports");
+
+                    b.Navigation("Grades");
+
+                    b.Navigation("Lolos");
                 });
 #pragma warning restore 612, 618
         }
