@@ -17,6 +17,8 @@ public class Lolo : TimestampedEntity, IHasDomainEvent
     public bool IsSpent { get; set; }
     [Required] public string Reason { get; set; }
 
+    public List<Grade> Grades { get; set; }
+
     public List<DomainEvent> DomainEvents { get; } = new();
 }
 

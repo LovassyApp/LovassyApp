@@ -34,6 +34,8 @@ public class User : TimestampedEntity, IHasDomainEvent
     public bool ImportAvailable { get; set; }
 
     public List<GradeImport> GradeImports { get; set; }
+    public List<Grade> Grades { get; set; }
+    public List<Lolo> Lolos { get; set; }
 
     public List<DomainEvent> DomainEvents { get; } = new();
 }

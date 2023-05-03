@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Exceptions;
 using WebApi.Core.Cryptography.Services.Options;
 using WebApi.Core.Cryptography.Utils;
@@ -16,14 +15,12 @@ public class HashManager
     private readonly string _cachePrefix;
     private readonly EncryptionManager _encryptionManager;
     private readonly IMemoryCache _memoryCache;
-    private readonly SessionManager _sessionManager;
 
     private string? _userSalt;
 
-    public HashManager(SessionManager sessionManager, EncryptionManager encryptionManager, IMemoryCache memoryCache,
+    public HashManager(EncryptionManager encryptionManager, IMemoryCache memoryCache,
         IOptions<HashOptions> options)
     {
-        _sessionManager = sessionManager;
         _encryptionManager = encryptionManager;
         _memoryCache = memoryCache;
 
