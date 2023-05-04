@@ -8,6 +8,7 @@ using Microsoft.Net.Http.Headers;
 using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Jobs;
 using WebApi.Core.Auth.Services;
+using WebApi.Core.Backboard.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -16,6 +17,7 @@ namespace WebApi.Core.Auth.Schemes.Token;
 
 public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthenticationSchemeOptions>
 {
+    private readonly BackboardAdapter _backboardAdapter;
     private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly ApplicationDbContext _context;
     private readonly EncryptionManager _encryptionManager;
@@ -25,7 +27,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
     public TokenAuthenticationSchemeHandler(IOptionsMonitor<TokenAuthenticationSchemeOptions> options,
         ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ApplicationDbContext context,
         SessionManager sessionManager, EncryptionManager encryptionManager, HashManager hashManager,
-        IBackgroundJobClient backgroundJobClient) : base(options,
+        IBackgroundJobClient backgroundJobClient, BackboardAdapter backboardAdapter) : base(options,
         logger, encoder, clock)
     {
         _context = context;
@@ -33,6 +35,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         _encryptionManager = encryptionManager;
         _hashManager = hashManager;
         _backgroundJobClient = backgroundJobClient;
+        _backboardAdapter = backboardAdapter;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -83,5 +86,6 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         _sessionManager.Init(token);
         _encryptionManager.Init();
         _hashManager.Init(user);
+        _backboardAdapter.Init(user);
     }
 }

@@ -1,0 +1,122 @@
+using System.Text.Json;
+using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using WebApi.Core.Backboard.Exceptions;
+using WebApi.Core.Backboard.Models;
+using WebApi.Core.Backboard.Services.Options;
+using WebApi.Core.Backboard.Utils;
+using WebApi.Core.Cryptography.Exceptions;
+using WebApi.Core.Cryptography.Models;
+using WebApi.Core.Cryptography.Services;
+using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
+
+namespace WebApi.Core.Backboard.Services;
+
+public class BackboardAdapter
+{
+    private readonly string _adapterLockPrefix;
+    private readonly ApplicationDbContext _context;
+    private readonly EncryptionManager _encryptionManager;
+    private readonly HashManager _hashManager;
+    private readonly IMemoryCache _memoryCache;
+
+    private User? _user;
+
+    public BackboardAdapter(ApplicationDbContext context, EncryptionManager encryptionManager, HashManager hashManager,
+        IMemoryCache memoryCache,
+        IOptions<BackboardOptions> options)
+    {
+        _context = context;
+        _encryptionManager = encryptionManager;
+        _hashManager = hashManager;
+        _memoryCache = memoryCache;
+        _adapterLockPrefix = options.Value.AdapterLockPrefix;
+    }
+
+    /// <summary>
+    ///     Initializes the backboard adapter with the current user object.
+    /// </summary>
+    /// <param name="user">The user, who's grades we want to import.</param>
+    /// <exception cref="MasterKeyNotFoundException">
+    ///     The exception thrown when the encryption manager has not yet been
+    ///     initialized.
+    /// </exception>
+    public void Init(User user)
+    {
+        if (_encryptionManager.MasterKey == null)
+            throw new MasterKeyNotFoundException();
+
+        _user = user;
+    }
+
+    /// <summary>
+    ///     Attempts to update the user's grades, real name and class. It only works if a <c>GradeImport</c> for the user
+    ///     exists.
+    /// </summary>
+    public async Task TryUpdatingAsync()
+    {
+        if (_user == null)
+            throw new BackboardAdapterUserNotFoundException();
+
+        BackboardGradeCollection? gradeCollection;
+        try
+        {
+            gradeCollection = await GetUpdatedGradeCollectionAsync();
+        }
+        catch (Exception)
+        {
+            throw new InvalidImportException();
+        }
+
+        if (gradeCollection == null)
+            return;
+
+        _user.RealName = gradeCollection.StudentName;
+        _user.Class = gradeCollection.SchoolClass;
+
+        var grades = TransformGrades(gradeCollection);
+
+        await _context.BulkInsertOrUpdateAsync(grades, new BulkConfig
+        {
+            UpdateByProperties = new List<string> { nameof(Grade.Uid) },
+            PropertiesToExclude = new List<string> { nameof(Grade.Id) }
+        });
+
+        _memoryCache.Remove(_adapterLockPrefix + _user.Id);
+    }
+
+    private async Task<BackboardGradeCollection?> GetUpdatedGradeCollectionAsync()
+    {
+        if (!_user!.ImportAvailable)
+            return null;
+
+        if ((bool?)_memoryCache.Get(_adapterLockPrefix + _user.Id) == true)
+            return null;
+
+        _memoryCache.Set(_adapterLockPrefix + _user.Id, true, TimeSpan.FromSeconds(10)); // Lock thread
+
+        var gradeImport = await _context.GradeImports.Where(i => i.UserId == _user.Id).OrderByDescending(i => i.Id)
+            .FirstOrDefaultAsync();
+
+        var keyPair = new KyberKeypair(_encryptionManager.Decrypt(_user.PrivateKeyEncrypted));
+        var gradeCollectionString = keyPair.Decrypt(gradeImport!.JsonEncrypted);
+
+        var gradeCollection = JsonSerializer.Deserialize<BackboardGradeCollection>(gradeCollectionString);
+
+        return gradeCollection;
+    }
+
+    private List<Grade> TransformGrades(BackboardGradeCollection gradeCollection)
+    {
+        var grades = new List<Grade>();
+
+        foreach (var grade in gradeCollection.Grades)
+            grades.Add(GradeUtils.TransformBackboardGrade(grade,
+                _hashManager.HashWithHasherSalt(_user!.Id.ToString())));
+
+        return grades;
+    }
+}

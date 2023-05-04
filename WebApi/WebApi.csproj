@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.0" />
+        <PackageReference Include="EFCore.BulkExtensions" Version="7.1.0" />
         <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.8.6" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
         <PackageReference Include="Hangfire.AspNetCore" Version="1.7.34" />
