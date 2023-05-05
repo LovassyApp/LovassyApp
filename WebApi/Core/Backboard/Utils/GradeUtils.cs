@@ -42,8 +42,8 @@ public static class GradeUtils
             TextGrade = ConvertTextGrade(GetTextGrade(grade)),
             ShortTextGrade = ConvertTextGrade(grade.ShortTextGrade),
             GradeValue = grade.Grade != null ? int.Parse(grade.Grade) : ConvertValueToInteger(grade.TextGrade),
-            CreatedAt = DateTime.Now.ToUniversalTime(),
-            UpdatedAt = DateTime.Now.ToUniversalTime()
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         result.Uid = HashingUtils.Hash(result.EvaluationDate.ToLongDateString() + result.CreateDate.ToLongDateString() +

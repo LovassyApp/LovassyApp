@@ -84,6 +84,11 @@ public class BackboardAdapter
             UpdateByProperties = new List<string> { nameof(Grade.Uid) },
             PropertiesToExclude = new List<string> { nameof(Grade.Id) }
         });
+        await _context.GradeImports.Where(i => i.UserId == _user.Id).BatchDeleteAsync();
+
+        _user.ImportAvailable = false;
+
+        await _context.SaveChangesAsync(); // only necessary for the changes to the user and grade imports
 
         _memoryCache.Remove(_adapterLockPrefix + _user.Id);
     }
