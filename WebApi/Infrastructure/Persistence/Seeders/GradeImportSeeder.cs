@@ -97,7 +97,7 @@ public class GradeImportSeeder
                 var number = _faker.Random.ArrayElement(_numbers);
                 var letter = _faker.Random.ArrayElement(_letters);
 
-                var groupId = number + "." + letter + _faker.Lorem.Word();
+                var groupId = number + "." + letter + " " + _faker.Lorem.Word();
                 var gradeValue = _faker.Random.Int(_minGrade, _maxGrade);
 
                 var grade = new BackboardGrade
@@ -110,8 +110,8 @@ public class GradeImportSeeder
                     TextGrade = _textGrades[gradeValue],
                     Grade = gradeValue.ToString(),
                     ShortTextGrade = "",
-                    DiligenceGrade = "",
-                    BehaviourGrade = "",
+                    DiligenceGrade = " - ",
+                    BehaviourGrade = " - ",
                     CreateDate = DateTime.Now.ToString("yyyy.M.d"),
                     RecordDate = DateTime.Now.ToString("yyyy.M.d"),
                     Name = _faker.Lorem.Sentence(3)
