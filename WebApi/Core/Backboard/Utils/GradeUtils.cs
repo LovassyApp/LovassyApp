@@ -24,8 +24,8 @@ public static class GradeUtils
         {
             UserIdHashed = userIdHashed,
 
-            EvaluationDate = new DateTime(recordDate[0], recordDate[1], recordDate[3]).ToUniversalTime(),
-            CreateDate = new DateTime(createDate[0], createDate[1], createDate[3]).ToUniversalTime(),
+            EvaluationDate = new DateTime(recordDate[0], recordDate[1], recordDate[2]).ToUniversalTime(),
+            CreateDate = new DateTime(createDate[0], createDate[1], createDate[2]).ToUniversalTime(),
 
             Subject = char.ToUpper(grade.Subject[0]) + grade.Subject.Substring(1),
             SubjectCategory = char.ToUpper(grade.SubjectCategory[0]) + grade.SubjectCategory.Substring(1),
@@ -41,7 +41,9 @@ public static class GradeUtils
 
             TextGrade = ConvertTextGrade(GetTextGrade(grade)),
             ShortTextGrade = ConvertTextGrade(grade.ShortTextGrade),
-            GradeValue = grade.Grade != null ? int.Parse(grade.Grade) : ConvertValueToInteger(grade.TextGrade)
+            GradeValue = grade.Grade != null ? int.Parse(grade.Grade) : ConvertValueToInteger(grade.TextGrade),
+            CreatedAt = DateTime.Now.ToUniversalTime(),
+            UpdatedAt = DateTime.Now.ToUniversalTime()
         };
 
         result.Uid = HashingUtils.Hash(result.EvaluationDate.ToLongDateString() + result.CreateDate.ToLongDateString() +
