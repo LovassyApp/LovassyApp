@@ -10,14 +10,14 @@ namespace WebApi.Infrastructure.Persistence.Seeders;
 
 public class GradeImportSeeder
 {
-    private static readonly Faker _faker = new();
-    private static readonly int _gradeCount = 5;
-    private static readonly int _subjectCount = 5;
+    private static readonly Faker Faker = new();
+    private static readonly int GradeCount = 5;
+    private static readonly int SubjectCount = 5;
 
-    private static readonly string[] _numbers = { "9ny", "9", "10", "11", "12" };
-    private static readonly string[] _letters = { "A", "B", "C", "D" };
+    private static readonly string[] Numbers = { "9ny", "9", "10", "11", "12" };
+    private static readonly string[] Letters = { "A", "B", "C", "D" };
 
-    private static readonly Dictionary<int, string> _textGrades = new()
+    private static readonly Dictionary<int, string> TextGrades = new()
     {
         [5] = "Jeles(5)",
         [4] = "Jó(4)"
@@ -26,10 +26,10 @@ public class GradeImportSeeder
         //[1] = "Elégtelen(1)"
     };
 
-    private static readonly int _maxGrade = 5;
-    private static readonly int _minGrade = 4;
+    private static readonly int MaxGrade = 5;
+    private static readonly int MinGrade = 4;
 
-    private static readonly string[] _types =
+    private static readonly string[] Types =
     {
         "Szorgalmi feladat",
         "Írásbeli röpdolgozat",
@@ -72,8 +72,8 @@ public class GradeImportSeeder
 
     private BackboardGradeCollection MakeGradeCollection(User user)
     {
-        var number = _faker.Random.ArrayElement(_numbers);
-        var letter = _faker.Random.ArrayElement(_letters);
+        var number = Faker.Random.ArrayElement(Numbers);
+        var letter = Faker.Random.ArrayElement(Letters);
 
         return new BackboardGradeCollection
         {
@@ -89,32 +89,32 @@ public class GradeImportSeeder
         var subjects = new List<string>();
         var grades = new List<BackboardGrade>();
 
-        for (var i = 0; i < _subjectCount; i++)
+        for (var i = 0; i < SubjectCount; i++)
         {
-            subjects.Add(_faker.Lorem.Word());
-            for (var j = 0; j < _gradeCount; j++)
+            subjects.Add(Faker.Lorem.Word());
+            for (var j = 0; j < GradeCount; j++)
             {
-                var number = _faker.Random.ArrayElement(_numbers);
-                var letter = _faker.Random.ArrayElement(_letters);
+                var number = Faker.Random.ArrayElement(Numbers);
+                var letter = Faker.Random.ArrayElement(Letters);
 
-                var groupId = number + "." + letter + " " + _faker.Lorem.Word();
-                var gradeValue = _faker.Random.Int(_minGrade, _maxGrade);
+                var groupId = number + "." + letter + " " + Faker.Lorem.Word();
+                var gradeValue = Faker.Random.Int(MinGrade, MaxGrade);
 
                 var grade = new BackboardGrade
                 {
                     SubjectCategory = subjects[i] + "_Category",
                     Subject = subjects[i],
                     Group = groupId,
-                    Teacher = _faker.Name.FullName(),
-                    Type = _faker.Random.ArrayElement(_types),
-                    TextGrade = _textGrades[gradeValue],
+                    Teacher = Faker.Name.FullName(),
+                    Type = Faker.Random.ArrayElement(Types),
+                    TextGrade = TextGrades[gradeValue],
                     Grade = gradeValue.ToString(),
                     ShortTextGrade = "",
                     DiligenceGrade = " - ",
                     BehaviourGrade = " - ",
                     CreateDate = DateTime.Now.ToString("yyyy.M.d"),
                     RecordDate = DateTime.Now.ToString("yyyy.M.d"),
-                    Name = _faker.Lorem.Sentence(3)
+                    Name = Faker.Lorem.Sentence(3)
                 };
 
                 grades.Add(grade);
