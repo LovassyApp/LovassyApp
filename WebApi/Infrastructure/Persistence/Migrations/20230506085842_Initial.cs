@@ -12,6 +12,9 @@ namespace WebApi.Infrastructure.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:Enum:grade_type", "regular_grade,behaviour_grade,diligence_grade");
+
             migrationBuilder.CreateTable(
                 name: "Grades",
                 columns: table => new
@@ -33,7 +36,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false),
-                    GradeType = table.Column<string>(type: "text", nullable: false),
+                    GradeType = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

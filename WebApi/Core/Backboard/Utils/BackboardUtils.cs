@@ -72,14 +72,14 @@ public static class BackboardUtils
         return 100;
     }
 
-    private static string GetType(BackboardGrade grade)
+    private static GradeType GetType(BackboardGrade grade)
     {
         if (grade.BehaviourGrade != " - ")
-            return "MagatartasErtek";
+            return GradeType.BehaviourGrade;
         if (grade.DiligenceGrade != " - ")
-            return "SzorgalomErtek";
+            return GradeType.DiligenceGrade;
 
-        return "Osztalyzat";
+        return GradeType.RegularGrade;
     }
 
     private static string GetTextGrade(BackboardGrade grade)

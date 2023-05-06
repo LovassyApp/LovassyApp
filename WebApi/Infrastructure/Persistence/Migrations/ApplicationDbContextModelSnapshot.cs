@@ -17,9 +17,10 @@ namespace WebApi.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "grade_type", new[] { "regular_grade", "behaviour_grade", "diligence_grade" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Grade", b =>
@@ -39,9 +40,8 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("EvaluationDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("GradeType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("GradeType")
+                        .HasColumnType("integer");
 
                     b.Property<int>("GradeValue")
                         .HasColumnType("integer");

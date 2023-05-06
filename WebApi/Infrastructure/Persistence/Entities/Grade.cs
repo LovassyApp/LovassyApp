@@ -32,9 +32,16 @@ public class Grade : TimestampedEntity, IHasDomainEvent
 
     [Required] public string Name { get; set; }
     [Required] public string Type { get; set; }
-    [Required] public string GradeType { get; set; }
+    [Required] public GradeType GradeType { get; set; }
 
     public List<DomainEvent> DomainEvents { get; } = new();
+}
+
+public enum GradeType
+{
+    RegularGrade,
+    BehaviourGrade,
+    DiligenceGrade
 }
 
 public class GradeConfiguration : IEntityTypeConfiguration<Grade>
