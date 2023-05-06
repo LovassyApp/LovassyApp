@@ -18,8 +18,10 @@ public class SeederService : IHostedService
     {
         //TODO: Seed default warden group
         if (_environment.IsDevelopment())
+        {
             // Uncomment if you want to seed the database with grade imports
-            await _gradeImportSeeder.RunAsync();
+            //await _gradeImportSeeder.RunAsync();
+        }
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
