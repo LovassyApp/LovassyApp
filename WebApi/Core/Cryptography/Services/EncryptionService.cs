@@ -17,7 +17,7 @@ public class EncryptionService
     }
 
     /// <summary>
-    ///     Wraps the <c>EncryptionUtils.Encrypt</c> method.
+    ///     Wraps the <see cref="EncryptionUtils.Encrypt" /> method.
     /// </summary>
     /// <param name="data">The data to encrypt.</param>
     /// <param name="key">The key to encrypt the data with. Must be 32 bytes when converted from base64.</param>
@@ -28,7 +28,7 @@ public class EncryptionService
     }
 
     /// <summary>
-    ///     Wraps the <c>EncryptionUtils.Decrypt</c> method.
+    ///     Wraps the <see cref="EncryptionUtils.Decrypt" /> method.
     /// </summary>
     /// <param name="encryptedData">The encrypted data string.</param>
     /// <param name="key">The key used for encrypting the data. Must be 32 bytes when converted from base64.</param>
@@ -75,7 +75,7 @@ public class EncryptionService
     ///     Decrypt expiring data using the Data Protection Api.
     /// </summary>
     /// <param name="encryptedData">The encrypted data string.</param>
-    /// <param name="expiration">The <c>DateTimeOffset</c> in which the data expires.</param>
+    /// <param name="expiration">The date time offset in which the data expires.</param>
     /// <returns>The decrypted string data and also sets the expiration parameter.</returns>
     public string Unprotect(string encryptedData, out DateTimeOffset expiration)
     {

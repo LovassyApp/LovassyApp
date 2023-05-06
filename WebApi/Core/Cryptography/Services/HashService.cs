@@ -34,7 +34,7 @@ public class HashService
     }
 
     /// <summary>
-    ///     A wrapper around the <c>HashingUtils.Hash</c> method.
+    ///     A wrapper around the <see cref="HashingUtils.Hash" /> method.
     /// </summary>
     /// <param name="data">The string data to hash.</param>
     /// <returns>The hashed data as a string.</returns>
@@ -44,7 +44,7 @@ public class HashService
     }
 
     /// <summary>
-    ///     A wrapper around the <c>HashingUtils.Verify</c> method.
+    ///     A wrapper around the <see cref="HashingUtils.Verify" /> method.
     /// </summary>
     /// <param name="data">The original data.</param>
     /// <param name="hash">The supposed hash of the original data.</param>
@@ -55,7 +55,7 @@ public class HashService
     }
 
     /// <summary>
-    ///     A wrapper around the <c>HashingUtils.HashWithSalt</c> method.
+    ///     A wrapper around the <see cref="HashingUtils.HashWithSalt" />  method.
     /// </summary>
     /// <param name="data">The data to hash.</param>
     /// <param name="salt">The salt to use for the hashing.</param>
@@ -66,7 +66,7 @@ public class HashService
     }
 
     /// <summary>
-    ///     A wrapper around the <c>HashingUtils.VerifyWithSalt</c> method.
+    ///     A wrapper around the <see cref="HashingUtils.VerifyWithSalt" />  method.
     /// </summary>
     /// <param name="data">The original data.</param>
     /// <param name="salt">The salt used for hashing the original data.</param>
@@ -78,7 +78,7 @@ public class HashService
     }
 
     /// <summary>
-    ///     A wrapper around the <c>HashingUtils.GenerateBasicKey</c> method.
+    ///     A wrapper around the <see cref="HashingUtils.GenerateBasicKey" />  method.
     /// </summary>
     /// <param name="data">The string, intended to be kept as a secret, from which to generate the key.</param>
     /// <param name="salt">The salt used for generating the key.</param>
@@ -89,7 +89,7 @@ public class HashService
     }
 
     /// <summary>
-    ///     A wrapper around the <c>HashingUtils.GenerateSalt</c> method.
+    ///     A wrapper around the <see cref="HashingUtils.GenerateSalt" />  method.
     /// </summary>
     /// <returns>The generated salt.</returns>
     public string GenerateSalt()

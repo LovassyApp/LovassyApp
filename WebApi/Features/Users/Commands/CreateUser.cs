@@ -1,7 +1,6 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Common;
 using WebApi.Common.Exceptions;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
@@ -67,11 +66,13 @@ public static class CreateUser
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
         private readonly HashService _hashService;
+        private readonly IPublisher _publisher;
         private readonly ResetService _resetService;
 
-        public Handler(ApplicationDbContext context, EncryptionManager encryptionManager,
+        public Handler(IPublisher publisher, ApplicationDbContext context, EncryptionManager encryptionManager,
             HashService hashService, ResetService resetService)
         {
+            _publisher = publisher;
             _context = context;
             _encryptionManager = encryptionManager;
             _hashService = hashService;
@@ -108,22 +109,20 @@ public static class CreateUser
                 OmCodeHashed = _hashService.Hash(request.Body.OmCode)
             };
 
-            user.DomainEvents.Add(new UserCreatedEvent(user));
-
             await _context.Users.AddAsync(user, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new UserCreatedEvent
+            {
+                User = user
+            }, cancellationToken);
 
             return Unit.Value;
         }
     }
 }
 
-public class UserCreatedEvent : DomainEvent //TODO: Add user to default group in a handler
+public class UserCreatedEvent : INotification
 {
-    public UserCreatedEvent(User user)
-    {
-        User = user;
-    }
-
     public User User { get; set; }
 }

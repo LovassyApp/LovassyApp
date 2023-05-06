@@ -1,12 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WebApi.Common;
 
 namespace WebApi.Infrastructure.Persistence.Entities;
 
 [Index(nameof(Uid), IsUnique = true)]
-public class Grade : TimestampedEntity, IHasDomainEvent
+public class Grade : TimestampedEntity
 {
     [Key] public int Id { get; set; }
 
@@ -33,8 +31,6 @@ public class Grade : TimestampedEntity, IHasDomainEvent
     [Required] public string Name { get; set; }
     [Required] public string Type { get; set; }
     [Required] public GradeType GradeType { get; set; }
-
-    public List<DomainEvent> DomainEvents { get; } = new();
 }
 
 public enum GradeType
@@ -42,12 +38,4 @@ public enum GradeType
     RegularGrade,
     BehaviourGrade,
     DiligenceGrade
-}
-
-public class GradeConfiguration : IEntityTypeConfiguration<Grade>
-{
-    public void Configure(EntityTypeBuilder<Grade> builder)
-    {
-        builder.Ignore(g => g.DomainEvents);
-    }
 }

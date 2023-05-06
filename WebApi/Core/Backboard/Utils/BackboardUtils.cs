@@ -1,4 +1,5 @@
 using WebApi.Core.Backboard.Models;
+using WebApi.Core.Cryptography.Services;
 using WebApi.Core.Cryptography.Utils;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -16,11 +17,14 @@ public static class BackboardUtils
     }.ToLookup(dict => dict.Key, dict => dict.Value);
 
     /// <summary>
-    ///     Transform a <c>BackboardGrade</c> to a <c>Grade</c> that can then be stored in a database.
+    ///     Transform a <see cref="BackboardGrade" /> to a <see cref="Grade" /> that can then be stored in a database.
     /// </summary>
-    /// <param name="grade">The <c>BackboardGrade</c> to transform</param>
-    /// <param name="userIdHashed">The id of the <c>User</c>, to which grade belongs to, hashed with <c>HashManager</c></param>
-    /// <returns>A new <c>Grade</c> object. It's important to note that this is not yet tracked by the database.</returns>
+    /// <param name="grade">The <see cref="BackboardGrade" /> to transform</param>
+    /// <param name="userIdHashed">
+    ///     The id of the <see cref="User" />, to which grade belongs to, hashed with
+    ///     <see cref="HashManager" />
+    /// </param>
+    /// <returns>A new <see cref="Grade" /> object. It's important to note that this is not yet tracked by the database.</returns>
     public static Grade TransformBackboardGrade(BackboardGrade grade, string userIdHashed)
     {
         var recordDate = SplitDate(grade.RecordDate);

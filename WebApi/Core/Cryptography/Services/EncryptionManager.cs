@@ -5,6 +5,7 @@ using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Exceptions;
 using WebApi.Core.Cryptography.Services.Options;
 using WebApi.Core.Cryptography.Utils;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Cryptography.Services;
 
@@ -35,11 +36,12 @@ public class EncryptionManager
     }
 
     /// <summary>
-    ///     Initializes the encryption manager with a master key. If no key is provided, it tries to get it from the session.
+    ///     Initializes the <see cref="EncryptionManager" /> with a master key. If no key is provided, it tries to get it from
+    ///     the session.
     /// </summary>
     /// <param name="key">The master key to be used.</param>
     /// <exception cref="SessionNotFoundException">
-    ///     The exception thrown when there is no key provided but the session manager
+    ///     The exception thrown when there is no key provided but the <see cref="SessionManager" />
     ///     has not been initialized yet.
     /// </exception>
     /// <exception cref="MasterKeyNotFoundException">
@@ -65,12 +67,12 @@ public class EncryptionManager
     }
 
     /// <summary>
-    ///     Encrypts the data using the master key of the current user.
+    ///     Encrypts the data using the master key of the current <see cref="User" />.
     /// </summary>
     /// <param name="data">The string data to encrypt.</param>
     /// <returns>The encrypted data string.</returns>
     /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the encryption manager has not been initialized
+    ///     The exception thrown when the <see cref="EncryptionManager" /> has not been initialized
     ///     yet.
     /// </exception>
     public string Encrypt(string data)
@@ -82,12 +84,12 @@ public class EncryptionManager
     }
 
     /// <summary>
-    ///     Decrypts the given string data using the master key of the current user.
+    ///     Decrypts the given string data using the master key of the current <see cref="User" />.
     /// </summary>
     /// <param name="encryptedData">The encrypted string data.</param>
     /// <returns>The decrypted string value.</returns>
     /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the encryption manager has not been initialized
+    ///     The exception thrown when the <see cref="EncryptionManager" /> has not been initialized
     ///     yet.
     /// </exception>
     public string Decrypt(string encryptedData)
@@ -100,13 +102,13 @@ public class EncryptionManager
 
 
     /// <summary>
-    ///     Serializes to json and encrypts the given data using the master key of the current user.
+    ///     Serializes to json and encrypts the given data using the master key of the current <see cref="User" />.
     /// </summary>
     /// <param name="data">The data to encrypt.</param>
     /// <typeparam name="T">The type of the data to encrypt.</typeparam>
     /// <returns>The encrypted data string.</returns>
     /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the encryption manager has not been initialized
+    ///     The exception thrown when the <see cref="EncryptionManager" /> has not been initialized
     ///     yet.
     /// </exception>
     public string SerializeEncrypt<T>(T data)
@@ -120,13 +122,14 @@ public class EncryptionManager
     }
 
     /// <summary>
-    ///     Decrypts the given data and deserializes it to the given type.
+    ///     Decrypts the given data using the master key of the current <see cref="User" /> and deserializes it to the given
+    ///     type.
     /// </summary>
     /// <param name="encryptedData">The encrypted data as a string.</param>
     /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
     /// <returns>The decrypted and deserialized object.</returns>
     /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the encryption manager has not been initialized
+    ///     The exception thrown when the <see cref="EncryptionManager" /> has not been initialized
     ///     yet.
     /// </exception>
     public T? DeserializeDecrypt<T>(string encryptedData)

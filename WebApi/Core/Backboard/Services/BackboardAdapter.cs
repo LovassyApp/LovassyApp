@@ -37,11 +37,11 @@ public class BackboardAdapter
     }
 
     /// <summary>
-    ///     Initializes the backboard adapter with the current user object.
+    ///     Initializes the <see cref="BackboardAdapter" /> with the current user object.
     /// </summary>
-    /// <param name="user">The user, who's grades we want to import.</param>
+    /// <param name="user">The <see cref="User" />, who's grades we want to import.</param>
     /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the encryption manager has not yet been
+    ///     The exception thrown when the <see cref="EncryptionManager" /> has not yet been
     ///     initialized.
     /// </exception>
     public void Init(User user)
@@ -53,9 +53,17 @@ public class BackboardAdapter
     }
 
     /// <summary>
-    ///     Attempts to update the user's grades, real name and class. It only works if a <c>GradeImport</c> for the user
-    ///     exists.
+    ///     Attempts to update the user's grades, real name and class. It only works if a <see cref="GradeImport" /> for the
+    ///     user exists.
     /// </summary>
+    /// <exception cref="BackboardAdapterUserNotFoundException">
+    ///     The exception thrown when The <see cref="BackboardAdapter" /> has not yet
+    ///     been initialized.
+    /// </exception>
+    /// <exception cref="InvalidImportException">
+    ///     The exception thrown when invalid grade import data is found in the database
+    ///     (not decryptable or deserializable).
+    /// </exception>
     public async Task TryUpdatingAsync()
     {
         if (_user == null)

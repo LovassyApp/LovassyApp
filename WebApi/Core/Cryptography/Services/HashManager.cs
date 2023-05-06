@@ -25,11 +25,15 @@ public class HashManager
     }
 
     /// <summary>
-    ///     Hashes a payload with the user's own encrypted salt. Primarily meant for hashing the user id and lolo ids.
+    ///     Hashes a payload with the <see cref="User" />'s own encrypted salt. Primarily meant for hashing the user id and
+    ///     lolo ids.
     /// </summary>
     /// <param name="payload">The payload to hash.</param>
     /// <returns>The hashed payload as a string.</returns>
-    /// <exception cref="HasherSaltNotFoundException">The exception thrown when the hash manager has not yet been initialized.</exception>
+    /// <exception cref="HasherSaltNotFoundException">
+    ///     The exception thrown when the <see cref="HashManager" /> has not yet been
+    ///     initialized.
+    /// </exception>
     public string HashWithHasherSalt(string payload)
     {
         if (_userSalt == null)
@@ -47,11 +51,11 @@ public class HashManager
     }
 
     /// <summary>
-    ///     Initializes the hash manager with the user's encrypted salt.
+    ///     Initializes the <see cref="HashManager" /> with the user's encrypted salt.
     /// </summary>
-    /// <param name="user">The user, who's salt is going to be used.</param>
+    /// <param name="user">The <see cref="User" />, who's salt is going to be used.</param>
     /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the encryption manager has not yet been
+    ///     The exception thrown when the <see cref="EncryptionManager" /> has not yet been
     ///     initialized.
     /// </exception>
     public void Init(User user)
