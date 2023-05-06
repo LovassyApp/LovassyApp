@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Core.Backboard.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -48,26 +47,21 @@ public static class IndexGrades
 
     internal sealed class IndexGradesHandler : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly BackboardAdapter _backboardAdapter;
         private readonly ApplicationDbContext _context;
         private readonly HashManager _hashManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IndexGradesHandler(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context,
-            BackboardAdapter backboardAdapter,
             HashManager hashManager)
         {
             _httpContextAccessor = httpContextAccessor;
             _context = context;
-            _backboardAdapter = backboardAdapter;
             _hashManager = hashManager;
         }
 
         public async Task<IEnumerable<Response>> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            await _backboardAdapter.TryUpdatingAsync();
-
             var grades = await _context.Grades
                 .Where(g => g.UserIdHashed ==
                             _hashManager.HashWithHasherSalt(

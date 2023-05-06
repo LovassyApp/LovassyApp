@@ -7,8 +7,10 @@ using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
+using WebApi.Features.Auth.EventInterfaces;
 using WebApi.Features.Auth.Options;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Commands;
 
@@ -44,12 +46,15 @@ public static class Refresh
         private readonly EncryptionManager _encryptionManager;
         private readonly EncryptionService _encryptionService;
         private readonly HashManager _hashManager;
+        private readonly IPublisher _publisher;
         private readonly RefreshOptions _refreshOptions;
         private readonly SessionManager _sessionManager;
 
-        public Handler(ApplicationDbContext context, SessionManager sessionManager, EncryptionManager encryptionManager,
+        public Handler(IPublisher publisher, ApplicationDbContext context, SessionManager sessionManager,
+            EncryptionManager encryptionManager,
             EncryptionService encryptionService, HashManager hashManager, IOptions<RefreshOptions> refreshOptions)
         {
+            _publisher = publisher;
             _context = context;
             _sessionManager = sessionManager;
             _encryptionManager = encryptionManager;
@@ -99,6 +104,11 @@ public static class Refresh
                     new RefreshTokenContents { Password = refreshTokenContents.Password, UserId = user.Id },
                     TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
+            await _publisher.Publish(new RefreshEvent
+            {
+                User = user
+            }, cancellationToken);
+
             return new Response
             {
                 User = user.Adapt<ResponseUser>(),
@@ -108,4 +118,9 @@ public static class Refresh
             }; //TODO: Maybe add warden permissions to response
         }
     }
+}
+
+public class RefreshEvent : ISessionCreatedEvent
+{
+    public User User { get; set; }
 }

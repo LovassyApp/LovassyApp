@@ -8,8 +8,10 @@ using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
+using WebApi.Features.Auth.EventInterfaces;
 using WebApi.Features.Auth.Options;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Commands;
 
@@ -74,13 +76,16 @@ public static class Login
         private readonly EncryptionService _encryptionService;
         private readonly HashManager _hashManager;
         private readonly HashService _hashService;
+        private readonly IPublisher _publisher;
         private readonly RefreshOptions _refreshOptions;
         private readonly SessionManager _sessionManager;
 
-        public Handler(ApplicationDbContext context, HashService hashService, EncryptionManager encryptionManager,
+        public Handler(IPublisher publisher, ApplicationDbContext context, HashService hashService,
+            EncryptionManager encryptionManager,
             EncryptionService encryptionService, SessionManager sessionManager, HashManager hashManager,
             IOptions<RefreshOptions> refreshOptions)
         {
+            _publisher = publisher;
             _context = context;
             _hashService = hashService;
             _encryptionManager = encryptionManager;
@@ -114,6 +119,11 @@ public static class Login
                         new RefreshTokenContents { Password = request.Body.Password, UserId = user.Id },
                         TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
+                await _publisher.Publish(new LoginEvent
+                {
+                    User = user
+                }, cancellationToken);
+
                 return new Response
                 {
                     User = user.Adapt<ResponseUser>(),
@@ -123,6 +133,11 @@ public static class Login
                 };
             }
 
+            await _publisher.Publish(new LoginEvent
+            {
+                User = user
+            }, cancellationToken);
+
             return new Response
             {
                 User = user.Adapt<ResponseUser>(),
@@ -130,4 +145,9 @@ public static class Login
             }; //TODO: Maybe add warden permissions to response
         }
     }
+}
+
+public class LoginEvent : ISessionCreatedEvent
+{
+    public User User { get; set; }
 }
