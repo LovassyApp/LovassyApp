@@ -20,9 +20,10 @@ public class DeleteOldTokensJob
 
         var tokens =
             context.PersonalAccessTokens.Where(x =>
-                x.LastUsedAt != null && x.LastUsedAt < DateTime.Now.AddDays(-15).ToUniversalTime());
+                x.LastUsedAt != null && x.LastUsedAt < DateTime.Now.AddDays(-7).ToUniversalTime());
+        var count = tokens.Count();
         context.PersonalAccessTokens.RemoveRange(tokens);
         context.SaveChanges();
-        _logger.LogInformation("Deleted {Count} old tokens", tokens.Count());
+        _logger.LogInformation("Deleted {Count} old tokens", count);
     }
 }

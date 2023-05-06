@@ -17,8 +17,7 @@ public static class AddCommonExtension
 
         // Fluent Validation
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services
-            .TryAddTransient<IValidatorFactory,
+        services.TryAddTransient<IValidatorFactory,
                 ServiceProviderValidatorFactory>(); // Required for Swagger docs based on fluent validation
 
         // MediatR

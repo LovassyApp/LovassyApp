@@ -1,9 +1,9 @@
-using System.Security.Claims;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
+using WebApi.Core.Auth.Extensions;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -69,7 +69,7 @@ public static class IndexGrades
         {
             var grades = _context.Grades
                 .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(
-                    _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!))
+                    _httpContextAccessor.HttpContext!.User.GetId()!))
                 .Where(g => g.GradeType == GradeType.RegularGrade);
 
 
