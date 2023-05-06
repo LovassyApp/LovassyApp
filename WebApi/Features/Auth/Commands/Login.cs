@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
+using Hangfire;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,9 @@ using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Features.Auth.EventInterfaces;
+using WebApi.Features.Auth.Jobs;
 using WebApi.Features.Auth.Options;
 using WebApi.Infrastructure.Persistence;
-using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Commands;
 
@@ -71,22 +71,22 @@ public static class Login
 
     internal sealed class Handler : IRequestHandler<Command, Response>
     {
+        private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
         private readonly EncryptionService _encryptionService;
         private readonly HashManager _hashManager;
         private readonly HashService _hashService;
-        private readonly IPublisher _publisher;
         private readonly RefreshOptions _refreshOptions;
         private readonly SessionManager _sessionManager;
 
-        public Handler(IPublisher publisher, ApplicationDbContext context, HashService hashService,
-            EncryptionManager encryptionManager,
+        public Handler(ApplicationDbContext context, HashService hashService,
+            EncryptionManager encryptionManager, IBackgroundJobClient backgroundJobClient,
             EncryptionService encryptionService, SessionManager sessionManager, HashManager hashManager,
             IOptions<RefreshOptions> refreshOptions)
         {
-            _publisher = publisher;
             _context = context;
+            _backgroundJobClient = backgroundJobClient;
             _hashService = hashService;
             _encryptionManager = encryptionManager;
             _encryptionService = encryptionService;
@@ -119,10 +119,7 @@ public static class Login
                         new RefreshTokenContents { Password = request.Body.Password, UserId = user.Id },
                         TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
-                await _publisher.Publish(new LoginEvent
-                {
-                    User = user
-                }, cancellationToken);
+                _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
 
                 return new Response
                 {
@@ -133,10 +130,7 @@ public static class Login
                 };
             }
 
-            await _publisher.Publish(new LoginEvent
-            {
-                User = user
-            }, cancellationToken);
+            _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
 
             return new Response
             {
@@ -145,9 +139,4 @@ public static class Login
             }; //TODO: Maybe add warden permissions to response
         }
     }
-}
-
-public class LoginEvent : ISessionCreatedEvent
-{
-    public User User { get; set; }
 }

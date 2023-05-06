@@ -1,4 +1,5 @@
 using FluentValidation.Results;
+using Hangfire;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -7,10 +8,9 @@ using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Features.Auth.EventInterfaces;
+using WebApi.Features.Auth.Jobs;
 using WebApi.Features.Auth.Options;
 using WebApi.Infrastructure.Persistence;
-using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Commands;
 
@@ -42,19 +42,19 @@ public static class Refresh
 
     internal sealed class Handler : IRequestHandler<Command, Response>
     {
+        private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
         private readonly EncryptionService _encryptionService;
         private readonly HashManager _hashManager;
-        private readonly IPublisher _publisher;
         private readonly RefreshOptions _refreshOptions;
         private readonly SessionManager _sessionManager;
 
-        public Handler(IPublisher publisher, ApplicationDbContext context, SessionManager sessionManager,
-            EncryptionManager encryptionManager,
-            EncryptionService encryptionService, HashManager hashManager, IOptions<RefreshOptions> refreshOptions)
+        public Handler(IBackgroundJobClient backgroundJobClient, ApplicationDbContext context,
+            SessionManager sessionManager, EncryptionManager encryptionManager, EncryptionService encryptionService,
+            HashManager hashManager, IOptions<RefreshOptions> refreshOptions)
         {
-            _publisher = publisher;
+            _backgroundJobClient = backgroundJobClient;
             _context = context;
             _sessionManager = sessionManager;
             _encryptionManager = encryptionManager;
@@ -104,10 +104,7 @@ public static class Refresh
                     new RefreshTokenContents { Password = refreshTokenContents.Password, UserId = user.Id },
                     TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
-            await _publisher.Publish(new RefreshEvent
-            {
-                User = user
-            }, cancellationToken);
+            _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
 
             return new Response
             {
@@ -118,9 +115,4 @@ public static class Refresh
             }; //TODO: Maybe add warden permissions to response
         }
     }
-}
-
-public class RefreshEvent : ISessionCreatedEvent
-{
-    public User User { get; set; }
 }

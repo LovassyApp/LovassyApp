@@ -96,7 +96,7 @@ public class BackboardAdapter
 
         _user.ImportAvailable = false;
 
-        await _context.SaveChangesAsync(); // only necessary for the changes to the user and grade imports
+        await _context.SaveChangesAsync(); // only necessary for the changes to the user
 
         _memoryCache.Remove(_adapterLockPrefix + _user.Id);
     }
