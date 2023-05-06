@@ -119,7 +119,7 @@ public class BackboardAdapter
         var grades = new List<Grade>();
 
         foreach (var grade in gradeCollection.Grades)
-            grades.Add(GradeUtils.TransformBackboardGrade(grade,
+            grades.Add(BackboardUtils.TransformBackboardGrade(grade,
                 _hashManager.HashWithHasherSalt(_user!.Id.ToString())));
 
         return grades;
