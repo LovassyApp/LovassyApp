@@ -105,6 +105,7 @@ public static class Refresh
                     TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
             _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
+            // TODO: ContinueWith lolo updating
 
             return new Response
             {

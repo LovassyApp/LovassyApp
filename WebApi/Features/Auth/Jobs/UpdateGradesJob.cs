@@ -29,5 +29,7 @@ public class UpdateGradesJob
         backboardAdapter.Init(user);
 
         backboardAdapter.TryUpdatingAsync().Wait();
+
+        //TODO: Send out a notification through websockets informing the user that their grades have finished updating (we should only fetch them afterwards)
     }
 }
