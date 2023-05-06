@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Sieve.Attributes;
 
 namespace WebApi.Infrastructure.Persistence.Entities;
 
@@ -10,10 +11,19 @@ namespace WebApi.Infrastructure.Persistence.Entities;
 [Index(nameof(HasherSaltHashed), IsUnique = true)]
 public class User : TimestampedEntity
 {
-    [Key] public Guid Id { get; set; }
+    [Key]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public Guid Id { get; set; }
 
-    [Required] [MaxLength(255)] public string Name { get; set; }
-    [Required] public string Email { get; set; }
+    [Required]
+    [MaxLength(255)]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string Name { get; set; }
+
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string Email { get; set; }
+
     [Required] public string PasswordHashed { get; set; }
 
     [Required] public string PublicKey { get; set; }
@@ -27,7 +37,10 @@ public class User : TimestampedEntity
     [Required] public string OmCodeEncrypted { get; set; }
     [Required] public string OmCodeHashed { get; set; }
 
+    [Sieve(CanFilter = true, CanSort = true)]
     public string? RealName { get; set; }
+
+    [Sieve(CanFilter = true, CanSort = true)]
     public string? Class { get; set; }
 
     public bool ImportAvailable { get; set; }

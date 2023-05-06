@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 using WebApi.Common.Models;
 using WebApi.Features.Import.Commands;
 using WebApi.Features.Import.Queries;
@@ -10,9 +11,12 @@ namespace WebApi.Features.Import;
 public class ImportKeyController : ApiControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<IndexImportKeys.Response>>> Index()
+    public async Task<ActionResult<IEnumerable<IndexImportKeys.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
-        var importKeys = await Mediator.Send(new IndexImportKeys.Query());
+        var importKeys = await Mediator.Send(new IndexImportKeys.Query
+        {
+            SieveModel = sieveModel
+        });
 
         return Ok(importKeys);
     }

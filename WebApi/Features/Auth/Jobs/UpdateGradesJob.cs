@@ -30,6 +30,6 @@ public class UpdateGradesJob
 
         backboardAdapter.TryUpdatingAsync().Wait();
 
-        //TODO: Send out a notification through websockets informing the user that their grades have finished updating (we should only fetch them afterwards)
+        //TODO: Send out a notification through websockets informing the user that their grades have finished updating (we should refetch them afterwards)
     }
 }

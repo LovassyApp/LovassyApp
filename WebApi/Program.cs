@@ -1,9 +1,5 @@
-using System.Reflection;
-using FluentValidation;
 using Hangfire;
-using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 using WebApi.Common;
@@ -11,24 +7,20 @@ using WebApi.Common.Filters;
 using WebApi.Core.Auth;
 using WebApi.Core.Backboard;
 using WebApi.Core.Cryptography;
+using WebApi.Core.Filtering;
 using WebApi.Features;
 using WebApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMemoryCache();
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-builder.Services.TryAddTransient<IValidatorFactory,
-    ServiceProviderValidatorFactory>(); // Required for Swagger docs based on fluent validation
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-
 builder.Services.AddCommon(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddCryptographyServices(builder.Configuration);
 builder.Services.AddAuthServices(builder.Configuration);
 builder.Services.AddBackboardServices(builder.Configuration);
+builder.Services.AddFilteringServices();
 
 builder.Services.AddFeatures(builder.Configuration);
 

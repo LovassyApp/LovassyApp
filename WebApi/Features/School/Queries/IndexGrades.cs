@@ -2,6 +2,8 @@ using System.Security.Claims;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Sieve.Models;
+using Sieve.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -12,6 +14,7 @@ public static class IndexGrades
 {
     public class Query : IRequest<IEnumerable<Response>>
     {
+        public SieveModel SieveModel { get; set; }
     }
 
     public class Response
@@ -50,28 +53,30 @@ public static class IndexGrades
         private readonly ApplicationDbContext _context;
         private readonly HashManager _hashManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly SieveProcessor _sieveProcessor;
 
         public IndexGradesHandler(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context,
-            HashManager hashManager)
+            SieveProcessor sieveProcessor, HashManager hashManager)
         {
             _httpContextAccessor = httpContextAccessor;
             _context = context;
+            _sieveProcessor = sieveProcessor;
             _hashManager = hashManager;
         }
 
         public async Task<IEnumerable<Response>> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            var grades = await _context.Grades
-                .Where(g => g.UserIdHashed ==
-                            _hashManager.HashWithHasherSalt(
-                                _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!))
-                .Where(g => g.GradeType == GradeType.RegularGrade)
-                .OrderByDescending(g => g.EvaluationDate)
-                .GroupBy(g => g.Subject)
+            var grades = _context.Grades
+                .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(
+                    _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!))
+                .Where(g => g.GradeType == GradeType.RegularGrade);
+
+
+            var filteredGrades = await _sieveProcessor.Apply(request.SieveModel, grades).GroupBy(g => g.Subject)
                 .ToListAsync(cancellationToken);
 
-            var response = grades.Select(g => new Response
+            var response = filteredGrades.Select(g => new Response
             {
                 Subject = g.Key,
                 Grades = g.Adapt<List<ResponseGrade>>()

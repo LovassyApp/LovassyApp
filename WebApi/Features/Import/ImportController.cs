@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 using WebApi.Common.Models;
 using WebApi.Core.Auth;
 using WebApi.Features.Import.Commands;
@@ -11,9 +12,12 @@ namespace WebApi.Features.Import;
 public class ImportController : ApiControllerBase
 {
     [HttpGet("Users")]
-    public async Task<ActionResult<IEnumerable<IndexUsers.Response>>> IndexUsers()
+    public async Task<ActionResult<IEnumerable<IndexUsers.Response>>> IndexUsers([FromQuery] SieveModel sieveModel)
     {
-        var users = await Mediator.Send(new IndexUsers.Query());
+        var users = await Mediator.Send(new IndexUsers.Query
+        {
+            SieveModel = sieveModel
+        });
 
         return Ok(users);
     }
