@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Web;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using WebApi.Core.Auth.Exceptions;
@@ -53,7 +54,10 @@ public class SessionManager
     ///     Starts an entirely new session.
     /// </summary>
     /// <param name="user">The <see cref="User" />, for which the session is started.</param>
-    /// <returns>The access token that can later be used to initialize the <see cref="SessionManager" />.</returns>
+    /// <returns>
+    ///     The access token that can later be used to initialize the <see cref="SessionManager" />. This token is url
+    ///     encoded and should be decoded before checking!
+    /// </returns>
     public async Task<string> StartSessionAsync(User user)
     {
         var tokenBytes = RandomNumberGenerator.GetBytes(64);
@@ -81,7 +85,9 @@ public class SessionManager
 
         _encryptionKey = HashingUtils.GenerateBasicKey(_token, Session.Salt);
 
-        return _token;
+        return HttpUtility.UrlEncode(_token); // The reason why we do this here instead of back when creating the access
+        // token is that it's kind of random when asp.net core decides to urldecode
+        // by itself so we want to avoid issues with that 
     }
 
     /// <summary>

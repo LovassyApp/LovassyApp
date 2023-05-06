@@ -85,7 +85,7 @@ public static class HashingUtils
     public static string GenerateSalt()
     {
         var secureRandom = new SecureRandom();
-        var saltBytes = new byte[128 / 8];
+        var saltBytes = new byte[16];
         secureRandom.NextBytes(saltBytes);
         return Convert.ToBase64String(saltBytes);
     }

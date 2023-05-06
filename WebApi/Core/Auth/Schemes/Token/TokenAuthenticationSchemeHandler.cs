@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Web;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
@@ -43,9 +44,9 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
                                                                         !Request.Query.ContainsKey("access_token")))
             return AuthenticateResult.Fail("Token Not Found");
 
-        var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+        var token = HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""));
         if (Options.HubsBasePath != null && Request.Path.StartsWithSegments(Options.HubsBasePath))
-            token = Request.Query["access_token"];
+            token = HttpUtility.UrlDecode(Request.Query["access_token"]);
 
         var accessToken = await _context.PersonalAccessTokens.Include(t => t.User).Where(t => t.Token == token)
             .FirstOrDefaultAsync();
@@ -54,7 +55,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         try
         {
-            InitializeManagers(token!, accessToken.User);
+            InitializeManagers(token, accessToken.User);
         }
         catch (SessionNotFoundException)
         {
