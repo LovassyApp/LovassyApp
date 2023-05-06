@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Org.BouncyCastle.Security;
 
 namespace WebApi.Core.Cryptography.Utils;
 
@@ -83,7 +84,9 @@ public static class HashingUtils
     /// <returns>The base64 string representation of the generated salt.</returns>
     public static string GenerateSalt()
     {
-        var saltBytes = RandomNumberGenerator.GetBytes(128 / 8);
+        var secureRandom = new SecureRandom();
+        var saltBytes = new byte[128 / 8];
+        secureRandom.NextBytes(saltBytes);
         return Convert.ToBase64String(saltBytes);
     }
 }
