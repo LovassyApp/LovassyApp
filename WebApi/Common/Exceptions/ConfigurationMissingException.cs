@@ -1,5 +1,9 @@
 namespace WebApi.Common.Exceptions;
 
+/// <summary>
+///     The exception thrown when a required configuration key is missing. Has to be manually thrown in the controller of
+///     whatever service is using the configuration.
+/// </summary>
 [Serializable]
 public class ConfigurationMissingException : InvalidOperationException
 {

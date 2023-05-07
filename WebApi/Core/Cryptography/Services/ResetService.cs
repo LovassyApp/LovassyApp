@@ -3,6 +3,10 @@ using WebApi.Core.Cryptography.Utils;
 
 namespace WebApi.Core.Cryptography.Services;
 
+/// <summary>
+///     The singleton service responsible for storing the reset key password and encrypting and decrypting the master key
+///     with it.
+/// </summary>
 public class ResetService
 {
     private string? _resetKeyPassword;

@@ -5,6 +5,10 @@ using Org.BouncyCastle.Security;
 
 namespace WebApi.Core.Cryptography.Utils;
 
+/// <summary>
+///     Utility class for hashing data using SHA and generating encryption keys from arbitrary string using PBKDF2 and
+///     generating salts.
+/// </summary>
 public static class HashingUtils
 {
     /// <summary>

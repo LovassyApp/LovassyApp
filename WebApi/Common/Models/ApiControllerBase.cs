@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Common.Models;
 
+/// <summary>
+///     The base class for all API controllers.
+/// </summary>
 [ApiController]
 [Route("Api/[controller]")]
 [Produces("application/json")]

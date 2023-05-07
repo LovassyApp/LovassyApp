@@ -5,6 +5,9 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Backboard.Utils;
 
+/// <summary>
+///     Utility class for transforming <see cref="BackboardGrade" /> objects into to <see cref="Grade" /> objects.
+/// </summary>
 public static class BackboardUtils
 {
     private static readonly ILookup<string, int> TextGradeLookup = new Dictionary<string, int>

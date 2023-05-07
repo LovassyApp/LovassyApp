@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Models;
+using WebApi.Core.Auth.Schemes.Token;
 using WebApi.Core.Cryptography.Utils;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -11,6 +12,10 @@ using SessionOptions = WebApi.Core.Auth.Services.Options.SessionOptions;
 
 namespace WebApi.Core.Auth.Services;
 
+/// <summary>
+///     The scoped service responsible for managing the session of the current user. Initialized in the
+///     <see cref="TokenAuthenticationSchemeHandler" />.
+/// </summary>
 public class SessionManager
 {
     private readonly ApplicationDbContext _context;

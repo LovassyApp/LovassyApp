@@ -9,6 +9,10 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Cryptography.Services;
 
+/// <summary>
+///     The scoped service responsible for encrypting and decrypting data using the master key of the current
+///     <see cref="User" />.
+/// </summary>
 public class EncryptionManager
 {
     private readonly string _masterKeySessionKey;
@@ -36,7 +40,8 @@ public class EncryptionManager
     }
 
     /// <summary>
-    ///     Initializes the <see cref="EncryptionManager" /> with a master key. If no key is provided, it tries to get it from
+    ///     Initializes the <see cref="EncryptionManager" /> with a master key (will not be saved in the session, to save it in
+    ///     the session set it through <see cref="MasterKey" />). If no key is provided, it tries to get it from
     ///     the session.
     /// </summary>
     /// <param name="key">The master key to be used.</param>

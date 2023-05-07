@@ -7,6 +7,9 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Cryptography.Services;
 
+/// <summary>
+///     The scoped service responsible for hashing data using the user's encrypted salt. (primarily used for hashing ids)
+/// </summary>
 public class HashManager
 {
     private readonly string _cachePrefix;

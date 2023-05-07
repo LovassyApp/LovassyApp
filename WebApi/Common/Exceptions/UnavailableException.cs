@@ -2,6 +2,11 @@ using System.Runtime.Serialization;
 
 namespace WebApi.Common.Exceptions;
 
+/// <summary>
+///     The exception thrown when a service (for example an endpoint) is not available. Will result in a 503 Service
+///     Unavailable response if thrown
+///     in a command or query.
+/// </summary>
 public class UnavailableException : Exception
 {
     public UnavailableException()

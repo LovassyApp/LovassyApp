@@ -5,6 +5,12 @@ namespace WebApi.Features;
 
 public static class AddFeaturesExtension
 {
+    /// <summary>
+    ///     Adds all services related to isolated features. These services are not to be used outside of their respective
+    ///     feature!
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The app configuration.</param>
     public static void AddFeatures(this IServiceCollection services, IConfiguration configuration)
     {
         // Status

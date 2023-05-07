@@ -6,6 +6,10 @@ using WebApi.Core.Cryptography.Utils;
 
 namespace WebApi.Core.Cryptography.Services;
 
+/// <summary>
+///     The singleton service responsible for encrypting and decrypting data using the data protection api or
+///     <see cref="EncryptionUtils" />.
+/// </summary>
 public class EncryptionService
 {
     private readonly IDataProtector _dataProtector;

@@ -16,6 +16,13 @@ namespace WebApi.Common;
 
 public static class AddCommonExtension
 {
+    /// <summary>
+    ///     Add services related to the base functionality of the application (e.g. MediatR, FluentValidation, Swagger, etc.).
+    ///     The services added here are likely to be used in every other part of the application either directly or indirectly.
+    ///     It's import to only add only add services here that can't be categorized as part of a specific feature.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The app configuration.</param>
     public static void AddCommon(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();

@@ -2,6 +2,9 @@ using System.Security.Cryptography;
 
 namespace WebApi.Core.Cryptography.Utils;
 
+/// <summary>
+///     Utility class for encrypting and decrypting data using AES.
+/// </summary>
 public static class EncryptionUtils
 {
     /// <summary>

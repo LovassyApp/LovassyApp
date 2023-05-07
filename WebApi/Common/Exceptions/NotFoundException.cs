@@ -1,5 +1,9 @@
 namespace WebApi.Common.Exceptions;
 
+/// <summary>
+///     The exception thrown when a resource is not found. Will result in a 404 Not Found response if thrown in a command
+///     or query.
+/// </summary>
 public class NotFoundException : Exception
 {
     public NotFoundException()

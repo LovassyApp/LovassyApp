@@ -4,6 +4,10 @@ using WebApi.Core.Cryptography.Utils;
 
 namespace WebApi.Core.Cryptography.Models;
 
+/// <summary>
+///     The implementation of <see cref="IEncryptableKey" /> using <see cref="EncryptionUtils" /> for locking and unlocking
+///     the key.
+/// </summary>
 public class EncryptableKey : IEncryptableKey
 {
     private string? _key;

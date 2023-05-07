@@ -4,6 +4,9 @@ using Sieve.Services;
 
 namespace WebApi.Common.Services;
 
+/// <summary>
+///     The customized Sieve processor used for filtering.
+/// </summary>
 public class ApplicationSieveProcessor : SieveProcessor
 {
     public ApplicationSieveProcessor(IOptions<SieveOptions> options) : base(options)

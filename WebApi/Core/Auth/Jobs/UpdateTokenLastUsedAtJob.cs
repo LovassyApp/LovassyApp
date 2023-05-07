@@ -1,7 +1,12 @@
+using WebApi.Core.Auth.Schemes.Token;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Jobs;
 
+/// <summary>
+///     The background job that updates the last used at property of a personal access token. Fired each time when a token
+///     is used in <see cref="TokenAuthenticationSchemeHandler" />.
+/// </summary>
 public class UpdateTokenLastUsedAtJob
 {
     private readonly IServiceProvider _serviceProvider;

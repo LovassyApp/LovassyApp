@@ -2,9 +2,13 @@ using FluentValidation.Results;
 
 namespace WebApi.Common.Exceptions;
 
+/// <summary>
+///     The exception thrown when a validation error occurs. Will result in a 400 Bad Request response if thrown in a
+///     command or query.
+/// </summary>
 public class ValidationException : Exception
 {
-    public ValidationException()
+    private ValidationException()
         : base("One or more validation failures have occurred.")
     {
         Errors = new Dictionary<string, string[]>();

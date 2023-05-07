@@ -1,5 +1,9 @@
 namespace WebApi.Core.Cryptography.Models;
 
+/// <summary>
+///     The interface for an asymmetric encrypter which is only capable of encrypting and not decrypting but also only
+///     requires a public key.
+/// </summary>
 public interface IAsymmetricEncrypter
 {
     /// <summary>

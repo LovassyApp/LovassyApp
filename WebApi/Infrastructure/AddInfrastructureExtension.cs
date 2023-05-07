@@ -8,6 +8,13 @@ namespace WebApi.Infrastructure;
 
 public static class AddInfrastructureExtension
 {
+    /// <summary>
+    ///     Adds all services related to infrastructure, aka interfacing with external systems (for example the database).
+    ///     Services added here are likely to be used either directly or indirectly in every part of the application (but it's
+    ///     not a must).
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The app configuration.</param>
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         // Persistence

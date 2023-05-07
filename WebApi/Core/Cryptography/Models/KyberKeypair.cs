@@ -5,6 +5,9 @@ using WebApi.Core.Cryptography.Utils;
 
 namespace WebApi.Core.Cryptography.Models;
 
+/// <summary>
+///     The implementation of <see cref="IKeypair" /> using the Kyber post quantum encryption algorithm.
+/// </summary>
 public class KyberKeypair : IKeypair
 {
     private readonly InternalKeypair _keypair;

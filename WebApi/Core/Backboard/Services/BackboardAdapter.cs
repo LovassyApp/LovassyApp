@@ -15,6 +15,10 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Backboard.Services;
 
+/// <summary>
+///     The hosted service responsible for converting the encrypted contents of <see cref="GradeImport" /> models from
+///     Backboard into <see cref="Grade" /> models.
+/// </summary>
 public class BackboardAdapter
 {
     private readonly string _adapterLockPrefix;

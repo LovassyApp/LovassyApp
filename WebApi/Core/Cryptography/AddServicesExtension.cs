@@ -5,6 +5,12 @@ namespace WebApi.Core.Cryptography;
 
 public static class AddServicesExtension
 {
+    /// <summary>
+    ///     Adds all services related to cryptography that are likely to be used either directly or indirectly in some
+    ///     features.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The app configuration.</param>
     public static void AddCryptographyServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDataProtection();

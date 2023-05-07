@@ -11,6 +11,11 @@ namespace WebApi.Core.Auth;
 
 public static class AddServicesExtension
 {
+    /// <summary>
+    ///     Adds all auth related services that are likely to be used either directly or indirectly in some features.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The app configuration.</param>
     public static void AddAuthServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<SessionOptions>(configuration.GetSection("Session"));

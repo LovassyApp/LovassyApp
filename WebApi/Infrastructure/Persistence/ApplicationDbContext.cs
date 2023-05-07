@@ -4,6 +4,9 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Infrastructure.Persistence;
 
+/// <summary>
+///     The database context for the application. Used for interfacing with the database.
+/// </summary>
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :

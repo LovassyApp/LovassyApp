@@ -6,6 +6,9 @@ using WebApi.Core.Cryptography.Utils;
 
 namespace WebApi.Core.Cryptography.Services;
 
+/// <summary>
+///     The singleton service responsible for hashing passwords and other data using the <see cref="HashingUtils" /> class.
+/// </summary>
 public class HashService
 {
     private readonly int _passwordBytesRequested;

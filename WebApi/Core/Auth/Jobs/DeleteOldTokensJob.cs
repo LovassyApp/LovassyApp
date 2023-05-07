@@ -2,6 +2,9 @@ using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Jobs;
 
+/// <summary>
+///     The scheduled job that deletes old personal access tokens.
+/// </summary>
 public class DeleteOldTokensJob
 {
     private readonly ILogger<DeleteOldTokensJob> _logger;

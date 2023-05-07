@@ -1,7 +1,7 @@
 namespace WebApi.Core.Cryptography.Models;
 
 /// <summary>
-///     An interface for a keypair that can be used for asymmetric encryption.
+///     An interface for a keypair that can be used for asymmetric encryption and decryption.
 /// </summary>
 public interface IKeypair
 {
