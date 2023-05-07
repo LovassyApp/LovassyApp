@@ -9,6 +9,7 @@
 - **Feature**: Olyan funkciós csoportokra osztott osztályok összessége, amelyek logikusan összetartoznak és a saját funkciós csoportjukon kívül nincsenek használva. (Speciális esetben "kifelé irányuló kommunikáció a külvilággal" megengedett **event**ek segítségével, ilyen eset mondjuk egy realtime értesítés küldése)
 - **Infrastucture**: Olyan osztályok összessége, amelyek külső szolgáltatásokkal való kommunikációért felelősek. (pl.: adatbázis, fájlrendszer, stb.)
 
+<hr>
 
 - **Command, Query**: Lásd: [CQRS](https://www.eventstore.com/cqrs-pattern). (*megjegyzés: itt beszélnek külön write és read modelről is, de mi itt olyat nem csinálunk, mert elég ha a mapper átalakítgatja a modeljeinket requestekből/responsokká*)
 - **Job**: Bármilyen háttérben futó folyamat akár egyszeri akár viszzatérő. Ezeket mindig a [Hangfire](https://www.hangfire.io/) kezeli is általában ezt egy `void Run(...)` methodon keresztül teszi. (de indokolt esetben ez lehet más is)
