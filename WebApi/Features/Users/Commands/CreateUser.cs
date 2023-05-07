@@ -39,10 +39,15 @@ public static class CreateUser
             RuleFor(x => x.Email).NotEmpty().EmailAddress()
                 .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'")
                 .MustAsync(BeUniqueEmailAsync).WithMessage("The email is already in use");
-            RuleFor(x => x.Password).NotEmpty();
+            RuleFor(x => x.Password).NotEmpty()
+                .MinimumLength(8).WithMessage("The password must be at least 8 characters long")
+                .Matches(@"[A-Z]+").WithMessage("The password must contain at least one uppercase letter")
+                .Matches(@"[a-z]+").WithMessage("The password must contain at least one lowercase letter")
+                .Matches(@"[0-9]+").WithMessage("The password must contain at least one number");
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.OmCode).NotEmpty()
-                .MustAsync(BeUniqueOmCodeAsync).WithMessage("The om code is already in use");
+                .MustAsync(BeUniqueOmCodeAsync).WithMessage("The om code is already in use")
+                .Matches(@"^\d{11}$").WithMessage("The om code must be 11 digits long and contain only numbers");
         }
 
         private bool EndWithAllowedDomainEmail(RequestBody model, string email)
