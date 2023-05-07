@@ -1,6 +1,4 @@
 using Hangfire;
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
-using Microsoft.OpenApi.Models;
 using Prometheus;
 using WebApi.Common;
 using WebApi.Common.Extensions;
@@ -25,40 +23,6 @@ builder.Services.AddFeatures(builder.Configuration);
 
 builder.Services.AddControllers(o => o.Filters.Add(new ExceptionFilter()));
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" });
-    c.EnableAnnotations();
-    c.AddAuthOperationFilters();
-    c.CustomSchemaIds(type => type.ToString().Replace("WebApi.Features.", string.Empty)
-        .Replace("Microsoft.AspNetCore.Mvc", string.Empty).Replace("+", string.Empty)
-        .Replace(".", string.Empty).Replace("Commands", string.Empty).Replace("Queries", string.Empty));
-
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "Token",
-        Scheme = "Bearer"
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
-});
-builder.Services.AddFluentValidationRulesToSwagger();
 
 var app = builder.Build();
 

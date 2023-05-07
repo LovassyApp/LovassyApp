@@ -8,7 +8,7 @@ namespace WebApi.Features.Import;
 
 //TODO: AUTHORIZATION!!!
 
-public class ImportKeyController : ApiControllerBase
+public class ImportKeysController : ApiControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<IndexImportKeys.Response>>> Index([FromQuery] SieveModel sieveModel)
