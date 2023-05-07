@@ -2,7 +2,7 @@ using WebApi.Common.Models;
 using WebApi.Common.Utils;
 using WebApi.Infrastructure.Persistence.Seeders;
 
-namespace WebApi.Infrastructure.Persistence.Commands;
+namespace WebApi.Infrastructure.Persistence.ConsoleCommands;
 
 public class SeedUsersCommand : IConsoleCommand
 {
