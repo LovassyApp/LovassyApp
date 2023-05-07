@@ -45,7 +45,7 @@ public class ResetService
     ///     Sets the reset key password.
     /// </summary>
     /// <param name="resetKeyPassword">The password to which the reset key password will be set to.</param>
-    public void SetResetKeyPassword(string resetKeyPassword)
+    public void SetResetKeyPassword(string? resetKeyPassword)
     {
         _resetKeyPassword = resetKeyPassword;
     }
