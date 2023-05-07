@@ -31,6 +31,9 @@ public static class AddCommonExtension
         //Commands
         services.AddConsoleCommands();
 
+        //Lifetime actions
+        services.AddLifetimeActions();
+
         // Fluent Validation
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.TryAddTransient<IValidatorFactory,

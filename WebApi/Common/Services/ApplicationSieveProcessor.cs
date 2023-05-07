@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Extensions.Options;
 using Sieve.Models;
 using Sieve.Services;
@@ -15,6 +16,6 @@ public class ApplicationSieveProcessor : SieveProcessor
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)
     {
-        return mapper.ApplyConfigurationsFromAssembly(typeof(ApplicationSieveProcessor).Assembly);
+        return mapper.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

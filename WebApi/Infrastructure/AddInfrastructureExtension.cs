@@ -2,7 +2,6 @@ using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Seeders;
-using WebApi.Infrastructure.Persistence.Services.Hosted;
 
 namespace WebApi.Infrastructure;
 
@@ -34,7 +33,5 @@ public static class AddInfrastructureExtension
         //Seeding
         services.AddScoped<GradeImportSeeder>();
         services.AddScoped<UserSeeder>();
-
-        services.AddHostedService<SeederService>();
     }
 }

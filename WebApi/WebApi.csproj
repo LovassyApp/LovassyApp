@@ -32,6 +32,7 @@
     <ItemGroup>
       <Folder Include="Core\Auth\Filters" />
       <Folder Include="Infrastructure\Persistence\Migrations\" />
+      <Folder Include="Infrastructure\Persistence\Services\" />
     </ItemGroup>
 
 </Project>
