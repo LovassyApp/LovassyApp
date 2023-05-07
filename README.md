@@ -11,7 +11,7 @@
 
 <hr>
 
-- **Command, Query**: Lásd: [CQRS](https://www.eventstore.com/cqrs-pattern). (*megjegyzés: itt beszélnek külön write és read modelről is, de mi itt olyat nem csinálunk, mert elég ha a mapper átalakítgatja a modeljeinket requestekből/responsokká*)
+- **Command, Query**: Lásd: [CQRS](https://www.eventstore.com/cqrs-pattern). (*megjegyzés: itt beszélnek külön write és read modelről is, de mi itt annyira nem bonyolítjuk*)
 - **Job**: Bármilyen háttérben futó folyamat akár egyszeri akár viszzatérő. Ezeket mindig a [Hangfire](https://www.hangfire.io/) kezeli is általában ezt egy `void Run(...)` methodon keresztül teszi. (de indokolt esetben ez lehet más is)
 - **Model**: Bármilyen adatot hordozó kizárólag propokkal rendelkező osztály. Ilyen osztály soha semmi logikát nem végez.
 - **Service**: Lásd: [Dependency Injection](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-7.0).
