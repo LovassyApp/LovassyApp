@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 using Sieve.Models;
 using Sieve.Services;
 
-namespace WebApi.Core.Filtering;
+namespace WebApi.Common.Services;
 
 public class ApplicationSieveProcessor : SieveProcessor
 {

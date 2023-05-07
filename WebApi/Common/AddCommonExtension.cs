@@ -4,7 +4,10 @@ using Hangfire;
 using Hangfire.PostgreSql;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Sieve.Services;
 using WebApi.Common.Behaviours;
+using WebApi.Common.Extensions;
+using WebApi.Common.Services;
 
 namespace WebApi.Common;
 
@@ -15,10 +18,16 @@ public static class AddCommonExtension
         services.AddHttpContextAccessor();
         services.AddMemoryCache();
 
+        //Commands
+        services.AddConsoleCommands();
+
         // Fluent Validation
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.TryAddTransient<IValidatorFactory,
-                ServiceProviderValidatorFactory>(); // Required for Swagger docs based on fluent validation
+            ServiceProviderValidatorFactory>(); // Required for Swagger docs based on fluent validation
+
+        // Filtering
+        services.AddScoped<SieveProcessor, ApplicationSieveProcessor>();
 
         // MediatR
         services.AddMediatR(Assembly.GetExecutingAssembly());

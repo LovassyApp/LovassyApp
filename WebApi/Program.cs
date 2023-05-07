@@ -3,11 +3,11 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 using WebApi.Common;
+using WebApi.Common.Extensions;
 using WebApi.Common.Filters;
 using WebApi.Core.Auth;
 using WebApi.Core.Backboard;
 using WebApi.Core.Cryptography;
-using WebApi.Core.Filtering;
 using WebApi.Features;
 using WebApi.Infrastructure;
 
@@ -20,7 +20,6 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddCryptographyServices(builder.Configuration);
 builder.Services.AddAuthServices(builder.Configuration);
 builder.Services.AddBackboardServices(builder.Configuration);
-builder.Services.AddFilteringServices();
 
 builder.Services.AddFeatures(builder.Configuration);
 
@@ -82,4 +81,4 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapMetrics();
 
-app.Run();
+app.RunWithCommands(args);
