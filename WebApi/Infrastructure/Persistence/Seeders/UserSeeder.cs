@@ -1,5 +1,4 @@
 using Bogus;
-using MediatR;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -15,13 +14,11 @@ public class UserSeeder
     private readonly ApplicationDbContext _context;
     private readonly EncryptionManager _encryptionManager;
     private readonly HashService _hashService;
-    private readonly IPublisher _publisher;
     private readonly ResetService _resetService;
 
-    public UserSeeder(IPublisher publisher, ApplicationDbContext context, EncryptionManager encryptionManager,
+    public UserSeeder(ApplicationDbContext context, EncryptionManager encryptionManager,
         HashService hashService, ResetService resetService)
     {
-        _publisher = publisher;
         _context = context;
         _encryptionManager = encryptionManager;
         _hashService = hashService;
