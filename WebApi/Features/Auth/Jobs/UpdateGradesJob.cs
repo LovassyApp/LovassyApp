@@ -5,6 +5,9 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Jobs;
 
+/// <summary>
+///     The background job that updates the grades of a user. Fired when a session is created (login/refresh)
+/// </summary>
 public class UpdateGradesJob
 {
     private readonly IServiceProvider _serviceProvider;
