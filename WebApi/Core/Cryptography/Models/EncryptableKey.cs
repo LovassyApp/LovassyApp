@@ -41,6 +41,7 @@ public class EncryptableKey : IEncryptableKey
         if (!_unlocked)
             throw new EncryptableKeyLockedException();
 
+        _unlocked = false;
         _keyEncrypted = EncryptionUtils.Encrypt(_key!, HashingUtils.GenerateBasicKey(password, salt));
         return _keyEncrypted;
     }
