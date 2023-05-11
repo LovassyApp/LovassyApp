@@ -112,6 +112,7 @@ public static class Login
             _encryptionManager.MasterKey = unlockedMasterKey;
             _hashManager.Init(user);
 
+            //TODO: We have to do something about this, as it slows down the login process by a lot, and it really shouldn't, it should just be fire and forget but for some reason it waits a lot here
             var updateGradesJob = _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
             _backgroundJobClient.ContinueJobWith<UpdateLolosJob>(updateGradesJob, j => j.Run(user, unlockedMasterKey));
 
