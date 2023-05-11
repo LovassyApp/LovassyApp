@@ -21,7 +21,19 @@ public class Lolo : TimestampedEntity
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
+    public LoloType LoloType { get; set; }
+
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
     public string Reason { get; set; }
+
+    public List<Grade>? Grades { get; set; }
+}
+
+public enum LoloType
+{
+    FromGrades,
+    FromRequest
 }
 
 public class LoloConfiguration : IEntityTypeConfiguration<Lolo>
@@ -29,5 +41,6 @@ public class LoloConfiguration : IEntityTypeConfiguration<Lolo>
     public void Configure(EntityTypeBuilder<Lolo> builder)
     {
         builder.Property(l => l.IsSpent).HasDefaultValue(false);
+        builder.Ignore(l => l.Grades);
     }
 }

@@ -112,15 +112,15 @@ public static class Login
             _encryptionManager.MasterKey = unlockedMasterKey;
             _hashManager.Init(user);
 
+            var updateGradesJob = _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
+            _backgroundJobClient.ContinueJobWith<UpdateLolosJob>(updateGradesJob, j => j.Run(user, unlockedMasterKey));
+
             if (request.Body.Remember)
             {
                 var refreshToken =
                     _encryptionService.SerializeProtect(
                         new RefreshTokenContents { Password = request.Body.Password, UserId = user.Id },
                         TimeSpan.FromDays(_refreshOptions.ExpiryDays));
-
-                _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
-                // TODO: ContinueWith lolo updating
 
                 return new Response
                 {
@@ -130,9 +130,6 @@ public static class Login
                     RefreshTokenExpiration = DateTime.UtcNow.AddDays(_refreshOptions.ExpiryDays)
                 };
             }
-
-            _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
-            // TODO: ContinueWith lolo updating
 
             return new Response
             {

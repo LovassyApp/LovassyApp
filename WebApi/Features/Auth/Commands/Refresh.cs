@@ -104,8 +104,8 @@ public static class Refresh
                     new RefreshTokenContents { Password = refreshTokenContents.Password, UserId = user.Id },
                     TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
-            _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
-            // TODO: ContinueWith lolo updating
+            var updateGradesJob = _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
+            _backgroundJobClient.ContinueJobWith<UpdateLolosJob>(updateGradesJob, j => j.Run(user, unlockedMasterKey));
 
             return new Response
             {

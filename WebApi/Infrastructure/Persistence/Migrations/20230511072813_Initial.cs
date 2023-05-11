@@ -13,7 +13,8 @@ namespace WebApi.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("Npgsql:Enum:grade_type", "regular_grade,behaviour_grade,diligence_grade");
+                .Annotation("Npgsql:Enum:grade_type", "regular_grade,behaviour_grade,diligence_grade")
+                .Annotation("Npgsql:Enum:lolo_type", "from_grades,from_request");
 
             migrationBuilder.CreateTable(
                 name: "Grades",
@@ -121,6 +122,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsSpent = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LoloType = table.Column<int>(type: "integer", nullable: false),
                     Reason = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

@@ -26,6 +26,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         modelBuilder.HasPostgresEnum<GradeType>();
+        modelBuilder.HasPostgresEnum<LoloType>();
     }
 
     public override int SaveChanges()

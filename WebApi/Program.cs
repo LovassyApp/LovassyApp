@@ -6,6 +6,7 @@ using WebApi.Common.Filters;
 using WebApi.Core.Auth;
 using WebApi.Core.Backboard;
 using WebApi.Core.Cryptography;
+using WebApi.Core.Lolo;
 using WebApi.Features;
 using WebApi.Infrastructure;
 
@@ -18,6 +19,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddCryptographyServices(builder.Configuration);
 builder.Services.AddAuthServices(builder.Configuration);
 builder.Services.AddBackboardServices(builder.Configuration);
+builder.Services.AddLoloServices(builder.Configuration);
 
 builder.Services.AddFeatures(builder.Configuration);
 

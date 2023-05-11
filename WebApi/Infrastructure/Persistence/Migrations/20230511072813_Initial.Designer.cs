@@ -12,7 +12,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230506085842_Initial")]
+    [Migration("20230511072813_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "grade_type", new[] { "regular_grade", "behaviour_grade", "diligence_grade" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "lolo_type", new[] { "from_grades", "from_request" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.Grade", b =>
@@ -186,6 +187,9 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
+
+                    b.Property<int>("LoloType")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Reason")
                         .IsRequired()

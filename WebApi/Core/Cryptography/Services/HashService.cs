@@ -11,9 +11,7 @@ namespace WebApi.Core.Cryptography.Services;
 /// </summary>
 public class HashService
 {
-    private readonly int _passwordBytesRequested;
-    private readonly int _passwordHashIterations;
-    private readonly int _passwordSaltLength;
+    private readonly HashOptions _hashOptions;
     private readonly RandomNumberGenerator _rng;
 
     public HashService(IOptions<HashOptions> hashOptions)
@@ -23,17 +21,13 @@ public class HashService
         if (hashOptions.Value.PasswordHashIterations < 1)
             throw new ArgumentException("Password hash iterations must be greater than 0", nameof(hashOptions));
 
-        _passwordHashIterations = hashOptions.Value.PasswordHashIterations;
-
         if (hashOptions.Value.PasswordSaltLength < 1)
             throw new ArgumentException("Password salt length must be greater than 0", nameof(hashOptions));
-
-        _passwordSaltLength = hashOptions.Value.PasswordSaltLength;
 
         if (hashOptions.Value.PasswordBytesRequested < 1)
             throw new ArgumentException("Password bytes requested must be greater than 0", nameof(hashOptions));
 
-        _passwordBytesRequested = hashOptions.Value.PasswordBytesRequested;
+        _hashOptions = hashOptions.Value;
     }
 
     /// <summary>
@@ -107,19 +101,20 @@ public class HashService
     /// <returns>The hashed password as a string.</returns>
     public string HashPassword(string password)
     {
-        var salt = new byte[_passwordSaltLength];
+        var salt = new byte[_hashOptions.PasswordSaltLength];
         _rng.GetBytes(salt);
 
-        var subkey = KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA512, _passwordHashIterations,
-            _passwordBytesRequested);
+        var subkey = KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA512,
+            _hashOptions.PasswordHashIterations,
+            _hashOptions.PasswordBytesRequested);
 
         var outputBytes = new byte[13 + salt.Length + subkey.Length];
         outputBytes[0] = 0x01;
         WriteNetworkByteOrder(outputBytes, 1, (uint)KeyDerivationPrf.HMACSHA512);
-        WriteNetworkByteOrder(outputBytes, 5, (uint)_passwordHashIterations);
-        WriteNetworkByteOrder(outputBytes, 9, (uint)_passwordSaltLength);
+        WriteNetworkByteOrder(outputBytes, 5, (uint)_hashOptions.PasswordHashIterations);
+        WriteNetworkByteOrder(outputBytes, 9, (uint)_hashOptions.PasswordSaltLength);
         Buffer.BlockCopy(salt, 0, outputBytes, 13, salt.Length);
-        Buffer.BlockCopy(subkey, 0, outputBytes, 13 + _passwordSaltLength, subkey.Length);
+        Buffer.BlockCopy(subkey, 0, outputBytes, 13 + _hashOptions.PasswordSaltLength, subkey.Length);
 
         return Convert.ToBase64String(outputBytes);
     }
@@ -144,7 +139,7 @@ public class HashService
         var iterCount = (int)ReadNetworkByteOrder(decodedHash, 5);
         var saltLength = (int)ReadNetworkByteOrder(decodedHash, 9);
 
-        if (saltLength != _passwordSaltLength)
+        if (saltLength != _hashOptions.PasswordSaltLength)
             return false;
 
         if (iterCount < 1)
