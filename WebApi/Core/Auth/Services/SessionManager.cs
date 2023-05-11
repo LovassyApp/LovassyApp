@@ -96,6 +96,23 @@ public class SessionManager
     }
 
     /// <summary>
+    ///     Stops the current session. Used at logout.
+    /// </summary>
+    /// <exception cref="SessionNotFoundException">
+    ///     The exception thrown when no session is set in <see cref="SessionManager" />.
+    /// </exception>
+    public void StopSession()
+    {
+        if (Session == null)
+            throw new SessionNotFoundException();
+
+        _memoryCache.Remove(Session.Hash);
+        Session = null;
+        _token = null;
+        _encryptionKey = null;
+    }
+
+    /// <summary>
     ///     Stores a value in the session, encrypted with a session specific key.
     /// </summary>
     /// <param name="key">The key used in the internal dictionary of the session. Later used for retrieving the value.</param>

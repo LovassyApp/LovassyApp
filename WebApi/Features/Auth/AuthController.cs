@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Common.Models;
 using WebApi.Features.Auth.Commands;
@@ -32,5 +33,17 @@ public class AuthController : ApiControllerBase
         });
 
         return Ok(response);
+    }
+
+    [Authorize]
+    [HttpDelete("Logout")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Logout()
+    {
+        await Mediator.Send(new Logout.Command());
+
+        Response.Cookies.Delete("BlueboardRefresh");
+
+        return NoContent();
     }
 }
