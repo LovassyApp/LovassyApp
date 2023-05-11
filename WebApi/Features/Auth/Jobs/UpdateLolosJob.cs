@@ -1,30 +1,38 @@
+using System.Text.Json;
+using Quartz;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Core.Lolo.Services;
+using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Jobs;
 
-public class UpdateLolosJob
+public class UpdateLolosJob : IJob
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly ApplicationDbContext _context;
+    private readonly EncryptionManager _encryptionManager;
+    private readonly HashManager _hashManager;
+    private readonly LoloManager _loloManager;
 
-    public UpdateLolosJob(IServiceProvider serviceProvider)
+    public UpdateLolosJob(ApplicationDbContext context, EncryptionManager encryptionManager, HashManager hashManager,
+        LoloManager loloManager)
     {
-        _serviceProvider = serviceProvider;
+        _context = context;
+        _encryptionManager = encryptionManager;
+        _hashManager = hashManager;
+        _loloManager = loloManager;
     }
 
-    public void Run(User user, string masterKey)
+    public async Task Execute(IJobExecutionContext context)
     {
-        var scope = _serviceProvider.CreateScope();
-        var encryptionManager = scope.ServiceProvider.GetRequiredService<EncryptionManager>();
-        var hashManager = scope.ServiceProvider.GetRequiredService<HashManager>();
-        var loloManager = scope.ServiceProvider.GetRequiredService<LoloManager>();
+        var user = JsonSerializer.Deserialize<User>((context.MergedJobDataMap.Get("userJson") as string)!);
+        var masterKey = context.MergedJobDataMap.Get("masterKey") as string;
 
-        encryptionManager.Init(masterKey);
-        hashManager.Init(user);
-        loloManager.Init(user.Id.ToString());
+        _encryptionManager.Init(masterKey);
+        _hashManager.Init(user);
+        _loloManager.Init(user.Id.ToString());
 
-        loloManager.GenerateAsync().Wait();
+        await _loloManager.GenerateAsync();
 
         //TODO: Send out a notification through websockets informing the user that their lolos have finished updating (we should refetch them afterwards)
     }

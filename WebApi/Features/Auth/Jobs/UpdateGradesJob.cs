@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Quartz;
 using WebApi.Core.Backboard.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
@@ -8,31 +10,33 @@ namespace WebApi.Features.Auth.Jobs;
 /// <summary>
 ///     The background job that updates the grades of a user. Fired when a session is created (login/refresh)
 /// </summary>
-public class UpdateGradesJob
+public class UpdateGradesJob : IJob
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly BackboardAdapter _backboardAdapter;
+    private readonly ApplicationDbContext _context;
+    private readonly EncryptionManager _encryptionManager;
+    private readonly HashManager _hashManager;
 
-    public UpdateGradesJob(IServiceProvider serviceProvider)
+    public UpdateGradesJob(ApplicationDbContext context, EncryptionManager encryptionManager, HashManager hashManager,
+        BackboardAdapter backboardAdapter)
     {
-        _serviceProvider = serviceProvider;
+        _context = context;
+        _encryptionManager = encryptionManager;
+        _hashManager = hashManager;
+        _backboardAdapter = backboardAdapter;
     }
 
-    public void Run(User user, string masterKey)
+    public async Task Execute(IJobExecutionContext context)
     {
-        var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var encryptionManager = scope.ServiceProvider.GetRequiredService<EncryptionManager>();
-        var hashManager = scope.ServiceProvider.GetRequiredService<HashManager>();
-        var backboardAdapter = scope.ServiceProvider.GetRequiredService<BackboardAdapter>();
+        var user = JsonSerializer.Deserialize<User>((context.MergedJobDataMap.Get("userJson") as string)!);
+        var masterKey = context.MergedJobDataMap.Get("masterKey") as string;
 
-        context.Attach(user); // We have to attach the user to the context, because it's not tracked yet in this scope
+        _context.Attach(user); // We have to attach the user to the context, because it's not tracked yet in this scope
 
-        encryptionManager.Init(masterKey);
-        hashManager.Init(user);
-        backboardAdapter.Init(user);
+        _encryptionManager.Init(masterKey);
+        _hashManager.Init(user);
+        _backboardAdapter.Init(user);
 
-        backboardAdapter.TryUpdatingAsync().Wait();
-
-        //TODO: Send out a notification through websockets informing the user that their grades have finished updating (we should refetch them afterwards)
+        await _backboardAdapter.TryUpdatingAsync();
     }
 }

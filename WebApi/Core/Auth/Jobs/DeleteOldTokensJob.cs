@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Quartz;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Jobs;
@@ -5,28 +7,25 @@ namespace WebApi.Core.Auth.Jobs;
 /// <summary>
 ///     The scheduled job that deletes old personal access tokens.
 /// </summary>
-public class DeleteOldTokensJob
+public class DeleteOldTokensJob : IJob
 {
+    private readonly ApplicationDbContext _context;
     private readonly ILogger<DeleteOldTokensJob> _logger;
-    private readonly IServiceProvider _serviceProvider;
 
-    public DeleteOldTokensJob(IServiceProvider serviceProvider, ILogger<DeleteOldTokensJob> logger)
+    public DeleteOldTokensJob(ApplicationDbContext context, ILogger<DeleteOldTokensJob> logger)
     {
-        _serviceProvider = serviceProvider;
+        _context = context;
         _logger = logger;
     }
 
-    public void Run()
+    public async Task Execute(IJobExecutionContext context)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
         var tokens =
-            context.PersonalAccessTokens.Where(x =>
+            _context.PersonalAccessTokens.Where(x =>
                 x.LastUsedAt != null && x.LastUsedAt < DateTime.Now.AddDays(-7).ToUniversalTime());
-        var count = tokens.Count();
-        context.PersonalAccessTokens.RemoveRange(tokens);
-        context.SaveChanges();
+        var count = await tokens.CountAsync();
+        _context.PersonalAccessTokens.RemoveRange(tokens);
+        await _context.SaveChangesAsync();
         _logger.LogInformation("Deleted {Count} old tokens", count);
     }
 }

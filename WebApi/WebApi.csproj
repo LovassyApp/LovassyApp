@@ -12,8 +12,6 @@
         <PackageReference Include="EFCore.BulkExtensions" Version="7.1.0" />
         <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.9.1" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
-        <PackageReference Include="Hangfire.AspNetCore" Version="1.8.0" />
-        <PackageReference Include="Hangfire.PostgreSql" Version="1.19.12" />
         <PackageReference Include="Mapster" Version="7.3.0" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
         <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
@@ -24,6 +22,7 @@
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
         <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0" />
+        <PackageReference Include="Quartz.AspNetCore" Version="3.6.2" />
         <PackageReference Include="Sieve" Version="2.5.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />

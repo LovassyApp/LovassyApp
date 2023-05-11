@@ -1,8 +1,11 @@
+using System.Text.Json;
 using FluentValidation.Results;
-using Hangfire;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.Options;
+using Quartz;
+using Quartz.Impl.Matchers;
+using Quartz.Listener;
 using WebApi.Common.Exceptions;
 using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
@@ -11,6 +14,7 @@ using WebApi.Core.Cryptography.Services;
 using WebApi.Features.Auth.Jobs;
 using WebApi.Features.Auth.Options;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Commands;
 
@@ -42,19 +46,19 @@ public static class Refresh
 
     internal sealed class Handler : IRequestHandler<Command, Response>
     {
-        private readonly IBackgroundJobClient _backgroundJobClient;
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
         private readonly EncryptionService _encryptionService;
         private readonly HashManager _hashManager;
         private readonly RefreshOptions _refreshOptions;
+        private readonly ISchedulerFactory _schedulerFactory;
         private readonly SessionManager _sessionManager;
 
-        public Handler(IBackgroundJobClient backgroundJobClient, ApplicationDbContext context,
+        public Handler(ISchedulerFactory schedulerFactory, ApplicationDbContext context,
             SessionManager sessionManager, EncryptionManager encryptionManager, EncryptionService encryptionService,
             HashManager hashManager, IOptions<RefreshOptions> refreshOptions)
         {
-            _backgroundJobClient = backgroundJobClient;
+            _schedulerFactory = schedulerFactory;
             _context = context;
             _sessionManager = sessionManager;
             _encryptionManager = encryptionManager;
@@ -104,9 +108,7 @@ public static class Refresh
                     new RefreshTokenContents { Password = refreshTokenContents.Password, UserId = user.Id },
                     TimeSpan.FromDays(_refreshOptions.ExpiryDays));
 
-            //TODO: We have to do something about this, as it slows down the login process by a lot, and it really shouldn't, it should just be fire and forget but for some reason it waits a lot here
-            var updateGradesJob = _backgroundJobClient.Enqueue<UpdateGradesJob>(j => j.Run(user, unlockedMasterKey));
-            _backgroundJobClient.ContinueJobWith<UpdateLolosJob>(updateGradesJob, j => j.Run(user, unlockedMasterKey));
+            await ScheduleSessionCreatedJobsAsync(user, unlockedMasterKey, cancellationToken);
 
             return new Response
             {
@@ -115,6 +117,37 @@ public static class Refresh
                 RefreshToken = refreshToken,
                 RefreshTokenExpiration = DateTime.UtcNow.AddDays(_refreshOptions.ExpiryDays)
             }; //TODO: Maybe add warden permissions to response
+        }
+
+        private async Task ScheduleSessionCreatedJobsAsync(User user, string masterKey,
+            CancellationToken cancellationToken)
+        {
+            var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+
+            var updateGradesJob = JobBuilder.Create<UpdateGradesJob>()
+                .WithIdentity("updateGrades", "sessionCreatedJobs")
+                .UsingJobData("userJson", JsonSerializer.Serialize(user))
+                .UsingJobData("masterKey", masterKey)
+                .Build();
+
+            var updateGradesTrigger = TriggerBuilder.Create().WithIdentity("updateGradesTrigger", "sessionCreatedJobs")
+                .StartNow()
+                .Build();
+
+            var updateLolosJob = JobBuilder.Create<UpdateLolosJob>()
+                .WithIdentity("updateLolos", "sessionCreatedJobs")
+                .UsingJobData("userJson", JsonSerializer.Serialize(user))
+                .UsingJobData("masterKey", masterKey)
+                .Build();
+
+            var chainingListener = new JobChainingJobListener("sessionCreatedJobsPipeline");
+            chainingListener.AddJobChainLink(updateGradesJob.Key, updateLolosJob.Key);
+
+            scheduler.ListenerManager.AddJobListener(chainingListener,
+                GroupMatcher<JobKey>.GroupEquals("sessionCreatedJobs"));
+
+            await scheduler.ScheduleJob(updateGradesJob, updateGradesTrigger, cancellationToken);
+            await scheduler.AddJob(updateLolosJob, false, true, cancellationToken);
         }
     }
 }

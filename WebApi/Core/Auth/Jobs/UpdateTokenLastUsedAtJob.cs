@@ -1,3 +1,4 @@
+using Quartz;
 using WebApi.Core.Auth.Schemes.Token;
 using WebApi.Infrastructure.Persistence;
 
@@ -7,22 +8,23 @@ namespace WebApi.Core.Auth.Jobs;
 ///     The background job that updates the last used at property of a personal access token. Fired each time when a token
 ///     is used in <see cref="TokenAuthenticationSchemeHandler" />.
 /// </summary>
-public class UpdateTokenLastUsedAtJob
+public class UpdateTokenLastUsedAtJob : IJob
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly ApplicationDbContext _context;
 
-    public UpdateTokenLastUsedAtJob(IServiceProvider serviceProvider)
+    public UpdateTokenLastUsedAtJob(ApplicationDbContext context)
     {
-        _serviceProvider = serviceProvider;
+        _context = context;
     }
 
-    public void Run(int id, DateTime lastUsedAt)
+    public async Task Execute(IJobExecutionContext context)
     {
-        using var serviceScope = _serviceProvider.CreateScope();
-        using var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var token = context.PersonalAccessTokens.Find(id);
+        var id = context.JobDetail.JobDataMap.GetInt("id");
+        var lastUsedAt = context.JobDetail.JobDataMap.GetDateTime("lastUsedAt");
+
+        var token = await _context.PersonalAccessTokens.FindAsync(id);
         if (token == null) return;
-        token.LastUsedAt = lastUsedAt;
-        context.SaveChanges(); // Can't use async here, because Hangfire doesn't support it
+        token.LastUsedAt = lastUsedAt.ToUniversalTime();
+        await _context.SaveChangesAsync();
     }
 }

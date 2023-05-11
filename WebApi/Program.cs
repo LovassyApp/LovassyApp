@@ -1,4 +1,3 @@
-using Hangfire;
 using Prometheus;
 using WebApi.Common;
 using WebApi.Common.Extensions;
@@ -33,7 +32,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHangfireDashboard();
 }
 
 app.UseHttpsRedirection();

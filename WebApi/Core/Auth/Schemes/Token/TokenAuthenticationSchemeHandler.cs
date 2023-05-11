@@ -1,11 +1,12 @@
+using System.Globalization;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Web;
-using Hangfire;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using Quartz;
 using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Jobs;
 using WebApi.Core.Auth.Services;
@@ -17,23 +18,23 @@ namespace WebApi.Core.Auth.Schemes.Token;
 
 public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthenticationSchemeOptions>
 {
-    private readonly IBackgroundJobClient _backgroundJobClient;
     private readonly ApplicationDbContext _context;
     private readonly EncryptionManager _encryptionManager;
     private readonly HashManager _hashManager;
+    private readonly ISchedulerFactory _schedulerFactory;
     private readonly SessionManager _sessionManager;
 
     public TokenAuthenticationSchemeHandler(IOptionsMonitor<TokenAuthenticationSchemeOptions> options,
         ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ApplicationDbContext context,
         SessionManager sessionManager, EncryptionManager encryptionManager, HashManager hashManager,
-        IBackgroundJobClient backgroundJobClient) : base(options,
+        ISchedulerFactory schedulerFactory) : base(options,
         logger, encoder, clock)
     {
         _context = context;
         _sessionManager = sessionManager;
         _encryptionManager = encryptionManager;
         _hashManager = hashManager;
-        _backgroundJobClient = backgroundJobClient;
+        _schedulerFactory = schedulerFactory;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -64,8 +65,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         //TODO: Add permission claims with Warden
 
-        _backgroundJobClient.Enqueue<UpdateTokenLastUsedAtJob>(j =>
-            j.Run(accessToken.Id, DateTime.UtcNow));
+        await ScheduleOnTokenUsedJobsAsync(accessToken.Id, DateTime.Now);
 
         var claims = new List<Claim>
         {
@@ -84,5 +84,23 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         _sessionManager.Init(token);
         _encryptionManager.Init();
         _hashManager.Init(user);
+    }
+
+    private async Task ScheduleOnTokenUsedJobsAsync(int id, DateTime lastUsedAt)
+    {
+        var scheduler = await _schedulerFactory.GetScheduler();
+
+        var updateTokenLastUsedAtJob = JobBuilder.Create<UpdateTokenLastUsedAtJob>()
+            .WithIdentity("updateTokenLastUsedAtJob", "onTokenUsedJobs")
+            .UsingJobData("id", id)
+            .UsingJobData("lastUsedAt", lastUsedAt.ToString(CultureInfo.InvariantCulture))
+            .Build();
+
+        var updateTokenLastUsedAtTrigger = TriggerBuilder.Create()
+            .WithIdentity("updateTokenLastUsedAtTrigger", "onTokenUsedJobs")
+            .StartNow()
+            .Build();
+
+        await scheduler.ScheduleJob(updateTokenLastUsedAtJob, updateTokenLastUsedAtTrigger);
     }
 }

@@ -1,11 +1,10 @@
 using System.Reflection;
 using FluentValidation;
-using Hangfire;
-using Hangfire.PostgreSql;
 using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using Sieve.Services;
 using WebApi.Common.Behaviours;
 using WebApi.Common.Extensions;
@@ -83,11 +82,8 @@ public static class AddCommonExtension
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
-        // Scheduler
-        services.AddHangfire(c => c.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-            .UseSimpleAssemblyNameTypeSerializer()
-            .UseRecommendedSerializerSettings()
-            .UsePostgreSqlStorage(configuration.GetConnectionString("HangfireConnection")));
-        services.AddHangfireServer();
+        // Schedule
+        services.AddQuartz(q => { q.UseMicrosoftDependencyInjectionJobFactory(); });
+        services.AddQuartzServer(options => { options.WaitForJobsToComplete = true; });
     }
 }
