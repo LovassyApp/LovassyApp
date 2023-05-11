@@ -48,14 +48,14 @@ public static class IndexGrades
         public string GradeType { get; set; }
     }
 
-    internal sealed class IndexGradesHandler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
     {
         private readonly ApplicationDbContext _context;
         private readonly HashManager _hashManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SieveProcessor _sieveProcessor;
 
-        public IndexGradesHandler(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context,
+        public Handler(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context,
             SieveProcessor sieveProcessor, HashManager hashManager)
         {
             _httpContextAccessor = httpContextAccessor;

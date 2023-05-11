@@ -16,8 +16,9 @@ public class LoloManager
     private readonly LoloOptions _loloOptions;
     private readonly IMemoryCache _memoryCache;
 
-    private User _user;
+    private string? _userId;
 
+    //TODO: Optimize this class, it's pretty slow (although it only does generation in the background)
     public LoloManager(IOptions<LoloOptions> loloOptions, ApplicationDbContext context, IMemoryCache memoryCache,
         HashManager hashManager)
     {
@@ -34,9 +35,9 @@ public class LoloManager
     ///     Initializes the <see cref="LoloManager" /> with the current user object.
     /// </summary>
     /// <param name="user">The user's, for which we want to manage lolos.</param>
-    public void Init(User user)
+    public void Init(string userId)
     {
-        _user = user;
+        _userId = userId;
     }
 
     /// <summary>
@@ -44,16 +45,16 @@ public class LoloManager
     /// </summary>
     public async Task LoadAsync()
     {
-        if (_user == null)
+        if (_userId == null)
             throw new LoloManagerUserNotFoundException();
 
         var grades = await _context.Grades
-            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_user.Id.ToString()))
+            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_userId))
             .Where(g => g.LoloIdHashed != null)
             .GroupBy(g => g.LoloIdHashed)
             .ToListAsync();
 
-        Coins = await _context.Lolos.Where(l => l.UserId == _user.Id)
+        Coins = await _context.Lolos.Where(l => l.UserId == Guid.Parse(_userId))
             .ToListAsync();
 
         Coins = Coins.Select(c => new Infrastructure.Persistence.Entities.Lolo
@@ -63,30 +64,37 @@ public class LoloManager
                 .ToList()
         }).ToList();
 
-        Balance = await _context.Lolos.Where(l => l.UserId == _user.Id).Where(l => l.IsSpent == false)
+        Balance = await _context.Lolos.Where(l => l.UserId == Guid.Parse(_userId)).Where(l => l.IsSpent == false)
             .CountAsync();
     }
 
+    /// <summary>
+    ///     Generates lolo coins from grades.
+    /// </summary>
+    /// <exception cref="LoloManagerUserNotFoundException">
+    ///     The exception thrown when the <see cref="LoloManager" /> has not
+    ///     been initialized yet.
+    /// </exception>
     public async Task GenerateAsync()
     {
-        if (_user == null)
+        if (_userId == null)
             throw new LoloManagerUserNotFoundException();
 
-        if ((bool?)_memoryCache.Get(_loloOptions.ManagerLockPrefix + _user.Id) == true)
+        if ((bool?)_memoryCache.Get(_loloOptions.ManagerLockPrefix + _userId) == true)
             return;
 
-        _memoryCache.Set(_loloOptions.ManagerLockPrefix + _user.Id, true, TimeSpan.FromSeconds(10));
+        _memoryCache.Set(_loloOptions.ManagerLockPrefix + _userId, true, TimeSpan.FromSeconds(10));
 
         await GenerateFromFivesAsync();
         await GenerateFromFoursAsync();
 
-        _memoryCache.Remove(_loloOptions.ManagerLockPrefix + _user.Id);
+        _memoryCache.Remove(_loloOptions.ManagerLockPrefix + _userId);
     }
 
     private async Task GenerateFromFivesAsync()
     {
         var grades = await _context.Grades
-            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_user.Id.ToString()))
+            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_userId))
             .Where(g => g.LoloIdHashed == null).Where(g => g.GradeType == GradeType.RegularGrade)
             .Where(g => g.GradeValue == 5).ToListAsync();
 
@@ -104,7 +112,7 @@ public class LoloManager
     private async Task GenerateFromFoursAsync()
     {
         var grades = await _context.Grades
-            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_user.Id.ToString()))
+            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_userId))
             .Where(g => g.LoloIdHashed == null).Where(g => g.GradeType == GradeType.RegularGrade)
             .Where(g => g.GradeValue == 4).ToListAsync();
 
@@ -123,7 +131,7 @@ public class LoloManager
     {
         var lolo = new Infrastructure.Persistence.Entities.Lolo
         {
-            UserId = _user.Id,
+            UserId = Guid.Parse(_userId),
             Reason = reason,
             LoloType = LoloType.FromGrades
         };
