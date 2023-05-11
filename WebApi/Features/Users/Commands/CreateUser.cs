@@ -41,9 +41,8 @@ public static class CreateUser
                 .MustAsync(BeUniqueEmailAsync).WithMessage("The email is already in use");
             RuleFor(x => x.Password).NotEmpty()
                 .MinimumLength(8).WithMessage("The password must be at least 8 characters long")
-                .Matches(@"[A-Z]+").WithMessage("The password must contain at least one uppercase letter")
-                .Matches(@"[a-z]+").WithMessage("The password must contain at least one lowercase letter")
-                .Matches(@"[0-9]+").WithMessage("The password must contain at least one number");
+                .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$").WithMessage(
+                    "The password must contain at least one uppercase letter, lower case letter and number");
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.OmCode).NotEmpty()
                 .MustAsync(BeUniqueOmCodeAsync).WithMessage("The om code is already in use")
