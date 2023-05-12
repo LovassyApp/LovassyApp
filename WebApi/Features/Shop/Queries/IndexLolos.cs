@@ -75,9 +75,9 @@ public static class IndexLolos
 
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var userId = _httpContextAccessor.HttpContext.User.GetId();
+            var userId = _httpContextAccessor.HttpContext!.User.GetId();
 
-            _loloManager.Init(userId);
+            _loloManager.Init(userId!);
             await _loloManager.LoadAsync();
 
             var filteredLolos = _sieveProcessor.Apply(request.SieveModel, _loloManager.Coins!.AsQueryable());

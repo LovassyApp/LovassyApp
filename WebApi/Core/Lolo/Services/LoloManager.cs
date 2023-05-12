@@ -18,7 +18,6 @@ public class LoloManager
 
     private string? _userId;
 
-    //TODO: Optimize this class, it's pretty slow (although it only does generation in the background)
     public LoloManager(IOptions<LoloOptions> loloOptions, ApplicationDbContext context, IMemoryCache memoryCache,
         HashManager hashManager)
     {
@@ -48,23 +47,32 @@ public class LoloManager
         if (_userId == null)
             throw new LoloManagerUserNotFoundException();
 
+        var userIdHashed = _hashManager.HashWithHasherSalt(_userId);
+
         var grades = await _context.Grades
-            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_userId))
-            .Where(g => g.LoloIdHashed != null)
-            .GroupBy(g => g.LoloIdHashed)
+            .Where(g => g.UserIdHashed == userIdHashed && g.LoloIdHashed != null)
             .ToListAsync();
 
         Coins = await _context.Lolos.Where(l => l.UserId == Guid.Parse(_userId))
             .ToListAsync();
 
-        Coins = Coins.Select(c => new Infrastructure.Persistence.Entities.Lolo
-        {
-            Id = c.Id, IsSpent = c.IsSpent, UserId = c.UserId,
-            Grades = grades.Where(g => g.Key == _hashManager.HashWithHasherSalt(c.Id.ToString())).SelectMany(g => g)
-                .ToList()
-        }).ToList();
+        var loloIdsHashed = Coins.Select(coin => _hashManager.HashWithHasherSalt(coin.Id.ToString())).ToList();
 
-        Balance = await _context.Lolos.Where(l => l.UserId == Guid.Parse(_userId)).Where(l => l.IsSpent == false)
+        var gradesByLoloId = grades
+            .Where(g => loloIdsHashed.Contains(g.LoloIdHashed!))
+            .GroupBy(g => g.LoloIdHashed!)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        Parallel.ForEach(Coins, coin =>
+        {
+            coin.Grades =
+                gradesByLoloId.TryGetValue(_hashManager.HashWithHasherSalt(coin.Id.ToString()), out var coinGrades)
+                    ? coinGrades
+                    : new List<Grade>();
+        });
+
+        Balance = await _context.Lolos
+            .Where(l => l.UserId == Guid.Parse(_userId) && !l.IsSpent)
             .CountAsync();
     }
 
@@ -85,6 +93,7 @@ public class LoloManager
 
         _memoryCache.Set(_loloOptions.ManagerLockPrefix + _userId, true, TimeSpan.FromSeconds(10));
 
+        //We can't do this in parallel because the DbContext really doesn't like being used by two threads at once 
         await GenerateFromFivesAsync();
         await GenerateFromFoursAsync();
 
@@ -93,36 +102,38 @@ public class LoloManager
 
     private async Task GenerateFromFivesAsync()
     {
+        var userIdHashed = _hashManager.HashWithHasherSalt(_userId);
+
         var grades = await _context.Grades
-            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_userId))
-            .Where(g => g.LoloIdHashed == null).Where(g => g.GradeType == GradeType.RegularGrade)
-            .Where(g => g.GradeValue == 5).ToListAsync();
+            .Where(g => g.UserIdHashed == userIdHashed && g.LoloIdHashed == null &&
+                        g.GradeType == GradeType.RegularGrade && g.GradeValue == 5)
+            .ToListAsync();
 
-        var chunkedGrades = grades.Chunk(_loloOptions.FiveThreshold).ToList();
+        var chunkSize = _loloOptions.FiveThreshold;
+        var fullChunksCount = grades.Count / chunkSize;
 
-        foreach (var gradeGroup in chunkedGrades)
+        for (var i = 0; i < fullChunksCount; i++)
         {
-            if (gradeGroup.Length < _loloOptions.FiveThreshold)
-                continue;
-
+            var gradeGroup = grades.Skip(i * chunkSize).Take(chunkSize).ToArray();
             await SaveLoloFromGrades(gradeGroup, _loloOptions.FiveReason);
         }
     }
 
     private async Task GenerateFromFoursAsync()
     {
+        var userIdHashed = _hashManager.HashWithHasherSalt(_userId);
+
         var grades = await _context.Grades
-            .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(_userId))
-            .Where(g => g.LoloIdHashed == null).Where(g => g.GradeType == GradeType.RegularGrade)
-            .Where(g => g.GradeValue == 4).ToListAsync();
+            .Where(g => g.UserIdHashed == userIdHashed && g.LoloIdHashed == null &&
+                        g.GradeType == GradeType.RegularGrade && g.GradeValue == 4)
+            .ToListAsync();
 
-        var chunkedGrades = grades.Chunk(_loloOptions.FourThreshold).ToList();
+        var chunkSize = _loloOptions.FourThreshold;
+        var fullChunksCount = grades.Count / chunkSize;
 
-        foreach (var gradeGroup in chunkedGrades)
+        for (var i = 0; i < fullChunksCount; i++)
         {
-            if (gradeGroup.Length < _loloOptions.FourThreshold)
-                continue;
-
+            var gradeGroup = grades.Skip(i * chunkSize).Take(chunkSize).ToArray();
             await SaveLoloFromGrades(gradeGroup, _loloOptions.FourReason);
         }
     }
@@ -136,19 +147,24 @@ public class LoloManager
             LoloType = LoloType.FromGrades
         };
 
-        await _context.Lolos.AddAsync(lolo);
-        await _context.SaveChangesAsync();
+        await using var transaction = await _context.Database.BeginTransactionAsync();
 
         try
         {
-            foreach (var grade in gradeGroup) grade.LoloIdHashed = _hashManager.HashWithHasherSalt(lolo.Id.ToString());
+            await _context.Lolos.AddAsync(lolo);
+            await _context.SaveChangesAsync();
+
+            var loloIdHashed = _hashManager.HashWithHasherSalt(lolo.Id.ToString());
+
+            foreach (var grade in gradeGroup) grade.LoloIdHashed = loloIdHashed;
 
             await _context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
         }
         catch
         {
-            _context.Lolos.Remove(lolo);
-            await _context.SaveChangesAsync();
+            await transaction.RollbackAsync();
             throw;
         }
     }

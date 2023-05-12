@@ -16,6 +16,7 @@ using WebApi.Features.Auth.Jobs;
 using WebApi.Features.Auth.Options;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
+using ValidationException = WebApi.Common.Exceptions.ValidationException;
 
 namespace WebApi.Features.Auth.Commands;
 
