@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using WebApi.Core.Cryptography.Exceptions;
 using WebApi.Core.Cryptography.Services;
+using WebApi.Core.Cryptography.Utils;
 
 namespace WebApi.Tests.Core.Cryptography.Services;
 
@@ -26,13 +27,15 @@ public class ResetServiceTests
     public void ShouldEncryptAndDecryptWithResetKeyPassword(string password, string masterKey)
     {
         _resetService.IsResetKeyPasswordSet().Should().Be(false);
-        Assert.Throws<ResetKeyPasswordMissingException>(() => _resetService.EncryptMasterKey(masterKey));
+        Assert.Throws<ResetKeyPasswordMissingException>(() => _resetService.EncryptMasterKey(masterKey, "salt"));
 
         _resetService.SetResetKeyPassword(password);
         _resetService.IsResetKeyPasswordSet().Should().Be(true);
 
-        var encrypted = _resetService.EncryptMasterKey(masterKey);
-        var decrypted = _resetService.DecryptMasterKey(encrypted);
+        var salt = HashingUtils.GenerateSalt();
+
+        var encrypted = _resetService.EncryptMasterKey(masterKey, salt);
+        var decrypted = _resetService.DecryptMasterKey(encrypted, salt);
 
         decrypted.Should().BeEquivalentTo(masterKey);
     }
