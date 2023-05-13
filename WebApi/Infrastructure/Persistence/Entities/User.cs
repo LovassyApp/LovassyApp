@@ -47,6 +47,7 @@ public class User : TimestampedEntity
 
     public List<GradeImport> GradeImports { get; set; }
     public List<Lolo> Lolos { get; set; }
+    public List<PersonalAccessToken> PersonalAccessTokens { get; set; }
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>

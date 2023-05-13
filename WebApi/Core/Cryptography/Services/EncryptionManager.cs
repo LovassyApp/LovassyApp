@@ -117,7 +117,8 @@ public class EncryptionManager
         }
         catch (SessionNotFoundException)
         {
-            throw new MasterKeyNotFoundException();
+            throw
+                new MasterKeyNotFoundException(); // That's some weird shit going on here but ig it's not that big of a deal as long as you have a trace
         }
 
         if (_masterKey == null)

@@ -12,7 +12,7 @@ public class Lolo : TimestampedEntity
     public int Id { get; set; }
 
     [Required] public Guid UserId { get; set; }
-    [Required] public User User { get; set; }
+    public User User { get; set; }
 
     //TODO: Add HistoryId
 
@@ -27,7 +27,7 @@ public class Lolo : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public string Reason { get; set; }
 
-    public List<Grade>? Grades { get; set; }
+    public List<Grade>? Grades { get; set; } // This is not a navigation property, it has to be populated manually
 }
 
 public enum LoloType
