@@ -105,7 +105,7 @@ public static class CreateUser
                 PrivateKeyEncrypted = _encryptionManager.Encrypt(keys.PrivateKey),
                 MasterKeyEncrypted = storedKey,
                 MasterKeySalt = masterKeySalt,
-                ResetKeyEncrypted = _resetService.EncryptMasterKey(_encryptionManager.MasterKey!),
+                ResetKeyEncrypted = _resetService.EncryptMasterKey(_encryptionManager.MasterKey!, masterKeySalt),
                 HasherSaltEncrypted = _encryptionManager.Encrypt(hasherSalt),
                 HasherSaltHashed = _hashService.Hash(hasherSalt),
                 OmCodeEncrypted = _encryptionManager.Encrypt(request.Body.OmCode),

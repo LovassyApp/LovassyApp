@@ -11,8 +11,6 @@ public class ResetService
 {
     private string? _resetKeyPassword;
 
-    private static string ResetPasswordSalt => "ResetPasswordSalt";
-
     /// <summary>
     ///     Encrypts a given master key with the reset key password.
     /// </summary>
@@ -22,11 +20,11 @@ public class ResetService
     ///     The exception thrown when no reset key password has been set since
     ///     the application is running.
     /// </exception>
-    public string EncryptMasterKey(string masterKey)
+    public string EncryptMasterKey(string masterKey, string salt)
     {
         return EncryptionUtils.Encrypt(masterKey,
             HashingUtils.GenerateBasicKey(_resetKeyPassword ?? throw new ResetKeyPasswordMissingException(),
-                ResetPasswordSalt));
+                salt));
     }
 
     /// <summary>
@@ -38,11 +36,11 @@ public class ResetService
     ///     The exception thrown when no reset key password has been set since
     ///     the application is running.
     /// </exception>
-    public string DecryptMasterKey(string encryptedMasterKey)
+    public string DecryptMasterKey(string encryptedMasterKey, string salt)
     {
         return EncryptionUtils.Decrypt(encryptedMasterKey,
             HashingUtils.GenerateBasicKey(_resetKeyPassword ?? throw new ResetKeyPasswordMissingException(),
-                ResetPasswordSalt));
+                salt));
     }
 
     /// <summary>
