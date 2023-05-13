@@ -56,7 +56,8 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         try
         {
-            InitializeManagers(token, accessToken.User);
+            InitializeManagers(token,
+                accessToken.User); //TODO: This is somewhat unideal, most of what's happening here is not related to authentication and should be moved somewhere else (like an event listener)
         }
         catch (SessionNotFoundException)
         {
@@ -83,7 +84,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
     {
         _sessionManager.Init(token);
         _encryptionManager.Init();
-        _hashManager.Init(user);
+        _hashManager.Init(user.HasherSaltEncrypted);
     }
 
     private async Task ScheduleOnTokenUsedJobsAsync(int id, DateTime lastUsedAt)

@@ -21,7 +21,7 @@ namespace WebApi.Core.Backboard.Services;
 /// </summary>
 public class BackboardAdapter
 {
-    private readonly string _adapterLockPrefix;
+    private readonly BackboardOptions _backboardOptions;
     private readonly ApplicationDbContext _context;
     private readonly EncryptionManager _encryptionManager;
     private readonly HashManager _hashManager;
@@ -37,7 +37,7 @@ public class BackboardAdapter
         _encryptionManager = encryptionManager;
         _hashManager = hashManager;
         _memoryCache = memoryCache;
-        _adapterLockPrefix = options.Value.AdapterLockPrefix;
+        _backboardOptions = options.Value;
     }
 
     /// <summary>
@@ -73,6 +73,11 @@ public class BackboardAdapter
         if (_user == null)
             throw new BackboardAdapterUserNotFoundException();
 
+        if ((bool?)_memoryCache.Get(_backboardOptions.AdapterLockPrefix + _user.Id) == true)
+            return;
+
+        _memoryCache.Set(_backboardOptions.AdapterLockPrefix + _user.Id, true, TimeSpan.FromSeconds(10)); // Lock thread
+
         BackboardGradeCollection? gradeCollection;
         try
         {
@@ -102,18 +107,13 @@ public class BackboardAdapter
 
         await _context.SaveChangesAsync(); // only necessary for the changes to the user
 
-        _memoryCache.Remove(_adapterLockPrefix + _user.Id);
+        _memoryCache.Remove(_backboardOptions.AdapterLockPrefix + _user.Id);
     }
 
     private async Task<BackboardGradeCollection?> GetUpdatedGradeCollectionAsync()
     {
         if (!_user!.ImportAvailable)
             return null;
-
-        if ((bool?)_memoryCache.Get(_adapterLockPrefix + _user.Id) == true)
-            return null;
-
-        _memoryCache.Set(_adapterLockPrefix + _user.Id, true, TimeSpan.FromSeconds(10)); // Lock thread
 
         var gradeImport = await _context.GradeImports.Where(i => i.UserId == _user.Id).OrderByDescending(i => i.Id)
             .FirstOrDefaultAsync();

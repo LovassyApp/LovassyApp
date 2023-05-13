@@ -77,7 +77,7 @@ public static class IndexLolos
         {
             var userId = _httpContextAccessor.HttpContext!.User.GetId();
 
-            _loloManager.Init(userId!);
+            _loloManager.Init(Guid.Parse(userId!));
             await _loloManager.LoadAsync();
 
             var filteredLolos = _sieveProcessor.Apply(request.SieveModel, _loloManager.Coins!.AsQueryable());

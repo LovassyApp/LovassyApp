@@ -5,7 +5,6 @@ using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Core.Cryptography.Utils;
 using WebApi.Infrastructure.Persistence;
-using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Tests.Core.Cryptography.Services;
 
@@ -30,10 +29,7 @@ public class HashManagerTests
         encryptionManager.Init(HashingUtils.GenerateBasicKey("password", "salt"));
 
         _hashManager = serviceProvider.GetRequiredService<HashManager>();
-        _hashManager.Init(new User
-        {
-            HasherSaltEncrypted = encryptionManager.Encrypt(HashingUtils.GenerateSalt())
-        });
+        _hashManager.Init(encryptionManager.Encrypt(HashingUtils.GenerateSalt()));
     }
 
     [TestCase("id1")]

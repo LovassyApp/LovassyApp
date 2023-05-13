@@ -12,8 +12,8 @@ namespace WebApi.Core.Cryptography.Services;
 /// </summary>
 public class HashManager
 {
-    private readonly string _cachePrefix;
     private readonly EncryptionManager _encryptionManager;
+    private readonly HashOptions _hashOptions;
     private readonly IMemoryCache _memoryCache;
 
     private string? _userSalt;
@@ -24,7 +24,7 @@ public class HashManager
         _encryptionManager = encryptionManager;
         _memoryCache = memoryCache;
 
-        _cachePrefix = options.Value.HashManagerCachePrefix;
+        _hashOptions = options.Value;
     }
 
     /// <summary>
@@ -42,13 +42,13 @@ public class HashManager
         if (_userSalt == null)
             throw new HasherSaltNotFoundException();
 
-        var cached = _memoryCache.Get<string>($"{_cachePrefix}:{payload}");
+        var cached = _memoryCache.Get<string>($"{_hashOptions.HashManagerCachePrefix}:{payload}");
 
         if (cached != null)
             return cached;
 
         var hash = HashingUtils.HashWithSalt(payload, _userSalt);
-        _memoryCache.Set($"{_cachePrefix}:{payload}", hash);
+        _memoryCache.Set($"{_hashOptions.HashManagerCachePrefix}:{payload}", hash);
 
         return hash;
     }
@@ -61,11 +61,11 @@ public class HashManager
     ///     The exception thrown when the <see cref="EncryptionManager" /> has not yet been
     ///     initialized.
     /// </exception>
-    public void Init(User user)
+    public void Init(string hasherSaltEncrypted)
     {
         if (_encryptionManager.MasterKey == null)
             throw new MasterKeyNotFoundException();
 
-        _userSalt = _encryptionManager.Decrypt(user.HasherSaltEncrypted);
+        _userSalt = _encryptionManager.Decrypt(hasherSaltEncrypted);
     }
 }

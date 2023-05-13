@@ -15,7 +15,7 @@ namespace WebApi.Core.Cryptography.Services;
 /// </summary>
 public class EncryptionManager
 {
-    private readonly string _masterKeySessionKey;
+    private readonly EncryptionOptions _encryptionOptions;
     private readonly SessionManager _sessionManager;
 
     private string? _masterKey;
@@ -23,7 +23,7 @@ public class EncryptionManager
     public EncryptionManager(SessionManager sessionManager, IOptions<EncryptionOptions> encryptionOptions)
     {
         _sessionManager = sessionManager;
-        _masterKeySessionKey = encryptionOptions.Value.MasterKeySessionKey;
+        _encryptionOptions = encryptionOptions.Value;
     }
 
     public string? MasterKey
@@ -35,7 +35,7 @@ public class EncryptionManager
                 throw new SessionNotFoundException();
 
             _masterKey = value;
-            _sessionManager.SetEncrypted(_masterKeySessionKey, value);
+            _sessionManager.SetEncrypted(_encryptionOptions.MasterKeySessionKey, value);
         }
     }
 
@@ -64,7 +64,7 @@ public class EncryptionManager
             if (_sessionManager.Session == null)
                 throw new SessionNotFoundException();
 
-            _masterKey = _sessionManager.GetEncrypted(_masterKeySessionKey);
+            _masterKey = _sessionManager.GetEncrypted(_encryptionOptions.MasterKeySessionKey);
 
             if (_masterKey == null)
                 throw new MasterKeyNotFoundException();

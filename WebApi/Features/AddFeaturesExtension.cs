@@ -1,4 +1,5 @@
-using WebApi.Features.Auth.Options;
+using WebApi.Features.Auth.Services;
+using WebApi.Features.Auth.Services.Options;
 using WebApi.Features.Status.Options;
 
 namespace WebApi.Features;
@@ -18,5 +19,6 @@ public static class AddFeaturesExtension
 
         // Auth
         services.Configure<RefreshOptions>(configuration.GetSection("Refresh"));
+        services.AddSingleton<RefreshService>();
     }
 }

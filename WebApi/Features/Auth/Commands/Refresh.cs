@@ -2,7 +2,6 @@ using System.Text.Json;
 using FluentValidation.Results;
 using Mapster;
 using MediatR;
-using Microsoft.Extensions.Options;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Quartz.Listener;
@@ -12,7 +11,7 @@ using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Features.Auth.Jobs;
-using WebApi.Features.Auth.Options;
+using WebApi.Features.Auth.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -48,23 +47,21 @@ public static class Refresh
     {
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
-        private readonly EncryptionService _encryptionService;
         private readonly HashManager _hashManager;
-        private readonly RefreshOptions _refreshOptions;
+        private readonly RefreshService _refreshService;
         private readonly ISchedulerFactory _schedulerFactory;
         private readonly SessionManager _sessionManager;
 
         public Handler(ISchedulerFactory schedulerFactory, ApplicationDbContext context,
-            SessionManager sessionManager, EncryptionManager encryptionManager, EncryptionService encryptionService,
-            HashManager hashManager, IOptions<RefreshOptions> refreshOptions)
+            SessionManager sessionManager, EncryptionManager encryptionManager, RefreshService refreshService,
+            HashManager hashManager)
         {
             _schedulerFactory = schedulerFactory;
             _context = context;
             _sessionManager = sessionManager;
             _encryptionManager = encryptionManager;
-            _encryptionService = encryptionService;
+            _refreshService = refreshService;
             _hashManager = hashManager;
-            _refreshOptions = refreshOptions.Value;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -76,8 +73,7 @@ public static class Refresh
             RefreshTokenContents? refreshTokenContents;
             try
             {
-                refreshTokenContents =
-                    _encryptionService.DeserializeUnprotect<RefreshTokenContents>(request.RefreshToken, out _);
+                refreshTokenContents = _refreshService.DecryptRefreshToken(request.RefreshToken);
             }
             catch
             {
@@ -95,18 +91,15 @@ public static class Refresh
                 throw new ValidationException(new[]
                     { new ValidationFailure(nameof(request.RefreshToken), "Invalid refresh token") });
 
-            var token = await _sessionManager.StartSessionAsync(user);
+            var token = await _sessionManager.StartSessionAsync(user.Id);
 
             var masterKey = new EncryptableKey(user.MasterKeyEncrypted);
             var unlockedMasterKey = masterKey.Unlock(refreshTokenContents.Password, user.MasterKeySalt);
 
             _encryptionManager.MasterKey = unlockedMasterKey;
-            _hashManager.Init(user);
+            _hashManager.Init(user.HasherSaltEncrypted);
 
-            var refreshToken =
-                _encryptionService.SerializeProtect(
-                    new RefreshTokenContents { Password = refreshTokenContents.Password, UserId = user.Id },
-                    TimeSpan.FromDays(_refreshOptions.ExpiryDays));
+            var refreshToken = _refreshService.GenerateRefreshToken(user.Id, refreshTokenContents.Password);
 
             await ScheduleSessionCreatedJobsAsync(user, unlockedMasterKey, cancellationToken);
 
@@ -115,7 +108,7 @@ public static class Refresh
                 User = user.Adapt<ResponseUser>(),
                 Token = token,
                 RefreshToken = refreshToken,
-                RefreshTokenExpiration = DateTime.UtcNow.AddDays(_refreshOptions.ExpiryDays)
+                RefreshTokenExpiration = DateTime.Now.Add(_refreshService.GetRefreshTokenExpiry())
             }; //TODO: Maybe add warden permissions to response
         }
 
@@ -130,7 +123,8 @@ public static class Refresh
                 .UsingJobData("masterKey", masterKey)
                 .Build();
 
-            var updateGradesTrigger = TriggerBuilder.Create().WithIdentity("updateGradesTrigger", "sessionCreatedJobs")
+            var updateGradesTrigger = TriggerBuilder.Create()
+                .WithIdentity("updateGradesTrigger", "sessionCreatedJobs")
                 .StartNow()
                 .Build();
 

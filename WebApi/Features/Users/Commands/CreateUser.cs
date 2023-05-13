@@ -40,9 +40,8 @@ public static class CreateUser
                 .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'")
                 .MustAsync(BeUniqueEmailAsync).WithMessage("The email is already in use");
             RuleFor(x => x.Password).NotEmpty()
-                .MinimumLength(8).WithMessage("The password must be at least 8 characters long")
                 .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$").WithMessage(
-                    "The password must contain at least one uppercase letter, lower case letter and number");
+                    "The password must contain at least one uppercase letter, lower case letter, number and must be at least 8 characters long");
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.OmCode).NotEmpty()
                 .MustAsync(BeUniqueOmCodeAsync).WithMessage("The om code is already in use")

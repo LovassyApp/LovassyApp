@@ -16,7 +16,7 @@ public class LoloManager
     private readonly LoloOptions _loloOptions;
     private readonly IMemoryCache _memoryCache;
 
-    private string? _userId;
+    private Guid? _userId;
 
     public LoloManager(IOptions<LoloOptions> loloOptions, ApplicationDbContext context, IMemoryCache memoryCache,
         HashManager hashManager)
@@ -34,7 +34,7 @@ public class LoloManager
     ///     Initializes the <see cref="LoloManager" /> with the current user object.
     /// </summary>
     /// <param name="user">The user's, for which we want to manage lolos.</param>
-    public void Init(string userId)
+    public void Init(Guid userId)
     {
         _userId = userId;
     }
@@ -47,32 +47,26 @@ public class LoloManager
         if (_userId == null)
             throw new LoloManagerUserNotFoundException();
 
-        var userIdHashed = _hashManager.HashWithHasherSalt(_userId);
+        var userIdHashed = _hashManager.HashWithHasherSalt(_userId.ToString());
 
         var grades = await _context.Grades
             .Where(g => g.UserIdHashed == userIdHashed && g.LoloIdHashed != null)
             .ToListAsync();
 
-        Coins = await _context.Lolos.Where(l => l.UserId == Guid.Parse(_userId))
+        Coins = await _context.Lolos.Where(l => l.UserId == _userId)
             .ToListAsync();
 
-        var loloIdsHashed = Coins.Select(coin => _hashManager.HashWithHasherSalt(coin.Id.ToString())).ToList();
-
-        var gradesByLoloId = grades
-            .Where(g => loloIdsHashed.Contains(g.LoloIdHashed!))
-            .GroupBy(g => g.LoloIdHashed!)
-            .ToDictionary(g => g.Key, g => g.ToList());
-
-        Parallel.ForEach(Coins, coin =>
+        foreach (var coin in Coins)
         {
-            coin.Grades =
-                gradesByLoloId.TryGetValue(_hashManager.HashWithHasherSalt(coin.Id.ToString()), out var coinGrades)
-                    ? coinGrades
-                    : new List<Grade>();
-        });
+            if (coin.Grades == null)
+                coin.Grades = new List<Grade>();
+
+            coin.Grades.AddRange(
+                grades.Where(g => g.LoloIdHashed == _hashManager.HashWithHasherSalt(coin.Id.ToString())));
+        }
 
         Balance = await _context.Lolos
-            .Where(l => l.UserId == Guid.Parse(_userId) && !l.IsSpent)
+            .Where(l => l.UserId == _userId && !l.IsSpent)
             .CountAsync();
     }
 
@@ -102,7 +96,7 @@ public class LoloManager
 
     private async Task GenerateFromFivesAsync()
     {
-        var userIdHashed = _hashManager.HashWithHasherSalt(_userId);
+        var userIdHashed = _hashManager.HashWithHasherSalt(_userId.ToString()!);
 
         var grades = await _context.Grades
             .Where(g => g.UserIdHashed == userIdHashed && g.LoloIdHashed == null &&
@@ -121,7 +115,7 @@ public class LoloManager
 
     private async Task GenerateFromFoursAsync()
     {
-        var userIdHashed = _hashManager.HashWithHasherSalt(_userId);
+        var userIdHashed = _hashManager.HashWithHasherSalt(_userId.ToString()!);
 
         var grades = await _context.Grades
             .Where(g => g.UserIdHashed == userIdHashed && g.LoloIdHashed == null &&
@@ -142,7 +136,7 @@ public class LoloManager
     {
         var lolo = new Infrastructure.Persistence.Entities.Lolo
         {
-            UserId = Guid.Parse(_userId),
+            UserId = _userId!.Value,
             Reason = reason,
             LoloType = LoloType.FromGrades
         };

@@ -29,8 +29,8 @@ public class UpdateLolosJob : IJob
         var masterKey = context.MergedJobDataMap.Get("masterKey") as string;
 
         _encryptionManager.Init(masterKey);
-        _hashManager.Init(user);
-        _loloManager.Init(user.Id.ToString());
+        _hashManager.Init(user!.HasherSaltEncrypted);
+        _loloManager.Init(user.Id);
 
         await _loloManager.GenerateAsync();
 

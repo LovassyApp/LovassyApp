@@ -34,7 +34,7 @@ public class UpdateGradesJob : IJob
         _context.Attach(user); // We have to attach the user to the context, because it's not tracked yet in this scope (It caused an issue back when we used hangfire, maybe it wouldn't now)
 
         _encryptionManager.Init(masterKey);
-        _hashManager.Init(user);
+        _hashManager.Init(user.HasherSaltEncrypted);
         _backboardAdapter.Init(user);
 
         await _backboardAdapter.TryUpdatingAsync();

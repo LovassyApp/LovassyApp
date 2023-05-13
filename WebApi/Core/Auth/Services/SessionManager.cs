@@ -19,8 +19,8 @@ namespace WebApi.Core.Auth.Services;
 public class SessionManager
 {
     private readonly ApplicationDbContext _context;
-    private readonly int _expiryMinute;
     private readonly IMemoryCache _memoryCache;
+    private readonly SessionOptions _sessionOptions;
 
     private string? _encryptionKey;
 
@@ -30,7 +30,7 @@ public class SessionManager
     {
         _memoryCache = memoryCache;
         _context = context;
-        _expiryMinute = options.Value.ExpiryMinutes;
+        _sessionOptions = options.Value;
     }
 
     public Session? Session { get; set; }
@@ -63,18 +63,18 @@ public class SessionManager
     ///     The access token that can later be used to initialize the <see cref="SessionManager" />. This token is url
     ///     encoded and should be decoded before checking!
     /// </returns>
-    public async Task<string> StartSessionAsync(User user)
+    public async Task<string> StartSessionAsync(Guid userId)
     {
         var tokenBytes = RandomNumberGenerator.GetBytes(64);
         _token = Convert.ToBase64String(tokenBytes);
 
-        var expiry = DateTime.Now.AddMinutes(_expiryMinute);
+        var expiry = DateTime.Now.AddMinutes(_sessionOptions.ExpiryMinutes);
 
         var hash = HashingUtils.Hash(_token);
 
         await _context.PersonalAccessTokens.AddAsync(new PersonalAccessToken
         {
-            UserId = user.Id,
+            UserId = userId,
             Token = _token
         });
         await _context.SaveChangesAsync();

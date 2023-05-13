@@ -1,4 +1,4 @@
-namespace WebApi.Features.Auth.Options;
+namespace WebApi.Features.Auth.Services.Options;
 
 public class RefreshOptions
 {
