@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using WebApi.Core.Auth.Exceptions;
+using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Core.Lolo.Exceptions;
 using WebApi.Core.Lolo.Services.Options;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -15,29 +16,22 @@ public class LoloManager
     private readonly HashManager _hashManager;
     private readonly LoloOptions _loloOptions;
     private readonly IMemoryCache _memoryCache;
+    private readonly UserAccessor _userAccessor;
 
     private Guid? _userId;
 
     public LoloManager(IOptions<LoloOptions> loloOptions, ApplicationDbContext context, IMemoryCache memoryCache,
-        HashManager hashManager)
+        HashManager hashManager, UserAccessor userAccessor)
     {
         _loloOptions = loloOptions.Value;
         _context = context;
         _memoryCache = memoryCache;
         _hashManager = hashManager;
+        _userAccessor = userAccessor;
     }
 
     public int? Balance { get; private set; }
     public List<Infrastructure.Persistence.Entities.Lolo>? Coins { get; private set; }
-
-    /// <summary>
-    ///     Initializes the <see cref="LoloManager" /> with the current user object.
-    /// </summary>
-    /// <param name="user">The user's, for which we want to manage lolos.</param>
-    public void Init(Guid userId)
-    {
-        _userId = userId;
-    }
 
     /// <summary>
     ///     Loads the user's lolo coins and balance from the database.
@@ -45,7 +39,7 @@ public class LoloManager
     public async Task LoadAsync()
     {
         if (_userId == null)
-            throw new LoloManagerUserNotFoundException();
+            Init();
 
         var userIdHashed = _hashManager.HashWithHasherSalt(_userId.ToString());
 
@@ -73,14 +67,10 @@ public class LoloManager
     /// <summary>
     ///     Generates lolo coins from grades.
     /// </summary>
-    /// <exception cref="LoloManagerUserNotFoundException">
-    ///     The exception thrown when the <see cref="LoloManager" /> has not
-    ///     been initialized yet.
-    /// </exception>
     public async Task GenerateAsync()
     {
         if (_userId == null)
-            throw new LoloManagerUserNotFoundException();
+            Init();
 
         if ((bool?)_memoryCache.Get(_loloOptions.ManagerLockPrefix + _userId) == true)
             return;
@@ -161,5 +151,15 @@ public class LoloManager
             await transaction.RollbackAsync();
             throw;
         }
+    }
+
+    private void Init()
+    {
+        var user = _userAccessor.User;
+
+        if (user == null)
+            throw new UserNotFoundException();
+
+        _userId = user.Id;
     }
 }

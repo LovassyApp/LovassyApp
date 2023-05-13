@@ -2,7 +2,6 @@ using Mapster;
 using MediatR;
 using Sieve.Models;
 using Sieve.Services;
-using WebApi.Core.Auth.Extensions;
 using WebApi.Core.Lolo.Services;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -62,22 +61,17 @@ public static class IndexLolos
 
     internal sealed class Handler : IRequestHandler<Query, Response>
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly LoloManager _loloManager;
         private readonly SieveProcessor _sieveProcessor;
 
-        public Handler(IHttpContextAccessor httpContextAccessor, LoloManager loloManager, SieveProcessor sieveProcessor)
+        public Handler(LoloManager loloManager, SieveProcessor sieveProcessor)
         {
-            _httpContextAccessor = httpContextAccessor;
             _loloManager = loloManager;
             _sieveProcessor = sieveProcessor;
         }
 
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var userId = _httpContextAccessor.HttpContext!.User.GetId();
-
-            _loloManager.Init(Guid.Parse(userId!));
             await _loloManager.LoadAsync();
 
             var filteredLolos = _sieveProcessor.Apply(request.SieveModel, _loloManager.Coins!.AsQueryable());

@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
-using WebApi.Core.Auth.Extensions;
+using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -52,13 +52,13 @@ public static class IndexGrades
     {
         private readonly ApplicationDbContext _context;
         private readonly HashManager _hashManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SieveProcessor _sieveProcessor;
+        private readonly UserAccessor _userAccessor;
 
-        public Handler(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context,
+        public Handler(UserAccessor userAccessor, ApplicationDbContext context,
             SieveProcessor sieveProcessor, HashManager hashManager)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _userAccessor = userAccessor;
             _context = context;
             _sieveProcessor = sieveProcessor;
             _hashManager = hashManager;
@@ -67,11 +67,10 @@ public static class IndexGrades
         public async Task<IEnumerable<Response>> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            var grades = _context.Grades
-                .Where(g => g.UserIdHashed == _hashManager.HashWithHasherSalt(
-                    _httpContextAccessor.HttpContext!.User.GetId()!))
-                .Where(g => g.GradeType == GradeType.RegularGrade);
+            var userIdHashed = _hashManager.HashWithHasherSalt(_userAccessor.User!.Id.ToString());
 
+            var grades = _context.Grades
+                .Where(g => g.UserIdHashed == userIdHashed && g.GradeType == GradeType.RegularGrade);
 
             var filteredGrades = await _sieveProcessor.Apply(request.SieveModel, grades).GroupBy(g => g.Subject)
                 .ToListAsync(cancellationToken);

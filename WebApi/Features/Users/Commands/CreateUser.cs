@@ -88,7 +88,7 @@ public static class CreateUser
 
             var masterKeySalt = _hashService.GenerateSalt();
             var masterKey = new EncryptableKey();
-            _encryptionManager.Init(masterKey.GetKey());
+            _encryptionManager.SetMasterKeyTemporarily(masterKey.GetKey());
 
             var storedKey = masterKey.Lock(request.Body.Password, masterKeySalt);
 

@@ -12,7 +12,6 @@ using WebApi.Core.Auth.Jobs;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
-using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Schemes.Token;
 
@@ -23,11 +22,12 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
     private readonly HashManager _hashManager;
     private readonly ISchedulerFactory _schedulerFactory;
     private readonly SessionManager _sessionManager;
+    private readonly UserAccessor _userAccessor;
 
     public TokenAuthenticationSchemeHandler(IOptionsMonitor<TokenAuthenticationSchemeOptions> options,
         ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ApplicationDbContext context,
         SessionManager sessionManager, EncryptionManager encryptionManager, HashManager hashManager,
-        ISchedulerFactory schedulerFactory) : base(options,
+        ISchedulerFactory schedulerFactory, UserAccessor userAccessor) : base(options,
         logger, encoder, clock)
     {
         _context = context;
@@ -35,6 +35,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         _encryptionManager = encryptionManager;
         _hashManager = hashManager;
         _schedulerFactory = schedulerFactory;
+        _userAccessor = userAccessor;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -56,13 +57,14 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         try
         {
-            InitializeManagers(token,
-                accessToken.User); //TODO: This is somewhat unideal, most of what's happening here is not related to authentication and should be moved somewhere else (like an event listener)
+            _sessionManager.Init(token);
         }
         catch (SessionNotFoundException)
         {
             return AuthenticateResult.Fail("Session not found");
         }
+
+        _userAccessor.User = accessToken.User;
 
         //TODO: Add permission claims with Warden
 
@@ -78,13 +80,6 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         var identity = new ClaimsIdentity(claims, Scheme.Name);
 
         return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme.Name));
-    }
-
-    private void InitializeManagers(string token, User user)
-    {
-        _sessionManager.Init(token);
-        _encryptionManager.Init();
-        _hashManager.Init(user.HasherSaltEncrypted);
     }
 
     private async Task ScheduleOnTokenUsedJobsAsync(int id, DateTime lastUsedAt)

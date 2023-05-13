@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using WebApi.Core.Cryptography.Exceptions;
+using WebApi.Core.Auth.Exceptions;
+using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Services.Options;
 using WebApi.Core.Cryptography.Utils;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -15,15 +16,16 @@ public class HashManager
     private readonly EncryptionManager _encryptionManager;
     private readonly HashOptions _hashOptions;
     private readonly IMemoryCache _memoryCache;
+    private readonly UserAccessor _userAccessor;
 
     private string? _userSalt;
 
-    public HashManager(EncryptionManager encryptionManager, IMemoryCache memoryCache,
+    public HashManager(EncryptionManager encryptionManager, UserAccessor userAccessor, IMemoryCache memoryCache,
         IOptions<HashOptions> options)
     {
         _encryptionManager = encryptionManager;
         _memoryCache = memoryCache;
-
+        _userAccessor = userAccessor;
         _hashOptions = options.Value;
     }
 
@@ -33,14 +35,10 @@ public class HashManager
     /// </summary>
     /// <param name="payload">The payload to hash.</param>
     /// <returns>The hashed payload as a string.</returns>
-    /// <exception cref="HasherSaltNotFoundException">
-    ///     The exception thrown when the <see cref="HashManager" /> has not yet been
-    ///     initialized.
-    /// </exception>
     public string HashWithHasherSalt(string payload)
     {
         if (_userSalt == null)
-            throw new HasherSaltNotFoundException();
+            Init();
 
         var cached = _memoryCache.Get<string>($"{_hashOptions.HashManagerCachePrefix}:{payload}");
 
@@ -53,19 +51,13 @@ public class HashManager
         return hash;
     }
 
-    /// <summary>
-    ///     Initializes the <see cref="HashManager" /> with the user's encrypted salt.
-    /// </summary>
-    /// <param name="user">The <see cref="User" />, who's salt is going to be used.</param>
-    /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the <see cref="EncryptionManager" /> has not yet been
-    ///     initialized.
-    /// </exception>
-    public void Init(string hasherSaltEncrypted)
+    private void Init()
     {
-        if (_encryptionManager.MasterKey == null)
-            throw new MasterKeyNotFoundException();
+        var user = _userAccessor.User;
 
-        _userSalt = _encryptionManager.Decrypt(hasherSaltEncrypted);
+        if (user == null)
+            throw new UserNotFoundException();
+
+        _userSalt = _encryptionManager.Decrypt(user.HasherSaltEncrypted);
     }
 }

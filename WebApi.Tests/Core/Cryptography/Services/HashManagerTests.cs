@@ -5,6 +5,7 @@ using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Core.Cryptography.Utils;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Tests.Core.Cryptography.Services;
 
@@ -22,14 +23,19 @@ public class HashManagerTests
         services.AddSingleton<SessionManager>();
         services.AddSingleton<EncryptionManager>();
         services.AddSingleton<HashManager>();
+        services.AddSingleton<UserAccessor>();
 
         var serviceProvider = services.BuildServiceProvider();
         var encryptionManager = serviceProvider.GetRequiredService<EncryptionManager>();
+        var userAccessor = serviceProvider.GetRequiredService<UserAccessor>();
 
-        encryptionManager.Init(HashingUtils.GenerateBasicKey("password", "salt"));
+        encryptionManager.SetMasterKeyTemporarily(HashingUtils.GenerateBasicKey("password", "salt"));
+        userAccessor.User = new User
+        {
+            HasherSaltEncrypted = encryptionManager.Encrypt(HashingUtils.GenerateSalt())
+        };
 
         _hashManager = serviceProvider.GetRequiredService<HashManager>();
-        _hashManager.Init(encryptionManager.Encrypt(HashingUtils.GenerateSalt()));
     }
 
     [TestCase("id1")]

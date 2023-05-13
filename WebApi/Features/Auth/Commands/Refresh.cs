@@ -47,21 +47,18 @@ public static class Refresh
     {
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
-        private readonly HashManager _hashManager;
         private readonly RefreshService _refreshService;
         private readonly ISchedulerFactory _schedulerFactory;
         private readonly SessionManager _sessionManager;
 
         public Handler(ISchedulerFactory schedulerFactory, ApplicationDbContext context,
-            SessionManager sessionManager, EncryptionManager encryptionManager, RefreshService refreshService,
-            HashManager hashManager)
+            SessionManager sessionManager, EncryptionManager encryptionManager, RefreshService refreshService)
         {
             _schedulerFactory = schedulerFactory;
             _context = context;
             _sessionManager = sessionManager;
             _encryptionManager = encryptionManager;
             _refreshService = refreshService;
-            _hashManager = hashManager;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -96,8 +93,7 @@ public static class Refresh
             var masterKey = new EncryptableKey(user.MasterKeyEncrypted);
             var unlockedMasterKey = masterKey.Unlock(refreshTokenContents.Password, user.MasterKeySalt);
 
-            _encryptionManager.MasterKey = unlockedMasterKey;
-            _hashManager.Init(user.HasherSaltEncrypted);
+            _encryptionManager.MasterKey = unlockedMasterKey; // Set the master key this way saves it in the session
 
             var refreshToken = _refreshService.GenerateRefreshToken(user.Id, refreshTokenContents.Password);
 

@@ -3,11 +3,12 @@ using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using WebApi.Core.Auth.Exceptions;
+using WebApi.Core.Auth.Services;
 using WebApi.Core.Backboard.Exceptions;
 using WebApi.Core.Backboard.Models;
 using WebApi.Core.Backboard.Services.Options;
 using WebApi.Core.Backboard.Utils;
-using WebApi.Core.Cryptography.Exceptions;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
@@ -26,52 +27,33 @@ public class BackboardAdapter
     private readonly EncryptionManager _encryptionManager;
     private readonly HashManager _hashManager;
     private readonly IMemoryCache _memoryCache;
+    private readonly UserAccessor _userAccessor;
 
     private User? _user;
 
     public BackboardAdapter(ApplicationDbContext context, EncryptionManager encryptionManager, HashManager hashManager,
-        IMemoryCache memoryCache,
-        IOptions<BackboardOptions> options)
+        IMemoryCache memoryCache, UserAccessor userAccessor, IOptions<BackboardOptions> options)
     {
         _context = context;
         _encryptionManager = encryptionManager;
         _hashManager = hashManager;
         _memoryCache = memoryCache;
+        _userAccessor = userAccessor;
         _backboardOptions = options.Value;
-    }
-
-    /// <summary>
-    ///     Initializes the <see cref="BackboardAdapter" /> with the current user object.
-    /// </summary>
-    /// <param name="user">The <see cref="User" />, who's grades we want to import.</param>
-    /// <exception cref="MasterKeyNotFoundException">
-    ///     The exception thrown when the <see cref="EncryptionManager" /> has not yet been
-    ///     initialized.
-    /// </exception>
-    public void Init(User user)
-    {
-        if (_encryptionManager.MasterKey == null)
-            throw new MasterKeyNotFoundException();
-
-        _user = user;
     }
 
     /// <summary>
     ///     Attempts to update the user's grades, real name and class. It only works if a <see cref="GradeImport" /> for the
     ///     user exists.
     /// </summary>
-    /// <exception cref="BackboardAdapterUserNotFoundException">
-    ///     The exception thrown when The <see cref="BackboardAdapter" /> has not yet
-    ///     been initialized.
-    /// </exception>
     /// <exception cref="InvalidImportException">
     ///     The exception thrown when invalid grade import data is found in the database
     ///     (not decryptable or deserializable).
     /// </exception>
-    public async Task TryUpdatingAsync()
+    public async Task UpdateAsync()
     {
         if (_user == null)
-            throw new BackboardAdapterUserNotFoundException();
+            Init();
 
         if ((bool?)_memoryCache.Get(_backboardOptions.AdapterLockPrefix + _user.Id) == true)
             return;
@@ -135,5 +117,12 @@ public class BackboardAdapter
                 _hashManager.HashWithHasherSalt(_user!.Id.ToString())));
 
         return grades;
+    }
+
+    private void Init()
+    {
+        var user = _userAccessor.User;
+
+        _user = user ?? throw new UserNotFoundException();
     }
 }

@@ -36,7 +36,7 @@ public class EncryptionManagerTests
 
         Assert.Throws<MasterKeyNotFoundException>(() => _encryptionManager.Encrypt(data));
 
-        _encryptionManager.Init(HashingUtils.GenerateBasicKey("password", "salt"));
+        _encryptionManager.SetMasterKeyTemporarily(HashingUtils.GenerateBasicKey("password", "salt"));
 
         var encrypted = _encryptionManager.Encrypt(data);
         var decrypted = _encryptionManager.Decrypt(encrypted);

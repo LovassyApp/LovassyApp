@@ -4,7 +4,6 @@ using FluentValidation.Results;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Quartz.Listener;
@@ -13,7 +12,6 @@ using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Features.Auth.Jobs;
 using WebApi.Features.Auth.Services;
-using WebApi.Features.Auth.Services.Options;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 using ValidationException = WebApi.Common.Exceptions.ValidationException;
@@ -78,16 +76,13 @@ public static class Login
     {
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
-        private readonly HashManager _hashManager;
         private readonly HashService _hashService;
         private readonly RefreshService _refreshService;
         private readonly ISchedulerFactory _schedulerFactory;
         private readonly SessionManager _sessionManager;
 
-        public Handler(ApplicationDbContext context, HashService hashService,
-            EncryptionManager encryptionManager, ISchedulerFactory schedulerFactory,
-            RefreshService refreshService, SessionManager sessionManager, HashManager hashManager,
-            IOptions<RefreshOptions> refreshOptions)
+        public Handler(ApplicationDbContext context, HashService hashService, EncryptionManager encryptionManager,
+            ISchedulerFactory schedulerFactory, RefreshService refreshService, SessionManager sessionManager)
         {
             _context = context;
             _schedulerFactory = schedulerFactory;
@@ -95,7 +90,6 @@ public static class Login
             _encryptionManager = encryptionManager;
             _refreshService = refreshService;
             _sessionManager = sessionManager;
-            _hashManager = hashManager;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -112,8 +106,7 @@ public static class Login
             var masterKey = new EncryptableKey(user.MasterKeyEncrypted);
             var unlockedMasterKey = masterKey.Unlock(request.Body.Password, user.MasterKeySalt);
 
-            _encryptionManager.MasterKey = unlockedMasterKey;
-            _hashManager.Init(user.HasherSaltEncrypted);
+            _encryptionManager.MasterKey = unlockedMasterKey; // Setting the master key this way saves it in the session
 
             await ScheduleSessionCreatedJobsAsync(user, unlockedMasterKey, cancellationToken);
 
