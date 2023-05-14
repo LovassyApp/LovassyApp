@@ -10,7 +10,6 @@ using Quartz;
 using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Jobs;
 using WebApi.Core.Auth.Services;
-using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Schemes.Token;
@@ -18,22 +17,17 @@ namespace WebApi.Core.Auth.Schemes.Token;
 public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthenticationSchemeOptions>
 {
     private readonly ApplicationDbContext _context;
-    private readonly EncryptionManager _encryptionManager;
-    private readonly HashManager _hashManager;
     private readonly ISchedulerFactory _schedulerFactory;
     private readonly SessionManager _sessionManager;
     private readonly UserAccessor _userAccessor;
 
     public TokenAuthenticationSchemeHandler(IOptionsMonitor<TokenAuthenticationSchemeOptions> options,
         ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ApplicationDbContext context,
-        SessionManager sessionManager, EncryptionManager encryptionManager, HashManager hashManager,
-        ISchedulerFactory schedulerFactory, UserAccessor userAccessor) : base(options,
+        SessionManager sessionManager, ISchedulerFactory schedulerFactory, UserAccessor userAccessor) : base(options,
         logger, encoder, clock)
     {
         _context = context;
         _sessionManager = sessionManager;
-        _encryptionManager = encryptionManager;
-        _hashManager = hashManager;
         _schedulerFactory = schedulerFactory;
         _userAccessor = userAccessor;
     }
@@ -57,7 +51,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         try
         {
-            _sessionManager.Init(token);
+            _sessionManager.ResumeSession(token);
         }
         catch (SessionNotFoundException)
         {
@@ -74,8 +68,9 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         {
             new(ClaimTypes.NameIdentifier, accessToken.User.Id.ToString()),
             new(ClaimTypes.Name, accessToken.User.Name),
-            new(ClaimTypes.Email, accessToken.User.Email)
-        };
+            new(ClaimTypes.Email, accessToken.User.Email),
+            new(AuthConstants.EmailVerifiedClaim, (accessToken.User.EmailVerifiedAt != null).ToString())
+        }; //TODO: Clean this up a bit, it's gonna get messy with warden
 
         var identity = new ClaimsIdentity(claims, Scheme.Name);
 

@@ -25,14 +25,14 @@ public class UserSeeder
         _resetService = resetService;
     }
 
-    public async Task RunAsync()
+    public async Task RunAsync(bool verified = true)
     {
         _resetService.SetResetKeyPassword(_resetKeyPassword);
 
         var users = new List<User>();
         for (var i = 0; i < _userCount; i++)
             users.Add(CreateUser(string.Join(".", Faker.Lorem.Words(2)) + "@lovassy.edu.hu", Faker.Name.FullName(),
-                "password", Faker.Random.ULong(10000000000, 99999999999).ToString()));
+                "password", Faker.Random.ULong(10000000000, 99999999999).ToString(), verified));
         await _context.Users.AddRangeAsync(users);
         await _context.SaveChangesAsync();
 
@@ -40,7 +40,7 @@ public class UserSeeder
     }
 
 
-    private User CreateUser(string email, string name, string password, string omCode)
+    private User CreateUser(string email, string name, string password, string omCode, bool verified)
     {
         var masterKeySalt = _hashService.GenerateSalt();
         var masterKey = new EncryptableKey();
@@ -55,6 +55,7 @@ public class UserSeeder
         return new User
         {
             Email = email,
+            EmailVerifiedAt = verified ? DateTime.UtcNow : null,
             Name = name,
             PasswordHashed = _hashService.HashPassword(password),
             PublicKey = keys.PublicKey,

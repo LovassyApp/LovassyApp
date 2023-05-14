@@ -3,7 +3,6 @@ using MediatR;
 using Sieve.Models;
 using Sieve.Services;
 using WebApi.Core.Lolo.Services;
-using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Shop.Queries;
 
@@ -28,10 +27,13 @@ public static class IndexLolos
 
         public bool IsSpent { get; set; }
 
-        public LoloType LoloType { get; set; }
+        public string LoloType { get; set; }
         public string Reason { get; set; }
 
         public List<ResponseGrade> Grades { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class ResponseGrade
@@ -57,6 +59,9 @@ public static class IndexLolos
         public string Name { get; set; }
         public string Type { get; set; }
         public string GradeType { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, Response>
@@ -76,12 +81,10 @@ public static class IndexLolos
 
             var filteredLolos = _sieveProcessor.Apply(request.SieveModel, _loloManager.Coins!.AsQueryable());
 
-            var coins = filteredLolos.Adapt<List<ResponseCoin>>();
-
             return new Response
             {
                 Balance = (int)_loloManager.Balance!,
-                Coins = coins
+                Coins = filteredLolos.Adapt<List<ResponseCoin>>()
             };
         }
     }

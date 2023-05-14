@@ -12,7 +12,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230511072813_Initial")]
+    [Migration("20230514072622_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -258,6 +258,9 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("EmailVerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("HasherSaltEncrypted")
                         .IsRequired()
                         .HasColumnType("text");
@@ -356,7 +359,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.PersonalAccessToken", b =>
                 {
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("PersonalAccessTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -369,6 +372,8 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.Navigation("GradeImports");
 
                     b.Navigation("Lolos");
+
+                    b.Navigation("PersonalAccessTokens");
                 });
 #pragma warning restore 612, 618
         }

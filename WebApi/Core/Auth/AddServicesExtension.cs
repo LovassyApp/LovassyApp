@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApi.Core.Auth.Filters.Operation;
+using WebApi.Core.Auth.Policies;
+using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Core.Auth.Schemes.ImportKey;
 using WebApi.Core.Auth.Schemes.Token;
 using WebApi.Core.Auth.Services;
@@ -27,11 +30,12 @@ public static class AddServicesExtension
             .AddScheme<ImportKeyAuthenticationSchemeOptions, ImportKeyAuthenticationSchemeHandler>(
                 AuthConstants.ImportKeyScheme, o => { });
 
-        services.AddAuthorization(o =>
-        {
-            o.DefaultPolicy = new AuthorizationPolicyBuilder().AddAuthenticationSchemes(AuthConstants.TokenScheme)
-                .RequireAuthenticatedUser().Build(); //TODO: Replace with the policy of Warden
-        });
+        services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
+
+        services.AddTransient<IPolicyEvaluator, ChallengeUnauthenticatedPolicyEvaluator>();
+        services.AddTransient<PolicyEvaluator>();
+
+        services.AddSingleton<IAuthorizationHandler, EmailVerifiedHandler>();
     }
 
     public static void AddAuthOperationFilters(this SwaggerGenOptions options)

@@ -44,7 +44,7 @@ public class SessionManager
     ///     The exception thrown when no session exists for the token. (Or the session
     ///     expired)
     /// </exception>
-    public void Init(string token)
+    public void ResumeSession(string token)
     {
         _token = token;
 

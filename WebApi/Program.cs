@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Prometheus;
 using WebApi.Common;
 using WebApi.Common.Extensions;
@@ -22,7 +23,9 @@ builder.Services.AddLoloServices(builder.Configuration);
 
 builder.Services.AddFeatures(builder.Configuration);
 
-builder.Services.AddControllers(o => o.Filters.Add(new ExceptionFilter()));
+builder.Services.AddControllers(o => o.Filters.Add(new ExceptionFilter())).AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+;
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();

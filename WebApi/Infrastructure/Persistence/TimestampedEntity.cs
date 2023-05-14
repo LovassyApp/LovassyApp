@@ -1,3 +1,5 @@
+using Sieve.Attributes;
+
 namespace WebApi.Infrastructure.Persistence;
 
 /// <summary>
@@ -6,6 +8,9 @@ namespace WebApi.Infrastructure.Persistence;
 /// </summary>
 public class TimestampedEntity
 {
+    [Sieve(CanFilter = true, CanSort = true)]
     public DateTime CreatedAt { get; set; }
+
+    [Sieve(CanFilter = true, CanSort = true)]
     public DateTime UpdatedAt { get; set; }
 }

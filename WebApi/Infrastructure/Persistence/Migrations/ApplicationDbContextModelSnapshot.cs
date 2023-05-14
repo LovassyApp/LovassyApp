@@ -255,6 +255,9 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("EmailVerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("HasherSaltEncrypted")
                         .IsRequired()
                         .HasColumnType("text");
@@ -353,7 +356,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.PersonalAccessToken", b =>
                 {
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("PersonalAccessTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -366,6 +369,8 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.Navigation("GradeImports");
 
                     b.Navigation("Lolos");
+
+                    b.Navigation("PersonalAccessTokens");
                 });
 #pragma warning restore 612, 618
         }

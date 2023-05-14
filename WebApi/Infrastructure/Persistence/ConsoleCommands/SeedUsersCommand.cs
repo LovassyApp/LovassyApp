@@ -32,7 +32,10 @@ public class SeedUsersCommand : IConsoleCommand
 
         if (continueSeeding)
         {
-            _userSeeder.RunAsync().Wait();
+            if (args is ["unverified", ..])
+                _userSeeder.RunAsync(false).Wait();
+            else
+                _userSeeder.RunAsync().Wait();
             ConsoleUtils.Success("Successfully seeded users!");
         }
         else

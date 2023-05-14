@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sieve.Attributes;
@@ -12,7 +13,7 @@ public class Lolo : TimestampedEntity
     public int Id { get; set; }
 
     [Required] public Guid UserId { get; set; }
-    public User User { get; set; }
+    [JsonIgnore] public User User { get; set; }
 
     //TODO: Add HistoryId
 

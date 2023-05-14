@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 using WebApi.Common.Models;
+using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Features.School.Queries;
 
 namespace WebApi.Features.School;
 
 [Authorize]
+[EmailVerifiedAuthorize]
 public class GradesController : ApiControllerBase
 {
     [HttpGet]

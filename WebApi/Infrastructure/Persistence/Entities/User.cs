@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sieve.Attributes;
@@ -24,6 +25,8 @@ public class User : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public string Email { get; set; }
 
+    public DateTime? EmailVerifiedAt { get; set; }
+
     [Required] public string PasswordHashed { get; set; }
 
     [Required] public string PublicKey { get; set; }
@@ -45,9 +48,11 @@ public class User : TimestampedEntity
 
     public bool ImportAvailable { get; set; }
 
-    public List<GradeImport> GradeImports { get; set; }
-    public List<Lolo> Lolos { get; set; }
-    public List<PersonalAccessToken> PersonalAccessTokens { get; set; }
+    [JsonIgnore] public List<GradeImport> GradeImports { get; set; }
+
+    [JsonIgnore] public List<Lolo> Lolos { get; set; }
+
+    [JsonIgnore] public List<PersonalAccessToken> PersonalAccessTokens { get; set; }
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
