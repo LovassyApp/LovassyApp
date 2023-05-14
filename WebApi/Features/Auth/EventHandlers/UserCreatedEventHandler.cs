@@ -2,7 +2,7 @@ using System.Text.Json;
 using MediatR;
 using Quartz;
 using WebApi.Features.Auth.Jobs;
-using WebApi.Features.Users.Commands;
+using WebApi.Features.Users.Events;
 
 namespace WebApi.Features.Auth.EventHandlers;
 

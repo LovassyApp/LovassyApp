@@ -24,6 +24,7 @@ public static class AddCommonExtension
     /// <param name="configuration">The app configuration.</param>
     public static void AddCommon(this IServiceCollection services, IConfiguration configuration)
     {
+        //TODO: Rate limiting!!!
         services.AddHttpContextAccessor();
         services.AddMemoryCache();
 

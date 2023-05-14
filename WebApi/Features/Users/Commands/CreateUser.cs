@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Common.Exceptions;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
+using WebApi.Features.Users.Events;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -127,11 +128,4 @@ public static class CreateUser
             return Unit.Value;
         }
     }
-}
-
-public class UserCreatedEvent : INotification
-{
-    public User User { get; set; }
-    public string VerifyUrl { get; set; }
-    public string VerifyTokenQueryKey { get; set; }
 }
