@@ -3,16 +3,19 @@ using WebApi.Core.Auth.Policies.EmailConfirmed;
 
 namespace WebApi.Core.Auth.Policies;
 
+/// <summary>
+///     The custom authorization policy provider for the application. It is used to handle all policies.
+/// </summary>
 public class AuthorizationPolicyProvider : IAuthorizationPolicyProvider
 {
     public async Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
     {
-        if (policyName.StartsWith(EmailVerifiedAuthorizeAttribute.PolicyPrefix) && Enum.TryParse(
-                policyName.Substring(EmailVerifiedAuthorizeAttribute.PolicyPrefix.Length),
-                out EmailVerifiedPrecondition precondition))
+        if (policyName.StartsWith(EmailVerifiedAttribute.PolicyPrefix) && bool.TryParse(
+                policyName.Substring(EmailVerifiedAttribute.PolicyPrefix.Length),
+                out var shouldBeVerified))
         {
             var policy = new AuthorizationPolicyBuilder(AuthConstants.TokenScheme);
-            policy.AddRequirements(new EmailVerifiedRequirement(precondition));
+            policy.AddRequirements(new EmailVerifiedRequirement(shouldBeVerified));
             return policy.Build();
         }
 

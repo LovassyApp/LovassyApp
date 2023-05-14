@@ -8,7 +8,7 @@ using WebApi.Features.School.Queries;
 namespace WebApi.Features.School;
 
 [Authorize]
-[EmailVerifiedAuthorize]
+[EmailVerified]
 public class GradesController : ApiControllerBase
 {
     [HttpGet]

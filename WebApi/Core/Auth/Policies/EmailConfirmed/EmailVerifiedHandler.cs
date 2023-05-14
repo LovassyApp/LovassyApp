@@ -13,19 +13,7 @@ public class EmailVerifiedHandler : AuthorizationHandler<EmailVerifiedRequiremen
         if (emailConfirmed == null)
             return;
 
-        switch (requirement.EmailVerifiedPrecondition)
-        {
-            case EmailVerifiedPrecondition.Any:
-                context.Succeed(requirement);
-                break;
-            case EmailVerifiedPrecondition.Confirmed:
-                if (emailConfirmed == bool.TrueString)
-                    context.Succeed(requirement);
-                break;
-            case EmailVerifiedPrecondition.Unconfirmed:
-                if (emailConfirmed == bool.FalseString)
-                    context.Succeed(requirement);
-                break;
-        }
+        if (requirement.ShouldBeVerified == bool.Parse(emailConfirmed))
+            context.Succeed(requirement);
     }
 }

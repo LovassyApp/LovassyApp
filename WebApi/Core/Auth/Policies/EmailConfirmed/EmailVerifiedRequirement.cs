@@ -4,10 +4,10 @@ namespace WebApi.Core.Auth.Policies.EmailConfirmed;
 
 public class EmailVerifiedRequirement : IAuthorizationRequirement
 {
-    public EmailVerifiedRequirement(EmailVerifiedPrecondition emailVerifiedPrecondition)
+    public EmailVerifiedRequirement(bool shouldBeVerified)
     {
-        EmailVerifiedPrecondition = emailVerifiedPrecondition;
+        ShouldBeVerified = shouldBeVerified;
     }
 
-    public EmailVerifiedPrecondition EmailVerifiedPrecondition { get; }
+    public bool ShouldBeVerified { get; }
 }

@@ -8,7 +8,7 @@ using WebApi.Features.Shop.Queries;
 namespace WebApi.Features.Shop;
 
 [Authorize]
-[EmailVerifiedAuthorize]
+[EmailVerified]
 public class LolosController : ApiControllerBase
 {
     [HttpGet]
