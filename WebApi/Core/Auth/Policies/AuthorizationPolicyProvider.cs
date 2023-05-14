@@ -25,7 +25,6 @@ public class AuthorizationPolicyProvider : IAuthorizationPolicyProvider
     public async Task<AuthorizationPolicy> GetDefaultPolicyAsync()
     {
         return new AuthorizationPolicyBuilder()
-            .AddAuthenticationSchemes(AuthConstants.TokenScheme, AuthConstants.ImportKeyScheme)
             .RequireAuthenticatedUser().Build();
     }
 

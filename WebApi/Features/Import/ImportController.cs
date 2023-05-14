@@ -37,6 +37,7 @@ public class ImportController : ApiControllerBase
     }
 
     [HttpPatch("ResetKeyPassword")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> ImportResetKeyPassword([FromBody] UpdateResetKeyPassword.RequestBody body)
     {
         await Mediator.Send(new UpdateResetKeyPassword.Command
@@ -44,6 +45,6 @@ public class ImportController : ApiControllerBase
             Body = body
         });
 
-        return Ok();
+        return NoContent();
     }
 }

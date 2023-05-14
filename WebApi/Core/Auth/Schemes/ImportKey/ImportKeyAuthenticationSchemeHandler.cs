@@ -3,6 +3,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 
@@ -27,7 +28,7 @@ public class ImportKeyAuthenticationSchemeHandler : AuthenticationHandler<Import
         var key = Request.Headers.FirstOrDefault(q => q.Key == "X-Authorization").Value
             .FirstOrDefault();
 
-        if (key == null)
+        if (key.IsNullOrEmpty())
             return AuthenticateResult.Fail("Import key not found");
 
         var importKey = await _context.ImportKeys.Where(i => i.KeyHashed == _hashService.Hash(key))

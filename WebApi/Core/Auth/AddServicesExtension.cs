@@ -24,7 +24,7 @@ public static class AddServicesExtension
         services.AddScoped<SessionManager>();
         services.AddScoped<UserAccessor>();
 
-        services.AddAuthentication()
+        services.AddAuthentication(AuthConstants.TokenScheme)
             .AddScheme<TokenAuthenticationSchemeOptions, TokenAuthenticationSchemeHandler>(AuthConstants.TokenScheme,
                 o => { }) //TODO: Add HubsBasePath once there are hubs
             .AddScheme<ImportKeyAuthenticationSchemeOptions, ImportKeyAuthenticationSchemeHandler>(
