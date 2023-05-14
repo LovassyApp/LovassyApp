@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Common.Models;
+using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Features.Auth.Commands;
 
 namespace WebApi.Features.Auth;
@@ -51,6 +52,23 @@ public class AuthController : ApiControllerBase
     public async Task<ActionResult> VerifyEmail([FromQuery] string verifyToken)
     {
         await Mediator.Send(new VerifyEmail.Command { VerifyToken = verifyToken });
+
+        return NoContent();
+    }
+
+    [Authorize]
+    [EmailVerified(false)]
+    [HttpPost("ResendVerifyEmail")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> ResendVerifyEmail([FromQuery] string verifyUrl,
+        [FromQuery] string verifyTokenQueryKey)
+
+    {
+        await Mediator.Send(new ResendVerifyEmail.Command
+        {
+            VerifyUrl = verifyUrl,
+            VerifyTokenQueryKey = verifyTokenQueryKey
+        });
 
         return NoContent();
     }

@@ -14,6 +14,8 @@ public static class CreateUser
     public class Command : IRequest
     {
         public RequestBody Body { get; set; }
+        public string VerifyUrl { get; set; }
+        public string VerifyTokenQueryKey { get; set; }
     }
 
     public class RequestBody
@@ -117,7 +119,9 @@ public static class CreateUser
 
             await _publisher.Publish(new UserCreatedEvent
             {
-                User = user
+                User = user,
+                VerifyUrl = request.VerifyUrl,
+                VerifyTokenQueryKey = request.VerifyTokenQueryKey
             }, cancellationToken);
 
             return Unit.Value;
@@ -128,4 +132,6 @@ public static class CreateUser
 public class UserCreatedEvent : INotification
 {
     public User User { get; set; }
+    public string VerifyUrl { get; set; }
+    public string VerifyTokenQueryKey { get; set; }
 }

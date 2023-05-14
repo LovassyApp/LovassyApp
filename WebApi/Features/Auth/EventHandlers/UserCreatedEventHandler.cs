@@ -18,10 +18,11 @@ public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
 
     public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
-        await ScheduleUserCreatedJobsAsync(notification.User, cancellationToken);
+        await ScheduleUserCreatedJobsAsync(notification.User, notification.VerifyUrl, notification.VerifyTokenQueryKey,
+            cancellationToken);
     }
 
-    private async Task ScheduleUserCreatedJobsAsync(User user,
+    private async Task ScheduleUserCreatedJobsAsync(User user, string verifyUrl, string verifyTokenQueryKey,
         CancellationToken cancellationToken)
     {
         var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
@@ -29,6 +30,8 @@ public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
         var sendVerifyEmailJob = JobBuilder.Create<SendVerifyEmailJob>()
             .WithIdentity("sendVerifyEmail", "userCreatedJobs")
             .UsingJobData("userJson", JsonSerializer.Serialize(user))
+            .UsingJobData("verifyUrl", verifyUrl)
+            .UsingJobData("verifyTokenQueryKey", verifyTokenQueryKey)
             .Build();
 
         var sendVerifyEmailTrigger = TriggerBuilder.Create()
