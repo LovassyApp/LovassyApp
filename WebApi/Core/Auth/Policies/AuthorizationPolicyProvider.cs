@@ -24,8 +24,8 @@ public class AuthorizationPolicyProvider : IAuthorizationPolicyProvider
 
     public async Task<AuthorizationPolicy> GetDefaultPolicyAsync()
     {
-        return new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser().Build();
+        // Do not set any schemes here!!! It will result in the default policy accepting it even if it's not in the AuthSchemes of the authorize attribute
+        return new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     }
 
     public async Task<AuthorizationPolicy?> GetFallbackPolicyAsync()

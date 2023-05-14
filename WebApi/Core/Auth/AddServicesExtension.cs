@@ -24,7 +24,9 @@ public static class AddServicesExtension
         services.AddScoped<SessionManager>();
         services.AddScoped<UserAccessor>();
 
-        services.AddAuthentication(AuthConstants.TokenScheme)
+        services
+            .AddAuthentication(AuthConstants
+                .TokenScheme) //TODO: Investigate this: Whenever we use a different scheme, we still run the handler for the default scheme, but we only challenge the other scheme (rn this has basically no effect, but it might be a problem in the future)
             .AddScheme<TokenAuthenticationSchemeOptions, TokenAuthenticationSchemeHandler>(AuthConstants.TokenScheme,
                 o => { }) //TODO: Add HubsBasePath once there are hubs
             .AddScheme<ImportKeyAuthenticationSchemeOptions, ImportKeyAuthenticationSchemeHandler>(
