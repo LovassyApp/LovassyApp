@@ -1,20 +1,14 @@
-using System.Text.Json;
 using FluentValidation.Results;
 using Mapster;
 using MediatR;
-using Quartz;
-using Quartz.Impl.Matchers;
-using Quartz.Listener;
 using WebApi.Common.Exceptions;
-using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Features.Auth.Jobs;
+using WebApi.Features.Auth.Events;
 using WebApi.Features.Auth.Models;
 using WebApi.Features.Auth.Services;
 using WebApi.Infrastructure.Persistence;
-using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Features.Auth.Commands;
 
@@ -50,14 +44,14 @@ public static class Refresh
     {
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
+        private readonly IPublisher _publisher;
         private readonly RefreshService _refreshService;
-        private readonly ISchedulerFactory _schedulerFactory;
         private readonly SessionManager _sessionManager;
 
-        public Handler(ISchedulerFactory schedulerFactory, ApplicationDbContext context,
+        public Handler(IPublisher publisher, ApplicationDbContext context,
             SessionManager sessionManager, EncryptionManager encryptionManager, RefreshService refreshService)
         {
-            _schedulerFactory = schedulerFactory;
+            _publisher = publisher;
             _context = context;
             _sessionManager = sessionManager;
             _encryptionManager = encryptionManager;
@@ -100,7 +94,11 @@ public static class Refresh
 
             var refreshToken = _refreshService.GenerateRefreshToken(user.Id, refreshTokenContents.Password);
 
-            await ScheduleSessionCreatedJobsAsync(user, unlockedMasterKey, cancellationToken);
+            await _publisher.Publish(new SessionCreatedEvent
+            {
+                User = user,
+                MasterKey = unlockedMasterKey
+            }, cancellationToken);
 
             return new Response
             {
@@ -109,38 +107,6 @@ public static class Refresh
                 RefreshToken = refreshToken,
                 RefreshTokenExpiration = DateTime.Now.Add(_refreshService.GetRefreshTokenExpiry())
             }; //TODO: Maybe add warden permissions to response
-        }
-
-        private async Task ScheduleSessionCreatedJobsAsync(User user, string masterKey,
-            CancellationToken cancellationToken)
-        {
-            var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
-
-            var updateGradesJob = JobBuilder.Create<UpdateGradesJob>()
-                .WithIdentity("updateGrades", "sessionCreatedJobs")
-                .UsingJobData("userJson", JsonSerializer.Serialize(user))
-                .UsingJobData("masterKey", masterKey)
-                .Build();
-
-            var updateGradesTrigger = TriggerBuilder.Create()
-                .WithIdentity("updateGradesTrigger", "sessionCreatedJobs")
-                .StartNow()
-                .Build();
-
-            var updateLolosJob = JobBuilder.Create<UpdateLolosJob>()
-                .WithIdentity("updateLolos", "sessionCreatedJobs")
-                .UsingJobData("userJson", JsonSerializer.Serialize(user))
-                .UsingJobData("masterKey", masterKey)
-                .Build();
-
-            var chainingListener = new JobChainingJobListener("sessionCreatedJobsPipeline");
-            chainingListener.AddJobChainLink(updateGradesJob.Key, updateLolosJob.Key);
-
-            scheduler.ListenerManager.AddJobListener(chainingListener,
-                GroupMatcher<JobKey>.GroupEquals("sessionCreatedJobs"));
-
-            await scheduler.ScheduleJob(updateGradesJob, updateGradesTrigger, cancellationToken);
-            await scheduler.AddJob(updateLolosJob, false, true, cancellationToken);
         }
     }
 }

@@ -1,19 +1,14 @@
-using System.Text.Json;
 using FluentValidation;
 using FluentValidation.Results;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Quartz;
-using Quartz.Impl.Matchers;
-using Quartz.Listener;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Features.Auth.Jobs;
+using WebApi.Features.Auth.Events;
 using WebApi.Features.Auth.Services;
 using WebApi.Infrastructure.Persistence;
-using WebApi.Infrastructure.Persistence.Entities;
 using ValidationException = WebApi.Common.Exceptions.ValidationException;
 
 namespace WebApi.Features.Auth.Commands;
@@ -79,15 +74,15 @@ public static class Login
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
         private readonly HashService _hashService;
+        private readonly IPublisher _publisher;
         private readonly RefreshService _refreshService;
-        private readonly ISchedulerFactory _schedulerFactory;
         private readonly SessionManager _sessionManager;
 
         public Handler(ApplicationDbContext context, HashService hashService, EncryptionManager encryptionManager,
-            ISchedulerFactory schedulerFactory, RefreshService refreshService, SessionManager sessionManager)
+            IPublisher publisher, RefreshService refreshService, SessionManager sessionManager)
         {
             _context = context;
-            _schedulerFactory = schedulerFactory;
+            _publisher = publisher;
             _hashService = hashService;
             _encryptionManager = encryptionManager;
             _refreshService = refreshService;
@@ -110,7 +105,11 @@ public static class Login
 
             _encryptionManager.MasterKey = unlockedMasterKey; // Setting the master key this way saves it in the session
 
-            await ScheduleSessionCreatedJobsAsync(user, unlockedMasterKey, cancellationToken);
+            await _publisher.Publish(new SessionCreatedEvent
+            {
+                User = user,
+                MasterKey = unlockedMasterKey
+            }, cancellationToken);
 
             if (request.Body.Remember)
             {
@@ -130,37 +129,6 @@ public static class Login
                 User = user.Adapt<ResponseUser>(),
                 Token = token
             }; //TODO: Maybe add warden permissions to response
-        }
-
-        private async Task ScheduleSessionCreatedJobsAsync(User user, string masterKey,
-            CancellationToken cancellationToken)
-        {
-            var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
-
-            var updateGradesJob = JobBuilder.Create<UpdateGradesJob>()
-                .WithIdentity("updateGrades", "sessionCreatedJobs")
-                .UsingJobData("userJson", JsonSerializer.Serialize(user))
-                .UsingJobData("masterKey", masterKey)
-                .Build();
-
-            var updateGradesTrigger = TriggerBuilder.Create().WithIdentity("updateGradesTrigger", "sessionCreatedJobs")
-                .StartNow()
-                .Build();
-
-            var updateLolosJob = JobBuilder.Create<UpdateLolosJob>()
-                .WithIdentity("updateLolos", "sessionCreatedJobs")
-                .UsingJobData("userJson", JsonSerializer.Serialize(user))
-                .UsingJobData("masterKey", masterKey)
-                .Build();
-
-            var chainingListener = new JobChainingJobListener("sessionCreatedJobsPipeline");
-            chainingListener.AddJobChainLink(updateGradesJob.Key, updateLolosJob.Key);
-
-            scheduler.ListenerManager.AddJobListener(chainingListener,
-                GroupMatcher<JobKey>.GroupEquals("sessionCreatedJobs"));
-
-            await scheduler.ScheduleJob(updateGradesJob, updateGradesTrigger, cancellationToken);
-            await scheduler.AddJob(updateLolosJob, false, true, cancellationToken);
         }
     }
 }
