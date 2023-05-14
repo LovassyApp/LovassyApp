@@ -82,8 +82,16 @@ public static class AddCommonExtension
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
-        // Schedule
+        // Scheduler
         services.AddQuartz(q => { q.UseMicrosoftDependencyInjectionJobFactory(); });
         services.AddQuartzServer(options => { options.WaitForJobsToComplete = true; });
+
+        // FluentEmail
+        services
+            .AddFluentEmail(configuration.GetValue<string>("Email:From"))
+            .AddSmtpSender(configuration.GetValue<string>("Email:Host"),
+                configuration.GetValue<int>("Email:Port"), configuration.GetValue<string>("Email:Username"),
+                configuration.GetValue<string>("Email:Password"))
+            .AddRazorRenderer();
     }
 }

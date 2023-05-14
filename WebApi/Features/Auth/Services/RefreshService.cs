@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
-using WebApi.Core.Auth.Models;
 using WebApi.Core.Cryptography.Services;
+using WebApi.Features.Auth.Models;
 using WebApi.Features.Auth.Services.Options;
 
 namespace WebApi.Features.Auth.Services;
@@ -19,13 +19,23 @@ public class RefreshService
     public string GenerateRefreshToken(Guid userId, string password)
     {
         return _encryptionService.SerializeProtect(
-            new RefreshTokenContents { Password = password, UserId = userId },
+            new RefreshTokenContents { Password = password, UserId = userId, Purpose = "Refresh" },
             TimeSpan.FromDays(_refreshOptions.ExpiryDays));
     }
 
     public RefreshTokenContents? DecryptRefreshToken(string refreshToken)
     {
-        return _encryptionService.DeserializeUnprotect<RefreshTokenContents>(refreshToken, out _);
+        try
+        {
+            var contents = _encryptionService.DeserializeUnprotect<RefreshTokenContents>(refreshToken, out _);
+            if (contents is null || contents.Purpose != "Refresh") return null;
+
+            return contents;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public TimeSpan GetRefreshTokenExpiry()

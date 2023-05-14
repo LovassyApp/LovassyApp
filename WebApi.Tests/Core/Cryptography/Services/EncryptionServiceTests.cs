@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using WebApi.Core.Auth.Models;
 using WebApi.Core.Cryptography.Services;
+using WebApi.Features.Auth.Models;
 
 namespace WebApi.Tests.Core.Cryptography.Services;
 

@@ -11,6 +11,7 @@ using WebApi.Core.Auth.Services;
 using WebApi.Core.Cryptography.Models;
 using WebApi.Core.Cryptography.Services;
 using WebApi.Features.Auth.Jobs;
+using WebApi.Features.Auth.Models;
 using WebApi.Features.Auth.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;

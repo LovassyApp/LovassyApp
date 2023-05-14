@@ -19,6 +19,8 @@ public static class AddFeaturesExtension
 
         // Auth
         services.Configure<RefreshOptions>(configuration.GetSection("Refresh"));
+        services.Configure<VerifyEmailOptions>(configuration.GetSection("VerifyEmail"));
         services.AddSingleton<RefreshService>();
+        services.AddSingleton<VerifyEmailService>();
     }
 }
