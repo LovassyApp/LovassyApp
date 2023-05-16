@@ -20,6 +20,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<PersonalAccessToken> PersonalAccessTokens { get; set; }
     public DbSet<Grade> Grades { get; set; }
     public DbSet<Lolo> Lolos { get; set; }
+    public DbSet<LoloRequest> LoloRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

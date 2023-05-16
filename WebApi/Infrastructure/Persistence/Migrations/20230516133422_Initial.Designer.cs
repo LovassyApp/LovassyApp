@@ -12,7 +12,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230514072622_Initial")]
+    [Migration("20230516133422_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -208,6 +208,44 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     b.ToTable("Lolos");
                 });
 
+            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.LoloRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("AcceptedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeniedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LoloRequests");
+                });
+
             modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.PersonalAccessToken", b =>
                 {
                     b.Property<int>("Id")
@@ -349,6 +387,17 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
                         .WithMany("Lolos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApi.Infrastructure.Persistence.Entities.LoloRequest", b =>
+                {
+                    b.HasOne("WebApi.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

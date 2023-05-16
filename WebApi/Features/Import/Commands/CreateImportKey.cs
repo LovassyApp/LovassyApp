@@ -3,7 +3,6 @@ using FluentValidation;
 using Mapster;
 using MediatR;
 using WebApi.Core.Cryptography.Services;
-using WebApi.Features.Import.Queries;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -11,7 +10,7 @@ namespace WebApi.Features.Import.Commands;
 
 public static class CreateImportKey
 {
-    public class Command : IRequest<ViewImportKey.Response>
+    public class Command : IRequest<Response>
     {
         public RequestBody Body { get; set; }
     }
@@ -20,6 +19,16 @@ public static class CreateImportKey
     {
         public string Name { get; set; }
         public bool Enabled { get; set; }
+    }
+
+    public class Response
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public bool Enabled { get; set; }
+
+        public string Key { get; set; }
     }
 
     public class RequestBodyValidator : AbstractValidator<RequestBody>
@@ -31,7 +40,7 @@ public static class CreateImportKey
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, ViewImportKey.Response>
+    internal sealed class Handler : IRequestHandler<Command, Response>
     {
         private readonly ApplicationDbContext _context;
         private readonly EncryptionService _encryptionService;
@@ -45,7 +54,7 @@ public static class CreateImportKey
             _hashService = hashService;
         }
 
-        public async Task<ViewImportKey.Response> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var importKey = request.Body.Adapt<ImportKey>();
             var key = Convert.ToBase64String(RandomNumberGenerator.GetBytes(512 / 8));
@@ -56,7 +65,7 @@ public static class CreateImportKey
             await _context.ImportKeys.AddAsync(importKey, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            var response = importKey.Adapt<ViewImportKey.Response>();
+            var response = importKey.Adapt<Response>();
             response.Key = key;
 
             return response;

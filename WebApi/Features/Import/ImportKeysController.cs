@@ -34,7 +34,7 @@ public class ImportKeysController : ApiControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ViewImportKey.Response>> Create([FromBody] CreateImportKey.RequestBody body)
+    public async Task<ActionResult<CreateImportKey.Response>> Create([FromBody] CreateImportKey.RequestBody body)
     {
         var response = await Mediator.Send(new CreateImportKey.Command
         {

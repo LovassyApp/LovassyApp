@@ -116,6 +116,31 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LoloRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Body = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AcceptedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeniedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoloRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoloRequests_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Lolos",
                 columns: table => new
                 {
@@ -180,6 +205,11 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_LoloRequests_UserId",
+                table: "LoloRequests",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Lolos_UserId",
                 table: "Lolos",
                 column: "UserId");
@@ -231,6 +261,9 @@ namespace WebApi.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "ImportKeys");
+
+            migrationBuilder.DropTable(
+                name: "LoloRequests");
 
             migrationBuilder.DropTable(
                 name: "Lolos");
