@@ -18,7 +18,8 @@ public class ExceptionFilter : IExceptionFilter
             { typeof(NotFoundException), HandleNotFoundException },
             { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
             { typeof(ForbiddenException), HandleForbiddenException },
-            { typeof(UnavailableException), HandleUnavailableException }
+            { typeof(UnavailableException), HandleUnavailableException },
+            { typeof(BadRequestException), HandleBadRequestException }
         };
 
         var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
@@ -57,6 +58,20 @@ public class ExceptionFilter : IExceptionFilter
         ValidationProblemDetails details = new(exception!.Errors)
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+        };
+
+        context.Result = new BadRequestObjectResult(details);
+
+        context.ExceptionHandled = true;
+    }
+
+    private void HandleBadRequestException(ExceptionContext context)
+    {
+        var details = new ProblemDetails
+        {
+            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+            Title = "Bad Request",
+            Status = StatusCodes.Status400BadRequest
         };
 
         context.Result = new BadRequestObjectResult(details);
