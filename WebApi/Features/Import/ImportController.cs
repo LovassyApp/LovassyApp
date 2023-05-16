@@ -36,7 +36,7 @@ public class ImportController : ApiControllerBase
         return StatusCode(StatusCodes.Status201Created);
     }
 
-    [HttpPatch("ResetKeyPassword")]
+    [HttpPut("ResetKeyPassword")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateResetKeyPassword([FromBody] UpdateResetKeyPassword.RequestBody body)
     {

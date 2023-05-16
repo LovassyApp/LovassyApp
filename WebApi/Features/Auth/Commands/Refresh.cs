@@ -1,4 +1,3 @@
-using FluentValidation.Results;
 using Mapster;
 using MediatR;
 using WebApi.Common.Exceptions;
@@ -61,8 +60,7 @@ public static class Refresh
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             if (request.RefreshToken is null)
-                throw new ValidationException(new[]
-                    { new ValidationFailure(nameof(request.RefreshToken), "Missing refresh token or cookie") });
+                throw new BadRequestException("Refresh token or cookie is missing");
 
             RefreshTokenContents? refreshTokenContents;
             try
@@ -71,19 +69,16 @@ public static class Refresh
             }
             catch
             {
-                throw new ValidationException(new[]
-                    { new ValidationFailure(nameof(request.RefreshToken), "Invalid refresh token") });
+                throw new BadRequestException("Invalid refresh token");
             }
 
             if (refreshTokenContents is null)
-                throw new ValidationException(new[]
-                    { new ValidationFailure(nameof(request.RefreshToken), "Invalid refresh token") });
+                throw new BadRequestException("Invalid refresh token");
 
             var user = await _context.Users.FindAsync(refreshTokenContents.UserId);
 
-            if (user is null)
-                throw new ValidationException(new[]
-                    { new ValidationFailure(nameof(request.RefreshToken), "Invalid refresh token") });
+            if (user == null)
+                throw new BadRequestException("Invalid refresh token");
 
             var token = await _sessionManager.StartSessionAsync(user.Id);
 

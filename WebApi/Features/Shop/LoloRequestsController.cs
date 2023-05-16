@@ -44,4 +44,34 @@ public class LoloRequestsController : ApiControllerBase
 
         return Created(nameof(View), response);
     }
+
+    [HttpPatch("Overrule/{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> Overrule([FromRoute] int id, [FromBody] OverruleLoloRequest.RequestBody body)
+    {
+        await Mediator.Send(new OverruleLoloRequest.Command { Id = id, Body = body });
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateLoloRequest.RequestBody body)
+    {
+        await Mediator.Send(new UpdateLoloRequest.Command { Id = id, Body = body });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        await Mediator.Send(new DeleteLoloRequest.Command { Id = id });
+
+        return NoContent();
+    }
 }

@@ -45,7 +45,7 @@ public static class CreateUser
             RuleFor(x => x.Password).NotEmpty()
                 .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$").WithMessage(
                     "The password must contain at least one uppercase letter, lower case letter, number and must be at least 8 characters long");
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.OmCode).NotEmpty()
                 .MustAsync(BeUniqueOmCodeAsync).WithMessage("The om code is already in use")
                 .Matches(@"^\d{11}$").WithMessage("The om code must be 11 digits long and contain only numbers");

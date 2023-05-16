@@ -1,3 +1,4 @@
+using FluentValidation;
 using Mapster;
 using MediatR;
 using WebApi.Core.Auth.Services;
@@ -17,6 +18,15 @@ public static class CreateLoloRequest
     {
         public string Title { get; set; }
         public string Body { get; set; }
+    }
+
+    public class RequestBodyValidator : AbstractValidator<RequestBody>
+    {
+        public RequestBodyValidator()
+        {
+            RuleFor(x => x.Title).NotEmpty().MaximumLength(255);
+            RuleFor(x => x.Body).NotEmpty().MaximumLength(65535);
+        }
     }
 
     public class Response

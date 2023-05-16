@@ -25,7 +25,7 @@ public static class UpdateImportKey
     {
         public RequestBodyValidator()
         {
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Enabled).NotNull();
         }
     }

@@ -35,9 +35,9 @@ public static class Login
         {
             _context = context;
 
-            RuleFor(x => x.Email).NotEmpty().EmailAddress()
+            RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(255)
                 .MustAsync(BeExistingUsersEmailAsync).WithMessage("The email is not yet registered");
-            RuleFor(x => x.Password).NotEmpty();
+            RuleFor(x => x.Password).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Remember).NotNull();
         }
 

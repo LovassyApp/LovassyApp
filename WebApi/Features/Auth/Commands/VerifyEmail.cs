@@ -1,4 +1,3 @@
-using FluentValidation.Results;
 using MediatR;
 using WebApi.Common.Exceptions;
 using WebApi.Features.Auth.Services;
@@ -29,8 +28,7 @@ public static class VerifyEmail
             var tokenContents = _verifyEmailService.DecryptVerifyToken(request.VerifyToken);
 
             if (tokenContents is null)
-                throw new ValidationException(new[]
-                    { new ValidationFailure(nameof(request.VerifyToken), "Invalid verify token") });
+                throw new BadRequestException("Invalid verify token");
 
             var user = await _context.Users.FindAsync(tokenContents.UserId, cancellationToken);
 
@@ -38,8 +36,7 @@ public static class VerifyEmail
                 throw new NotFoundException();
 
             if (user.EmailVerifiedAt is not null)
-                throw new ValidationException(new[]
-                    { new ValidationFailure("User", "Email already verified") });
+                throw new BadRequestException("Email already verified");
 
             user.EmailVerifiedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);

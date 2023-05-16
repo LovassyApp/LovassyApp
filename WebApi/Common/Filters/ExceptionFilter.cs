@@ -67,11 +67,14 @@ public class ExceptionFilter : IExceptionFilter
 
     private void HandleBadRequestException(ExceptionContext context)
     {
+        var exception = context.Exception as BadRequestException;
+
+
         var details = new ProblemDetails
         {
             Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
             Title = "Bad Request",
-            Status = StatusCodes.Status400BadRequest
+            Detail = exception!.Message
         };
 
         context.Result = new BadRequestObjectResult(details);

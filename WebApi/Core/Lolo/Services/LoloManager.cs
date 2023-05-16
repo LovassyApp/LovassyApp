@@ -1,3 +1,4 @@
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -62,6 +63,28 @@ public class LoloManager
         Balance = await _context.Lolos
             .Where(l => l.UserId == _userId && !l.IsSpent)
             .CountAsync();
+    }
+
+    /// <summary>
+    ///     Saves the given amount of lolo coins when a request is accepted.
+    /// </summary>
+    /// <param name="request">The request from which the coins are generated.</param>
+    /// <param name="amount">The amount of new coins to save.</param>
+    public async Task SaveFromRequestAsync(LoloRequest request, int amount)
+    {
+        if (_userId == null)
+            Init();
+
+        var coins = Enumerable.Repeat(new Infrastructure.Persistence.Entities.Lolo
+        {
+            UserId = _userId!.Value,
+            Reason = $"Kérvényből generálva: {request.Title}",
+            LoloType = LoloType.FromRequest,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        }, amount).ToArray();
+
+        await _context.BulkInsertAsync(coins);
     }
 
     /// <summary>
