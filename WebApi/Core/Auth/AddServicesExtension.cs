@@ -2,11 +2,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApi.Core.Auth.Filters.Operation;
+using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Policies;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Core.Auth.Schemes.ImportKey;
+using WebApi.Core.Auth.Schemes.ImportKey.ClaimsAdders;
 using WebApi.Core.Auth.Schemes.Token;
+using WebApi.Core.Auth.Schemes.Token.ClaimsAdders;
 using WebApi.Core.Auth.Services;
+using WebApi.Infrastructure.Persistence.Entities;
 using SessionOptions = WebApi.Core.Auth.Services.Options.SessionOptions;
 
 namespace WebApi.Core.Auth;
@@ -38,6 +42,9 @@ public static class AddServicesExtension
         services.AddTransient<PolicyEvaluator>();
 
         services.AddSingleton<IAuthorizationHandler, EmailVerifiedHandler>();
+
+        services.AddScoped<IClaimsAdder<ImportKey>, ImportKeyBaseClaimsAdder>();
+        services.AddScoped<IClaimsAdder<User>, TokenBaseClaimsAdder>();
     }
 
     public static void AddAuthOperationFilters(this SwaggerGenOptions options)

@@ -8,13 +8,16 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using WebApi.Core.Auth.Events;
 using WebApi.Core.Auth.Exceptions;
+using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Services;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Schemes.Token;
 
 public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthenticationSchemeOptions>
 {
+    private readonly IEnumerable<IClaimsAdder<User>> _claimsAdders;
     private readonly ApplicationDbContext _context;
     private readonly IPublisher _publisher;
     private readonly SessionManager _sessionManager;
@@ -22,13 +25,14 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
     public TokenAuthenticationSchemeHandler(IOptionsMonitor<TokenAuthenticationSchemeOptions> options,
         ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ApplicationDbContext context,
-        SessionManager sessionManager, IPublisher publisher, UserAccessor userAccessor) : base(options,
-        logger, encoder, clock)
+        SessionManager sessionManager, IPublisher publisher, UserAccessor userAccessor,
+        IEnumerable<IClaimsAdder<User>> claimsAdders) : base(options, logger, encoder, clock)
     {
         _context = context;
         _sessionManager = sessionManager;
         _publisher = publisher;
         _userAccessor = userAccessor;
+        _claimsAdders = claimsAdders;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -66,13 +70,10 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
             AccessToken = accessToken
         });
 
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.NameIdentifier, accessToken.User.Id.ToString()),
-            new(ClaimTypes.Name, accessToken.User.Name),
-            new(ClaimTypes.Email, accessToken.User.Email),
-            new(AuthConstants.EmailVerifiedClaim, (accessToken.User.EmailVerifiedAt != null).ToString())
-        }; //TODO: Clean this up a bit, it's gonna get messy with warden
+        var claims = new List<Claim>();
+
+        foreach (var claimsAdder in _claimsAdders)
+            await claimsAdder.AddClaimsAsync(claims, accessToken.User);
 
         var identity = new ClaimsIdentity(claims, Scheme.Name);
 
