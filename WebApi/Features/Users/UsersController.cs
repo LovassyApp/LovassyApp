@@ -1,5 +1,5 @@
+using Helpers.Framework;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Models;
 using WebApi.Features.Users.Commands;
 
 namespace WebApi.Features.Users;

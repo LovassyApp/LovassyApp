@@ -1,8 +1,8 @@
 using System.Security.Cryptography;
 using FluentValidation;
+using Helpers.Cryptography.Services;
 using Mapster;
 using MediatR;
-using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 

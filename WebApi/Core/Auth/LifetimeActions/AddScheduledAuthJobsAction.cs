@@ -1,5 +1,5 @@
+using Helpers.Framework.Interfaces;
 using Quartz;
-using WebApi.Common.Models;
 using WebApi.Core.Auth.Jobs;
 
 namespace WebApi.Core.Auth.LifetimeActions;

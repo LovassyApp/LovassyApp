@@ -1,6 +1,6 @@
 using FluentValidation;
+using Helpers.Framework.Exceptions;
 using MediatR;
-using WebApi.Common.Exceptions;
 using WebApi.Core.Lolo.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;

@@ -1,9 +1,9 @@
 using System.Text.Json;
 using Bogus;
+using Helpers.Cryptography.Implementations;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Core.Backboard.Models;
-using WebApi.Core.Cryptography.Models;
 using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Infrastructure.Persistence.Seeders;

@@ -1,5 +1,5 @@
 using MediatR;
-using WebApi.Core.Cryptography.Services;
+using WebApi.Core.Auth.Services;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.Status.Queries;

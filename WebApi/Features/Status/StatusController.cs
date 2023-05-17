@@ -1,5 +1,5 @@
+using Helpers.Framework;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Models;
 using WebApi.Features.Status.Queries;
 
 namespace WebApi.Features.Status;

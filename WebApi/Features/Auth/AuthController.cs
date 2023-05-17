@@ -1,6 +1,6 @@
+using Helpers.Framework;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Common.Models;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Features.Auth.Commands;
 

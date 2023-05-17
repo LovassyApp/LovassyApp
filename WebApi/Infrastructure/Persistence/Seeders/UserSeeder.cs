@@ -1,6 +1,7 @@
 using Bogus;
-using WebApi.Core.Cryptography.Models;
-using WebApi.Core.Cryptography.Services;
+using Helpers.Cryptography.Implementations;
+using Helpers.Cryptography.Services;
+using WebApi.Core.Auth.Services;
 using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Infrastructure.Persistence.Seeders;

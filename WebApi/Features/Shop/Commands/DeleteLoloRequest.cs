@@ -1,5 +1,5 @@
+using Helpers.Framework.Exceptions;
 using MediatR;
-using WebApi.Common.Exceptions;
 using WebApi.Core.Auth.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;

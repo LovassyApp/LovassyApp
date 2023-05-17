@@ -1,6 +1,6 @@
+using Helpers.Framework.Exceptions;
 using Mapster;
 using MediatR;
-using WebApi.Common.Exceptions;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 

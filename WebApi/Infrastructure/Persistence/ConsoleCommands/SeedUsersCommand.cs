@@ -1,5 +1,5 @@
-using WebApi.Common.Models;
-using WebApi.Common.Utils;
+using Helpers.Framework.Interfaces;
+using Helpers.Framework.Utils;
 using WebApi.Infrastructure.Persistence.Seeders;
 
 namespace WebApi.Infrastructure.Persistence.ConsoleCommands;

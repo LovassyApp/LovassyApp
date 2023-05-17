@@ -1,5 +1,6 @@
 using System.Text.Json;
 using EFCore.BulkExtensions;
+using Helpers.Cryptography.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -9,8 +10,6 @@ using WebApi.Core.Backboard.Exceptions;
 using WebApi.Core.Backboard.Models;
 using WebApi.Core.Backboard.Services.Options;
 using WebApi.Core.Backboard.Utils;
-using WebApi.Core.Cryptography.Models;
-using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 

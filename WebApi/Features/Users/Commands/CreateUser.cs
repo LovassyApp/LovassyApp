@@ -1,9 +1,10 @@
 using FluentValidation;
+using Helpers.Cryptography.Implementations;
+using Helpers.Cryptography.Services;
+using Helpers.Framework.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Common.Exceptions;
-using WebApi.Core.Cryptography.Models;
-using WebApi.Core.Cryptography.Services;
+using WebApi.Core.Auth.Services;
 using WebApi.Features.Users.Events;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;

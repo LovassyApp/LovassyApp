@@ -1,6 +1,6 @@
 using FluentValidation;
 using MediatR;
-using WebApi.Core.Cryptography.Services;
+using WebApi.Core.Auth.Services;
 
 namespace WebApi.Features.Import.Commands;
 

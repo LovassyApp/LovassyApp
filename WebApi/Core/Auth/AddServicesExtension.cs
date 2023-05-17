@@ -27,6 +27,9 @@ public static class AddServicesExtension
         services.Configure<SessionOptions>(configuration.GetSection("Session"));
         services.AddScoped<SessionManager>();
         services.AddScoped<UserAccessor>();
+        services.AddScoped<EncryptionManager>();
+        services.AddScoped<HashManager>();
+        services.AddSingleton<ResetService>();
 
         services
             .AddAuthentication(AuthConstants

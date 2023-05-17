@@ -1,15 +1,15 @@
 using FluentValidation;
 using FluentValidation.Results;
+using Helpers.Cryptography.Implementations;
+using Helpers.Cryptography.Services;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Core.Auth.Services;
-using WebApi.Core.Cryptography.Models;
-using WebApi.Core.Cryptography.Services;
 using WebApi.Features.Auth.Events;
 using WebApi.Features.Auth.Services;
 using WebApi.Infrastructure.Persistence;
-using ValidationException = WebApi.Common.Exceptions.ValidationException;
+using ValidationException = Helpers.Framework.Exceptions.ValidationException;
 
 namespace WebApi.Features.Auth.Commands;
 

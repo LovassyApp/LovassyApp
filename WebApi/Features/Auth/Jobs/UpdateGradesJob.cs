@@ -2,7 +2,6 @@ using System.Text.Json;
 using Quartz;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Backboard.Services;
-using WebApi.Core.Cryptography.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 

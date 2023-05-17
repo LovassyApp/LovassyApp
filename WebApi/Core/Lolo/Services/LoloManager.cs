@@ -4,7 +4,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Services;
-using WebApi.Core.Cryptography.Services;
 using WebApi.Core.Lolo.Services.Options;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;

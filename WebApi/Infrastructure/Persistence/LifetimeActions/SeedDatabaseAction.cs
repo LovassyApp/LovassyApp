@@ -1,4 +1,4 @@
-using WebApi.Common.Models;
+using Helpers.Framework.Interfaces;
 
 namespace WebApi.Infrastructure.Persistence.LifetimeActions;
 
