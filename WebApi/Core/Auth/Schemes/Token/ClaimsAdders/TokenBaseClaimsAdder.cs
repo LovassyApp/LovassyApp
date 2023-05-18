@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Helpers.Framework.Interfaces;
+using WebApi.Core.Auth.Interfaces;
 using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Schemes.Token.ClaimsAdders;

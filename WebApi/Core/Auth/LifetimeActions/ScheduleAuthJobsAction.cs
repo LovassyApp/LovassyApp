@@ -4,13 +4,13 @@ using WebApi.Core.Auth.Jobs;
 
 namespace WebApi.Core.Auth.LifetimeActions;
 
-public class AddScheduledAuthJobsAction : ILifetimeAction
+public class ScheduleAuthJobsAction : ILifetimeAction
 {
-    private readonly ILogger<AddScheduledAuthJobsAction> _logger;
+    private readonly ILogger<ScheduleAuthJobsAction> _logger;
     private readonly ISchedulerFactory _schedulerFactory;
 
-    public AddScheduledAuthJobsAction(ISchedulerFactory schedulerFactory,
-        ILogger<AddScheduledAuthJobsAction> logger)
+    public ScheduleAuthJobsAction(ISchedulerFactory schedulerFactory,
+        ILogger<ScheduleAuthJobsAction> logger)
     {
         _schedulerFactory = schedulerFactory;
         _logger = logger;

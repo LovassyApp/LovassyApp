@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Helpers.Framework.Interfaces;
+using WebApi.Core.Auth.Interfaces;
 
 namespace WebApi.Core.Auth.Schemes.ImportKey.ClaimsAdders;
 

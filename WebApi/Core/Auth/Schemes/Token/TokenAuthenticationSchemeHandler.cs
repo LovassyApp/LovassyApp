@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Web;
-using Helpers.Framework.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using WebApi.Core.Auth.Events;
 using WebApi.Core.Auth.Exceptions;
-using WebApi.Core.Auth.Models;
+using WebApi.Core.Auth.Interfaces;
 using WebApi.Core.Auth.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;

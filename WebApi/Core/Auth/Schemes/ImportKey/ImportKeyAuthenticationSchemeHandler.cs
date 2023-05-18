@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using WebApi.Core.Auth.Interfaces;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Schemes.ImportKey;

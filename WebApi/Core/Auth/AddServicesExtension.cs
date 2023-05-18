@@ -1,8 +1,10 @@
-using Helpers.Framework.Interfaces;
+using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApi.Core.Auth.Filters.Operation;
+using WebApi.Core.Auth.Interfaces;
+using WebApi.Core.Auth.Permissions;
 using WebApi.Core.Auth.Policies;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Core.Auth.Schemes.ImportKey;
@@ -48,6 +50,9 @@ public static class AddServicesExtension
 
         services.AddScoped<IClaimsAdder<ImportKey>, ImportKeyBaseClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenBaseClaimsAdder>();
+
+        PermissionLookup.LoadPermissions(Assembly
+            .GetExecutingAssembly()); // It's a bit unusual to do this here, but it's the only place where we can be sure that it's loaded before the first request
     }
 
     public static void AddAuthOperationFilters(this SwaggerGenOptions options)

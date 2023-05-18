@@ -128,11 +128,13 @@ public class ExceptionFilter : IExceptionFilter
 
     private void HandleForbiddenException(ExceptionContext context)
     {
+        var exception = context.Exception as ForbiddenException;
+
         ProblemDetails details = new()
         {
-            Status = StatusCodes.Status403Forbidden,
             Title = "Forbidden",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+            Detail = exception!.Message
         };
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status403Forbidden };

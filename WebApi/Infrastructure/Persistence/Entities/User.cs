@@ -48,6 +48,8 @@ public class User : TimestampedEntity
 
     public bool ImportAvailable { get; set; }
 
+    [JsonIgnore] public List<UserGroup> UserGroups { get; set; }
+
     [JsonIgnore] public List<GradeImport> GradeImports { get; set; }
 
     [JsonIgnore] public List<Lolo> Lolos { get; set; }

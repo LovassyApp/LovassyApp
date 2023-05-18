@@ -65,6 +65,22 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Permissions = table.Column<string[]>(type: "text[]", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserGroups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -187,6 +203,30 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserUserGroup",
+                columns: table => new
+                {
+                    UserGroupsId = table.Column<int>(type: "integer", nullable: false),
+                    UsersId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserUserGroup", x => new { x.UserGroupsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_UserUserGroup_UserGroups_UserGroupsId",
+                        column: x => x.UserGroupsId,
+                        principalTable: "UserGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserUserGroup_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_GradeImports_UserId",
                 table: "GradeImports",
@@ -248,6 +288,11 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 table: "Users",
                 column: "OmCodeHashed",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserUserGroup_UsersId",
+                table: "UserUserGroup",
+                column: "UsersId");
         }
 
         /// <inheritdoc />
@@ -270,6 +315,12 @@ namespace WebApi.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "PersonalAccessTokens");
+
+            migrationBuilder.DropTable(
+                name: "UserUserGroup");
+
+            migrationBuilder.DropTable(
+                name: "UserGroups");
 
             migrationBuilder.DropTable(
                 name: "Users");
