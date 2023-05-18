@@ -4,7 +4,7 @@
 
 *Megjegyzés: Minden név, komment, mappa, fájl és miegyéb a kódban angolul van és maradjon is úgy.*
 
-- **Common**: Olyan osztályok összesége, amelyeket az alkalmazás minden része használ (de ha már mondjuk a REST API vagy a SignalR hubok minden részére hatással lehet akkor is ide tartozik) akár direkt vagy indirekt módon.
+- **Helper**: Olyan osztályok összesége, amelyeket az alkalmazás minden része használhat akár direkt vagy indirekt módon, de nem tartoznak semmilyen funkciós csoportba sem (kell a funkciós csoportok működéséhez, de nem tartozik hozzájuk).
 - **Core**: Olyan funkciós csoportokra osztott osztályok összessége, amelyeket több **feature** is használhat.
 - **Feature**: Olyan funkciós csoportokra osztott osztályok összessége, amelyek logikusan összetartoznak és a saját funkciós csoportjukon kívül nincsenek használva. (Speciális esetben "kifelé irányuló kommunikáció a külvilággal" megengedett **event**ek segítségével, ilyen eset mondjuk egy realtime értesítés küldése)
 - **Infrastucture**: Olyan osztályok összessége, amelyek külső szolgáltatásokkal való kommunikációért felelősek. (pl.: adatbázis, fájlrendszer, stb.)
