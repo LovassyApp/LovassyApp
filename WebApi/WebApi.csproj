@@ -27,7 +27,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Helpers.Framework\Helpers.Framework.csproj" />
       <ProjectReference Include="..\Helpers.Cryptography\Helpers.Cryptography.csproj" />
-      <ProjectReference Include="..\Helpers.Jobs\Helpers.Jobs.csproj" />
     </ItemGroup>
 
 </Project>

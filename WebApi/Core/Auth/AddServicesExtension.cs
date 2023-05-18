@@ -1,8 +1,8 @@
+using Helpers.Framework.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApi.Core.Auth.Filters.Operation;
-using WebApi.Core.Auth.Models;
 using WebApi.Core.Auth.Policies;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Core.Auth.Schemes.ImportKey;

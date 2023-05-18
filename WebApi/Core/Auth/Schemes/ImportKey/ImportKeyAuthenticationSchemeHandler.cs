@@ -1,11 +1,11 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Helpers.Cryptography.Services;
+using Helpers.Framework.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WebApi.Core.Auth.Models;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Schemes.ImportKey;

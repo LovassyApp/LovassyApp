@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-      <PackageReference Include="Quartz.AspNetCore" Version="3.6.2" />
     </ItemGroup>
 
 </Project>

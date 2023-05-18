@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using Sieve.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -91,6 +92,10 @@ public static class AddFrameworkHelpersExtension
                 configuration.GetValue<int>("Email:Port"), configuration.GetValue<string>("Email:Username"),
                 configuration.GetValue<string>("Email:Password"))
             .AddRazorRenderer();
+
+        // Scheduler
+        services.AddQuartz(q => { q.UseMicrosoftDependencyInjectionJobFactory(); });
+        services.AddQuartzServer(options => { options.WaitForJobsToComplete = true; });
     }
 
     private static void AddConsoleCommands(this IServiceCollection services, Assembly assembly)

@@ -4,7 +4,6 @@ using Helpers.Cryptography;
 using Helpers.Framework;
 using Helpers.Framework.Extensions;
 using Helpers.Framework.Filters;
-using Helpers.Jobs;
 using Prometheus;
 using WebApi.Core.Auth;
 using WebApi.Core.Backboard;
@@ -17,7 +16,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddFrameworkHelpers(builder.Configuration, Assembly.GetExecutingAssembly());
 builder.Services.AddCryptographyHelpers(builder.Configuration);
-builder.Services.AddJobsHelpers();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
