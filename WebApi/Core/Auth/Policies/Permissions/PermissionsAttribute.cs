@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Core.Auth.Interfaces;
-using WebApi.Core.Auth.Permissions;
 
 namespace WebApi.Core.Auth.Policies.Permissions;
 
@@ -16,7 +15,7 @@ public class PermissionsAttribute : AuthorizeAttribute
         if (PermissionLookup.NamesToPermissions == null || PermissionLookup.PermissionsToNames == null)
             throw new InvalidOperationException("Permissions are not loaded yet");
 
-        Permissions = permissions.Select(p => PermissionLookup.PermissionsToNames[p].First())
+        Permissions = permissions.Select(p => PermissionLookup.PermissionsToNames[p])
             .Aggregate((a, b) => $"{a},{b}");
     }
 

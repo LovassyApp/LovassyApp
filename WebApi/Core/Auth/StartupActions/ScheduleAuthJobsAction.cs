@@ -2,9 +2,9 @@ using Helpers.Framework.Interfaces;
 using Quartz;
 using WebApi.Core.Auth.Jobs;
 
-namespace WebApi.Core.Auth.LifetimeActions;
+namespace WebApi.Core.Auth.StartupActions;
 
-public class ScheduleAuthJobsAction : ILifetimeAction
+public class ScheduleAuthJobsAction : IStartupAction
 {
     private readonly ILogger<ScheduleAuthJobsAction> _logger;
     private readonly ISchedulerFactory _schedulerFactory;
@@ -16,9 +16,9 @@ public class ScheduleAuthJobsAction : ILifetimeAction
         _logger = logger;
     }
 
-    public async Task OnStartAsync(CancellationToken cancellationToken)
+    public async Task Execute()
     {
-        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+        var scheduler = await _schedulerFactory.GetScheduler();
 
         var deleteOldTokensJob = JobBuilder.Create<DeleteOldTokensJob>()
             .WithIdentity("deleteOldTokens", "scheduledAuthJobs").Build();
@@ -28,12 +28,8 @@ public class ScheduleAuthJobsAction : ILifetimeAction
             .WithSimpleSchedule(x => x.WithInterval(TimeSpan.FromDays(1)).RepeatForever())
             .Build();
 
-        await scheduler.ScheduleJob(deleteOldTokensJob, deleteOldTokensTrigger, cancellationToken);
+        await scheduler.ScheduleJob(deleteOldTokensJob, deleteOldTokensTrigger);
 
         _logger.LogInformation($"Added {nameof(DeleteOldTokensJob)} to recurring jobs");
-    }
-
-    public async Task OnStopAsync(CancellationToken cancellationToken)
-    {
     }
 }

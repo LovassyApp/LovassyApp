@@ -3,7 +3,6 @@ using FluentValidation;
 using Helpers.Framework.Behaviours;
 using Helpers.Framework.Interfaces;
 using Helpers.Framework.Services;
-using Helpers.Framework.Services.Hosted;
 using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
@@ -109,12 +108,10 @@ public static class AddFrameworkHelpersExtension
     private static void AddLifetimeActions(this IServiceCollection services, Assembly assembly)
     {
         var lifetimeActionTypes = assembly.GetTypes()
-            .Where(t => t.IsAssignableTo(typeof(ILifetimeAction)) && t is { IsInterface: false, IsAbstract: false });
+            .Where(t => t.IsAssignableTo(typeof(IStartupAction)) && t is { IsInterface: false, IsAbstract: false });
 
         foreach (var lifetimeActionType in lifetimeActionTypes)
-            services.AddTransient(typeof(ILifetimeAction), lifetimeActionType);
-
-        services.AddHostedService<LifetimeActionsService>();
+            services.AddTransient(typeof(IStartupAction), lifetimeActionType);
     }
 
     private static void AddOperationFilters(this SwaggerGenOptions options, Assembly assembly)

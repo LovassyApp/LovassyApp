@@ -39,4 +39,11 @@ public static class HostExtension
 
         host.Run();
     }
+
+    public static async Task RunStartupActions(this IHost host)
+    {
+        var startupActions = host.Services.GetServices<IStartupAction>();
+        foreach (var startupAction in startupActions)
+            await startupAction.Execute();
+    }
 }

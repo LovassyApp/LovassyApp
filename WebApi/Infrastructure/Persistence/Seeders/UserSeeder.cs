@@ -1,6 +1,8 @@
 using Bogus;
 using Helpers.Cryptography.Implementations;
 using Helpers.Cryptography.Services;
+using Microsoft.EntityFrameworkCore;
+using WebApi.Core.Auth;
 using WebApi.Core.Auth.Services;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -30,10 +32,19 @@ public class UserSeeder
     {
         _resetService.SetResetKeyPassword(_resetKeyPassword);
 
+        var userGroup = new UserGroup { Id = AuthConstants.DefaultUserGroupID };
+        _context.UserGroups.Entry(userGroup).State = EntityState.Unchanged;
+
         var users = new List<User>();
         for (var i = 0; i < _userCount; i++)
-            users.Add(CreateUser(string.Join(".", Faker.Lorem.Words(2)) + "@lovassy.edu.hu", Faker.Name.FullName(),
-                "password", Faker.Random.ULong(10000000000, 99999999999).ToString(), verified));
+        {
+            var user = CreateUser(string.Join(".", Faker.Lorem.Words(2)) + "@lovassy.edu.hu", Faker.Name.FullName(),
+                "password", Faker.Random.ULong(10000000000, 99999999999).ToString(), verified);
+
+            user.UserGroups = new List<UserGroup> { userGroup };
+            users.Add(user);
+        }
+
         await _context.Users.AddRangeAsync(users);
         await _context.SaveChangesAsync();
 

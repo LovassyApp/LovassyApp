@@ -47,7 +47,8 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         if (Options.HubsBasePath != null && Request.Path.StartsWithSegments(Options.HubsBasePath))
             token = HttpUtility.UrlDecode(Request.Query["access_token"]);
 
-        var accessToken = await _context.PersonalAccessTokens.Include(t => t.User).Where(t => t.Token == token)
+        var accessToken = await _context.PersonalAccessTokens.Include(t => t.User).ThenInclude(u => u.UserGroups)
+            .Where(t => t.Token == token)
             .FirstOrDefaultAsync();
 
         if (accessToken == null) return AuthenticateResult.Fail("Invalid access token");
@@ -74,6 +75,8 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         foreach (var claimsAdder in _claimsAdders)
             await claimsAdder.AddClaimsAsync(claims, accessToken.User);
+
+        claims.Add(new Claim(AuthConstants.PermissionClaim, "General.Control"));
 
         var identity = new ClaimsIdentity(claims, Scheme.Name);
 

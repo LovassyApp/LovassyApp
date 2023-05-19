@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
+using WebApi.Core.Auth.Policies.Permissions;
 
 namespace WebApi.Core.Auth.Policies;
 
@@ -16,6 +17,14 @@ public class AuthorizationPolicyProvider : IAuthorizationPolicyProvider
         {
             var policy = new AuthorizationPolicyBuilder(AuthConstants.TokenScheme);
             policy.AddRequirements(new EmailVerifiedRequirement(shouldBeVerified));
+            return policy.Build();
+        }
+
+        if (policyName.StartsWith(PermissionsAttribute.PolicyPrefix))
+        {
+            var policy = new AuthorizationPolicyBuilder(AuthConstants.TokenScheme);
+            policy.AddRequirements(
+                new PermissionsRequirement(policyName.Substring(PermissionsAttribute.PolicyPrefix.Length)));
             return policy.Build();
         }
 

@@ -32,6 +32,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
+await app.RunStartupActions();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
