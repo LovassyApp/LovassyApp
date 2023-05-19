@@ -5,7 +5,7 @@
 *Megjegyzés: Minden név, komment, mappa, fájl és miegyéb a kódban angolul van és maradjon is úgy.*
 
 - **Helper**: Olyan osztályok összesége, amelyeket az alkalmazás minden része használhat akár direkt vagy indirekt módon, de nem tartoznak semmilyen funkciós csoportba sem (kell a funkciós csoportok működéséhez, de nem tartozik hozzájuk).
-- **Core**: Olyan funkciós csoportokra osztott osztályok összessége, amelyeket több **feature** is használhat.
+- **Core**: Olyan funkciós csoportokra osztott osztályok összessége, amelyeket több **feature** is használhat vagy kihatással vannak akár indirekt módon az egész alkalmazásra (pl.: Auth).
 - **Feature**: Olyan funkciós csoportokra osztott osztályok összessége, amelyek logikusan összetartoznak és a saját funkciós csoportjukon kívül nincsenek használva. (Speciális esetben "kifelé irányuló kommunikáció a külvilággal" megengedett **event**ek segítségével, ilyen eset mondjuk egy realtime értesítés küldése)
 - **Infrastructure**: Olyan osztályok összessége, amelyek külső szolgáltatásokkal való kommunikációért felelősek. (pl.: adatbázis, fájlrendszer, stb.)
 
@@ -22,8 +22,8 @@
 - **Behaviour**: Lásd: [MediatR Behaviours](https://garywoodfine.com/how-to-use-mediatr-pipeline-behaviours/)
 - **Filter**: Lásd: [Filters](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-7.0) (*megjegyzés: sokszor sokkal több értelme van ezeket haszálni mint mondjuk egy middlewaret, middleware igazából csak akkor kell ha az az összes requestre kihat és akkor sem mindig*)
 - **ConsoleCommand**: Olyan feladatot tartalmazó osztály, amelyet manuális futtatunk a parancssorból (mint a Laravel Artisan). Fejlesztői környezetben ez így néz ki: `dotnet run <command_name>`.
-- **LifetimeAction**: Olyan feladatot tartalmazó osztály, amely az alkalmazás indulásakor vagy leállásakor kell hogy lefusson.
+- **StartupAction**: Olyan feladatot tartalmazó osztály, amely az alkalmazás indulásakor kell hogy lefusson.
 - **Utility**: Olyan osztály, amely mindenképp statikus, nem tartalmaz extension methodot és többször használt vagy "segítő" kódot tartalmaz.
 - **Option**: Az alkalmazás `appsettings.json`-ból betöltött konfigurációjának egy részéhez tartozó **model**.
 - **Entity**: Adatbázisban tárolt **model**.
-- **Seeder**: Olyan osztály, amely az adatbázisba hoz létre előre meghatározott paraméterek alapján **entity**-ket. Általában **ConsoleCommand**-on vagy **LifetimeAction**-on keresztül.
+- **Seeder**: Olyan osztály, amely az adatbázisba hoz létre előre meghatározott paraméterek alapján **entity**-ket. Általában **ConsoleCommand**-on vagy **StartupAction**-on keresztül.
