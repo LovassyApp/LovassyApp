@@ -76,8 +76,6 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         foreach (var claimsAdder in _claimsAdders)
             await claimsAdder.AddClaimsAsync(claims, accessToken.User);
 
-        claims.Add(new Claim(AuthConstants.PermissionClaim, "General.Control"));
-
         var identity = new ClaimsIdentity(claims, Scheme.Name);
 
         return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme.Name));

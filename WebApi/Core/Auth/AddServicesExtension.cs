@@ -50,6 +50,7 @@ public static class AddServicesExtension
 
         services.AddScoped<IClaimsAdder<ImportKey>, ImportKeyBaseClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenBaseClaimsAdder>();
+        services.AddScoped<IClaimsAdder<User>, TokenPermissionsClaimsAdder>();
     }
 
     public static void AddAuthOperationFilters(this SwaggerGenOptions options)
