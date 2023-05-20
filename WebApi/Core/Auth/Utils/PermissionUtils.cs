@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Claims;
 using WebApi.Core.Auth.Interfaces;
@@ -22,13 +21,8 @@ public static class PermissionUtils
             .ToList();
 
         Permissions = permissionTypes.Select(x =>
-        {
-            // This is the fastest way to create an instance of a type
-            var newExpression = Expression.New(x);
-            var lambda = Expression.Lambda<Func<IPermission>>(newExpression);
-            var func = lambda.Compile();
-            return func();
-        }).ToList();
+            (IPermission)Activator.CreateInstance(x)!
+        ).ToList();
 
         PermissionTypesToNames = Permissions.ToDictionary(x => x.GetType(), x => x.Name);
     }

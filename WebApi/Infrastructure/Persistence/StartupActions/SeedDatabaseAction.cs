@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using System.Reflection;
 using Helpers.Framework.Interfaces;
 using WebApi.Core.Auth;
@@ -29,12 +28,8 @@ public class SeedDatabaseAction : IStartupAction
             .ToList();
 
         var permissionNames = permissionTypes.Select(x =>
-        {
-            var newExpression = Expression.New(x);
-            var lambda = Expression.Lambda<Func<object>>(newExpression);
-            var func = lambda.Compile();
-            return ((IPermission)func()).Name;
-        }).ToArray();
+            ((IPermission)Activator.CreateInstance(x)!).Name
+        ).ToArray();
 
         var group = new UserGroup
         {

@@ -28,9 +28,9 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
             return Task.FromResult(properties);
         });
 
-        foreach (var prop in props)
+        foreach (var prop in props!)
         {
-            var genericType = typeof(IValidator<>).MakeGenericType(prop.PropertyType);
+            var genericType = typeof(IValidator<>).MakeGenericType(prop.PropertyType); //Apparently this is pretty fast
             var validator = _serviceProvider.GetService(genericType) as IValidator;
 
             if (validator == null)
