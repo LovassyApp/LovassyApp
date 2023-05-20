@@ -53,6 +53,11 @@ public static class HostExtension
             }
             catch
             {
+                // Now you may wonder what on earth is this for... Well, when generating an OpenApi spec on build, the
+                // program will basically start up as normal, but the only only problem is that after the build step, the
+                // configuration is not yet loaded, so anything using the db context and thus the connection string will
+                // throw an exception. This is a workaround for that (kinda disgusting ik). Oh and you have to set the 
+                // ASPNETCORE_ENVIRONMENT to Development manually for this to work locally.
                 if (!environment.IsDevelopment())
                     throw;
                 logger.LogError($"Error executing startup action {startupAction.GetType().Name}");
