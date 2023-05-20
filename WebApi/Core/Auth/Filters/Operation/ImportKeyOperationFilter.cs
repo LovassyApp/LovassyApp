@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApi.Core.Auth.Filters.Operation;
 
-public class RequireImportKeyOperationFilter : IOperationFilter
+public class ImportKeyOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
@@ -21,10 +21,22 @@ public class RequireImportKeyOperationFilter : IOperationFilter
                                     .OfType<AllowAnonymousAttribute>().Any());
 
         if (requiresImportKey)
-            operation.Parameters.Add(new OpenApiParameter
+            operation.Security = new List<OpenApiSecurityRequirement>
             {
-                Required = true, Name = "X-Authorization", In = ParameterLocation.Header,
-                Schema = new OpenApiSchema { Type = "string" }
-            });
+                new()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "ImportKey"
+                            }
+                        },
+                        new string[] { }
+                    }
+                }
+            };
     }
 }

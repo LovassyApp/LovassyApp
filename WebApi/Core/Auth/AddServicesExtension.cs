@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using WebApi.Core.Auth.Filters.Operation;
 using WebApi.Core.Auth.Interfaces;
 using WebApi.Core.Auth.Policies;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
@@ -50,12 +48,7 @@ public static class AddServicesExtension
 
         services.AddScoped<IClaimsAdder<ImportKey>, ImportKeyBaseClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenBaseClaimsAdder>();
+        services.AddScoped<IClaimsAdder<User>, TokenEmailConfirmedClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenPermissionsClaimsAdder>();
-    }
-
-    public static void AddAuthOperationFilters(this SwaggerGenOptions options)
-    {
-        options.OperationFilter<RequireImportKeyOperationFilter>();
-        options.OperationFilter<AuthorizeOperationFilter>();
     }
 }

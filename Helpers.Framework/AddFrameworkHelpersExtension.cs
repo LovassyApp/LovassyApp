@@ -67,19 +67,12 @@ public static class AddFrameworkHelpersExtension
                 BearerFormat = "Token",
                 Scheme = "Bearer"
             });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            c.AddSecurityDefinition("ImportKey", new OpenApiSecurityScheme
             {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] { }
-                }
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid import key",
+                Name = "X-Authorization",
+                Type = SecuritySchemeType.ApiKey
             });
         });
         services.AddFluentValidationRulesToSwagger();
