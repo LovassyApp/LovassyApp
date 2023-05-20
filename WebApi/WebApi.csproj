@@ -7,26 +7,31 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="34.0.2" />
-        <PackageReference Include="EFCore.BulkExtensions" Version="7.1.1" />
-        <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.9.1" />
-        <PackageReference Include="Mapster" Version="7.3.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+        <PackageReference Include="Bogus" Version="34.0.2"/>
+        <PackageReference Include="EFCore.BulkExtensions" Version="7.1.1"/>
+        <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.9.1"/>
+        <PackageReference Include="Mapster" Version="7.3.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
-        <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4"/>
+        <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Infrastructure\Persistence\Migrations\" />
+        <Folder Include="Infrastructure\Persistence\Migrations\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Helpers.Framework\Helpers.Framework.csproj" />
-        <ProjectReference Include="..\Helpers.Cryptography\Helpers.Cryptography.csproj" />
+        <ProjectReference Include="..\Helpers.Framework\Helpers.Framework.csproj"/>
+        <ProjectReference Include="..\Helpers.Cryptography\Helpers.Cryptography.csproj"/>
     </ItemGroup>
+
+    <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+        <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)"/>
+        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)"/>
+    </Target>
 
 </Project>

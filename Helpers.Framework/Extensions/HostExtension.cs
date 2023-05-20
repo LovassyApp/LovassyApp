@@ -1,6 +1,7 @@
 using Helpers.Framework.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Helpers.Framework.Extensions;
 
@@ -43,7 +44,18 @@ public static class HostExtension
     public static async Task RunStartupActions(this IHost host)
     {
         var startupActions = host.Services.GetServices<IStartupAction>();
+        var environment = host.Services.GetRequiredService<IHostEnvironment>();
+        var logger = host.Services.GetRequiredService<ILogger<IHost>>();
         foreach (var startupAction in startupActions)
-            await startupAction.Execute();
+            try
+            {
+                await startupAction.Execute();
+            }
+            catch
+            {
+                if (!environment.IsDevelopment())
+                    throw;
+                logger.LogError($"Error executing startup action {startupAction.GetType().Name}");
+            }
     }
 }

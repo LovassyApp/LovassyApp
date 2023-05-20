@@ -25,7 +25,7 @@ public class ScheduleAuthJobsAction : IStartupAction
 
         var deleteOldTokensTrigger = TriggerBuilder.Create().WithIdentity("deleteOldTokensTrigger", "scheduledAuthJobs")
             .StartNow()
-            .WithSimpleSchedule(x => x.WithInterval(TimeSpan.FromDays(1)).RepeatForever())
+            .WithSchedule(CronScheduleBuilder.CronSchedule("0 0 12 ? * SUN"))
             .Build();
 
         await scheduler.ScheduleJob(deleteOldTokensJob, deleteOldTokensTrigger);

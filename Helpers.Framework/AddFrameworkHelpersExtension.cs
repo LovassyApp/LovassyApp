@@ -48,10 +48,6 @@ public static class AddFrameworkHelpersExtension
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" });
 
-            var operationFilterTypes = assembly.GetTypes()
-                .Where(t => t.IsAssignableTo(typeof(IOperationFilter)) &&
-                            t is { IsInterface: false, IsAbstract: false });
-
             c.AddOperationFilters(assembly);
 
             c.CustomSchemaIds(type => type.ToString().Replace("WebApi.Features.", string.Empty)

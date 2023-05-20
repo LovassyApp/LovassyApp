@@ -4,8 +4,13 @@ using WebApi.Core.Auth.Interfaces;
 
 namespace WebApi.Core.Auth.Utils;
 
+/// <summary>
+///     Utility class for working with permissions. It's a bit unusual for a utility class to contain static data members,
+///     but we kinda need it to have a nice developer experience.
+/// </summary>
 public static class PermissionUtils
 {
+    //TODO: Explore the possibility of using a source generator for this
     public static List<IPermission>? Permissions { get; private set; }
     public static Dictionary<Type, string>? PermissionTypesToNames { get; private set; }
 
