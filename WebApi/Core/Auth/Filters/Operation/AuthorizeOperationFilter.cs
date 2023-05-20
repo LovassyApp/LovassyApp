@@ -43,7 +43,7 @@ public class AuthorizeOperationFilter : IOperationFilter
                 });
 
             if (!string.IsNullOrEmpty(authorize.AuthenticationSchemes) &&
-                authorize.AuthenticationSchemes.Contains(AuthConstants.ImportKeyScheme))
+                authorize.AuthenticationSchemes.Split(",").Contains(AuthConstants.ImportKeyScheme))
                 operation.Security.Add(new OpenApiSecurityRequirement
                 {
                     {
