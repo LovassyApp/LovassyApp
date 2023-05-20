@@ -49,6 +49,7 @@ public class AuthController : ApiControllerBase
     }
 
     [HttpPost("VerifyEmail")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> VerifyEmail([FromQuery] string verifyToken)
     {
         await Mediator.Send(new VerifyEmail.Command { VerifyToken = verifyToken });

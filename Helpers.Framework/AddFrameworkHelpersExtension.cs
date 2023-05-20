@@ -39,7 +39,7 @@ public static class AddFrameworkHelpersExtension
         services.AddScoped<SieveProcessor, ApplicationSieveProcessor>();
 
         // Fluent Validation
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(assembly);
         services.TryAddTransient<IValidatorFactory,
             ServiceProviderValidatorFactory>(); // Required for Swagger docs based on fluent validation
 

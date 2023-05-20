@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Features\Users\EventHandlers\" />
         <Folder Include="Infrastructure\Persistence\Migrations\" />
     </ItemGroup>
 
