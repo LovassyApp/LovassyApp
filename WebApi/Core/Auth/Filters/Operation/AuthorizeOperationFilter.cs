@@ -8,33 +8,56 @@ public class AuthorizeOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        var hasAuthorize = context.MethodInfo
-                               .GetCustomAttributes(true)
-                               .OfType<AuthorizeAttribute>()
-                               .Any() ||
-                           (context.MethodInfo.DeclaringType!
-                               .GetCustomAttributes(true).OfType<AuthorizeAttribute>()
-                               .Any() && !context.MethodInfo.GetCustomAttributes(true)
-                               .OfType<AllowAnonymousAttribute>().Any());
+        var authorize = context.MethodInfo
+                            .GetCustomAttributes(true)
+                            .OfType<AuthorizeAttribute>()
+                            .FirstOrDefault() ??
+                        context.MethodInfo.DeclaringType!
+                            .GetCustomAttributes(true).OfType<AuthorizeAttribute>()
+                            .FirstOrDefault();
 
-        if (hasAuthorize)
+        if (context.MethodInfo.GetCustomAttributes(true)
+            .OfType<AllowAnonymousAttribute>().Any())
+            authorize = null;
+
+        if (authorize != null)
         {
             operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
             operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
-            operation.Security.Add(new OpenApiSecurityRequirement
-            {
+
+            if (string.IsNullOrEmpty(authorize.AuthenticationSchemes) ||
+                authorize.AuthenticationSchemes.Split(",").Contains(AuthConstants.TokenScheme))
+                operation.Security.Add(new OpenApiSecurityRequirement
                 {
-                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] { }
-                }
-            });
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+
+            if (!string.IsNullOrEmpty(authorize.AuthenticationSchemes) &&
+                authorize.AuthenticationSchemes.Contains(AuthConstants.ImportKeyScheme))
+                operation.Security.Add(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "ImportKey"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
         }
     }
 }
