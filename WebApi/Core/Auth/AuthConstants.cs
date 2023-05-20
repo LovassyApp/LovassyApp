@@ -10,6 +10,7 @@ public static class AuthConstants
 
     public const string EmailVerifiedClaim = "EmailVerified";
     public const string PermissionClaim = "Permission";
+    public const string SuperUserClaim = "SuperUser";
 
     public const int DefaultUserGroupID = 1;
 }

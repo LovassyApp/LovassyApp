@@ -49,7 +49,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         var accessToken = await _context.PersonalAccessTokens.Include(t => t.User).ThenInclude(u => u.UserGroups)
             .Where(t => t.Token == token)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(); //We have to include the user groups here because we need them for the claims
 
         if (accessToken == null) return AuthenticateResult.Fail("Invalid access token");
 
@@ -63,8 +63,6 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         }
 
         _userAccessor.User = accessToken.User;
-
-        //TODO: Add permission claims with Warden
 
         await _publisher.Publish(new AccessTokenUsedEvent
         {

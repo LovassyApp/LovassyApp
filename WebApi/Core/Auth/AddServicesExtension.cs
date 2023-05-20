@@ -9,6 +9,7 @@ using WebApi.Core.Auth.Schemes.ImportKey.ClaimsAdders;
 using WebApi.Core.Auth.Schemes.Token;
 using WebApi.Core.Auth.Schemes.Token.ClaimsAdders;
 using WebApi.Core.Auth.Services;
+using WebApi.Core.Auth.Services.Options;
 using WebApi.Infrastructure.Persistence.Entities;
 using SessionOptions = WebApi.Core.Auth.Services.Options.SessionOptions;
 
@@ -24,10 +25,15 @@ public static class AddServicesExtension
     public static void AddAuthServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<SessionOptions>(configuration.GetSection("Session"));
-        services.AddScoped<SessionManager>();
+        services.Configure<PermissionsOptions>(configuration.GetSection("Permissions"));
+
         services.AddScoped<UserAccessor>();
+
+        services.AddScoped<SessionManager>();
         services.AddScoped<EncryptionManager>();
         services.AddScoped<HashManager>();
+        services.AddScoped<PermissionManager>();
+
         services.AddSingleton<ResetService>();
 
         services
