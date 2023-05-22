@@ -128,7 +128,7 @@ public static class Login
             {
                 User = user.Adapt<ResponseUser>(),
                 Token = token
-            }; //TODO: Maybe add warden permissions to response
+            };
         }
     }
 }

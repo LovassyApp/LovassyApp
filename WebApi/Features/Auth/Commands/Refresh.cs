@@ -100,7 +100,7 @@ public static class Refresh
                 Token = token,
                 RefreshToken = refreshToken,
                 RefreshTokenExpiration = DateTime.Now.Add(_refreshService.GetRefreshTokenExpiry())
-            }; //TODO: Maybe add warden permissions to response
+            };
         }
     }
 }

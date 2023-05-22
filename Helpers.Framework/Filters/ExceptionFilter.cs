@@ -144,11 +144,13 @@ public class ExceptionFilter : IExceptionFilter
 
     private void HandleUnavailableException(ExceptionContext context)
     {
+        var exception = context.Exception as UnavailableException;
+
         ProblemDetails details = new()
         {
-            Status = StatusCodes.Status503ServiceUnavailable,
             Title = "Unavailable",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.4"
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.4",
+            Detail = exception!.Message
         };
 
         context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status503ServiceUnavailable };

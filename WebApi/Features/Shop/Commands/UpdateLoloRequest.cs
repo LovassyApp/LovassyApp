@@ -2,6 +2,7 @@ using FluentValidation;
 using Helpers.Framework.Exceptions;
 using Mapster;
 using MediatR;
+using WebApi.Core.Auth.Permissions;
 using WebApi.Core.Auth.Services;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -34,12 +35,14 @@ public static class UpdateLoloRequest
     internal sealed class Handler : IRequestHandler<Command>
     {
         private readonly ApplicationDbContext _context;
+        private readonly PermissionManager _permissionManager;
         private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor)
+        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager)
         {
             _context = context;
             _userAccessor = userAccessor;
+            _permissionManager = permissionManager;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -49,7 +52,8 @@ public static class UpdateLoloRequest
             if (loloRequest == null)
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
 
-            if (loloRequest.UserId != _userAccessor.User!.Id) //TODO: Check for superuser here
+            if (loloRequest.UserId != _userAccessor.User!.Id &&
+                !_permissionManager.CheckPermission(typeof(ShopPermissions.UpdateLoloRequest)))
                 throw new ForbiddenException();
 
             if (loloRequest.AcceptedAt != null || loloRequest.DeniedAt != null)

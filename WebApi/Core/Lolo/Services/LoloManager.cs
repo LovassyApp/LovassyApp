@@ -50,10 +50,9 @@ public class LoloManager
         Coins = await _context.Lolos.Where(l => l.UserId == _userId)
             .ToListAsync();
 
-        foreach (var coin in Coins)
+        foreach (var coin in Coins.Where(c => c.LoloType == LoloType.FromGrades))
         {
-            if (coin.Grades == null)
-                coin.Grades = new List<Grade>();
+            coin.Grades ??= new List<Grade>();
 
             coin.Grades.AddRange(
                 grades.Where(g => g.LoloIdHashed == _hashManager.HashWithHasherSalt(coin.Id.ToString())));

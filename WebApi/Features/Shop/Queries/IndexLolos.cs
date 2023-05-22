@@ -30,7 +30,7 @@ public static class IndexLolos
         public string LoloType { get; set; }
         public string Reason { get; set; }
 
-        public List<ResponseGrade> Grades { get; set; }
+        public List<ResponseGrade>? Grades { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

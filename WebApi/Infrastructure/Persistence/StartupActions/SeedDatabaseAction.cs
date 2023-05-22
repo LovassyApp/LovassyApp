@@ -17,11 +17,8 @@ public class SeedDatabaseAction : IStartupAction
 
     public async Task Execute()
     {
-        var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        if (await context.UserGroups.FindAsync(AuthConstants.DefaultUserGroupID) != null)
-            return;
+        using var scope = _serviceProvider.CreateScope();
+        await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         var permissionTypes = Assembly.GetExecutingAssembly().GetTypes()
             .Where(x => typeof(IPermission).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
@@ -29,18 +26,27 @@ public class SeedDatabaseAction : IStartupAction
 
         var permissionNames = permissionTypes.Select(x =>
             ((IPermission)Activator.CreateInstance(x)!).Name
-        ).ToArray();
+        ).ToArray(); // We can't use PermissionUtils just yet as it is also initialized in a startup action
 
-        var group = new UserGroup
+        var currentDefaultGroup = await context.UserGroups.FindAsync(AuthConstants.DefaultUserGroupID);
+
+        if (currentDefaultGroup != null && !currentDefaultGroup.Permissions.SequenceEqual(permissionNames))
         {
-            Id = AuthConstants.DefaultUserGroupID,
-            Name = "Default",
-            //TODO: Add a check for the environment and act accordingly
-            Permissions =
-                permissionNames // We can't use PermissionLookup just yet as it is also initialized in a startup action
-        };
+            currentDefaultGroup.Permissions = permissionNames;
+            await context.SaveChangesAsync();
+        }
+        else if (currentDefaultGroup == null)
+        {
+            var group = new UserGroup
+            {
+                Id = AuthConstants.DefaultUserGroupID,
+                Name = "Default",
+                // TODO: Add a check for the environment and act accordingly
+                Permissions = permissionNames
+            };
 
-        await context.UserGroups.AddAsync(group);
-        await context.SaveChangesAsync();
+            await context.UserGroups.AddAsync(group);
+            await context.SaveChangesAsync();
+        }
     }
 }

@@ -164,7 +164,7 @@
         "tags": [
           "Grades"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: School.ViewGrades",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: School.IndexGrades",
         "parameters": [
           {
             "name": "Filters",
@@ -417,6 +417,7 @@
         "tags": [
           "ImportKeys"
         ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.IndexImportKeys",
         "parameters": [
           {
             "name": "Filters",
@@ -470,13 +471,25 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       },
       "post": {
         "tags": [
           "ImportKeys"
         ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.CreateImportKey",
         "requestBody": {
           "content": {
             "application/json": {
@@ -516,8 +529,19 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       }
     },
     "/Api/ImportKeys/{id}": {
@@ -525,6 +549,7 @@
         "tags": [
           "ImportKeys"
         ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.ViewImportKey",
         "parameters": [
           {
             "name": "id",
@@ -557,13 +582,25 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       },
       "patch": {
         "tags": [
           "ImportKeys"
         ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.UpdateImportKey",
         "parameters": [
           {
             "name": "id",
@@ -608,13 +645,25 @@
           },
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       },
       "delete": {
         "tags": [
           "ImportKeys"
         ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.DeleteImportKey",
         "parameters": [
           {
             "name": "id",
@@ -640,8 +689,19 @@
           },
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       }
     },
     "/Api/LoloRequests": {
@@ -649,7 +709,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "<b>Requires verified email</b>",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLoloRequests",
         "parameters": [
           {
             "name": "Filters",
@@ -721,7 +781,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "<b>Requires verified email</b>",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateLoloRequest",
         "requestBody": {
           "content": {
             "application/json": {
@@ -771,7 +831,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "<b>Requires verified email</b>",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewLoloRequest",
         "parameters": [
           {
             "name": "id",
@@ -822,7 +882,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "<b>Requires verified email</b>",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest",
         "parameters": [
           {
             "name": "id",
@@ -885,7 +945,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "<b>Requires verified email</b>",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest",
         "parameters": [
           {
             "name": "id",
@@ -931,7 +991,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "<b>Requires verified email</b>",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.OverruleLoloRequest",
         "parameters": [
           {
             "name": "id",
@@ -996,7 +1056,7 @@
         "tags": [
           "Lolos"
         ],
-        "description": "<b>Requires verified email</b>",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLolos",
         "parameters": [
           {
             "name": "Filters",
@@ -1044,6 +1104,83 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ShopIndexLolosResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/Api/Permissions": {
+      "get": {
+        "tags": [
+          "Permissions"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.IndexPermissions",
+        "parameters": [
+          {
+            "name": "Filters",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "503": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuthIndexPermissionsResponse"
+                  }
                 }
               }
             }
@@ -1182,6 +1319,24 @@
   },
   "components": {
     "schemas": {
+      "AuthIndexPermissionsResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AuthLoginRequestBody": {
         "required": [
           "email",

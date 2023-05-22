@@ -88,7 +88,8 @@ public static class CreateUser
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (!_resetService.IsResetKeyPasswordSet()) throw new UnavailableException();
+            if (!_resetService.IsResetKeyPasswordSet())
+                throw new UnavailableException("Reset key password is not yet set");
 
             var masterKeySalt = _hashService.GenerateSalt();
             var masterKey = new EncryptableKey();

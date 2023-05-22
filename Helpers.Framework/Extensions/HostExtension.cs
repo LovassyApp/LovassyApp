@@ -60,7 +60,7 @@ public static class HostExtension
                 // ASPNETCORE_ENVIRONMENT to Development manually for this to work locally.
                 if (!environment.IsDevelopment())
                     throw;
-                logger.LogError($"Error executing startup action {startupAction.GetType().Name}");
+                logger.LogError("Error executing startup action {Name}", startupAction.GetType().Name);
             }
     }
 }
