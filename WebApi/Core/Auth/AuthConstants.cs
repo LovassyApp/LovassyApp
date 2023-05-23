@@ -8,6 +8,8 @@ public static class AuthConstants
     public const string TokenScheme = "Token";
     public const string ImportKeyScheme = "ImportKey";
 
+    public const string RefreshCookieKey = "BlueboardRefresh";
+
     public const string EmailVerifiedClaim = "EmailVerified";
     public const string PermissionClaim = "Permission";
     public const string SuperUserClaim = "SuperUser";

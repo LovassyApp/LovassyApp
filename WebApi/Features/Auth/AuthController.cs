@@ -1,6 +1,7 @@
 using Helpers.Framework;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Core.Auth;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
 using WebApi.Features.Auth.Commands;
 
@@ -14,7 +15,7 @@ public class AuthController : ApiControllerBase
         var response = await Mediator.Send(new Login.Command { Body = body });
 
         if (response.RefreshToken != null)
-            Response.Cookies.Append("BlueboardRefresh", response.RefreshToken, new CookieOptions
+            Response.Cookies.Append(AuthConstants.RefreshCookieKey, response.RefreshToken, new CookieOptions
             {
                 Expires = response.RefreshTokenExpiration
             });
@@ -26,9 +27,9 @@ public class AuthController : ApiControllerBase
     public async Task<ActionResult<Refresh.Response>> Refresh([FromQuery] string? token)
     {
         var response = await Mediator.Send(new Refresh.Command
-            { RefreshToken = token ?? Request.Cookies["BlueboardRefresh"] });
+            { RefreshToken = token ?? Request.Cookies[AuthConstants.RefreshCookieKey] });
 
-        Response.Cookies.Append("BlueboardRefresh", response.RefreshToken, new CookieOptions
+        Response.Cookies.Append(AuthConstants.RefreshCookieKey, response.RefreshToken, new CookieOptions
         {
             Expires = response.RefreshTokenExpiration
         });
@@ -43,7 +44,7 @@ public class AuthController : ApiControllerBase
     {
         await Mediator.Send(new Logout.Command());
 
-        Response.Cookies.Delete("BlueboardRefresh");
+        Response.Cookies.Delete(AuthConstants.RefreshCookieKey);
 
         return NoContent();
     }
