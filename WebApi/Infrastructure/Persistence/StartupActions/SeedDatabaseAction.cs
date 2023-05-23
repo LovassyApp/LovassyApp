@@ -1,5 +1,6 @@
 using System.Reflection;
 using Helpers.Framework.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Core.Auth;
 using WebApi.Core.Auth.Interfaces;
 using WebApi.Infrastructure.Persistence.Entities;
@@ -44,6 +45,10 @@ public class SeedDatabaseAction : IStartupAction
                 // TODO: Add a check for the environment and act accordingly
                 Permissions = permissionNames
             };
+
+            // much danger, lacks the holy spirit (prepared statements don't work here)
+            await context.Database.ExecuteSqlRawAsync(
+                @$"alter sequence ""GradeImports_Id_seq"" start with {AuthConstants.DefaultUserGroupID + 1}");
 
             await context.UserGroups.AddAsync(group);
             await context.SaveChangesAsync();

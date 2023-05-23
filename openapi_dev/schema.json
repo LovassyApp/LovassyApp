@@ -1339,6 +1339,54 @@
             "Bearer": [ ]
           }
         ]
+      },
+      "post": {
+        "tags": [
+          "UserGroups"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.CreateUserGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthCreateUserGroupRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthCreateUserGroupRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthCreateUserGroupRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthCreateUserGroupResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       }
     },
     "/Api/UserGroups/{id}": {
@@ -1376,6 +1424,113 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AuthViewUserGroupResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "UserGroups"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.UpdateUserGroup",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthUpdateUserGroupRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthUpdateUserGroupRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthUpdateUserGroupRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "UserGroups"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.DeleteUserGroup",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1446,6 +1601,46 @@
   },
   "components": {
     "schemas": {
+      "AuthCreateUserGroupRequestBody": {
+        "required": [
+          "name",
+          "permissions"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "permissions": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthCreateUserGroupResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AuthIndexPermissionsResponse": {
         "type": "object",
         "properties": {
@@ -1611,6 +1806,29 @@
           "class": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthUpdateUserGroupRequestBody": {
+        "required": [
+          "name",
+          "permissions"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "permissions": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            }
           }
         },
         "additionalProperties": false

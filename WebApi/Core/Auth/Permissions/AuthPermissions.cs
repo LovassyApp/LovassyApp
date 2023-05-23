@@ -31,4 +31,25 @@ public static class AuthPermissions
         public string DisplayName { get; } = "Felhasználói csoport megtekintése";
         public string Description { get; } = "Egy adott felhasználói csoport lekérése és megtekintése id alapján";
     }
+
+    public class CreateUserGroup : IPermission
+    {
+        public string Name { get; } = "Auth.CreateUserGroup";
+        public string DisplayName { get; } = "Felhasználói csoport létrehozása";
+        public string Description { get; } = "Új felhasználói csoport létrehozása";
+    }
+
+    public class UpdateUserGroup : IPermission
+    {
+        public string Name { get; } = "Auth.UpdateUserGroup";
+        public string DisplayName { get; } = "Felhasználói csoport módosítása";
+        public string Description { get; } = "Egy adott felhasználói csoport módosítása id alapján";
+    }
+
+    public class DeleteUserGroup : IPermission
+    {
+        public string Name { get; } = "Auth.DeleteUserGroup";
+        public string DisplayName { get; } = "Felhasználói csoport törlése";
+        public string Description { get; } = "Egy adott felhasználói csoport törlése id alapján";
+    }
 }
