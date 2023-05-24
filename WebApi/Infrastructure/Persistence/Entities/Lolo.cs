@@ -12,7 +12,10 @@ public class Lolo : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public int Id { get; set; }
 
-    [Required] public Guid UserId { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    [Required]
+    public Guid UserId { get; set; }
+
     [JsonIgnore] public User User { get; set; }
 
     //TODO: Add HistoryId

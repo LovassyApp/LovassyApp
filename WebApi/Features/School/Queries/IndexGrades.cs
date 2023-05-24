@@ -72,7 +72,7 @@ public static class IndexGrades
             var userIdHashed = _hashManager.HashWithHasherSalt(_userAccessor.User!.Id.ToString());
 
             var grades = _context.Grades
-                .Where(g => g.UserIdHashed == userIdHashed && g.GradeType == GradeType.RegularGrade);
+                .Where(g => g.UserIdHashed == userIdHashed && g.GradeType == GradeType.RegularGrade).AsNoTracking();
 
             var filteredGrades = await _sieveProcessor.Apply(request.SieveModel, grades).GroupBy(g => g.Subject)
                 .ToListAsync(cancellationToken);

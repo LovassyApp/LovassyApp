@@ -1,6 +1,7 @@
 using Helpers.Framework.Exceptions;
 using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -35,14 +36,15 @@ public static class ViewLoloRequest
             _context = context;
         }
 
-        public Task<Response> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var loloRequest = _context.LoloRequests.Find(request.Id);
+            var loloRequest = await _context.LoloRequests.Where(r => r.Id == request.Id).AsNoTracking()
+                .FirstOrDefaultAsync(cancellationToken);
 
-            if (loloRequest is null)
+            if (loloRequest == null)
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
 
-            return Task.FromResult(loloRequest.Adapt<Response>());
+            return loloRequest.Adapt<Response>();
         }
     }
 }

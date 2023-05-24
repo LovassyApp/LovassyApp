@@ -4,11 +4,18 @@ namespace WebApi.Core.Auth.Permissions;
 
 public class ShopPermissions
 {
+    public class IndexOwnLolos : IPermission
+    {
+        public string Name { get; } = "Shop.IndexOwnLolos";
+        public string DisplayName { get; } = "Saját lolók lekérése";
+        public string Description { get; } = "A saját loló mennyiség és loló érmék lekérése és listázása";
+    }
+
     public class IndexLolos : IPermission
     {
         public string Name { get; } = "Shop.IndexLolos";
         public string DisplayName { get; } = "Lolók lekérése";
-        public string Description { get; } = "A saját loló mennyiség és loló érmék lekérése és listázása";
+        public string Description { get; } = "Az összes loló érme lekérése és listázása";
     }
 
     public class IndexLoloRequests : IPermission

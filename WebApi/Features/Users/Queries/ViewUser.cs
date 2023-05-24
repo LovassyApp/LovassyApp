@@ -5,16 +5,30 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Persistence.Entities;
 
-namespace WebApi.Features.Auth.Queries;
+namespace WebApi.Features.Users.Queries;
 
-public static class ViewUserGroup
+public static class ViewUser
 {
     public class Query : IRequest<Response>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class Response
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+
+        public DateTime? EmailVerifiedAt { get; set; }
+
+        public string? RealName { get; set; }
+        public string? Class { get; set; }
+
+        public List<ResponseUserGroup> UserGroups { get; set; }
+    }
+
+    public class ResponseUserGroup
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -32,12 +46,13 @@ public static class ViewUserGroup
 
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var userGroup = await _context.UserGroups.Where(g => g.Id == request.Id).AsNoTracking()
+            var user = await _context.Users.Where(u => u.Id == request.Id).Include(u => u.UserGroups).AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (userGroup == null) throw new NotFoundException(nameof(UserGroup), request.Id);
+            if (user == null)
+                throw new NotFoundException(nameof(User), request.Id);
 
-            return userGroup.Adapt<Response>();
+            return user.Adapt<Response>();
         }
     }
 }

@@ -45,9 +45,11 @@ public class LoloManager
 
         var grades = await _context.Grades
             .Where(g => g.UserIdHashed == userIdHashed && g.LoloIdHashed != null)
+            .AsNoTracking()
             .ToListAsync();
 
         Coins = await _context.Lolos.Where(l => l.UserId == _userId)
+            .AsNoTracking()
             .ToListAsync();
 
         foreach (var coin in Coins.Where(c => c.LoloType == LoloType.FromGrades))

@@ -1,12 +1,42 @@
 using Helpers.Framework;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
+using WebApi.Core.Auth.Permissions;
+using WebApi.Core.Auth.Policies.EmailConfirmed;
+using WebApi.Core.Auth.Policies.Permissions;
 using WebApi.Features.Users.Commands;
+using WebApi.Features.Users.Queries;
 
 namespace WebApi.Features.Users;
 
+[Authorize]
+[EmailVerified]
 public class UsersController : ApiControllerBase
 {
+    [HttpGet]
+    [Permissions(typeof(UsersPermissions.IndexUsers))]
+    public async Task<ActionResult<IEnumerable<IndexUsers.Response>>> Index([FromQuery] SieveModel sieveModel)
+    {
+        var users = await Mediator.Send(new IndexUsers.Query
+        {
+            SieveModel = sieveModel
+        });
+
+        return Ok(users);
+    }
+
+    [HttpGet("{id}")]
+    [Permissions(typeof(UsersPermissions.ViewUser))]
+    public async Task<ActionResult<ViewUser.Response>> View([FromRoute] Guid id)
+    {
+        var user = await Mediator.Send(new ViewUser.Query { Id = id });
+
+        return Ok(user);
+    }
+
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult> CreateUser([FromBody] CreateUser.RequestBody body, [FromQuery] string verifyUrl,
         [FromQuery] string verifyTokenQueryKey)
     {

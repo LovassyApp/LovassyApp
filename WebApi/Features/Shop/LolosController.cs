@@ -13,6 +13,14 @@ namespace WebApi.Features.Shop;
 [EmailVerified]
 public class LolosController : ApiControllerBase
 {
+    [HttpGet("Own")]
+    [Permissions(typeof(ShopPermissions.IndexOwnLolos))]
+    public async Task<ActionResult<IndexOwnLolos.Response>> IndexOwn([FromQuery] SieveModel sieveModel)
+    {
+        var response = await Mediator.Send(new IndexOwnLolos.Query { SieveModel = sieveModel });
+        return Ok(response);
+    }
+
     [HttpGet]
     [Permissions(typeof(ShopPermissions.IndexLolos))]
     public async Task<ActionResult<IndexLolos.Response>> Index([FromQuery] SieveModel sieveModel)

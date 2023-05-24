@@ -40,7 +40,7 @@ public static class IndexLoloRequests
 
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var loloRequests = _context.LoloRequests;
+            var loloRequests = _context.LoloRequests.AsNoTracking();
 
             var filteredLoloRequests =
                 await _sieveProcessor.Apply(request.SieveModel, loloRequests).ToListAsync(cancellationToken);

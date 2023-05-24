@@ -5,9 +5,9 @@ using Sieve.Models;
 using Sieve.Services;
 using WebApi.Infrastructure.Persistence;
 
-namespace WebApi.Features.Auth.Queries;
+namespace WebApi.Features.Users.Queries;
 
-public static class IndexUserGroups
+public static class IndexUsers
 {
     public class Query : IRequest<IEnumerable<Response>>
     {
@@ -16,9 +16,22 @@ public static class IndexUserGroups
 
     public class Response
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+
+        public DateTime? EmailVerifiedAt { get; set; }
+
+        public string? RealName { get; set; }
+        public string? Class { get; set; }
+
+        public List<ResponseUserGroup> UserGroups { get; set; }
+    }
+
+    public class ResponseUserGroup
+    {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string[] Permissions { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
@@ -34,10 +47,13 @@ public static class IndexUserGroups
 
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var userGroups = _context.UserGroups.AsNoTracking();
-            var filteredUserGroups =
-                await _sieveProcessor.Apply(request.SieveModel, userGroups).ToListAsync(cancellationToken);
-            return filteredUserGroups.Adapt<IEnumerable<Response>>();
+            var users = _context.Users
+                .Include(u => u.UserGroups)
+                .AsNoTracking();
+
+            var filteredUsers = await _sieveProcessor.Apply(request.SieveModel, users).ToListAsync(cancellationToken);
+
+            return filteredUsers.Adapt<IEnumerable<Response>>();
         }
     }
 }
