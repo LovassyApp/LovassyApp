@@ -48,7 +48,7 @@ public class SeedDatabaseAction : IStartupAction
 
             // much danger, lacks the holy spirit (prepared statements don't work here)
             await context.Database.ExecuteSqlRawAsync(
-                @$"alter sequence ""GradeImports_Id_seq"" start with {AuthConstants.DefaultUserGroupID + 1}");
+                @$"alter sequence ""UserGroups_Id_seq"" start with {AuthConstants.DefaultUserGroupID + 1}");
 
             await context.UserGroups.AddAsync(group);
             await context.SaveChangesAsync();

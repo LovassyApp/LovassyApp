@@ -44,6 +44,8 @@ public class LoloConfiguration : IEntityTypeConfiguration<Lolo>
 {
     public void Configure(EntityTypeBuilder<Lolo> builder)
     {
+        builder.HasOne(l => l.User).WithMany(u => u.Lolos).HasForeignKey(l => l.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
         builder.Property(l => l.IsSpent).HasDefaultValue(false);
         builder.Ignore(l => l.Grades);
     }

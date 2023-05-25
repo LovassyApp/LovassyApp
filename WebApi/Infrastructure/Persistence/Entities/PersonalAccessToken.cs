@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace WebApi.Infrastructure.Persistence.Entities;
 
@@ -15,4 +16,13 @@ public class PersonalAccessToken : TimestampedEntity
     [Required] public string Token { get; set; }
 
     public DateTime? LastUsedAt { get; set; }
+}
+
+public class PersonalAccessTokenConfiguration : IEntityTypeConfiguration<PersonalAccessToken>
+{
+    public void Configure(EntityTypeBuilder<PersonalAccessToken> builder)
+    {
+        builder.HasOne(i => i.User).WithMany(u => u.PersonalAccessTokens).HasForeignKey(i => i.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }
