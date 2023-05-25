@@ -27,7 +27,7 @@ public static class CreateUserGroup
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Permissions).NotEmpty();
-            RuleForEach(x => x.Permissions).NotEmpty().Must(BeExistingPermission)
+            RuleForEach(x => x.Permissions).NotNull().Must(BeExistingPermission)
                 .WithMessage("The permission '{PropertyValue}' does not exist");
         }
 

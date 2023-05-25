@@ -1803,7 +1803,6 @@
             "minItems": 1,
             "type": "array",
             "items": {
-              "minLength": 1,
               "type": "string"
             }
           }

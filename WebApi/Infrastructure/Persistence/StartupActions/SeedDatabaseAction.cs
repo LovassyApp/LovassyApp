@@ -46,12 +46,11 @@ public class SeedDatabaseAction : IStartupAction
                 Permissions = permissionNames
             };
 
-            // much danger, lacks the holy spirit (prepared statements don't work here)
-            await context.Database.ExecuteSqlRawAsync(
-                @$"alter sequence ""UserGroups_Id_seq"" start with {AuthConstants.DefaultUserGroupID + 1}");
-
             await context.UserGroups.AddAsync(group);
             await context.SaveChangesAsync();
+
+            await context.Database.ExecuteSqlRawAsync(
+                @$"select setval(pg_get_serial_sequence('""{nameof(ApplicationDbContext.UserGroups)}""', '{nameof(UserGroup.Id)}'), (select max(""{nameof(UserGroup.Id)}"") from ""{nameof(ApplicationDbContext.UserGroups)}""))");
         }
     }
 }
