@@ -50,7 +50,7 @@ public class LoloRequestsController : ApiControllerBase
         return Created(nameof(View), response);
     }
 
-    [HttpPatch("Overrule/{id}")]
+    [HttpPost("Overrule/{id}")]
     [Permissions(typeof(ShopPermissions.OverruleLoloRequest))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

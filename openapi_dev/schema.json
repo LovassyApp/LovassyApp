@@ -987,7 +987,7 @@
       }
     },
     "/Api/LoloRequests/Overrule/{id}": {
-      "patch": {
+      "post": {
         "tags": [
           "LoloRequests"
         ],
