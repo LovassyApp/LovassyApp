@@ -58,6 +58,6 @@ public static class AddServicesExtension
         services.AddScoped<IClaimsAdder<User>, TokenBaseClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenEmailConfirmedClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenPermissionsClaimsAdder>();
-        services.AddScoped<IClaimsAdder<User>, TokenUserGroupsClaimsAdder>();
+        services.AddScoped<IClaimsAdder<User>, TokenFeatureGroupsClaimsAdder>();
     }
 }

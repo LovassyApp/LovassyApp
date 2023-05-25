@@ -26,11 +26,11 @@ public class TargetingContextAccessor : ITargetingContextAccessor
 
         var groups = new List<string>();
         if (httpContext.User.Identity!.IsAuthenticated)
-            groups.AddRange(httpContext.User.FindAll(_featureFlagOptions.GroupClaim).Select(c => c.Value));
+            groups.AddRange(httpContext.User.FindAll(_featureFlagOptions.FeatureGroupClaim).Select(c => c.Value));
 
         var targetingContext = new TargetingContext
         {
-            UserId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+            UserId = httpContext.User.FindFirstValue(_featureFlagOptions.FeatureUserClaim),
             Groups = groups
         };
 

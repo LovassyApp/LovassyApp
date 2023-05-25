@@ -1656,7 +1656,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.IndexUsers",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.IndexUsers<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
         "parameters": [
           {
             "name": "Filters",
@@ -1728,6 +1728,7 @@
         "tags": [
           "Users"
         ],
+        "description": "<b>Requires the following features be enabled</b>: Something, SomethingElse",
         "parameters": [
           {
             "name": "verifyUrl",
@@ -1777,7 +1778,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.ViewUser",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.ViewUser<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
         "parameters": [
           {
             "name": "id",
@@ -1818,7 +1819,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.UpdateUser",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.UpdateUser<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
         "parameters": [
           {
             "name": "id",
@@ -1881,7 +1882,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.DeleteUser",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.DeleteUser<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
         "parameters": [
           {
             "name": "id",

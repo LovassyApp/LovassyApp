@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation;
 using Helpers.Framework.Behaviours;
+using Helpers.Framework.Filters.Operation;
 using Helpers.Framework.Implementations;
 using Helpers.Framework.Interfaces;
 using Helpers.Framework.Services;
@@ -93,7 +94,7 @@ public static class AddFrameworkHelpersExtension
         services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>().AddFeatureFilter<PercentageFilter>()
             .AddFeatureFilter<TargetingFilter>();
         services.AddSingleton<ITargetingContextAccessor, TargetingContextAccessor>();
-        services.Configure<FeatureFlagOptions>(configuration.GetSection("FeatureFlags"));
+        services.Configure<FeatureFlagOptions>(configuration.GetSection("FeatureManagementConfiguration"));
     }
 
     private static void AddConsoleCommands(this IServiceCollection services, Assembly assembly)
@@ -124,5 +125,7 @@ public static class AddFrameworkHelpersExtension
                 Type = operationFilterType,
                 Arguments = new object[] { }
             });
+
+        options.OperationFilter<FeatureGateOperationFilter>();
     }
 }
