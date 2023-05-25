@@ -37,19 +37,21 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        if (!Request.Headers.ContainsKey(HeaderNames.Authorization) || (Options.HubsBasePath != null &&
-                                                                        Request.Path.StartsWithSegments(
-                                                                            Options.HubsBasePath) &&
-                                                                        !Request.Query.ContainsKey("access_token")))
+        var isAuthorizationHeaderMissing = !Request.Headers.ContainsKey(HeaderNames.Authorization);
+        var isHubPath = Options.HubsBasePath != null && Request.Path.StartsWithSegments(Options.HubsBasePath);
+
+        if ((isAuthorizationHeaderMissing && Options.HubsBasePath == null) ||
+            (isAuthorizationHeaderMissing && !isHubPath) ||
+            (isHubPath && !Request.Query.ContainsKey("access_token")))
             return AuthenticateResult.Fail("Token Not Found");
 
-        var token = HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""));
-        if (Options.HubsBasePath != null && Request.Path.StartsWithSegments(Options.HubsBasePath))
-            token = HttpUtility.UrlDecode(Request.Query["access_token"]);
+        var token = !isHubPath
+            ? HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""))
+            : HttpUtility.UrlDecode(Request.Query["access_token"]);
 
         var accessToken = await _context.PersonalAccessTokens.Include(t => t.User).ThenInclude(u => u.UserGroups)
             .Where(t => t.Token == token)
-            .AsNoTracking()
+            .AsNoTracking() // This is actually needed here because with tracking the user update endpoint would break (has to do with user groups being tacked)
             .FirstOrDefaultAsync(); //We have to include the user groups here because we need them for the claims
 
         if (accessToken == null) return AuthenticateResult.Fail("Invalid access token");
