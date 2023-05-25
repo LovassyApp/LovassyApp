@@ -13,6 +13,7 @@
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
         <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
         <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+        <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.5.1" />
         <PackageReference Include="Quartz.AspNetCore" Version="3.6.2" />
         <PackageReference Include="Sieve" Version="2.5.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />

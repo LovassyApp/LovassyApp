@@ -2,8 +2,11 @@ using Helpers.Framework;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Core.Auth;
+using WebApi.Core.Auth.Permissions;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
+using WebApi.Core.Auth.Policies.Permissions;
 using WebApi.Features.Auth.Commands;
+using WebApi.Features.Auth.Queries;
 
 namespace WebApi.Features.Auth;
 
@@ -33,6 +36,16 @@ public class AuthController : ApiControllerBase
         {
             Expires = response.RefreshTokenExpiration
         });
+
+        return Ok(response);
+    }
+
+    [Authorize]
+    [Permissions(typeof(AuthPermissions.ViewControl))]
+    [HttpGet("Control")]
+    public async Task<ActionResult<ViewControl.Response>> ViewControl()
+    {
+        var response = await Mediator.Send(new ViewControl.Query());
 
         return Ok(response);
     }

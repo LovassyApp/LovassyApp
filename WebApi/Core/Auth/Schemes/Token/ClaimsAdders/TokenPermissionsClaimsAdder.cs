@@ -19,7 +19,7 @@ public class TokenPermissionsClaimsAdder : IClaimsAdder<User>
     {
         var permissionClaimsToAdd = user.UserGroups
             .SelectMany(userGroup => userGroup.Permissions)
-            .Select(permission => new Claim(AuthConstants.PermissionClaim, permission))
+            .Distinct().Select(permission => new Claim(AuthConstants.PermissionClaim, permission))
             .ToList();
 
         claims.AddRange(permissionClaimsToAdd);

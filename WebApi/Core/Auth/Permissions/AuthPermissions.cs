@@ -4,7 +4,7 @@ namespace WebApi.Core.Auth.Permissions;
 
 public static class AuthPermissions
 {
-    public class Control : IPermission
+    public class ViewControl : IPermission
     {
         public string Name { get; } = "Auth.Control";
         public string DisplayName { get; } = "Control";

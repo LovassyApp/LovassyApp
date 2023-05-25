@@ -1,8 +1,8 @@
-using Helpers.Cryptography.Services.Options;
 using Helpers.Cryptography.Utils;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using WebApi.Core.Auth.Exceptions;
+using WebApi.Core.Auth.Services.Options;
 using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Services;
@@ -13,7 +13,7 @@ namespace WebApi.Core.Auth.Services;
 public class HashManager
 {
     private readonly EncryptionManager _encryptionManager;
-    private readonly HashOptions _hashOptions;
+    private readonly HashManagerOptions _hashManagerOptions;
     private readonly IMemoryCache _memoryCache;
     private readonly UserAccessor _userAccessor;
 
@@ -21,12 +21,12 @@ public class HashManager
 
     public HashManager(EncryptionManager encryptionManager, UserAccessor userAccessor,
         IMemoryCache memoryCache,
-        IOptions<HashOptions> options)
+        IOptions<HashManagerOptions> hashManagerOptions)
     {
         _encryptionManager = encryptionManager;
         _memoryCache = memoryCache;
         _userAccessor = userAccessor;
-        _hashOptions = options.Value;
+        _hashManagerOptions = hashManagerOptions.Value;
     }
 
     /// <summary>
@@ -40,13 +40,13 @@ public class HashManager
         if (_userSalt == null)
             Init();
 
-        var cached = _memoryCache.Get<string>($"{_hashOptions.HashManagerCachePrefix}:{payload}");
+        var cached = _memoryCache.Get<string>($"{_hashManagerOptions.HashManagerCachePrefix}:{payload}");
 
         if (cached != null)
             return cached;
 
         var hash = HashingUtils.HashWithSalt(payload, _userSalt);
-        _memoryCache.Set($"{_hashOptions.HashManagerCachePrefix}:{payload}", hash);
+        _memoryCache.Set($"{_hashManagerOptions.HashManagerCachePrefix}:{payload}", hash);
 
         return hash;
     }

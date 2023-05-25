@@ -72,6 +72,37 @@
         }
       }
     },
+    "/Api/Auth/Control": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "<b>Requires one of the following permissions</b>: Auth.Control",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthViewControlResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
     "/Api/Auth/Logout": {
       "delete": {
         "tags": [
@@ -1907,7 +1938,6 @@
             "type": "string"
           },
           "permissions": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string"
@@ -2115,11 +2145,84 @@
             "type": "string"
           },
           "permissions": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string"
             }
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthViewControlResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/AuthViewControlResponseUser"
+          },
+          "session": {
+            "$ref": "#/components/schemas/AuthViewControlResponseSession"
+          },
+          "userGroups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthViewControlResponseSession": {
+        "type": "object",
+        "properties": {
+          "expiry": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthViewControlResponseUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailVerifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "realName": {
+            "type": "string",
+            "nullable": true
+          },
+          "class": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -26,6 +26,8 @@ public static class AddServicesExtension
     {
         services.Configure<SessionOptions>(configuration.GetSection("Session"));
         services.Configure<PermissionsOptions>(configuration.GetSection("Permissions"));
+        services.Configure<EncryptionManagerOptions>(configuration.GetSection("Cryptography"));
+        services.Configure<HashManagerOptions>(configuration.GetSection("Cryptography"));
 
         services.AddScoped<UserAccessor>();
 
@@ -56,5 +58,6 @@ public static class AddServicesExtension
         services.AddScoped<IClaimsAdder<User>, TokenBaseClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenEmailConfirmedClaimsAdder>();
         services.AddScoped<IClaimsAdder<User>, TokenPermissionsClaimsAdder>();
+        services.AddScoped<IClaimsAdder<User>, TokenUserGroupsClaimsAdder>();
     }
 }

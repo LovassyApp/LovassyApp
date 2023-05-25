@@ -26,7 +26,6 @@ public static class CreateUserGroup
         public RequestBodyValidator()
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
-            RuleFor(x => x.Permissions).NotEmpty();
             RuleFor(x => x.Permissions).NotNull().Must(BeExistingPermissions)
                 .WithMessage("The provided permissions are not all valid");
         }

@@ -1,8 +1,8 @@
 using System.Text.Json;
-using Helpers.Cryptography.Services.Options;
 using Helpers.Cryptography.Utils;
 using Microsoft.Extensions.Options;
 using WebApi.Core.Auth.Exceptions;
+using WebApi.Core.Auth.Services.Options;
 using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Services;
@@ -13,15 +13,15 @@ namespace WebApi.Core.Auth.Services;
 /// </summary>
 public class EncryptionManager
 {
-    private readonly EncryptionOptions _encryptionOptions;
+    private readonly EncryptionManagerOptions _encryptionManagerOptions;
     private readonly SessionManager _sessionManager;
 
     private string? _masterKey;
 
-    public EncryptionManager(SessionManager sessionManager, IOptions<EncryptionOptions> encryptionOptions)
+    public EncryptionManager(SessionManager sessionManager, IOptions<EncryptionManagerOptions> encryptionManagerOptions)
     {
         _sessionManager = sessionManager;
-        _encryptionOptions = encryptionOptions.Value;
+        _encryptionManagerOptions = encryptionManagerOptions.Value;
     }
 
     public string? MasterKey
@@ -33,7 +33,7 @@ public class EncryptionManager
                 throw new SessionNotFoundException();
 
             _masterKey = value;
-            _sessionManager.SetEncrypted(_encryptionOptions.MasterKeySessionKey, value);
+            _sessionManager.SetEncrypted(_encryptionManagerOptions.MasterKeySessionKey, value);
         }
     }
 
@@ -111,7 +111,7 @@ public class EncryptionManager
     {
         try
         {
-            _masterKey = _sessionManager.GetEncrypted(_encryptionOptions.MasterKeySessionKey);
+            _masterKey = _sessionManager.GetEncrypted(_encryptionManagerOptions.MasterKeySessionKey);
         }
         catch (SessionNotFoundException)
         {

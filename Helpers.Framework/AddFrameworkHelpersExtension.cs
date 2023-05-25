@@ -1,13 +1,17 @@
 using System.Reflection;
 using FluentValidation;
 using Helpers.Framework.Behaviours;
+using Helpers.Framework.Implementations;
 using Helpers.Framework.Interfaces;
 using Helpers.Framework.Services;
+using Helpers.Framework.Services.Options;
 using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.FeatureFilters;
 using Microsoft.OpenApi.Models;
 using Quartz;
 using Sieve.Services;
@@ -84,6 +88,12 @@ public static class AddFrameworkHelpersExtension
         // Scheduler
         services.AddQuartz(q => { q.UseMicrosoftDependencyInjectionJobFactory(); });
         services.AddQuartzServer(options => { options.WaitForJobsToComplete = true; });
+
+        //Feature Flags
+        services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>().AddFeatureFilter<PercentageFilter>()
+            .AddFeatureFilter<TargetingFilter>();
+        services.AddSingleton<ITargetingContextAccessor, TargetingContextAccessor>();
+        services.Configure<FeatureFlagOptions>(configuration.GetSection("FeatureFlags"));
     }
 
     private static void AddConsoleCommands(this IServiceCollection services, Assembly assembly)
