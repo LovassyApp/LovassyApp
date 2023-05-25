@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Helpers.Cryptography.Services;
-using Helpers.Framework.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -37,7 +36,7 @@ public class ImportKeyAuthenticationSchemeHandler : AuthenticationHandler<Import
             return AuthenticateResult.Fail("Import key not found");
 
         var importKey = await _context.ImportKeys.Where(i => i.KeyHashed == _hashService.Hash(key!))
-            .FirstOrDefaultAsync();
+            .AsNoTracking().FirstOrDefaultAsync();
 
         if (!(importKey is { Enabled: true })) return AuthenticateResult.Fail("Invalid import key");
 

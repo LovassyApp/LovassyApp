@@ -45,4 +45,26 @@ public class UsersController : ApiControllerBase
 
         return Ok(); //TODO: Return created once there is a view endpoint
     }
+
+    [HttpPatch("{id}")]
+    [Permissions(typeof(UsersPermissions.UpdateUser))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UpdateUser.RequestBody body)
+    {
+        await Mediator.Send(new UpdateUser.Command { Id = id, Body = body });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [Permissions(typeof(UsersPermissions.DeleteUser))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> DeleteUser([FromRoute] Guid id)
+    {
+        await Mediator.Send(new DeleteUser.Command { Id = id });
+
+        return NoContent();
+    }
 }

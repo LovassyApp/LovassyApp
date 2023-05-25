@@ -57,9 +57,10 @@ public static class CreateUser
             return email.EndsWith("@lovassy.edu.hu");
         }
 
-        private Task<bool> BeUniqueEmailAsync(RequestBody model, string email, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueEmailAsync(RequestBody model, string email,
+            CancellationToken cancellationToken)
         {
-            return _context.Users.AllAsync(x => x.Email != email, cancellationToken);
+            return await _context.Users.AllAsync(x => x.Email != email, cancellationToken);
         }
 
         private Task<bool> BeUniqueOmCodeAsync(RequestBody model, string omCode, CancellationToken cancellationToken)

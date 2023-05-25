@@ -91,6 +91,7 @@ public static class Login
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
+            // I wouldn't risk as no tracking here as the user might be updated by the update grades job (although it's reattached there)
             var user = await _context.Users.Where(x => x.Email == request.Body.Email)
                 .FirstOrDefaultAsync(cancellationToken);
 

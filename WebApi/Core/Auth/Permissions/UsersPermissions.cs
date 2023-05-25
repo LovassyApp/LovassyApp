@@ -17,4 +17,18 @@ public static class UsersPermissions
         public string DisplayName { get; } = "Felhasználó megtekintése";
         public string Description { get; } = "Egy adott felhasználó lekérése és megtekintése id alapján";
     }
+
+    public class UpdateUser : IPermission
+    {
+        public string Name { get; } = "Users.UpdateUser";
+        public string DisplayName { get; } = "Felhasználó módosítása";
+        public string Description { get; } = "Egy adott felhasználó módosítása id alapján";
+    }
+
+    public class DeleteUser : IPermission
+    {
+        public string Name { get; } = "Users.DeleteUser";
+        public string DisplayName { get; } = "Felhasználó törlése";
+        public string Description { get; } = "Egy adott felhasználó törlése id alapján";
+    }
 }

@@ -74,6 +74,7 @@ public static class Refresh
             if (refreshTokenContents is null)
                 throw new BadRequestException("Invalid refresh token");
 
+            // I wouldn't risk as no tracking here as the user might be updated by the update grades job (although it's reattached there)
             var user = await _context.Users.FindAsync(refreshTokenContents.UserId);
 
             if (user == null)

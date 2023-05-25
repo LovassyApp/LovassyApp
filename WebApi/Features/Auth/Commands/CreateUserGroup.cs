@@ -27,15 +27,15 @@ public static class CreateUserGroup
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Permissions).NotEmpty();
-            RuleForEach(x => x.Permissions).NotNull().Must(BeExistingPermission)
-                .WithMessage("The permission '{PropertyValue}' does not exist");
+            RuleFor(x => x.Permissions).NotNull().Must(BeExistingPermissions)
+                .WithMessage("The provided permissions are not all valid");
         }
 
-        private bool BeExistingPermission(RequestBody model, string permission)
+        private bool BeExistingPermissions(RequestBody model, string[] permissions)
         {
             if (PermissionUtils.Permissions == null) throw new UnavailableException("Permissions are not yet loaded");
 
-            return PermissionUtils.Permissions.Select(p => p.Name).Contains(permission);
+            return permissions.All(permission => PermissionUtils.Permissions.Select(p => p.Name).Contains(permission));
         }
     }
 
