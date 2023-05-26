@@ -4,6 +4,7 @@ using Helpers.Cryptography;
 using Helpers.Framework;
 using Helpers.Framework.Extensions;
 using Helpers.Framework.Filters;
+using Microsoft.OpenApi.Models;
 using Prometheus;
 using WebApi.Core.Auth;
 using WebApi.Core.Backboard;
@@ -14,7 +15,33 @@ using WebApi.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddFrameworkHelpers(builder.Configuration, Assembly.GetExecutingAssembly());
+builder.Services.AddFrameworkHelpers(builder.Configuration, Assembly.GetExecutingAssembly(),
+    new FrameworkHelpersConfiguration
+    {
+        ApiName = "Blueboard",
+        ApiVersion = "v4",
+        SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>
+        {
+            [AuthConstants.TokenScheme] = new()
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "Token",
+                Scheme = "Bearer"
+            },
+            [AuthConstants.ImportKeyScheme] = new()
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid import key",
+                Name = "X-Authorization",
+                Type = SecuritySchemeType.ApiKey
+            }
+        },
+        FeatureGroupClaim = AuthConstants.FeatureGroupClaim,
+        FeatureUserClaim = AuthConstants.FeatureUserClaim
+    });
 builder.Services.AddCryptographyHelpers(builder.Configuration);
 
 builder.Services.AddInfrastructure(builder.Configuration);

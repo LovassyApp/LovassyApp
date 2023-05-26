@@ -1,7 +1,5 @@
-using Helpers.Framework.Services.Options;
 using Mapster;
 using MediatR;
-using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
 using WebApi.Core.Auth;
 using WebApi.Core.Auth.Services;
@@ -44,19 +42,17 @@ public static class ViewControl
     internal sealed class Handler : IRequestHandler<Query, Response>
     {
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly FeatureFlagOptions _featureFlagOptions;
         private readonly IFeatureManager _featureManager;
         private readonly SessionManager _sessionManager;
         private readonly UserAccessor _userAccessor;
 
         public Handler(IHttpContextAccessor contextAccessor, SessionManager sessionManager,
-            UserAccessor userAccessor, IFeatureManager featureManager, IOptions<FeatureFlagOptions> featureFlagOptions)
+            UserAccessor userAccessor, IFeatureManager featureManager)
         {
             _contextAccessor = contextAccessor;
             _sessionManager = sessionManager;
             _userAccessor = userAccessor;
             _featureManager = featureManager;
-            _featureFlagOptions = featureFlagOptions.Value;
         }
 
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)

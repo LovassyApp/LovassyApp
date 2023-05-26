@@ -4,6 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApi.Core.Auth.Filters.Operation;
 
+//TODO: Maybe move this to Helpers.Framework
 public class AuthorizeOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -35,7 +36,7 @@ public class AuthorizeOperationFilter : IOperationFilter
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Id = AuthConstants.TokenScheme
                             }
                         },
                         new string[] { }
@@ -52,7 +53,7 @@ public class AuthorizeOperationFilter : IOperationFilter
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "ImportKey"
+                                Id = AuthConstants.ImportKeyScheme
                             }
                         },
                         new string[] { }

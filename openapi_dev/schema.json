@@ -98,7 +98,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -121,7 +121,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -185,7 +185,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -259,7 +259,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -512,7 +512,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -570,7 +570,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -623,7 +623,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -686,7 +686,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -730,7 +730,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -804,7 +804,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -852,7 +852,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -905,7 +905,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -968,7 +968,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -1012,7 +1012,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -1077,7 +1077,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -1148,7 +1148,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -1219,7 +1219,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -1296,7 +1296,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -1438,7 +1438,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -1486,7 +1486,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -1539,7 +1539,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -1602,7 +1602,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -1646,7 +1646,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -1656,7 +1656,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.IndexUsers<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.IndexUsers",
         "parameters": [
           {
             "name": "Filters",
@@ -1720,7 +1720,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -1728,7 +1728,6 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires the following features be enabled</b>: Something, SomethingElse",
         "parameters": [
           {
             "name": "verifyUrl",
@@ -1778,7 +1777,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.ViewUser<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.ViewUser",
         "parameters": [
           {
             "name": "id",
@@ -1811,7 +1810,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -1819,7 +1818,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.UpdateUser<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.UpdateUser",
         "parameters": [
           {
             "name": "id",
@@ -1874,7 +1873,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       },
@@ -1882,7 +1881,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.DeleteUser<br><b>Requires the following features be enabled</b>: Something, SomethingElse",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.DeleteUser",
         "parameters": [
           {
             "name": "id",
@@ -1918,7 +1917,7 @@
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Token": [ ]
           }
         ]
       }
@@ -3067,7 +3066,7 @@
       }
     },
     "securitySchemes": {
-      "Bearer": {
+      "Token": {
         "type": "http",
         "description": "Please enter a valid token",
         "scheme": "Bearer",

@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 namespace WebApi.Core.Auth;
 
 /// <summary>
@@ -13,6 +15,8 @@ public static class AuthConstants
     public const string EmailVerifiedClaim = "EmailVerified";
     public const string PermissionClaim = "Permission";
     public const string SuperUserClaim = "SuperUser";
+    public const string FeatureUserClaim = ClaimTypes.Email;
+    public const string FeatureGroupClaim = "UserGroup";
 
     public const int DefaultUserGroupID = 1;
 }

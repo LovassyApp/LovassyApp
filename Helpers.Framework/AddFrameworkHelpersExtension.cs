@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Security.Claims;
 using FluentValidation;
 using Helpers.Framework.Behaviours;
 using Helpers.Framework.Filters.Operation;
@@ -27,8 +28,10 @@ public static class AddFrameworkHelpersExtension
     /// </summary>
     /// <param name="services"></param>
     public static void AddFrameworkHelpers(this IServiceCollection services, IConfiguration configuration,
-        Assembly assembly)
+        Assembly assembly, FrameworkHelpersConfiguration? frameworkHelpersConfiguration = null)
     {
+        frameworkHelpersConfiguration ??= new FrameworkHelpersConfiguration();
+
         services.AddHttpContextAccessor();
         services.AddMemoryCache();
 
@@ -51,7 +54,11 @@ public static class AddFrameworkHelpersExtension
         //Swagger
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blueboard", Version = "v4" });
+            c.SwaggerDoc("v1",
+                new OpenApiInfo
+                {
+                    Title = frameworkHelpersConfiguration.ApiName, Version = frameworkHelpersConfiguration.ApiVersion
+                });
 
             c.AddOperationFilters(assembly);
 
@@ -59,22 +66,9 @@ public static class AddFrameworkHelpersExtension
                 .Replace("Microsoft.AspNetCore.Mvc", string.Empty).Replace("+", string.Empty)
                 .Replace(".", string.Empty).Replace("Commands", string.Empty).Replace("Queries", string.Empty));
 
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                In = ParameterLocation.Header,
-                Description = "Please enter a valid token",
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                BearerFormat = "Token",
-                Scheme = "Bearer"
-            });
-            c.AddSecurityDefinition("ImportKey", new OpenApiSecurityScheme
-            {
-                In = ParameterLocation.Header,
-                Description = "Please enter a valid import key",
-                Name = "X-Authorization",
-                Type = SecuritySchemeType.ApiKey
-            });
+
+            foreach (var securityScheme in frameworkHelpersConfiguration.SecuritySchemes)
+                c.AddSecurityDefinition(securityScheme.Key, securityScheme.Value);
         });
         services.AddFluentValidationRulesToSwagger();
 
@@ -94,7 +88,12 @@ public static class AddFrameworkHelpersExtension
         services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>().AddFeatureFilter<PercentageFilter>()
             .AddFeatureFilter<TargetingFilter>();
         services.AddSingleton<ITargetingContextAccessor, TargetingContextAccessor>();
-        services.Configure<FeatureFlagOptions>(configuration.GetSection("FeatureManagementConfiguration"));
+        services.AddOptions<FeatureFlagOptions>();
+        services.PostConfigureAll<FeatureFlagOptions>(o =>
+        {
+            o.FeatureGroupClaim = frameworkHelpersConfiguration.FeatureGroupClaim;
+            o.FeatureUserClaim = frameworkHelpersConfiguration.FeatureUserClaim;
+        });
     }
 
     private static void AddConsoleCommands(this IServiceCollection services, Assembly assembly)
@@ -128,4 +127,14 @@ public static class AddFrameworkHelpersExtension
 
         options.OperationFilter<FeatureGateOperationFilter>();
     }
+}
+
+public class FrameworkHelpersConfiguration
+{
+    public string ApiName { get; set; } = "API";
+    public string ApiVersion { get; set; } = "v1";
+    public Dictionary<string, OpenApiSecurityScheme> SecuritySchemes { get; set; } = new();
+
+    public string FeatureUserClaim { get; set; } = ClaimTypes.Email;
+    public string FeatureGroupClaim { get; set; } = "UserGroup";
 }
