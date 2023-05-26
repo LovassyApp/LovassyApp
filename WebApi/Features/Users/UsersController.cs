@@ -37,6 +37,7 @@ public class UsersController : ApiControllerBase
 
     [HttpPost]
     [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> CreateUser([FromBody] CreateUser.RequestBody body, [FromQuery] string verifyUrl,
         [FromQuery] string verifyTokenQueryKey)
     {
