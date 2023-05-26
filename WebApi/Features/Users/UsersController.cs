@@ -40,10 +40,10 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult> CreateUser([FromBody] CreateUser.RequestBody body, [FromQuery] string verifyUrl,
         [FromQuery] string verifyTokenQueryKey)
     {
-        await Mediator.Send(new CreateUser.Command
+        var response = await Mediator.Send(new CreateUser.Command
             { Body = body, VerifyUrl = verifyUrl, VerifyTokenQueryKey = verifyTokenQueryKey });
 
-        return Ok(); //TODO: Return created once there is a view endpoint
+        return Created(nameof(View), response);
     }
 
     [HttpPatch("{id}")]

@@ -2,6 +2,7 @@ using FluentValidation;
 using Helpers.Cryptography.Implementations;
 using Helpers.Cryptography.Services;
 using Helpers.Framework.Exceptions;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Core.Auth.Services;
@@ -13,11 +14,23 @@ namespace WebApi.Features.Users.Commands;
 
 public static class CreateUser
 {
-    public class Command : IRequest
+    public class Command : IRequest<Response>
     {
         public RequestBody Body { get; set; }
         public string VerifyUrl { get; set; }
         public string VerifyTokenQueryKey { get; set; }
+    }
+
+    public class Response
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+
+        public DateTime? EmailVerifiedAt { get; set; }
+
+        public string? RealName { get; set; }
+        public string? Class { get; set; }
     }
 
     public class RequestBody
@@ -69,7 +82,7 @@ public static class CreateUser
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler : IRequestHandler<Command, Response>
     {
         private readonly ApplicationDbContext _context;
         private readonly EncryptionManager _encryptionManager;
@@ -87,7 +100,7 @@ public static class CreateUser
             _resetService = resetService;
         }
 
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             if (!_resetService.IsResetKeyPasswordSet())
                 throw new UnavailableException("Reset key password is not yet set");
@@ -128,7 +141,7 @@ public static class CreateUser
                 VerifyTokenQueryKey = request.VerifyTokenQueryKey
             }, cancellationToken);
 
-            return Unit.Value;
+            return user.Adapt<Response>();
         }
     }
 }
