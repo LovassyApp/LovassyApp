@@ -20,6 +20,9 @@ builder.Services.AddFrameworkHelpers(builder.Configuration, Assembly.GetExecutin
     {
         ApiName = "Blueboard",
         ApiVersion = "v4",
+        SchemaIdResolver = type => type.ToString().Replace("WebApi.Features.", string.Empty)
+            .Replace("Microsoft.AspNetCore.Mvc", string.Empty).Replace("+", string.Empty)
+            .Replace(".", string.Empty).Replace("Commands", string.Empty).Replace("Queries", string.Empty),
         SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>
         {
             [AuthConstants.TokenScheme] = new()

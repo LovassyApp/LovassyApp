@@ -26,7 +26,10 @@ public static class AddFrameworkHelpersExtension
     /// <summary>
     ///     Adds all framework helpers to the service collection.
     /// </summary>
-    /// <param name="services"></param>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The app configuration.</param>
+    /// <param name="assembly">The app assembly.</param>
+    /// <param name="frameworkHelpersConfiguration">The configuration for the helper itself.</param>
     public static void AddFrameworkHelpers(this IServiceCollection services, IConfiguration configuration,
         Assembly assembly, FrameworkHelpersConfiguration? frameworkHelpersConfiguration = null)
     {
@@ -62,10 +65,7 @@ public static class AddFrameworkHelpersExtension
 
             c.AddOperationFilters(assembly);
 
-            c.CustomSchemaIds(type => type.ToString().Replace("WebApi.Features.", string.Empty)
-                .Replace("Microsoft.AspNetCore.Mvc", string.Empty).Replace("+", string.Empty)
-                .Replace(".", string.Empty).Replace("Commands", string.Empty).Replace("Queries", string.Empty));
-
+            c.CustomSchemaIds(frameworkHelpersConfiguration.SchemaIdResolver);
 
             foreach (var securityScheme in frameworkHelpersConfiguration.SecuritySchemes)
                 c.AddSecurityDefinition(securityScheme.Key, securityScheme.Value);
@@ -133,6 +133,7 @@ public class FrameworkHelpersConfiguration
 {
     public string ApiName { get; set; } = "API";
     public string ApiVersion { get; set; } = "v1";
+    public Func<Type, string> SchemaIdResolver { get; set; } = type => type.ToString();
     public Dictionary<string, OpenApiSecurityScheme> SecuritySchemes { get; set; } = new();
 
     public string FeatureUserClaim { get; set; } = ClaimTypes.Email;
