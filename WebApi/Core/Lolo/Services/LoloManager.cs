@@ -2,7 +2,6 @@ using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Lolo.Services.Options;
 using WebApi.Infrastructure.Persistence;
@@ -10,6 +9,11 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Lolo.Services;
 
+/// <summary>
+///     The scoped service responsible for managing the user's lolo coins. (That includes loading, spending and
+///     generating/saving
+///     coins)
+/// </summary>
 public class LoloManager
 {
     private readonly ApplicationDbContext _context;
@@ -95,16 +99,16 @@ public class LoloManager
         if (_userId == null)
             Init();
 
-        if ((bool?)_memoryCache.Get(_loloOptions.ManagerLockPrefix + _userId) == true)
+        if ((bool?)_memoryCache.Get(_loloOptions.LoloManagerLockPrefix + _userId) == true)
             return;
 
-        _memoryCache.Set(_loloOptions.ManagerLockPrefix + _userId, true, TimeSpan.FromSeconds(10));
+        _memoryCache.Set(_loloOptions.LoloManagerLockPrefix + _userId, true, TimeSpan.FromSeconds(10));
 
         //We can't do this in parallel because the DbContext really doesn't like being used by two threads at once 
         await GenerateFromFivesAsync();
         await GenerateFromFoursAsync();
 
-        _memoryCache.Remove(_loloOptions.ManagerLockPrefix + _userId);
+        _memoryCache.Remove(_loloOptions.LoloManagerLockPrefix + _userId);
     }
 
     private async Task GenerateFromFivesAsync()
@@ -178,11 +182,6 @@ public class LoloManager
 
     private void Init()
     {
-        var user = _userAccessor.User;
-
-        if (user == null)
-            throw new UserNotFoundException();
-
-        _userId = user.Id;
+        _userId = _userAccessor.User.Id;
     }
 }

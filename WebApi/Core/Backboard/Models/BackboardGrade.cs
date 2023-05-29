@@ -1,5 +1,8 @@
 namespace WebApi.Core.Backboard.Models;
 
+/// <summary>
+///     The model representing a single grade from Backboard, that has not yet been imported.
+/// </summary>
 public class BackboardGrade
 {
     public string SubjectCategory { get; set; }

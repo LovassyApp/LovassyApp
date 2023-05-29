@@ -1,12 +1,12 @@
 using Quartz;
-using WebApi.Core.Auth.Schemes.Token;
+using WebApi.Core.Auth.EventHandlers;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Jobs;
 
 /// <summary>
 ///     The background job that updates the last used at property of a personal access token. Fired each time when a token
-///     is used in <see cref="TokenAuthenticationSchemeHandler" />.
+///     is used in <see cref="AccessTokenUsedEventHandler" />.
 /// </summary>
 public class UpdateTokenLastUsedAtJob : IJob
 {

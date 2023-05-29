@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Interfaces;
 using WebApi.Core.Auth.Utils;
 
@@ -49,7 +48,7 @@ public class PermissionManager
     private void Init()
     {
         if (_httpContextAccessor.HttpContext!.User.Identity?.IsAuthenticated == false)
-            throw new UserNotFoundException();
+            throw new InvalidOperationException("User (ClaimsPrincipal) is not authenticated");
 
         _claimsPrincipal = _httpContextAccessor.HttpContext.User;
     }

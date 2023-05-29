@@ -24,7 +24,8 @@ namespace Helpers.Framework;
 public static class AddFrameworkHelpersExtension
 {
     /// <summary>
-    ///     Adds all framework helpers to the service collection.
+    ///     Adds all framework helpers to the service collection. Automatically discovers all commands, lifetime actions and
+    ///     operation filters.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The app configuration.</param>

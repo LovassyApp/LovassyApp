@@ -7,5 +7,5 @@ public class LoloOptions
     public string FiveReason { get; set; } = "Ötösökből automatikusan generálva";
     public string FourReason { get; set; } = "Négyesekből automatikusan generálva";
     public string RequestReason { get; set; } = "Kérvényből automatikusan generálva";
-    public string ManagerLockPrefix { get; set; } = "lolo_manager";
+    public string LoloManagerLockPrefix { get; set; } = "lolo_manager";
 }

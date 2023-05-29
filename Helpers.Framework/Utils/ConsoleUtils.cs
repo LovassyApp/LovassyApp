@@ -1,7 +1,7 @@
 namespace Helpers.Framework.Utils;
 
 /// <summary>
-///     Utility class for logging to the console. Primarily meant for use in console commands and not for logging!
+///     Utility class for displaying data in the console. Primarily meant for use in console commands and not for logging!
 /// </summary>
 public static class ConsoleUtils
 {

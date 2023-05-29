@@ -4,6 +4,10 @@ using WebApi.Core.Auth.Utils;
 
 namespace WebApi.Core.Auth.Policies.Permissions;
 
+/// <summary>
+///     The authorization policy attribute specifying certain permission, of which the user must have at least one to
+///     access a specific endpoint/controller.
+/// </summary>
 public class PermissionsAttribute : AuthorizeAttribute
 {
     public const string PolicyPrefix = "Permissions";

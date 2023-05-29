@@ -10,6 +10,11 @@ using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Core.Auth.Schemes.ImportKey;
 
+/// <summary>
+///     The handler for the import key authentication scheme. It logs in a user represented by the
+///     <see cref="Infrastructure.Persistence.Entities.ImportKey" /> entity. It is only meant to be used by the school
+///     administration to import data.
+/// </summary>
 public class ImportKeyAuthenticationSchemeHandler : AuthenticationHandler<ImportKeyAuthenticationSchemeOptions>
 {
     private readonly IEnumerable<IClaimsAdder<Infrastructure.Persistence.Entities.ImportKey>> _claimsAdders;

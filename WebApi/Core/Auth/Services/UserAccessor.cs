@@ -1,3 +1,4 @@
+using WebApi.Core.Auth.Exceptions;
 using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Services;
@@ -8,5 +9,11 @@ namespace WebApi.Core.Auth.Services;
 /// </summary>
 public class UserAccessor
 {
-    public User? User { get; set; }
+    private User? _user;
+
+    public User User
+    {
+        get => _user ?? throw new UserNotFoundException();
+        set => _user = value;
+    }
 }

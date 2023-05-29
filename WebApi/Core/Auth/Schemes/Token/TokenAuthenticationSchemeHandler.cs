@@ -15,6 +15,10 @@ using WebApi.Infrastructure.Persistence.Entities;
 
 namespace WebApi.Core.Auth.Schemes.Token;
 
+/// <summary>
+///     The handler for the default token authentication scheme for regular users. It logs in a user represented by the
+///     <see cref="User" /> entity.
+/// </summary>
 public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthenticationSchemeOptions>
 {
     private readonly IEnumerable<IClaimsAdder<User>> _claimsAdders;

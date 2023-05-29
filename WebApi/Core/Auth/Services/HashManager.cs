@@ -1,7 +1,6 @@
 using Helpers.Cryptography.Utils;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Services.Options;
 using WebApi.Infrastructure.Persistence.Entities;
 
@@ -53,11 +52,6 @@ public class HashManager
 
     private void Init()
     {
-        var user = _userAccessor.User;
-
-        if (user == null)
-            throw new UserNotFoundException();
-
-        _userSalt = _encryptionManager.Decrypt(user.HasherSaltEncrypted);
+        _userSalt = _encryptionManager.Decrypt(_userAccessor.User.HasherSaltEncrypted);
     }
 }

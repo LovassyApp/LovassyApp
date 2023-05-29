@@ -4,7 +4,6 @@ using Helpers.Cryptography.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using WebApi.Core.Auth.Exceptions;
 using WebApi.Core.Auth.Services;
 using WebApi.Core.Backboard.Exceptions;
 using WebApi.Core.Backboard.Models;
@@ -16,7 +15,7 @@ using WebApi.Infrastructure.Persistence.Entities;
 namespace WebApi.Core.Backboard.Services;
 
 /// <summary>
-///     The hosted service responsible for converting the encrypted contents of <see cref="GradeImport" /> models from
+///     The scoped service responsible for converting the encrypted contents of <see cref="GradeImport" /> models from
 ///     Backboard into <see cref="Grade" /> models.
 /// </summary>
 public class BackboardAdapter
@@ -54,10 +53,11 @@ public class BackboardAdapter
         if (_user == null)
             Init();
 
-        if ((bool?)_memoryCache.Get(_backboardOptions.AdapterLockPrefix + _user.Id) == true)
+        if ((bool?)_memoryCache.Get(_backboardOptions.BackboardAdapterLockPrefix + _user.Id) == true)
             return;
 
-        _memoryCache.Set(_backboardOptions.AdapterLockPrefix + _user.Id, true, TimeSpan.FromSeconds(10)); // Lock thread
+        _memoryCache.Set(_backboardOptions.BackboardAdapterLockPrefix + _user.Id, true,
+            TimeSpan.FromSeconds(10)); // Lock thread
 
         BackboardGradeCollection? gradeCollection;
         try
@@ -88,7 +88,7 @@ public class BackboardAdapter
 
         await _context.SaveChangesAsync(); // only necessary for the changes to the user
 
-        _memoryCache.Remove(_backboardOptions.AdapterLockPrefix + _user.Id);
+        _memoryCache.Remove(_backboardOptions.BackboardAdapterLockPrefix + _user.Id);
     }
 
     private async Task<BackboardGradeCollection?> GetUpdatedGradeCollectionAsync()
@@ -120,8 +120,6 @@ public class BackboardAdapter
 
     private void Init()
     {
-        var user = _userAccessor.User;
-
-        _user = user ?? throw new UserNotFoundException();
+        _user = _userAccessor.User;
     }
 }

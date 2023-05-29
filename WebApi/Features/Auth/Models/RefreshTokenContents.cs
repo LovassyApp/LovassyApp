@@ -1,5 +1,8 @@
 namespace WebApi.Features.Auth.Models;
 
+/// <summary>
+///     The model representing the contents of a refresh token.
+/// </summary>
 public class RefreshTokenContents : IUserTokenContents
 {
     public string Password { get; set; }
