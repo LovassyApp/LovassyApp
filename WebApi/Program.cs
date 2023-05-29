@@ -55,6 +55,7 @@ builder.Services.AddLoloServices(builder.Configuration);
 
 builder.Services.AddFeatures(builder.Configuration);
 
+builder.Services.AddCors();
 builder.Services.AddControllers(o => o.Filters.Add(new ExceptionFilter())).AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 ;
@@ -75,6 +76,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseHttpMetrics();
 
 app.UseAuthentication();
