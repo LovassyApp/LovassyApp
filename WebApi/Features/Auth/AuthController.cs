@@ -87,4 +87,19 @@ public class AuthController : ApiControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("SendPasswordReset")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> SendPasswordReset([FromQuery] string passwordResetUrl,
+        [FromQuery] string passwordResetTokenQueryKey, [FromBody] SendPasswordReset.RequestBody body)
+    {
+        await Mediator.Send(new SendPasswordReset.Command
+        {
+            PasswordResetUrl = passwordResetUrl,
+            PasswordResetTokenQueryKey = passwordResetTokenQueryKey,
+            Body = body
+        });
+
+        return NoContent();
+    }
 }

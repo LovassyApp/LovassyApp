@@ -20,7 +20,9 @@ public static class AddFeaturesExtension
         // Auth
         services.Configure<RefreshOptions>(configuration.GetSection("Refresh"));
         services.Configure<VerifyEmailOptions>(configuration.GetSection("VerifyEmail"));
+        services.Configure<PasswordResetOptions>(configuration.GetSection("PasswordReset"));
         services.AddSingleton<RefreshService>();
         services.AddSingleton<VerifyEmailService>();
+        services.AddSingleton<PasswordResetService>();
     }
 }

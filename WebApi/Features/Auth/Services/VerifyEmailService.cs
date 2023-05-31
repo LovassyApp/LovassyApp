@@ -42,7 +42,7 @@ public class VerifyEmailService
         try
         {
             var contents = _encryptionService.DeserializeUnprotect<VerifyEmailTokenContents>(verifyToken, out _);
-            if (contents is null || contents.Purpose != "VerifyEmail") return null;
+            if (contents == null || contents.Purpose != "VerifyEmail") return null;
 
             return contents;
         }

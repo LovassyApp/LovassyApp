@@ -43,7 +43,7 @@ public class RefreshService
         try
         {
             var contents = _encryptionService.DeserializeUnprotect<RefreshTokenContents>(refreshToken, out _);
-            if (contents is null || contents.Purpose != "Refresh") return null;
+            if (contents == null || contents.Purpose != "Refresh") return null;
 
             return contents;
         }
