@@ -27,15 +27,15 @@ public static class VerifyEmail
         {
             var tokenContents = _verifyEmailService.DecryptVerifyToken(request.VerifyToken);
 
-            if (tokenContents is null)
+            if (tokenContents == null)
                 throw new BadRequestException("Invalid verify token");
 
             var user = await _context.Users.FindAsync(tokenContents.UserId, cancellationToken);
 
-            if (user is null)
+            if (user == null)
                 throw new NotFoundException();
 
-            if (user.EmailVerifiedAt is not null)
+            if (user.EmailVerifiedAt != null)
                 throw new BadRequestException("Email already verified");
 
             user.EmailVerifiedAt = DateTime.UtcNow;

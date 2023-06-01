@@ -38,8 +38,11 @@ public class ResetService
     /// </exception>
     public string DecryptMasterKey(string encryptedMasterKey, string salt)
     {
+        if (_resetKeyPassword == null)
+            throw new ResetKeyPasswordMissingException();
+
         return EncryptionUtils.Decrypt(encryptedMasterKey,
-            HashingUtils.GenerateBasicKey(_resetKeyPassword ?? throw new ResetKeyPasswordMissingException(),
+            HashingUtils.GenerateBasicKey(_resetKeyPassword,
                 salt));
     }
 

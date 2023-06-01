@@ -64,6 +64,8 @@ public class AuthController : ApiControllerBase
 
     [HttpPost("VerifyEmail")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> VerifyEmail([FromQuery] string verifyToken)
     {
         await Mediator.Send(new VerifyEmail.Command { VerifyToken = verifyToken });
@@ -97,6 +99,23 @@ public class AuthController : ApiControllerBase
         {
             PasswordResetUrl = passwordResetUrl,
             PasswordResetTokenQueryKey = passwordResetTokenQueryKey,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+    [HttpPost("ResetPassword")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+    public async Task<ActionResult> ResetPassword([FromQuery] string passwordResetToken,
+        [FromBody] ResetPassword.RequestBody body)
+    {
+        await Mediator.Send(new ResetPassword.Command
+        {
+            PasswordResetToken = passwordResetToken,
             Body = body
         });
 
