@@ -1,9 +1,12 @@
 using System.Reflection;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 using Helpers.Cryptography;
 using Helpers.Framework;
 using Helpers.Framework.Extensions;
 using Helpers.Framework.Filters;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 using WebApi.Core.Auth;
@@ -56,6 +59,29 @@ builder.Services.AddLoloServices(builder.Configuration);
 builder.Services.AddFeatures(builder.Configuration);
 
 builder.Services.AddCors();
+builder.Services.AddRateLimiter(o =>
+{
+    o.RejectionStatusCode = 429;
+    o.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+        RateLimitPartition.GetTokenBucketLimiter(
+            context.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? context.Connection.RemoteIpAddress.ToString(),
+            partition => new TokenBucketRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                TokenLimit = 100,
+                ReplenishmentPeriod = TimeSpan.FromMinutes(2),
+                TokensPerPeriod = 50
+            }));
+
+    o.AddPolicy("Strict", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress.ToString(),
+        partition => new FixedWindowRateLimiterOptions
+        {
+            AutoReplenishment = true,
+            PermitLimit = 10,
+            Window = TimeSpan.FromSeconds(30)
+        }));
+});
 builder.Services.AddControllers(o => o.Filters.Add(new ExceptionFilter())).AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 ;
@@ -72,11 +98,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//TODO: Rate limiting!!!
 app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+app.UseRateLimiter();
 app.UseHttpMetrics();
 
 app.UseAuthentication();

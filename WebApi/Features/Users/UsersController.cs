@@ -1,6 +1,7 @@
 using Helpers.Framework;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Sieve.Models;
 using WebApi.Core.Auth.Permissions;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
@@ -36,6 +37,7 @@ public class UsersController : ApiControllerBase
     }
 
     [HttpPost]
+    [EnableRateLimiting("Strict")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> CreateUser([FromBody] CreateUser.RequestBody body, [FromQuery] string verifyUrl,
