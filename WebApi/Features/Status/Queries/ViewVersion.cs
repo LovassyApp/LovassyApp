@@ -1,7 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Options;
-using WebApi.Features.Status.Options;
+using WebApi.Features.Status.Services.Options;
 
 namespace WebApi.Features.Status.Queries;
 

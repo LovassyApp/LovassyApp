@@ -10,7 +10,7 @@ public class TokenPermissionsClaimsAdder : IClaimsAdder<User>
 {
     private readonly PermissionsOptions _permissionsOptions;
 
-    public TokenPermissionsClaimsAdder(IOptions<PermissionsOptions> permissionsOptions)
+    public TokenPermissionsClaimsAdder(IOptionsSnapshot<PermissionsOptions> permissionsOptions)
     {
         _permissionsOptions = permissionsOptions.Value;
     }

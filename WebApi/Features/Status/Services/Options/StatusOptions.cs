@@ -1,4 +1,4 @@
-namespace WebApi.Features.Status.Options;
+namespace WebApi.Features.Status.Services.Options;
 
 public class StatusOptions
 {

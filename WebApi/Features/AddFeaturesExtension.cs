@@ -1,6 +1,6 @@
 using WebApi.Features.Auth.Services;
 using WebApi.Features.Auth.Services.Options;
-using WebApi.Features.Status.Options;
+using WebApi.Features.Status.Services.Options;
 
 namespace WebApi.Features;
 
