@@ -15,7 +15,7 @@ using WebApi.Infrastructure.Persistence.Entities.Owned;
 namespace WebApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230602115945_Initial")]
+    [Migration("20230602170357_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -358,7 +358,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tsvector")
                         .HasAnnotation("Npgsql:TsVectorConfig", "hungarian")
-                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Name", "Description" });
+                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Name", "Description", "RichTextContent" });
 
                     b.Property<string>("ThumbnailUrl")
                         .IsRequired()
@@ -389,6 +389,10 @@ namespace WebApi.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()

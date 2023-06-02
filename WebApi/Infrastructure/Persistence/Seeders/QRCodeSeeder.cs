@@ -38,6 +38,7 @@ public class QRCodeSeeder
         var qrcode = new QRCode
         {
             Name = string.Join(" ", Faker.Lorem.Words()),
+            Email = Faker.Internet.Email(),
             Secret = Convert.ToBase64String(secretBytes)
         };
 

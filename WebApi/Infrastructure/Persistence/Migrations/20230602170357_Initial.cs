@@ -78,7 +78,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     RichTextContent = table.Column<string>(type: "text", nullable: false),
                     SearchVector = table.Column<NpgsqlTsVector>(type: "tsvector", nullable: false)
                         .Annotation("Npgsql:TsVectorConfig", "hungarian")
-                        .Annotation("Npgsql:TsVectorProperties", new[] { "Name", "Description" }),
+                        .Annotation("Npgsql:TsVectorProperties", new[] { "Name", "Description", "RichTextContent" }),
                     Visible = table.Column<bool>(type: "boolean", nullable: false),
                     QRCodeActivated = table.Column<bool>(type: "boolean", nullable: false),
                     Price = table.Column<int>(type: "integer", nullable: false),
@@ -101,6 +101,7 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
                     Secret = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

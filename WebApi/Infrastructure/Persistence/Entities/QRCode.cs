@@ -16,6 +16,10 @@ public class QRCode : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public string Name { get; set; }
 
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string Email { get; set; }
+
     [Required] public string Secret { get; set; }
 
     [JsonIgnore] public List<Product> Products { get; set; }

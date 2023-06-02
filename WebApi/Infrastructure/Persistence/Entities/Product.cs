@@ -62,7 +62,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         builder.HasGeneratedTsVectorColumn(p => p.SearchVector, "hungarian", p => new
         {
-            p.Name, p.Description
+            p.Name, p.Description, p.RichTextContent
         }).HasIndex(p => p.SearchVector).HasMethod("GIN");
     }
 }
