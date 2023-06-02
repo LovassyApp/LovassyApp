@@ -53,7 +53,7 @@ public static class CreateUser
             _context = context;
             _hashService = hashService;
 
-            RuleFor(x => x.Email).NotEmpty().EmailAddress()
+            RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(255)
                 .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'")
                 .MustAsync(BeUniqueEmailAsync).WithMessage("The email is already in use");
             RuleFor(x => x.Password).NotEmpty()

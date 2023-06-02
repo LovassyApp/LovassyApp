@@ -34,7 +34,7 @@ public static class UpdateUser
         {
             _context = context;
 
-            RuleFor(x => x.Email).NotEmpty().EmailAddress()
+            RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(255)
                 .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'");
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.UserGroups).NotNull()
