@@ -64,9 +64,7 @@ public class LoloManager
                 grades.Where(g => g.LoloIdHashed == _hashManager.HashWithHasherSalt(coin.Id.ToString())));
         }
 
-        Balance = await _context.Lolos
-            .Where(l => l.UserId == _userId && !l.IsSpent)
-            .CountAsync();
+        Balance = Coins.Count(c => !c.IsSpent);
     }
 
     /// <summary>

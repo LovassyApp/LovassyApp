@@ -53,6 +53,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
             ? HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""))
             : HttpUtility.UrlDecode(Request.Query["access_token"]);
 
+        //TODO: It seems like this is never really resolved from the cache even though it is always saved, investigate this
         var accessToken = await _context.PersonalAccessTokens.Include(t => t.User).ThenInclude(u => u.UserGroups)
             .Where(t => t.Token == token)
             .AsNoTracking() // This is actually needed here because with tracking the user update endpoint would break (has to do with user groups being tacked)

@@ -22,6 +22,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Grade> Grades { get; set; }
     public DbSet<Lolo> Lolos { get; set; }
     public DbSet<LoloRequest> LoloRequests { get; set; }
+    public DbSet<QRCode> QRCodes { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

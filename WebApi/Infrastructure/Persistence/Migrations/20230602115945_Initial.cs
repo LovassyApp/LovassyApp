@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
+using WebApi.Infrastructure.Persistence.Entities.Owned;
 
 #nullable disable
 
@@ -65,6 +68,49 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    RichTextContent = table.Column<string>(type: "text", nullable: false),
+                    SearchVector = table.Column<NpgsqlTsVector>(type: "tsvector", nullable: false)
+                        .Annotation("Npgsql:TsVectorConfig", "hungarian")
+                        .Annotation("Npgsql:TsVectorProperties", new[] { "Name", "Description" }),
+                    Visible = table.Column<bool>(type: "boolean", nullable: false),
+                    QRCodeActivated = table.Column<bool>(type: "boolean", nullable: false),
+                    Price = table.Column<int>(type: "integer", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    Inputs = table.Column<List<ProductInput>>(type: "jsonb", nullable: false),
+                    NotifiedEmails = table.Column<string[]>(type: "text[]", nullable: false),
+                    ThumbnailUrl = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QRCodes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Secret = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QRCodes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserGroups",
                 columns: table => new
                 {
@@ -107,6 +153,30 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductQRCode",
+                columns: table => new
+                {
+                    ProductsId = table.Column<int>(type: "integer", nullable: false),
+                    QRCodesId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductQRCode", x => new { x.ProductsId, x.QRCodesId });
+                    table.ForeignKey(
+                        name: "FK_ProductQRCode_Products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductQRCode_QRCodes_QRCodesId",
+                        column: x => x.QRCodesId,
+                        principalTable: "QRCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -266,6 +336,23 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductQRCode_QRCodesId",
+                table: "ProductQRCode",
+                column: "QRCodesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_SearchVector",
+                table: "Products",
+                column: "SearchVector")
+                .Annotation("Npgsql:IndexMethod", "GIN");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QRCodes_Secret",
+                table: "QRCodes",
+                column: "Secret",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -317,7 +404,16 @@ namespace WebApi.Infrastructure.Persistence.Migrations
                 name: "PersonalAccessTokens");
 
             migrationBuilder.DropTable(
+                name: "ProductQRCode");
+
+            migrationBuilder.DropTable(
                 name: "UserUserGroup");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "QRCodes");
 
             migrationBuilder.DropTable(
                 name: "UserGroups");

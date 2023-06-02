@@ -10,9 +10,9 @@ namespace WebApi.Infrastructure.Persistence.Seeders;
 
 public class UserSeeder
 {
+    private const int UserCount = 10;
+    private const string ResetKeyPassword = "resetKeyPassword";
     private static readonly Faker Faker = new();
-    private static readonly int _userCount = 10;
-    private static readonly string _resetKeyPassword = "resetKeyPassword";
 
     private readonly ApplicationDbContext _context;
     private readonly EncryptionManager _encryptionManager;
@@ -30,13 +30,13 @@ public class UserSeeder
 
     public async Task RunAsync(bool verified = true)
     {
-        _resetService.SetResetKeyPassword(_resetKeyPassword);
+        _resetService.SetResetKeyPassword(ResetKeyPassword);
 
         var userGroup = new UserGroup { Id = AuthConstants.DefaultUserGroupID };
         _context.UserGroups.Entry(userGroup).State = EntityState.Unchanged;
 
         var users = new List<User>();
-        for (var i = 0; i < _userCount; i++)
+        for (var i = 0; i < UserCount; i++)
         {
             var user = CreateUser(string.Join(".", Faker.Lorem.Words(2)) + "@lovassy.edu.hu", Faker.Name.FullName(),
                 "password", Faker.Random.ULong(10000000000, 99999999999).ToString(), verified);

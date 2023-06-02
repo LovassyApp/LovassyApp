@@ -33,5 +33,7 @@ public static class AddInfrastructureExtension
         //Seeding
         services.AddScoped<GradeImportSeeder>();
         services.AddScoped<UserSeeder>();
+        services.AddScoped<ProductSeeder>();
+        services.AddScoped<QRCodeSeeder>();
     }
 }
