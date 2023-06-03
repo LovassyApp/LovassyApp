@@ -74,6 +74,13 @@ public class ShopPermissions
         public string Description { get; } = "Egy adott loló kérvény törlése id alapján";
     }
 
+    public class IndexQRCodes : IPermission
+    {
+        public string Name { get; } = "Shop.IndexQRCodes";
+        public string DisplayName { get; } = "QR kódok lekérése";
+        public string Description { get; } = "Az összes QR kód lekérése és listázása";
+    }
+
     public class CreateQRCode : IPermission
     {
         public string Name { get; } = "Shop.CreateQRCode";
