@@ -20,6 +20,9 @@ public static class IndexImportKeys
 
         public string Name { get; set; }
         public bool Enabled { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     internal sealed class

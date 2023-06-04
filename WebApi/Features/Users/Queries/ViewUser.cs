@@ -25,7 +25,12 @@ public static class ViewUser
         public string? RealName { get; set; }
         public string? Class { get; set; }
 
+        public DateTime? LastOnlineAt { get; set; }
+
         public List<ResponseUserGroup> UserGroups { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class ResponseUserGroup
@@ -46,13 +51,20 @@ public static class ViewUser
 
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.Id == request.Id).Include(u => u.UserGroups).AsNoTracking()
+            var user = await _context.Users.Where(u => u.Id == request.Id).Include(u => u.UserGroups)
+                .Include(u =>
+                    u.PersonalAccessTokens.Where(t => t.LastUsedAt != null).OrderByDescending(t => t.LastUsedAt))
+                .AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
                 throw new NotFoundException(nameof(User), request.Id);
 
-            return user.Adapt<Response>();
+            var response = user.Adapt<Response>();
+
+            response.LastOnlineAt = user.PersonalAccessTokens.FirstOrDefault()?.LastUsedAt;
+
+            return response;
         }
     }
 }

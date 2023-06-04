@@ -22,6 +22,9 @@ public static class ViewImportKey
         public bool Enabled { get; set; }
 
         public string Key { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, Response>

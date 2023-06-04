@@ -25,6 +25,9 @@ public static class ViewLoloRequest
 
         public DateTime? AcceptedAt { get; set; }
         public DateTime? DeniedAt { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, Response>
