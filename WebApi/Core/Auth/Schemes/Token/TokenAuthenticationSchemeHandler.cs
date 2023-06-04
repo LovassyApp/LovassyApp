@@ -53,13 +53,20 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
             ? HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""))
             : HttpUtility.UrlDecode(Request.Query["access_token"]);
 
-        //TODO: It seems like this is never really resolved from the cache even though it is always saved, investigate this
-        var accessToken = await _context.PersonalAccessTokens.Include(t => t.User).ThenInclude(u => u.UserGroups)
+        var accessToken = await _context.PersonalAccessTokens
             .Where(t => t.Token == token)
-            .AsNoTracking() // This is actually needed here because with tracking the user update endpoint would break (has to do with user groups being tacked)
-            .FirstOrDefaultAsync(); //We have to include the user groups here because we need them for the claims
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
 
         if (accessToken == null) return AuthenticateResult.Fail("Invalid access token");
+
+        // Alright so... A little explanation: We have this as a separate query because after the auth workflow the tokens get updated
+        // with a new last used date. This update invalidates the second level cache entry for the token making it necessary to query
+        // the database again. This is fine as that is a pretty fast query but if we were to include the user and it's groups there as
+        // well it would be a lot slower. So we just query the token and then query the user and it's groups separately (the latter from the cache).
+        var user = await _context.Users.Include(u => u.UserGroups).Where(u => u.Id == accessToken.UserId)
+            .AsNoTracking() // This is actually needed here because with tracking the user update endpoint would break (has to do with user groups being tacked)
+            .FirstAsync(); // We have to include the user groups here because we need them for the claims
 
         try
         {
@@ -70,7 +77,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
             return AuthenticateResult.Fail("Session not found");
         }
 
-        _userAccessor.User = accessToken.User;
+        _userAccessor.User = user;
 
         await _publisher.Publish(new AccessTokenUsedEvent
         {
@@ -80,7 +87,7 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
         var claims = new List<Claim>();
 
         foreach (var claimsAdder in _claimsAdders)
-            await claimsAdder.AddClaimsAsync(claims, accessToken.User);
+            await claimsAdder.AddClaimsAsync(claims, user);
 
         var identity = new ClaimsIdentity(claims, Scheme.Name);
 
