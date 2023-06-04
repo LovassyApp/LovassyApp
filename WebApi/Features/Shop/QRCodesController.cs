@@ -24,9 +24,14 @@ public class QRCodesController : ApiControllerBase
     }
 
     [HttpGet("{id}")]
+    [Permissions(typeof(ShopPermissions.ViewQRCode))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> View([FromRoute] int id)
     {
-        throw new NotImplementedException();
+        var response = await Mediator.Send(new ViewQRCode.Query { Id = id });
+
+        return Ok(response);
     }
 
     [HttpPost]
@@ -40,5 +45,31 @@ public class QRCodesController : ApiControllerBase
         });
 
         return Created(nameof(View), response);
+    }
+
+    [HttpPatch("{id}")]
+    [Permissions(typeof(ShopPermissions.UpdateQRCode))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateQRCode.RequestBody body)
+    {
+        await Mediator.Send(new UpdateQRCode.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [Permissions(typeof(ShopPermissions.DeleteQRCode))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        await Mediator.Send(new DeleteQRCode.Commnad { Id = id });
+
+        return NoContent();
     }
 }

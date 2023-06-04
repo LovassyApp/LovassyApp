@@ -81,10 +81,31 @@ public class ShopPermissions
         public string Description { get; } = "Az összes QR kód lekérése és listázása";
     }
 
+    public class ViewQRCode : IPermission
+    {
+        public string Name { get; } = "Shop.ViewQRCode";
+        public string DisplayName { get; } = "QR kód megtekintése";
+        public string Description { get; } = "Egy adott QR kód lekérése és megtekintése id alapján";
+    }
+
     public class CreateQRCode : IPermission
     {
         public string Name { get; } = "Shop.CreateQRCode";
         public string DisplayName { get; } = "QR kód létrehozása";
         public string Description { get; } = "Új QR kód létrehozása";
+    }
+
+    public class UpdateQRCode : IPermission
+    {
+        public string Name { get; } = "Shop.UpdateQRCode";
+        public string DisplayName { get; } = "QR kód módosítása";
+        public string Description { get; } = "Egy adott QR kód módosítása id alapján";
+    }
+
+    public class DeleteQRCode : IPermission
+    {
+        public string Name { get; } = "Shop.DeleteQRCode";
+        public string DisplayName { get; } = "QR kód törlése";
+        public string Description { get; } = "Egy adott QR kód törlése id alapján";
     }
 }
