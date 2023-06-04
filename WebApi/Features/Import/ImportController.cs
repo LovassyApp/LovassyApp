@@ -1,6 +1,7 @@
 using Helpers.Framework;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement.Mvc;
 using Sieve.Models;
 using WebApi.Core.Auth;
 using WebApi.Features.Import.Commands;
@@ -9,6 +10,7 @@ using WebApi.Features.Import.Queries;
 namespace WebApi.Features.Import;
 
 [Authorize(AuthenticationSchemes = AuthConstants.ImportKeyScheme)]
+[FeatureGate("Import")]
 public class ImportController : ApiControllerBase
 {
     [HttpGet("Users")]

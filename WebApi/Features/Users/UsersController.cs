@@ -2,6 +2,7 @@ using Helpers.Framework;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.FeatureManagement.Mvc;
 using Sieve.Models;
 using WebApi.Core.Auth.Permissions;
 using WebApi.Core.Auth.Policies.EmailConfirmed;
@@ -13,6 +14,7 @@ namespace WebApi.Features.Users;
 
 [Authorize]
 [EmailVerified]
+[FeatureGate("Users")]
 public class UsersController : ApiControllerBase
 {
     [HttpGet]
