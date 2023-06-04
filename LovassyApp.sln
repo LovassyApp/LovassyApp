@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{4C2DA0FE-F208-4CEE-9E2B-DC81DCF834B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blueboard", "Blueboard\Blueboard.csproj", "{4C2DA0FE-F208-4CEE-9E2B-DC81DCF834B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.Cryptography.Tests", "Helpers.Cryptography.Tests\Helpers.Cryptography.Tests.csproj", "{6BE8777E-3FA1-4694-BC4E-050EB8324F94}"
 EndProject
@@ -10,7 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B7E0B831-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.Cryptography", "Helpers.Cryptography\Helpers.Cryptography.csproj", "{5792F98E-CF32-4937-BABA-611D2FADB4E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.Framework", "Helpers.Framework\Helpers.Framework.csproj", "{0F7A0506-432D-4874-99B5-9CEF5A6B3F99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.WebApi", "Helpers.WebApi\Helpers.WebApi.csproj", "{0F7A0506-432D-4874-99B5-9CEF5A6B3F99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backboard", "Backboard\Backboard.csproj", "{2D631127-9040-4D19-BB79-BEE215E8F550}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,11 +36,16 @@ Global
 		{0F7A0506-432D-4874-99B5-9CEF5A6B3F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F7A0506-432D-4874-99B5-9CEF5A6B3F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F7A0506-432D-4874-99B5-9CEF5A6B3F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D631127-9040-4D19-BB79-BEE215E8F550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D631127-9040-4D19-BB79-BEE215E8F550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D631127-9040-4D19-BB79-BEE215E8F550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D631127-9040-4D19-BB79-BEE215E8F550}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6BE8777E-3FA1-4694-BC4E-050EB8324F94} = {B7E0B831-06E1-4BC0-9A1A-29923B03C6B7}
 		{4C2DA0FE-F208-4CEE-9E2B-DC81DCF834B5} = {2C72A2FB-4769-45AD-8156-94D523A5D552}
 		{5792F98E-CF32-4937-BABA-611D2FADB4E4} = {2C72A2FB-4769-45AD-8156-94D523A5D552}
 		{0F7A0506-432D-4874-99B5-9CEF5A6B3F99} = {2C72A2FB-4769-45AD-8156-94D523A5D552}
+		{2D631127-9040-4D19-BB79-BEE215E8F550} = {2C72A2FB-4769-45AD-8156-94D523A5D552}
 	EndGlobalSection
 EndGlobal
