@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
@@ -24,7 +25,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
 
         var props = await _memoryCache.GetOrCreateAsync(cacheKey, entry =>
         {
-            var properties = request.GetType().GetProperties();
+            var properties = request.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             return Task.FromResult(properties);
         });
 
