@@ -8,7 +8,7 @@ public class ProductInput
 {
     [Required] public ProductInputType Type { get; set; }
 
-    [Required] public string Identifier { get; set; }
+    [Required] public string Key { get; set; }
 
     [Required] public string Label { get; set; }
 }

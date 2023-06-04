@@ -252,6 +252,35 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OwnedItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    UsedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OwnedItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OwnedItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OwnedItems_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersonalAccessTokens",
                 columns: table => new
                 {
@@ -298,6 +327,64 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OwnedItemUses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Values = table.Column<Dictionary<string, string>>(type: "jsonb", nullable: false),
+                    OwnedItemId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OwnedItemUses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OwnedItemUses_OwnedItems_OwnedItemId",
+                        column: x => x.OwnedItemId,
+                        principalTable: "OwnedItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StoreHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    OwnedItemId = table.Column<int>(type: "integer", nullable: false),
+                    Reason = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StoreHistories_OwnedItems_OwnedItemId",
+                        column: x => x.OwnedItemId,
+                        principalTable: "OwnedItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_StoreHistories_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StoreHistories_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_GradeImports_UserId",
                 table: "GradeImports",
@@ -326,6 +413,22 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OwnedItems_ProductId",
+                table: "OwnedItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OwnedItems_UserId",
+                table: "OwnedItems",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OwnedItemUses_OwnedItemId",
+                table: "OwnedItemUses",
+                column: "OwnedItemId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonalAccessTokens_Token",
                 table: "PersonalAccessTokens",
                 column: "Token",
@@ -352,6 +455,22 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 table: "QRCodes",
                 column: "Secret",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreHistories_OwnedItemId",
+                table: "StoreHistories",
+                column: "OwnedItemId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreHistories_ProductId",
+                table: "StoreHistories",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreHistories_UserId",
+                table: "StoreHistories",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -402,22 +521,31 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 name: "Lolos");
 
             migrationBuilder.DropTable(
+                name: "OwnedItemUses");
+
+            migrationBuilder.DropTable(
                 name: "PersonalAccessTokens");
 
             migrationBuilder.DropTable(
                 name: "ProductQRCode");
 
             migrationBuilder.DropTable(
-                name: "UserUserGroup");
+                name: "StoreHistories");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "UserUserGroup");
 
             migrationBuilder.DropTable(
                 name: "QRCodes");
 
             migrationBuilder.DropTable(
+                name: "OwnedItems");
+
+            migrationBuilder.DropTable(
                 name: "UserGroups");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Users");

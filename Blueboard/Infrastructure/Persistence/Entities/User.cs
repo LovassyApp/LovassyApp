@@ -56,6 +56,10 @@ public class User : TimestampedEntity
 
     [JsonIgnore] public List<LoloRequest> LoloRequests { get; set; }
 
+    [JsonIgnore] public List<StoreHistory> StoreHistories { get; set; }
+
+    [JsonIgnore] public List<OwnedItem> OwnedItems { get; set; }
+
     [JsonIgnore] public List<PersonalAccessToken> PersonalAccessTokens { get; set; }
 }
 

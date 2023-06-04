@@ -24,6 +24,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<LoloRequest> LoloRequests { get; set; }
     public DbSet<QRCode> QRCodes { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<StoreHistory> StoreHistories { get; set; }
+    public DbSet<OwnedItem> OwnedItems { get; set; }
+    public DbSet<OwnedItemUse> OwnedItemUses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

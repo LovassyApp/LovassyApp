@@ -54,6 +54,10 @@ public class Product : TimestampedEntity
     [Required] public string[] NotifiedEmails { get; set; }
 
     [Required] public string ThumbnailUrl { get; set; }
+
+    [JsonIgnore] public List<StoreHistory> StoreHistories { get; set; }
+
+    [JsonIgnore] public List<OwnedItem> OwnedItems { get; set; }
 }
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
