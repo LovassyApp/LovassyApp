@@ -4,8 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Backboard.Views.Controls.SettingsPage" Margin="0,12,0,0">
-    <Panel>
+    <StackPanel>
         <TextBlock Text="Beállítások" FontSize="{StaticResource HeadingSize1}" VerticalAlignment="Top"
                    HorizontalAlignment="Left" Margin="{StaticResource SpacingMd}" />
-    </Panel>
+        <TextBlock Text="API kulcs" Margin="16,0" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" HorizontalAlignment="Stretch" Margin="16,12,16,0" />
+            <Button Grid.Column="1" HorizontalAlignment="Right" Margin="16,0,16,0">Mentés</Button>
+        </Grid>
+    </StackPanel>
 </UserControl>
