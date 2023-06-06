@@ -156,11 +156,11 @@
     <Color x:Key="Orange8">#e8590c</Color>
     <Color x:Key="Orange9">#d9480f</Color>
 
-    <sys:Double x:Key="RadiusXs">2</sys:Double>
-    <sys:Double x:Key="RadiusSm">4</sys:Double>
-    <sys:Double x:Key="RadiusMd">8</sys:Double>
-    <sys:Double x:Key="RadiusLg">16</sys:Double>
-    <sys:Double x:Key="RadiusXl">32</sys:Double>
+    <CornerRadius x:Key="RadiusXs">2</CornerRadius>
+    <CornerRadius x:Key="RadiusSm">4</CornerRadius>
+    <CornerRadius x:Key="RadiusMd">8</CornerRadius>
+    <CornerRadius x:Key="RadiusLg">16</CornerRadius>
+    <CornerRadius x:Key="RadiusXl">32</CornerRadius>
 
     <Thickness x:Key="SpacingXs">10</Thickness>
     <Thickness x:Key="SpacingSm">12</Thickness>
