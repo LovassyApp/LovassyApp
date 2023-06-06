@@ -3,7 +3,7 @@
              x:Class="Backboard.App">
 
     <Application.Styles>
-        <FluentTheme Mode="Light" />
+        <FluentTheme Mode="Dark" />
     </Application.Styles>
 
     <Application.Resources>

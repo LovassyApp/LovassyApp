@@ -162,11 +162,11 @@
     <sys:Double x:Key="RadiusLg">16</sys:Double>
     <sys:Double x:Key="RadiusXl">32</sys:Double>
 
-    <sys:Double x:Key="SpacingXs">10</sys:Double>
-    <sys:Double x:Key="SpacingSm">12</sys:Double>
-    <sys:Double x:Key="SpacingMd">16</sys:Double>
-    <sys:Double x:Key="SpacingLg">20</sys:Double>
-    <sys:Double x:Key="SpacingXl">24</sys:Double>
+    <Thickness x:Key="SpacingXs">10</Thickness>
+    <Thickness x:Key="SpacingSm">12</Thickness>
+    <Thickness x:Key="SpacingMd">16</Thickness>
+    <Thickness x:Key="SpacingLg">20</Thickness>
+    <Thickness x:Key="SpacingXl">24</Thickness>
 
     <sys:Double x:Key="FontSizeXs">12</sys:Double>
     <sys:Double x:Key="FontSizeSm">14</sys:Double>
