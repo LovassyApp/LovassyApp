@@ -7,14 +7,32 @@
     <StackPanel>
         <TextBlock Text="Beállítások" FontSize="{StaticResource HeadingSize1}" VerticalAlignment="Top"
                    HorizontalAlignment="Left" Margin="{StaticResource SpacingMd}" />
+
+        <TextBlock Text="Blueboard URL" Margin="16,0" />
+        <TextBox HorizontalAlignment="Stretch" Margin="16,12,16,12" />
         <TextBlock Text="API kulcs" Margin="16,0" />
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" HorizontalAlignment="Stretch" Margin="16,12,16,0" />
-            <Button Grid.Column="1" HorizontalAlignment="Right" Margin="16,0,16,0">Mentés</Button>
-        </Grid>
+        <TextBox HorizontalAlignment="Stretch" Margin="16,12,16,12" />
+
+        <Button HorizontalAlignment="Center" Margin="16,0,16,0">Mentés</Button>
+
+        <StackPanel.Styles>
+            <Style Selector="TextBox">
+                <Setter Property="Background" Value="{StaticResource Dark6}" />
+                <Setter Property="BorderBrush" Value="{StaticResource Dark4}" />
+            </Style>
+            <Style Selector="TextBox:pointerover /template/ ContentPresenter">
+                <Setter Property="Background" Value="{StaticResource Dark6}" />
+                <Setter Property="BorderBrush" Value="{StaticResource Dark4}" />
+            </Style>
+
+            <Style Selector="TextBox:pressed /template/ ContentPresenter">
+                <Setter Property="Background" Value="{StaticResource Dark6}" />
+                <Setter Property="BorderBrush" Value="{StaticResource Dark4}" />
+            </Style>
+
+            <Style Selector="TextBox:disabled /template/ ContentPresenter">
+                <Setter Property="Opacity" Value="0" />
+            </Style>
+        </StackPanel.Styles>
     </StackPanel>
 </UserControl>

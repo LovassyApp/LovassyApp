@@ -9,7 +9,7 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Backboard"
-        Background="{StaticResource Gray9}"
+        Background="{StaticResource Dark7}"
         ExtendClientAreaToDecorationsHint="True">
 
     <Design.DataContext>
