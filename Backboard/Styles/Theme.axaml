@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <Color x:Key="Dark0">#C1C2C5</Color>
     <Color x:Key="Dark1">#A6A7AB</Color>
@@ -154,5 +155,30 @@
     <Color x:Key="Orange7">#f76707</Color>
     <Color x:Key="Orange8">#e8590c</Color>
     <Color x:Key="Orange9">#d9480f</Color>
+
+    <sys:Double x:Key="RadiusXs">2</sys:Double>
+    <sys:Double x:Key="RadiusSm">4</sys:Double>
+    <sys:Double x:Key="RadiusMd">8</sys:Double>
+    <sys:Double x:Key="RadiusLg">16</sys:Double>
+    <sys:Double x:Key="RadiusXl">32</sys:Double>
+
+    <sys:Double x:Key="SpacingXs">10</sys:Double>
+    <sys:Double x:Key="SpacingSm">12</sys:Double>
+    <sys:Double x:Key="SpacingMd">16</sys:Double>
+    <sys:Double x:Key="SpacingLg">20</sys:Double>
+    <sys:Double x:Key="SpacingXl">24</sys:Double>
+
+    <sys:Double x:Key="FontSizeXs">12</sys:Double>
+    <sys:Double x:Key="FontSizeSm">14</sys:Double>
+    <sys:Double x:Key="FontSizeMd">16</sys:Double>
+    <sys:Double x:Key="FontSizeLg">18</sys:Double>
+    <sys:Double x:Key="FontSizeXl">20</sys:Double>
+
+    <sys:Double x:Key="HeadingSize1">34</sys:Double>
+    <sys:Double x:Key="HeadingSize2">26</sys:Double>
+    <sys:Double x:Key="HeadingSize3">22</sys:Double>
+    <sys:Double x:Key="HeadingSize4">18</sys:Double>
+    <sys:Double x:Key="HeadingSize5">16</sys:Double>
+    <sys:Double x:Key="HeadingSize6">14</sys:Double>
 
 </ResourceDictionary>
