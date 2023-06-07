@@ -9,12 +9,12 @@
                    HorizontalAlignment="Left" Margin="{StaticResource SpacingMd}" />
 
         <TextBlock Text="Blueboard URL" Margin="16,0" />
-        <TextBox HorizontalAlignment="Stretch" Margin="16,12,16,12" />
+        <TextBox HorizontalAlignment="Stretch" Margin="16,6,16,12" />
         <TextBlock Text="API kulcs" Margin="16,0" />
-        <TextBox HorizontalAlignment="Stretch" Margin="16,12,16,12" />
+        <TextBox HorizontalAlignment="Stretch" Margin="16,6,16,12" />
 
         <Button HorizontalAlignment="Center" Margin="16,0,16,0" Padding="18,8,18,8"
-                CornerRadius="{StaticResource RadiusSm}" Background="{StaticResource Blue8}">
+                CornerRadius="{StaticResource RadiusSm}">
             Mentés
         </Button>
 
@@ -27,13 +27,15 @@
                 <Setter Property="Background" Value="{StaticResource Dark6}" />
                 <Setter Property="BorderBrush" Value="{StaticResource Dark4}" />
             </Style>
-
             <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
                 <Setter Property="Background" Value="{StaticResource Dark6}" />
                 <Setter Property="BorderBrush" Value="{StaticResource Dark4}" />
                 <Setter Property="BorderThickness" Value="1" />
             </Style>
 
+            <Style Selector="Button">
+                <Setter Property="Background" Value="{StaticResource Blue8}" />
+            </Style>
             <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="{StaticResource Blue9}" />
             </Style>
