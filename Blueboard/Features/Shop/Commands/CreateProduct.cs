@@ -2,6 +2,7 @@ using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Blueboard.Infrastructure.Persistence.Entities.Owned;
 using FluentValidation;
+using Ganss.Xss;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -106,6 +107,9 @@ public static class CreateProduct
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var product = request.Body.Adapt<Product>();
+
+            var htmlSanitizer = new HtmlSanitizer();
+            product.RichTextContent = htmlSanitizer.Sanitize(request.Body.RichTextContent);
 
             product.QRCodes = new List<QRCode>();
 
