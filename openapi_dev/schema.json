@@ -1437,6 +1437,56 @@
         ]
       }
     },
+    "/Api/Products": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopCreateProductRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopCreateProductRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopCreateProductRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShopCreateProductResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/QRCodes": {
       "get": {
         "tags": [
@@ -3016,6 +3066,161 @@
           "deniedAt": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShopCreateProductRequestBody": {
+        "required": [
+          "description",
+          "inputs",
+          "name",
+          "notifiedEmails",
+          "price",
+          "qrCodeActivated",
+          "qrCodes",
+          "quantity",
+          "richTextContent",
+          "thumbnailUrl",
+          "visible"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "richTextContent": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "qrCodeActivated": {
+            "type": "boolean"
+          },
+          "qrCodes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "price": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShopCreateProductRequestBodyInput"
+            }
+          },
+          "notifiedEmails": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          "thumbnailUrl": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShopCreateProductRequestBodyInput": {
+        "required": [
+          "key",
+          "label",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "key": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$",
+            "type": "string"
+          },
+          "label": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShopCreateProductResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "richTextContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "qrCodeActivated": {
+            "type": "boolean"
+          },
+          "qrCodes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShopCreateProductRequestBodyInput"
+            },
+            "nullable": true
+          },
+          "notifiedEmails": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "thumbnailUrl": {
+            "type": "string",
             "nullable": true
           }
         },
