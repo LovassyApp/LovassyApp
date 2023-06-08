@@ -21,14 +21,27 @@ public static class CreateProduct
         public string Name { get; set; }
         public string Description { get; set; }
         public string RichTextContent { get; set; }
+
         public bool Visible { get; set; }
+
         public bool QRCodeActivated { get; set; }
         [AdaptIgnore] public int[] QRCodes { get; set; }
+
         public int Price { get; set; }
         public int Quantity { get; set; }
-        public List<RequestBodyInput> Inputs { get; set; }
+
+        public List<ResponseInput> Inputs { get; set; }
+
         public string[] NotifiedEmails { get; set; }
+
         public string ThumbnailUrl { get; set; }
+    }
+
+    public class ResponseInput
+    {
+        public string Type { get; set; }
+        public string Key { get; set; }
+        public string Label { get; set; }
     }
 
     public class RequestBody
@@ -36,22 +49,26 @@ public static class CreateProduct
         public string Name { get; set; }
         public string Description { get; set; }
         public string RichTextContent { get; set; }
+
         public bool Visible { get; set; }
+
         public bool QRCodeActivated { get; set; }
         [AdaptIgnore] public int[] QRCodes { get; set; }
+
         public int Price { get; set; }
         public int Quantity { get; set; }
+
         public List<RequestBodyInput> Inputs { get; set; }
+
         public string[] NotifiedEmails { get; set; }
+
         public string ThumbnailUrl { get; set; }
     }
 
     public class RequestBodyInput
     {
         public string Type { get; set; }
-
         public string Key { get; set; }
-
         public string Label { get; set; }
     }
 

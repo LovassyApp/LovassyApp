@@ -109,6 +109,22 @@ public class ShopPermissions
         public string Description { get; } = "Egy adott QR kód törlése id alapján";
     }
 
+    public class ViewProduct : IPermission
+    {
+        public string Name { get; } = "Shop.ViewProduct";
+        public string DisplayName { get; } = "Termék megtekintése";
+        public string Description { get; } = "Egy adott termék lekérése és megtekintése id alapján (bármelyik termék)";
+    }
+
+    public class ViewStoreProduct : IPermission
+    {
+        public string Name { get; } = "Shop.ViewStoreProduct";
+        public string DisplayName { get; } = "Látható termék megtekintése";
+
+        public string Description { get; } =
+            "Egy adott látható termék lekérése és megtekintése id alapján (nem bármelyik termék)";
+    }
+
     public class CreateProduct : IPermission
     {
         public string Name { get; } = "Shop.CreateProduct";

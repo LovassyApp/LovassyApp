@@ -65,7 +65,7 @@ public class ProductSeeder
             {
                 var input = new ProductInput
                 {
-                    Key = Faker.Lorem.Slug(2),
+                    Key = Faker.Lorem.Slug(2).Replace("-", "_"),
                     Label = string.Join(" ", Faker.Lorem.Words(2)),
                     Type = Faker.Random.Enum<ProductInputType>()
                 };
