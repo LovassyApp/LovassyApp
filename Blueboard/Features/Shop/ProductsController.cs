@@ -6,6 +6,7 @@ using Blueboard.Features.Shop.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 
 namespace Blueboard.Features.Shop;
 
@@ -13,6 +14,20 @@ namespace Blueboard.Features.Shop;
 [EmailVerified]
 public class ProductsController : ApiControllerBase
 {
+    [HttpGet]
+    [Permissions(typeof(ShopPermissions.IndexProducts), typeof(ShopPermissions.IndexStoreProducts))]
+    public async Task<ActionResult<IEnumerable<IndexProducts.Response>>> Index([FromQuery] SieveModel sieveModel,
+        [FromQuery] string? Search)
+    {
+        var response = await Mediator.Send(new IndexProducts.Query
+        {
+            SieveModel = sieveModel,
+            Search = Search
+        });
+
+        return Ok(response);
+    }
+
     [HttpGet("{id}")]
     [Permissions(typeof(ShopPermissions.ViewProduct), typeof(ShopPermissions.ViewStoreProduct))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
