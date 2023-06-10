@@ -83,6 +83,7 @@ public class SessionManager
         {
             Hash = hash,
             Salt = HashingUtils.GenerateSalt(),
+            UserId = userId,
             Expiry = expiry,
             Data = new Dictionary<string, string>()
         };

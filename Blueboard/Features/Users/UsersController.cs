@@ -72,4 +72,15 @@ public class UsersController : ApiControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("Kick/{id}")]
+    [Permissions(typeof(UsersPermissions.KickUser))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> KickUser([FromRoute] Guid id)
+    {
+        await Mediator.Send(new KickUser.Command { Id = id });
+
+        return NoContent();
+    }
 }

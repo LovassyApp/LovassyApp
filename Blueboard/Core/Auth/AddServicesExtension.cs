@@ -36,6 +36,7 @@ public static class AddServicesExtension
         services.AddScoped<HashManager>();
         services.AddScoped<PermissionManager>();
 
+        services.AddSingleton<SessionService>();
         services.AddSingleton<ResetService>();
 
         services

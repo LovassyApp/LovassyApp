@@ -14,4 +14,6 @@ public class Session
     public string Salt { get; set; }
 
     public DateTime Expiry { get; set; }
+
+    public Guid UserId { get; set; }
 }
