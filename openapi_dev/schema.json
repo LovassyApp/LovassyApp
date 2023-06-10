@@ -1618,6 +1618,113 @@
             "Token": [ ]
           }
         ]
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopUpdateProductRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopUpdateProductRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopUpdateProductRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
       }
     },
     "/Api/QRCodes": {
@@ -3716,6 +3823,103 @@
           },
           "body": {
             "maxLength": 65535,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShopUpdateProductRequestBody": {
+        "required": [
+          "description",
+          "inputs",
+          "name",
+          "notifiedEmails",
+          "price",
+          "qrCodeActivated",
+          "qrCodes",
+          "quantity",
+          "richTextContent",
+          "thumbnailUrl",
+          "visible"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "richTextContent": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "qrCodeActivated": {
+            "type": "boolean"
+          },
+          "qrCodes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "price": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantity": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShopUpdateProductRequestBodyInput"
+            }
+          },
+          "notifiedEmails": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          "thumbnailUrl": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShopUpdateProductRequestBodyInput": {
+        "required": [
+          "key",
+          "label",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "key": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$",
+            "type": "string"
+          },
+          "label": {
             "minLength": 1,
             "type": "string"
           }

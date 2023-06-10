@@ -145,4 +145,18 @@ public class ShopPermissions
         public string DisplayName { get; } = "Termék létrehozása";
         public string Description { get; } = "Új termék létrehozása";
     }
+
+    public class UpdateProduct : IPermission
+    {
+        public string Name { get; } = "Shop.UpdateProduct";
+        public string DisplayName { get; } = "Termék módosítása";
+        public string Description { get; } = "Egy adott termék módosítása id alapján";
+    }
+
+    public class DeleteProduct : IPermission
+    {
+        public string Name { get; } = "Shop.DeleteProduct";
+        public string DisplayName { get; } = "Termék törlése";
+        public string Description { get; } = "Egy adott termék törlése id alapján";
+    }
 }

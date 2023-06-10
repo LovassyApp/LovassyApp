@@ -54,4 +54,33 @@ public class ProductsController : ApiControllerBase
 
         return Created(nameof(View), response);
     }
+
+    [HttpPatch("{id}")]
+    [Permissions(typeof(ShopPermissions.UpdateProduct))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateProduct.RequestBody body)
+    {
+        await Mediator.Send(new UpdateProduct.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [Permissions(typeof(ShopPermissions.DeleteProduct))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        await Mediator.Send(new DeleteProduct.Command
+        {
+            Id = id
+        });
+
+        return NoContent();
+    }
 }
