@@ -72,18 +72,19 @@ public class SessionManager
 
         var hash = HashingUtils.Hash(_token);
 
-        await _context.PersonalAccessTokens.AddAsync(new PersonalAccessToken
+        var personalAccessToken = new PersonalAccessToken
         {
             UserId = userId,
             Token = _token
-        });
+        };
+        await _context.PersonalAccessTokens.AddAsync(personalAccessToken);
         await _context.SaveChangesAsync();
 
         Session = new Session
         {
             Hash = hash,
             Salt = HashingUtils.GenerateSalt(),
-            UserId = userId,
+            AccessToken = personalAccessToken, //The Id field really matters here, but it should be filled by ef core
             Expiry = expiry,
             Data = new Dictionary<string, string>()
         };

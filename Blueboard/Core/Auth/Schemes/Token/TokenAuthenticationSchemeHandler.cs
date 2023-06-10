@@ -53,21 +53,6 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
             ? HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""))
             : HttpUtility.UrlDecode(Request.Query["access_token"]);
 
-        var accessToken = await _context.PersonalAccessTokens
-            .Where(t => t.Token == token)
-            .AsNoTracking()
-            .FirstOrDefaultAsync();
-
-        if (accessToken == null) return AuthenticateResult.Fail("Invalid access token");
-
-        // Alright so... A little explanation: We have this as a separate query because after the auth workflow the tokens get updated
-        // with a new last used date. This update invalidates the second level cache entry for the token making it necessary to query
-        // the database again. This is fine as that is a pretty fast query but if we were to include the user and it's groups there as
-        // well it would be a lot slower. So we just query the token and then query the user and it's groups separately (the latter from the cache).
-        var user = await _context.Users.Include(u => u.UserGroups).Where(u => u.Id == accessToken.UserId)
-            .AsNoTracking() // This is actually needed here because with tracking the user update endpoint would break (has to do with user groups being tacked)
-            .FirstAsync(); // We have to include the user groups here because we need them for the claims
-
         try
         {
             _sessionManager.ResumeSession(token);
@@ -77,11 +62,19 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
             return AuthenticateResult.Fail("Session not found");
         }
 
+        // Alright so... A little explanation: We have this as a query here to have the users permissions update real time,
+        // because we validate the access token through the SessionManager. This should be pretty fast because the user
+        // is cached after the first query and is only queried again if from the database if it's changed.
+        var user = await _context.Users.Include(u => u.UserGroups)
+            .Where(u => u.Id == _sessionManager.Session!.AccessToken.UserId)
+            .AsNoTracking() // This is actually needed here because with tracking the user update endpoint would break (has to do with user groups being tacked)
+            .FirstAsync(); // We have to include the user groups here because we need them for the claims
+
         _userAccessor.User = user;
 
         await _publisher.Publish(new AccessTokenUsedEvent
         {
-            AccessToken = accessToken
+            AccessToken = _sessionManager.Session!.AccessToken
         });
 
         var claims = new List<Claim>();

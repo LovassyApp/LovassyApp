@@ -15,5 +15,5 @@ public class Session
 
     public DateTime Expiry { get; set; }
 
-    public Guid UserId { get; set; }
+    public PersonalAccessToken AccessToken { get; set; }
 }
