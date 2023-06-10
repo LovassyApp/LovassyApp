@@ -18,6 +18,25 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <control:Navigation />
+    <control:Navigation>
+        <control:Navigation.DataContext>
+            <vm:SideMenuModel>
+                <vm:SideMenuModel.MenuItems>
+                    <vm:SideMenuItem Header="Jegyek" Icon="ImportExport">
+                        <vm:SideMenuItem.Content>
+                            <control:GradeImportPage />
+                        </vm:SideMenuItem.Content>
+                    </vm:SideMenuItem>
+                </vm:SideMenuModel.MenuItems>
+                <vm:SideMenuModel.FooterMenuItems>
+                    <vm:SideMenuItem Header="Beállítások" Icon="Settings">
+                        <vm:SideMenuItem.Content>
+                            <control:SettingsPage />
+                        </vm:SideMenuItem.Content>
+                    </vm:SideMenuItem>
+                </vm:SideMenuModel.FooterMenuItems>
+            </vm:SideMenuModel>
+        </control:Navigation.DataContext>
+    </control:Navigation>
 
 </Window>

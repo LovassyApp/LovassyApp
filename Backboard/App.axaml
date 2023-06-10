@@ -3,6 +3,7 @@
              x:Class="Backboard.App">
 
     <Application.Styles>
+        <StyleInclude Source="avares://SukiUI/Theme/Index.xaml" />
         <FluentTheme Mode="Dark" />
     </Application.Styles>
 

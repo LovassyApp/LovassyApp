@@ -2,18 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:Backboard.ViewModels"
+             xmlns:vm="clr-namespace:Backboard.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="vm:SettingsViewModel"
-             x:Class="Backboard.Views.Controls.SettingsPage" Margin="0,12,0,0">
+             x:DataType="vm:GradeImportViewModel"
+             x:Class="Backboard.Views.Controls.GradeImportPage">
     <StackPanel>
-        <TextBlock Text="Beállítások" Foreground="White" FontSize="{StaticResource HeadingSize1}"
-                   VerticalAlignment="Top"
+        <TextBlock Text="Jegyek" FontSize="{StaticResource HeadingSize1}" VerticalAlignment="Top"
                    HorizontalAlignment="Left" Margin="{StaticResource SpacingMd}" />
 
-        <TextBlock Text="Blueboard URL" Foreground="White" Margin="16,0" />
+        <TextBlock Text="Blueboard URL" Margin="16,0" />
         <TextBox HorizontalAlignment="Stretch" Margin="16,6,16,12" />
-        <TextBlock Text="API kulcs" Foreground="White" Margin="16,0" />
+        <TextBlock Text="API kulcs" Margin="16,0" />
         <TextBox HorizontalAlignment="Stretch" Margin="16,6,16,12" />
 
         <Button HorizontalAlignment="Center" Margin="16,0,16,0" Padding="18,8,18,8"

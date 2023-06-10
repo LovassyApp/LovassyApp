@@ -2,22 +2,205 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Backboard.ViewModels"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:SideMenuModel"
              x:Class="Backboard.Views.Controls.Navigation">
-    <Grid Margin="0,28,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" x:Name="NavigationMenuListBox" SelectionMode="Single,AlwaysSelected"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{StaticResource Dark6}">
-            <ListBoxItem>
-                <TextBlock Text="Home" />
-            </ListBoxItem>
-            <ListBoxItem>
-                <TextBlock Text="Settings" />
-            </ListBoxItem>
-        </ListBox>
-        <ContentControl Grid.Column="1" />
-    </Grid>
+    <UserControl.Styles>
+        <Style Selector="material|MaterialIcon">
+            <Setter Property="Foreground" Value="#444444" />
+
+        </Style>
+
+
+    </UserControl.Styles>
+
+
+    <SplitView
+        DisplayMode="CompactInline"
+        IsPaneOpen="{Binding MenuVisibility}"
+        OpenPaneLength="256"
+        PaneClosing="PaneIsClosing">
+
+        <SplitView.Pane>
+            <Border>
+                <Grid Background="{StaticResource Dark8}">
+                    <DockPanel>
+                        <Grid
+                            DockPanel.Dock="Top"
+                            IsVisible="{Binding MenuVisibility}"
+                            MinHeight="{Binding HeaderMinHeight}">
+                            <ContentControl Content="{Binding HeaderContent}" />
+                        </Grid>
+
+                        <!--  Used to move menu icons down when sidebar is closed  -->
+                        <Grid
+                            DockPanel.Dock="Top"
+                            Height="40"
+                            IsVisible="{Binding SpacerEnabled}" />
+
+
+                        <ItemsControl
+                            DockPanel.Dock="Bottom"
+                            Items="{Binding FooterMenuItems}"
+                            Margin="0,0,0,10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <RadioButton
+
+                                        Classes="MenuItem"
+                                        Command="{Binding DataContext.ChangePage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding Content}"
+                                        GroupName="MenuItemsGroup" Checked="MenuItemSelectedChanged"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,0"
+                                        Width="215">
+                                        <Grid Margin="-30,1,0,0">
+
+                                            <DockPanel
+                                                IsVisible="{Binding DataContext.MenuVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                Margin="55,5,5,5">
+                                                <material:MaterialIcon
+                                                    Foreground="{DynamicResource SukiText}"
+                                                    Height="22" Name="LongIco"
+                                                    Kind="{Binding Icon}"
+                                                    Width="22" />
+                                                <Border DockPanel.Dock="Right" VerticalAlignment="Center"
+                                                        Margin="0,-1,4,0" Width="3" Height="30" CornerRadius="2">
+                                                    <Border.Background>
+
+                                                        <LinearGradientBrush EndPoint="0%,100%" StartPoint="80%,-50%">
+                                                            <GradientStop
+                                                                Color="{DynamicResource SukiPrimaryColorGradient}"
+                                                                Offset="0.1" />
+                                                            <GradientStop Color="{DynamicResource SukiPrimaryColor}"
+                                                                          Offset="0.6" />
+                                                        </LinearGradientBrush>
+
+                                                    </Border.Background>
+                                                </Border>
+                                                <TextBlock
+                                                    FontSize="16"
+                                                    FontWeight="Medium"
+                                                    Margin="15,8,8,8"
+                                                    Text="{Binding Header}" />
+                                            </DockPanel>
+                                            <Border HorizontalAlignment="Center"
+                                                    IsVisible="{Binding !DataContext.MenuVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+                                                <Grid>
+                                                    <material:MaterialIcon Name="ShortIcon"
+                                                                           Foreground="{DynamicResource SukiText}"
+                                                                           Height="22"
+                                                                           HorizontalAlignment="Center"
+                                                                           Kind="{Binding Icon}"
+                                                                           Margin="2,0,10,0"
+                                                                           VerticalAlignment="Center"
+                                                                           Width="22" />
+                                                    <material:MaterialIcon
+                                                        Foreground="{DynamicResource SukiText}"
+                                                        Height="22"
+                                                        HorizontalAlignment="Right"
+                                                        Kind="{Binding Icon}"
+                                                        Margin="2,0,-30,0"
+                                                        VerticalAlignment="Center"
+                                                        Width="22" />
+
+                                                </Grid>
+                                            </Border>
+                                        </Grid>
+                                    </RadioButton>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <ScrollViewer>
+
+                            <ItemsControl Margin="0,15,0,0" Items="{Binding MenuItems}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton
+                                            Checked="MenuItemSelectedChanged"
+                                            Classes="MenuItem"
+                                            Command="{Binding DataContext.ChangePage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding Content}"
+                                            GroupName="MenuItemsGroup"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,0,0,0"
+                                            Height="50"
+                                            Width="215">
+
+
+                                            <Grid Margin="-30,1,0,0">
+                                                <DockPanel
+                                                    IsVisible="{Binding DataContext.MenuVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    Margin="55,5,5,5">
+                                                    <material:MaterialIcon
+                                                        Foreground="{DynamicResource SukiText}"
+                                                        Height="22" Name="LongIco"
+                                                        Kind="{Binding Icon}"
+                                                        Width="22" />
+                                                    <Border DockPanel.Dock="Right" VerticalAlignment="Center"
+                                                            Margin="0,-1,4,0" Width="3" Height="30" CornerRadius="2">
+                                                        <Border.Background>
+
+                                                            <LinearGradientBrush EndPoint="0%,100%"
+                                                                StartPoint="80%,-50%">
+                                                                <GradientStop
+                                                                    Color="{DynamicResource SukiPrimaryColorGradient}"
+                                                                    Offset="0.1" />
+                                                                <GradientStop
+                                                                    Color="{DynamicResource SukiPrimaryColor}"
+                                                                    Offset="0.6" />
+                                                            </LinearGradientBrush>
+
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <TextBlock
+                                                        FontSize="16"
+                                                        FontWeight="Medium"
+                                                        Margin="15,8,8,8"
+                                                        Text="{Binding Header}" />
+                                                </DockPanel>
+                                                <Border HorizontalAlignment="Center"
+                                                        IsVisible="{Binding !DataContext.MenuVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+                                                    <Grid>
+                                                        <material:MaterialIcon Name="ShortIcon"
+                                                                               Foreground="{DynamicResource SukiText}"
+                                                                               Height="22"
+                                                                               HorizontalAlignment="Center"
+                                                                               Kind="{Binding Icon}"
+                                                                               Margin="2,0,10,0"
+                                                                               VerticalAlignment="Center"
+                                                                               Width="22" />
+                                                        <material:MaterialIcon
+                                                            Foreground="{DynamicResource SukiText}"
+                                                            Height="22"
+                                                            HorizontalAlignment="Right"
+                                                            Kind="{Binding Icon}"
+                                                            Margin="2,0,-30,0"
+                                                            VerticalAlignment="Center"
+                                                            Width="22" />
+
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                        </RadioButton>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+
+                        </ScrollViewer>
+                    </DockPanel>
+                </Grid>
+            </Border>
+        </SplitView.Pane>
+
+        <Border Margin="0,0,0,0" Name="ContentBorder" BorderBrush="{DynamicResource SukiBorderBrush}"
+                BorderThickness="1,0,0,0" Background="{StaticResource Dark7}">
+            <ContentControl Content="{Binding CurrentPage}" />
+
+        </Border>
+    </SplitView>
 </UserControl>
