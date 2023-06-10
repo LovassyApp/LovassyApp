@@ -6,6 +6,7 @@ using Blueboard.Core.Auth.Schemes.Token;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Helpers.Cryptography.Utils;
+using Mapster;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using SessionOptions = Blueboard.Core.Auth.Services.Options.SessionOptions;
@@ -84,7 +85,7 @@ public class SessionManager
         {
             Hash = hash,
             Salt = HashingUtils.GenerateSalt(),
-            AccessToken = personalAccessToken, //The Id field really matters here, but it should be filled by ef core
+            AccessToken = personalAccessToken.Adapt<SessionAccessToken>(), // The Id is filled by ef core
             Expiry = expiry,
             Data = new Dictionary<string, string>()
         };

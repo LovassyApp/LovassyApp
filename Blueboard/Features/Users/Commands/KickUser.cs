@@ -42,6 +42,8 @@ public static class KickUser
 
             await _context.SaveChangesAsync(cancellationToken);
 
+            //TODO: Send out a notification to the user that they have been kicked
+
             return Unit.Value;
         }
     }

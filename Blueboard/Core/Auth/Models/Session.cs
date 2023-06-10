@@ -15,5 +15,15 @@ public class Session
 
     public DateTime Expiry { get; set; }
 
-    public PersonalAccessToken AccessToken { get; set; }
+    public SessionAccessToken AccessToken { get; set; }
+}
+
+/// <summary>
+///     The model representing an access token associated with a <see cref="Session" />. Basically a stripped down version
+///     of the <see cref="PersonalAccessToken" />.
+/// </summary>
+public class SessionAccessToken
+{
+    public int Id { get; set; }
+    public Guid UserId { get; set; }
 }

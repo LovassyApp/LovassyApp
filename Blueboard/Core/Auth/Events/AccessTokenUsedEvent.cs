@@ -1,3 +1,4 @@
+using Blueboard.Core.Auth.Models;
 using Blueboard.Infrastructure.Persistence.Entities;
 using MediatR;
 
@@ -8,5 +9,5 @@ namespace Blueboard.Core.Auth.Events;
 /// </summary>
 public class AccessTokenUsedEvent : INotification
 {
-    public PersonalAccessToken AccessToken { get; set; }
+    public SessionAccessToken AccessToken { get; set; }
 }
