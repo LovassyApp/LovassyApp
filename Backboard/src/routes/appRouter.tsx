@@ -7,16 +7,18 @@ export const AppRouter = () => {
     const WindowLayout = lazy(() => import("./layouts/windowLayout"));
 
     const GradeImportPage = lazy(() => import("./pages/gradeImportPage"));
-    const ResetKeyPasswordPage = lazy(() => import("./pages/resetKeyPasswordPage"));
+    const SecurityPage = lazy(() => import("./pages/securityPage"));
     const SettingsPage = lazy(() => import("./pages/settingsPage"));
+    const StatusPage = lazy(() => import("./pages/statusPage"));
 
     return (
         <Suspense fallback={<FullScreenLoading />}>
             <Routes>
                 <Route element={<WindowLayout />}>
                     <Route path="/" element={<GradeImportPage />} />
-                    <Route path="/resetKeyPassword" element={<ResetKeyPasswordPage />} />
+                    <Route path="/security" element={<SecurityPage />} />
                     <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/status" element={<StatusPage />} />
                 </Route>
             </Routes>
         </Suspense>

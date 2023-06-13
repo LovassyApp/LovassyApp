@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { AppRouter } from "./routes/appRouter";
 import { MemoryRouter } from "react-router-dom";
+import { ModalsProvider } from "@mantine/modals";
 import ReactDOM from "react-dom/client";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { appWindow } from "@tauri-apps/api/window";
@@ -37,7 +38,7 @@ const App = () => {
         })();
 
         return () => {
-            if (unlisten != null) {
+            if (unlisten) {
                 unlisten();
             }
         };
@@ -50,7 +51,9 @@ const App = () => {
             }}
             withGlobalStyles={true}
             withNormalizeCSS={true}>
-                <AppRouter />
+                <ModalsProvider>
+                    <AppRouter />
+                </ModalsProvider>
             </MantineProvider>
         </ColorSchemeProvider>
     );

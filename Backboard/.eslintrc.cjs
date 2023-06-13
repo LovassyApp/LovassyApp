@@ -21,6 +21,7 @@ module.exports = {
         quotes: ["warn", "double"],
         semi: ["warn", "always"],
         eqeqeq: "warn",
+        "max-len": ["warn", { code: 120 }],
         "prefer-const": "warn",
         "prefer-arrow-callback": "error",
         "no-const-assign": "error",

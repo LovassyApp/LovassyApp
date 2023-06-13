@@ -1,5 +1,5 @@
 import { ActionIcon, AppShell, Divider, Group, Header, Navbar, Stack, Title, UnstyledButton, createStyles, rem } from "@mantine/core";
-import { IconDatabaseImport, IconKey, IconMinus, IconSettings, IconSquare, IconX } from "@tabler/icons-react";
+import { IconDatabaseImport, IconKey, IconMinus, IconSatellite, IconSettings, IconSquare, IconX } from "@tabler/icons-react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { ColorSchemeToggle } from "../../components/colorSchemeToggle";
@@ -46,7 +46,8 @@ const useStyles = createStyles((theme) => ({
 
 const links = [
     { icon: IconDatabaseImport, path: "/" },
-    { icon: IconKey, path: "/resetKeyPassword" },
+    { icon: IconKey, path: "/security" },
+    { icon: IconSatellite, path: "/status" },
 ];
 
 interface NavbarLinkProps {
@@ -114,9 +115,26 @@ const WindowHeader = () => {
                 <Group position="right" align="center">
                     <ColorSchemeToggle />
                     <Divider orientation="vertical" />
-                    <ActionIcon size="md" variant="light" className={classes.icon} onClick={() => appWindow.minimize()}><IconMinus stroke={1.5} size={16} /></ActionIcon>
-                    <ActionIcon size="md" variant="light" className={classes.icon} onClick={() => appWindow.toggleMaximize()}><IconSquare stroke={1.5} size={16} /></ActionIcon>
-                    <ActionIcon size="md" variant="light" className={classes.icon} onClick={() => appWindow.close()}><IconX stroke={1.5} size={16} /></ActionIcon>
+                    <ActionIcon size="md"
+                        variant="light"
+                        className={classes.icon}
+                        onClick={() => appWindow.minimize()}>
+                        <IconMinus stroke={1.5} size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                        size="md"
+                        variant="light"
+                        className={classes.icon}
+                        onClick={() => appWindow.toggleMaximize()}>
+                        <IconSquare stroke={1.5} size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                        size="md"
+                        variant="light"
+                        className={classes.icon}
+                        onClick={() => appWindow.close()}>
+                        <IconX stroke={1.5} size={16} />
+                    </ActionIcon>
                 </Group>
             </Group>
         </Header>
