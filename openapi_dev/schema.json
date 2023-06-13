@@ -2666,6 +2666,30 @@
           }
         ]
       }
+    },
+    "/Api/Users/Kick/All": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.KickAllUsers<br><b>Requires the following features to be enabled</b>: Users",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
     }
   },
   "components": {

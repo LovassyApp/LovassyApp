@@ -83,4 +83,14 @@ public class UsersController : ApiControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("Kick/All")]
+    [Permissions(typeof(UsersPermissions.KickAllUsers))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> KickAllUsers()
+    {
+        await Mediator.Send(new KickAllUsers.Command());
+
+        return NoContent();
+    }
 }

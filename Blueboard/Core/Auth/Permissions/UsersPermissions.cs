@@ -38,4 +38,11 @@ public static class UsersPermissions
         public string DisplayName { get; } = "Felhasználó kirúgása";
         public string Description { get; } = "Egy adott felhasználó kirúgása (kijelentkeztetése) id alapján";
     }
+
+    public class KickAllUsers : IPermission
+    {
+        public string Name { get; } = "Users.KickAllUsers";
+        public string DisplayName { get; } = "Összes felhasználó kirúgása";
+        public string Description { get; } = "Az összes felhasználó kirúgása (kijelentkeztetése)";
+    }
 }
