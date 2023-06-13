@@ -12,7 +12,7 @@ const GradeImportPage = (): JSX.Element => {
 
     const importGrades = async () => {
         if (filePath === null) {
-            setFileError("Nincs kiválasztva fájl!");
+            setFileError("Nincs kiválasztva fájl");
             return;
         }
         setFileError(null);
