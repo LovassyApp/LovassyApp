@@ -4,12 +4,12 @@ using Quartz;
 
 namespace Blueboard.Features.Users.Jobs;
 
-public class StopSessionsJob : IJob
+public class KickUsersJob : IJob
 {
-    private readonly ILogger<StopSessionsJob> _logger;
+    private readonly ILogger<KickUsersJob> _logger;
     private readonly SessionService _sessionService;
 
-    public StopSessionsJob(SessionService sessionService, ILogger<StopSessionsJob> logger)
+    public KickUsersJob(SessionService sessionService, ILogger<KickUsersJob> logger)
     {
         _sessionService = sessionService;
         _logger = logger;

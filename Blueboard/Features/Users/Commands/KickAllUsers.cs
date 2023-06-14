@@ -37,15 +37,16 @@ public static class KickAllUsers
 
             var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
-            var stopSessionsJob = JobBuilder.Create<StopSessionsJob>().WithIdentity("stopSessions", "userKickedJobs")
+            //Schedule a job because it could take some time to hash all the tokens and check them against the SessionService
+            var kickUsersJob = JobBuilder.Create<KickUsersJob>().WithIdentity("kickUsers", "userKickedJobs")
                 .UsingJobData("tokensJson", JsonSerializer.Serialize(personalAccessTokens.Select(t => t.Token)))
                 .Build();
 
-            var stopSessionsTrigger = TriggerBuilder.Create().WithIdentity("stopSessionsTrigger", "userKickedJobs")
+            var kickUsersTrigger = TriggerBuilder.Create().WithIdentity("kickUsersTrigger", "userKickedJobs")
                 .StartNow()
                 .Build();
 
-            await scheduler.ScheduleJob(stopSessionsJob, stopSessionsTrigger, cancellationToken);
+            await scheduler.ScheduleJob(kickUsersJob, kickUsersTrigger, cancellationToken);
 
             return Unit.Value;
         }

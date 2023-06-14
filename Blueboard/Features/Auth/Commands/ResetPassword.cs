@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using Blueboard.Core.Auth.Services;
+using Blueboard.Features.Auth.Events;
 using Blueboard.Features.Auth.Services;
 using Blueboard.Infrastructure.Persistence;
 using FluentValidation;
@@ -38,15 +39,17 @@ public static class ResetPassword
         private readonly ApplicationDbContext _context;
         private readonly HashService _hashService;
         private readonly PasswordResetService _passwordResetService;
+        private readonly IPublisher _publisher;
         private readonly ResetService _resetService;
 
         public Handler(ApplicationDbContext context, HashService hashService,
-            PasswordResetService passwordResetService, ResetService resetService)
+            PasswordResetService passwordResetService, ResetService resetService, IPublisher publisher)
         {
             _context = context;
             _hashService = hashService;
             _passwordResetService = passwordResetService;
             _resetService = resetService;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -85,6 +88,11 @@ public static class ResetPassword
             user.PasswordHashed = _hashService.HashPassword(request.Body.NewPassword);
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new PasswordResetEvent
+            {
+                User = user
+            }, cancellationToken);
 
             //TODO: Send out an event and a notification through websockets in the handler
 
