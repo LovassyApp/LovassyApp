@@ -6,7 +6,7 @@ A Lovassy László Gimnázium diákjainak életét megkönnyíteni hivatott alka
 
 ## Funkciók
 
--[x] Lovassy Lóvé rendszer
+- [x] Lovassy Lóvé rendszer
   - [x] Automatikus LoLó generáció
   - [x] LoLó kérvények benyújtása (pl.: versenyeredményért járó LoLó)
   - [x] LoLó elköltése kimentésekre és egyéb termékekre (*jelenleg csak 3.x.x-ben*)
