@@ -1,29 +1,61 @@
-# Blueboard
+# LovassyApp
 
-## A kódban használt fogalmak
+A Lovassy László Gimnázium diákjainak életét megkönnyíteni hivatott alkalmazás.
 
-*Megjegyzés: Minden név, komment, mappa, fájl és miegyéb a kódban angolul van és maradjon is úgy.*
+*Megjegyzés: Ez a repo a jelenlegi legújabb, fejlesztés alatti verziót tartalmazza. Blueboard v4 előtti verziók megtekinthetők itt: https://github.com/LovassyApp/LovassyAppLegacy. Ezt a verziót a 2023/2024-es tanév elején tervezzük bevezetni.*
 
-- **Helper**: Olyan osztályok összesége, amelyeket az alkalmazás minden része használhat akár direkt vagy indirekt módon, de nem tartoznak semmilyen funkciós csoportba sem (kell a funkciós csoportok működéséhez, de nem tartozik hozzájuk).
-- **Core**: Olyan funkciós csoportokra osztott osztályok összessége, amelyeket több **feature** is használhat vagy kihatással vannak akár indirekt módon az egész alkalmazásra (pl.: Auth).
-- **Feature**: Olyan funkciós csoportokra osztott osztályok összessége, amelyek logikusan összetartoznak és a saját funkciós csoportjukon kívül nincsenek használva. (Speciális esetben "kifelé irányuló kommunikáció a külvilággal" megengedett **event**ek segítségével, ilyen eset mondjuk egy realtime értesítés küldése)
-- **Infrastructure**: Olyan osztályok összessége, amelyek külső szolgáltatásokkal való kommunikációért felelősek. (pl.: adatbázis, fájlrendszer, stb.)
+## Funkciók
 
-<hr>
+-[x] Lovassy Lóvé rendszer
+  - [x] Automatikus LoLó generáció
+  - [x] LoLó kérvények benyújtása (pl.: versenyeredményért járó LoLó)
+  - [x] LoLó elköltése kimentésekre és egyéb termékekre (*jelenleg csak 3.x.x-ben*)
+  - [x] Vásárolt termékek felhasználása (*jelenleg csak 3.x.x-ben*)
+- [X] Jegyek megtekintése
+- [ ] Szavazó rendszer (farsangi jelmezversenyhez, stb.)
+- [ ] Párt rendszer (párthéthez)
+  - [ ] Pártok létrehozása, regisztálása
+  - [ ] Pártprogramok megtekintése
+- [ ] Éjszakai röpi rendszer
+  - [ ] Röpi csapatok létrehozása, regisztálása
+  - [ ] Értesítések meccsek előtt
+  - [ ] Pontozás, kivetítendő pontozó tábla
+- [ ] Menza rendszer
+  - [ ] A vagy B menü igénylése digitálisan
+  - [ ] Kajajegy helyett újra felhasználható NFC kártyák/telefonos NFC
 
-- **Command, Query**: Lásd: [CQRS](https://www.eventstore.com/cqrs-pattern). (*megjegyzés: itt beszélnek külön write és read modelről is, de mi itt annyira nem bonyolítjuk*)
-- **Job**: Bármilyen háttérben futó folyamat akár egyszeri akár viszzatérő. Lásd: [Quartz.NET Jobs And Triggers](https://www.quartz-scheduler.net/documentation/quartz-3.x/tutorial/jobs-and-triggers.html)
-- **Event**: Bármilyen eseményt jelentő osztály. MediatR-en keresztül használjuk őket akkor amikor erre az eventre válaszul még a response visszaküldése előtt történnie kell valaminek (ha elég a response visszaküldése után, akkor egy **job**ot használunk). Lásd: [MediatR Events](https://dev.to/pbouillon/publishing-domain-events-with-mediatr-32mm).
-- **Model**: Bármilyen adatot hordozó kizárólag propokkal rendelkező osztály. Ilyen osztály soha semmi logikát nem végez.
-- **Service**: Lásd: [Dependency Injection](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-7.0).
-- **Controller**: Lásd: [Web Api Controllers](https://www.tutorialsteacher.com/webapi/web-api-controller).
-- **Hub**: Lásd: [SignalR Hubs](https://learn.microsoft.com/en-us/aspnet/core/signalr/hubs?view=aspnetcore-7.0).
-- **Extension**: Lásd: [Extension Methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods).
-- **Behaviour**: Lásd: [MediatR Behaviours](https://garywoodfine.com/how-to-use-mediatr-pipeline-behaviours/)
-- **Filter**: Lásd: [Filters](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-7.0) (*megjegyzés: sokszor sokkal több értelme van ezeket haszálni mint mondjuk egy middlewaret, middleware igazából csak akkor kell ha az az összes requestre kihat és akkor sem mindig*)
-- **ConsoleCommand**: Olyan feladatot tartalmazó osztály, amelyet manuális futtatunk a parancssorból (mint a Laravel Artisan). Fejlesztői környezetben ez így néz ki: `dotnet run <command_name>`.
-- **StartupAction**: Olyan feladatot tartalmazó osztály, amely az alkalmazás indulásakor kell hogy lefusson.
-- **Utility**: Olyan osztály, amely mindenképp statikus, nem tartalmaz extension methodot és többször használt vagy "segítő" kódot tartalmaz.
-- **Option**: Az alkalmazás `appsettings.json`-ból betöltött konfigurációjának egy részéhez tartozó **model**.
-- **Entity**: Adatbázisban tárolt **model**.
-- **Seeder**: Olyan osztály, amely az adatbázisba hoz létre előre meghatározott paraméterek alapján **entity**-ket. Általában **ConsoleCommand**-on vagy **StartupAction**-on keresztül.
+*A tervezett funkciók sorrendje megegyezik a prioritási sorrendjükkel.*
+
+## Rövid háttértörténet
+
+A LovassyApp fejlesztését eredetileg [Gyimesi Máté](https://github.com/minigyima) és [Ocskó Nándor](https://github.com/Xeretis) kezdte el a covid okozta karantén alatt (bár az ötlet már hamarabb megvolt). Eredetileg a KRÉTA API-t használva működött a jegyek importálása, de sajnos a fejlesztés során kiderült, hogy a KRÉTA ezt nem engedélyezi. Egy hosszabb szünet után a 2022/2023-as tanév elején sikerült előállnunk egy alternatív megoldással a jegyek importálására, így a projekt folytatódott. A 2022/2023-as tanév vége felé úgy döntöttünk, hogy bővítjük a projekt célkitűzéseit és ezzel egyetemben újra is írjuk a már meglévő rendszert, és ez a Blueboard v4 valamint a Backboard v2 és a Boardlight v2 (azaz ami ebben a repoban van). 
+
+## A fejlesztéshez csatlakozni kívánóknak
+
+*Minden kontribúciónak örülünk, amennyiben nem tudod hogy miben tudsz segíteni, de szeretnél, csak keress meg minket Messengeren (Ocskó Nándor vagy Gyimesi Máté).*
+
+### A LovassyApp részei
+
+- **Blueboard**: A LovassyApp backend-je, [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0) keretrendszerben íródott.
+- **Boardlight**: A LovassyApp diákoknak szánt frontend-je, [React](https://react.dev/) keretrendszerben íródott.
+- **Backboard**: A LovassyApp iskolavezetőségnek szánt asztali frontend-je, [Tauri](https://tauri.studio/) és [React](https://react.dev/) keretrendszerben íródott.
+
+![LovassyAppDiagram.png](.github/LovassyAppDiagram.png)
+
+### Futtatás lokálisan
+
+#### Blueboard
+
+A Blueboard futtatásához szükséges a [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0). Amennyiben ez megvan ajánlott a `LovassyApp.sln` fájlt egy választott fejlesztői környezetben megnyitni és a solutionben található futási konfigurációt használni.
+
+Alternatív módon a `dotnet restore` parancs futtatása után a `Blueboard` mappában futtatható `dotnet run` parancs, amennyiben a .NET 7 SDK telepítve van.
+
+**Fontos**: Futás előtt globálisan állítsd be a `ASPNETCORE_ENVIRONMENT=development` env változót máskülönben a build lépés egy hibát fog dobni.
+
+#### Boardlight
+
+*A boardlight újraírása még nem kezdődött el, ez a szekció frissítve lesz amikor elkezdődik.*
+
+#### Backboard
+
+A Backboard futtatásához szükséges a [Node.js](https://nodejs.org/en/), a [Rust](https://www.rust-lang.org/) és a [pnpm](https://pnpm.io/) telepítése. Amennyiben ez megvan ajánlott a `backboard` mappában a `pnpm install` parancs után a `pnpm tauri dev` parancs futtatása.
