@@ -35,7 +35,7 @@ public static class IndexUsers
         public async Task<IEnumerable<Response>> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            var users = _context.Users;
+            var users = _context.Users.Where(u => u.EmailVerifiedAt != null).AsNoTracking();
 
             var filteredUsers = await _sieveProcessor.Apply(request.SieveModel, users).ToListAsync(cancellationToken);
 

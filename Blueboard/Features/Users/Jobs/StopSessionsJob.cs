@@ -18,12 +18,14 @@ public class StopSessionsJob : IJob
     public async Task Execute(IJobExecutionContext context)
     {
         var tokens =
-            JsonSerializer.Deserialize<IEnumerable<string>>((context.MergedJobDataMap.Get("tokensJson") as string)!);
+            JsonSerializer.Deserialize<IEnumerable<string>>((context.MergedJobDataMap.Get("tokensJson") as string)!)!
+                .ToArray();
 
         foreach (var token in tokens!) _sessionService.StopSession(token);
 
         //TODO: Send out a notification to the user that they have been kicked
 
-        _logger.LogInformation($"Stopped sessions belonging to {tokens.Count()} tokens, due to users being kicked");
+        _logger.LogInformation("Stopped sessions belonging to {Count} tokens, due to users being kicked",
+            tokens.Count());
     }
 }
