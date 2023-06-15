@@ -83,4 +83,18 @@ public class ProductsController : ApiControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("Buy/{id}")]
+    [Permissions(typeof(ShopPermissions.BuyProduct))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Buy([FromRoute] int id)
+    {
+        await Mediator.Send(new BuyProduct.Command
+        {
+            ProductId = id
+        });
+
+        return NoContent();
+    }
 }

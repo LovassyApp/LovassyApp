@@ -1,4 +1,5 @@
 using Blueboard.Core.Auth.Services;
+using Blueboard.Core.Lolo.Exceptions;
 using Blueboard.Core.Lolo.Services.Options;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
@@ -65,6 +66,43 @@ public class LoloManager
         }
 
         Balance = Coins.Count(c => !c.IsSpent);
+    }
+
+    /// <summary>
+    ///     Spends a given amount of lolo coins.
+    /// </summary>
+    /// <param name="amount">How many coins to spend.</param>
+    /// <param name="updateManager">
+    ///     Whether to update the <see cref="Coins" /> and <see cref="Balance" /> properties of the
+    ///     <see cref="LoloManager" />.
+    /// </param>
+    /// <exception cref="InsufficientFundsException">The exception thrown when the current user doesn't have enough lolo coins.</exception>
+    public async Task SpendAsync(int amount, bool updateManager = true)
+    {
+        if ((bool?)_memoryCache.Get(_loloOptions.LoloManagerLockPrefix + _userId) == true)
+            return;
+
+        _memoryCache.Set(_loloOptions.LoloManagerLockPrefix + _userId, true, TimeSpan.FromSeconds(10));
+
+        if (_userId == null)
+            Init();
+
+        var coins = await _context.Lolos.Where(l => l.UserId == _userId && !l.IsSpent)
+            .Take(amount)
+            .ToListAsync();
+
+        if (coins.Count < amount)
+            throw new InsufficientFundsException();
+
+        foreach (var coin in coins)
+            coin.IsSpent = true;
+
+        await _context.SaveChangesAsync();
+
+        if (updateManager)
+            await LoadAsync();
+
+        _memoryCache.Remove(_loloOptions.LoloManagerLockPrefix + _userId);
     }
 
     /// <summary>
