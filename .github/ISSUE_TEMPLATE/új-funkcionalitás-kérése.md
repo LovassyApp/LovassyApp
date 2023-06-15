@@ -1,7 +1,7 @@
 ---
 name: Új funkcionalitás kérése
 about: Ha van valami ötleted, hogy milyen új dologgal bővíthetnénk a LovassyAppot
-  akkor így jelezd.
+  akkor így jelezd
 title: ''
 labels: ''
 assignees: ''
