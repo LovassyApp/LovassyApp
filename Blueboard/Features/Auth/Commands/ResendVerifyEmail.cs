@@ -32,14 +32,12 @@ public static class ResendVerifyEmail
             var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
             var sendVerifyEmailJob = JobBuilder.Create<SendVerifyEmailJob>()
-                .WithIdentity("sendVerifyEmail", "userCreatedJobs")
                 .UsingJobData("userJson", JsonSerializer.Serialize(user))
                 .UsingJobData("verifyUrl", request.VerifyUrl)
                 .UsingJobData("verifyTokenQueryKey", request.VerifyTokenQueryKey)
                 .Build();
 
             var sendVerifyEmailTrigger = TriggerBuilder.Create()
-                .WithIdentity("sendVerifyEmailTrigger", "userCreatedJobs")
                 .StartNow()
                 .Build();
 

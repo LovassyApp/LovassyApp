@@ -60,14 +60,12 @@ public static class SendPasswordReset
             var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
             var sendPasswordResetJob = JobBuilder.Create<SendPasswordResetJob>()
-                .WithIdentity("sendPasswordReset", "generalAuthJobs")
                 .UsingJobData("userJson", JsonSerializer.Serialize(user))
                 .UsingJobData("passwordResetUrl", request.PasswordResetUrl)
                 .UsingJobData("passwordResetTokenQueryKey", request.PasswordResetTokenQueryKey)
                 .Build();
 
             var sendPasswordResetTrigger = TriggerBuilder.Create()
-                .WithIdentity("sendPasswordReset", "generalAuthJobs")
                 .StartNow()
                 .Build();
 

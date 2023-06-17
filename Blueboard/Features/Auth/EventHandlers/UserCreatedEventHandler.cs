@@ -20,14 +20,12 @@ public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
         var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
         var sendVerifyEmailJob = JobBuilder.Create<SendVerifyEmailJob>()
-            .WithIdentity("sendVerifyEmail", "userCreatedJobs")
             .UsingJobData("userJson", JsonSerializer.Serialize(notification.User))
             .UsingJobData("verifyUrl", notification.VerifyUrl)
             .UsingJobData("verifyTokenQueryKey", notification.VerifyTokenQueryKey)
             .Build();
 
         var sendVerifyEmailTrigger = TriggerBuilder.Create()
-            .WithIdentity("sendVerifyEmailTrigger", "userCreatedJobs")
             .StartNow()
             .Build();
 

@@ -43,11 +43,11 @@ public static class KickUser
 
             var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
-            var kickUsersJob = JobBuilder.Create<KickUsersJob>().WithIdentity("kickUsers", "userKickedJobs")
+            var kickUsersJob = JobBuilder.Create<KickUsersJob>()
                 .UsingJobData("tokensJson", JsonSerializer.Serialize(user.PersonalAccessTokens.Select(t => t.Token)))
                 .Build();
 
-            var kickUsersTrigger = TriggerBuilder.Create().WithIdentity("kickUsersTrigger", "userKickedJobs")
+            var kickUsersTrigger = TriggerBuilder.Create()
                 .StartNow().Build();
 
             await scheduler.ScheduleJob(kickUsersJob, kickUsersTrigger, cancellationToken);

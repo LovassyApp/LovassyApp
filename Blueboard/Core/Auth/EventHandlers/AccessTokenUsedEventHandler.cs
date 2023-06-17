@@ -17,17 +17,15 @@ public class AccessTokenUsedEventHandler : INotificationHandler<AccessTokenUsedE
 
     public async Task Handle(AccessTokenUsedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await _schedulerFactory.GetScheduler();
+        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
         var updateTokenLastUsedAtJob = JobBuilder.Create<UpdateTokenLastUsedAtJob>()
-            .WithIdentity("updateTokenLastUsedAtJob", "onTokenUsedJobs")
             .UsingJobData("id", notification.AccessToken.Id)
             .UsingJobData("lastUsedAt",
                 DateTime.Now.ToString(CultureInfo.InvariantCulture)) // It gets converted to utc in the job
             .Build();
 
         var updateTokenLastUsedAtTrigger = TriggerBuilder.Create()
-            .WithIdentity("updateTokenLastUsedAtTrigger", "onTokenUsedJobs")
             .StartNow()
             .Build();
 

@@ -38,11 +38,11 @@ public static class KickAllUsers
             var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
             //Schedule a job because it could take some time to hash all the tokens and check them against the SessionService
-            var kickUsersJob = JobBuilder.Create<KickUsersJob>().WithIdentity("kickUsers", "userKickedJobs")
+            var kickUsersJob = JobBuilder.Create<KickUsersJob>()
                 .UsingJobData("tokensJson", JsonSerializer.Serialize(personalAccessTokens.Select(t => t.Token)))
                 .Build();
 
-            var kickUsersTrigger = TriggerBuilder.Create().WithIdentity("kickUsersTrigger", "userKickedJobs")
+            var kickUsersTrigger = TriggerBuilder.Create()
                 .StartNow()
                 .Build();
 

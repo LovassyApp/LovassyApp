@@ -21,8 +21,11 @@ public class SessionCreatedEventHandler : INotificationHandler<SessionCreatedEve
     {
         var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
+        // We need this because we want to be able to concurrently run the same job
+        var idSalt = Guid.NewGuid().ToString();
+
         var updateGradesJob = JobBuilder.Create<UpdateGradesJob>()
-            .WithIdentity("updateGrades", "sessionCreatedJobs")
+            .WithIdentity("updateGrades" + idSalt, "sessionCreatedJobs")
             .UsingJobData("userJson", JsonSerializer.Serialize(notification.User))
             .UsingJobData("masterKey", notification.MasterKey)
             .Build();
@@ -32,7 +35,7 @@ public class SessionCreatedEventHandler : INotificationHandler<SessionCreatedEve
             .Build();
 
         var updateLolosJob = JobBuilder.Create<UpdateLolosJob>()
-            .WithIdentity("updateLolos", "sessionCreatedJobs")
+            .WithIdentity("updateLolos" + idSalt, "sessionCreatedJobs")
             .UsingJobData("userJson", JsonSerializer.Serialize(notification.User))
             .UsingJobData("masterKey", notification.MasterKey)
             .Build();
