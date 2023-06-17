@@ -50,6 +50,8 @@ A Blueboard futtatásához szükséges a [.NET 7 SDK](https://dotnet.microsoft.c
 
 Alternatív módon a `dotnet restore` parancs futtatása után a `Blueboard` mappában futtatható `dotnet run` parancs, amennyiben a .NET 7 SDK telepítve van.
 
+Az első indítás előtt konfigurálj lokálisan egy postgres adatbázist a `Blueboard/appsettings.Development.json`-ban található `ConnectionStrings:DefaultConnection` connection string alapján (saját értéket is beállíthatsz itt és azt is használhatod, csak ne commitold). Ez után futtasd az adatbázis migrációkat a `dotnet ef database update` paranccsal a `Blueboard` mappában.
+
 **Fontos**: Futás előtt globálisan állítsd be a `ASPNETCORE_ENVIRONMENT=development` env változót máskülönben a build lépés egy hibát fog dobni.
 
 #### Boardlight
@@ -58,4 +60,4 @@ Alternatív módon a `dotnet restore` parancs futtatása után a `Blueboard` map
 
 #### Backboard
 
-A Backboard futtatásához szükséges a [Node.js](https://nodejs.org/en/), a [Rust](https://www.rust-lang.org/) és a [pnpm](https://pnpm.io/) telepítése. Amennyiben ez megvan ajánlott a `backboard` mappában a `pnpm install` parancs után a `pnpm tauri dev` parancs futtatása.
+A Backboard futtatásához szükséges a [Node.js](https://nodejs.org/en/), a [Rust](https://www.rust-lang.org/) és a [pnpm](https://pnpm.io/) telepítése. Amennyiben ez megvan ajánlott a `Backboard` mappában a `pnpm install` parancs után a `pnpm tauri dev` parancs futtatása.

@@ -166,4 +166,18 @@ public class ShopPermissions
         public string DisplayName { get; } = "Termék vásárlása";
         public string Description { get; } = "Egy adott (csak látható) termék vásárlása id alapján";
     }
+
+    public class IndexOwnedItems : IPermission
+    {
+        public string Name { get; } = "Shop.IndexOwnedItems";
+        public string DisplayName { get; } = "Birtokolt termékek lekérése";
+        public string Description { get; } = "Az összes (valaki által) birtokolt termék lekérése és listázása";
+    }
+
+    public class IndexOwnOwnedItems : IPermission
+    {
+        public string Name { get; } = "Shop.IndexOwnOwnedItems";
+        public string DisplayName { get; } = "Saját birtokolt termékek lekérése";
+        public string Description { get; } = "Az összes saját birtokolt termék lekérése és listázása";
+    }
 }
