@@ -17,4 +17,7 @@ public interface IPermission
 
     [Sieve(CanFilter = true, CanSort = true)]
     public string Description { get; }
+
+    [Sieve(CanFilter = true, CanSort = true)]
+    public bool Dangerous { get; }
 }

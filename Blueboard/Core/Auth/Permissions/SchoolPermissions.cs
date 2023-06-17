@@ -9,5 +9,6 @@ public static class SchoolPermissions
         public string Name { get; } = "School.IndexGrades";
         public string DisplayName { get; } = "Jegyek lekérése";
         public string Description { get; } = "Saját jegyek lekérése és listázása";
+        public bool Dangerous { get; } = false;
     }
 }

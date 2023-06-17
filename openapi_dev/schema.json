@@ -1365,7 +1365,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnedItems",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnedItems<br><b>Requires the following features to be enabled</b>: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -1447,7 +1447,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnOwnedItems",
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnOwnedItems<br><b>Requires the following features to be enabled</b>: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -2956,6 +2956,9 @@
           "description": {
             "type": "string",
             "nullable": true
+          },
+          "dangerous": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
