@@ -1,0 +1,19 @@
+@using Helpers.Email.Views.Shared
+@model Helpers.Email.Views.Emails.VerifyEmail.VerifyEmailViewModel
+
+@{
+    ViewData["EmailTitle"] = "Email megerősítése";
+}
+
+<p>
+    Örülünk, hogy regisztráltál! Kérlek az alábbi gombra kattintva erősítsd meg az email címedet:
+</p>
+
+@await Html.PartialAsync("EmailButton", new EmailButtonViewModel { Text = "E-mail megerősítése", Url = Model.VerifyEmailUrl })
+
+<p>
+    Amennyiben nem te regisztráltál a LovassyAppra, kérlek hagyd figyelmen kívül ezt az emailt!
+</p>
+<br>
+<p>Üdvözlettel:</p>
+<p>A LovasssyApp csapata</p>

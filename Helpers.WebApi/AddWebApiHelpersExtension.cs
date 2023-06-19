@@ -21,7 +21,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Helpers.WebApi;
 
-public static class AddFrameworkHelpersExtension
+public static class AddWebApiHelpersExtension
 {
     /// <summary>
     ///     Adds all framework helpers to the service collection. Automatically discovers all commands, lifetime actions and
@@ -31,7 +31,7 @@ public static class AddFrameworkHelpersExtension
     /// <param name="configuration">The app configuration.</param>
     /// <param name="assembly">The app assembly.</param>
     /// <param name="frameworkHelpersConfiguration">The configuration for the helper itself.</param>
-    public static void AddFrameworkHelpers(this IServiceCollection services, IConfiguration configuration,
+    public static void AddWebApiHelpers(this IServiceCollection services, IConfiguration configuration,
         Assembly assembly, FrameworkHelpersConfiguration? frameworkHelpersConfiguration = null)
     {
         frameworkHelpersConfiguration ??= new FrameworkHelpersConfiguration();
@@ -72,14 +72,6 @@ public static class AddFrameworkHelpersExtension
                 c.AddSecurityDefinition(securityScheme.Key, securityScheme.Value);
         });
         services.AddFluentValidationRulesToSwagger();
-
-        // FluentEmail
-        services
-            .AddFluentEmail(configuration.GetValue<string>("Email:From"))
-            .AddSmtpSender(configuration.GetValue<string>("Email:Host"),
-                configuration.GetValue<int>("Email:Port"), configuration.GetValue<string>("Email:Username"),
-                configuration.GetValue<string>("Email:Password"))
-            .AddRazorRenderer();
 
         // Scheduler
         services.AddQuartz(q => { q.UseMicrosoftDependencyInjectionJobFactory(); });

@@ -1,4 +1,4 @@
-namespace Blueboard.Core.Email.Shared;
+namespace Helpers.Email.Views.Shared;
 
 public class EmailButtonViewModel
 {

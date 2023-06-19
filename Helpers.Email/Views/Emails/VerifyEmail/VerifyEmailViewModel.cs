@@ -1,4 +1,4 @@
-namespace Blueboard.Features.Auth.Emails;
+namespace Helpers.Email.Views.Emails.VerifyEmail;
 
 public class VerifyEmailViewModel
 {

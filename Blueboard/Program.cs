@@ -7,6 +7,7 @@ using Blueboard.Core.Lolo;
 using Blueboard.Features;
 using Blueboard.Infrastructure;
 using Helpers.Cryptography;
+using Helpers.Email;
 using Helpers.WebApi;
 using Helpers.WebApi.Extensions;
 using Helpers.WebApi.Filters;
@@ -17,7 +18,7 @@ using Prometheus;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddFrameworkHelpers(builder.Configuration, Assembly.GetExecutingAssembly(),
+builder.Services.AddWebApiHelpers(builder.Configuration, Assembly.GetExecutingAssembly(),
     new FrameworkHelpersConfiguration
     {
         ApiName = "Blueboard",
@@ -47,6 +48,7 @@ builder.Services.AddFrameworkHelpers(builder.Configuration, Assembly.GetExecutin
         FeatureGroupClaim = AuthConstants.FeatureGroupClaim,
         FeatureUserClaim = AuthConstants.FeatureUserClaim
     });
+builder.Services.AddEmailHelpers(builder.Configuration);
 builder.Services.AddCryptographyHelpers(builder.Configuration);
 
 builder.Services.AddInfrastructure(builder.Configuration);

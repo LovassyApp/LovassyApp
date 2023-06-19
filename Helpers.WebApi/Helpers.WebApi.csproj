@@ -7,8 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
-        <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
         <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />

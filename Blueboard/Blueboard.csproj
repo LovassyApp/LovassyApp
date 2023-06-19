@@ -7,34 +7,42 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="34.0.2" />
-        <PackageReference Include="EFCore.BulkExtensions" Version="7.1.2" />
-        <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.9.2" />
-        <PackageReference Include="HtmlSanitizer" Version="8.0.645" />
-        <PackageReference Include="Mapster" Version="7.3.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+        <PackageReference Include="Bogus" Version="34.0.2"/>
+        <PackageReference Include="EFCore.BulkExtensions" Version="7.1.2"/>
+        <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.9.2"/>
+        <PackageReference Include="HtmlSanitizer" Version="8.0.645"/>
+        <PackageReference Include="Mapster" Version="7.3.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.3" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
-        <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0" />
+        <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.3"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4"/>
+        <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Features\Status\Services\" />
-        <Folder Include="Infrastructure\Persistence\Migrations\" />
+        <Folder Include="Core\Email\"/>
+        <Folder Include="Features\Status\Services\"/>
+        <Folder Include="Infrastructure\Persistence\Migrations\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Helpers.WebApi\Helpers.WebApi.csproj" />
-        <ProjectReference Include="..\Helpers.Cryptography\Helpers.Cryptography.csproj" />
+        <ProjectReference Include="..\Helpers.Email\Helpers.Email.csproj"/>
+        <ProjectReference Include="..\Helpers.WebApi\Helpers.WebApi.csproj"/>
+        <ProjectReference Include="..\Helpers.Cryptography\Helpers.Cryptography.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Core\Email\Shared\EmailButton.cshtml"/>
+        <_ContentIncludedByDefault Remove="Core\Email\Shared\EmailLayout.cshtml"/>
+        <_ContentIncludedByDefault Remove="Features\Auth\Emails\VerifyEmail.cshtml"/>
     </ItemGroup>
 
     <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
-        <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)" />
-        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+        <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)"/>
+        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)"/>
     </Target>
 
 </Project>
