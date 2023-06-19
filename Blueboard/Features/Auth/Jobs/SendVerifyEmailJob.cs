@@ -30,7 +30,7 @@ public class SendVerifyEmailJob : IJob
 
         var verifyToken = _verifyEmailService.GenerateVerifyToken(user!.Id);
 
-        var email = _fluentEmail.To(user.Email).Subject("Verify Email").Body(
+        var email = _fluentEmail.To(user.Email).Subject("Email megerősítése").Body(
             await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/VerifyEmail/VerifyEmail.cshtml",
                 new VerifyEmailViewModel
                 {
