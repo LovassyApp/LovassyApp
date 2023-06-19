@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Blueboard.Features.Auth.Emails;
 using Blueboard.Features.Auth.Services;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentEmail.Core;
@@ -25,8 +26,10 @@ public class SendVerifyEmailJob : IJob
 
         var verifyToken = _verifyEmailService.GenerateVerifyToken(user!.Id);
 
-        var email = _fluentEmail.To(user.Email).Subject("Verify Email").Body(
-            $"Please verify your email at: {verifyUrl}?{verifyTokenQueryKey}={verifyToken}");
+        var email = _fluentEmail.To(user.Email).Subject("Verify Email").UsingTemplateFromFile(
+            $"{Directory.GetCurrentDirectory()}/Features/Auth/Emails/VerifyEmail.cshtml", new VerifyEmailViewModel {
+                VerifyEmailUrl = $"{verifyUrl}?{verifyTokenQueryKey}={verifyToken}"
+            });
         //TODO: Make an email template in razor and use that
 
         await email.SendAsync();

@@ -1,0 +1,19 @@
+@using Blueboard.Core.Email.Shared
+@model Blueboard.Features.Auth.Emails.VerifyEmailViewModel
+
+@{
+    Layout = "EmailLayout.cshtml";
+    ViewData["EmailTitle"] = "Email megerősítése";
+}
+
+<p>
+    Kérlek az alábbi gombra kattintva erősítsd meg az email címedet!
+</p>
+
+@await Html.PartialAsync("EmailButton", new EmailButtonViewModel { Text = "E-mail megerősítése", Url = Model.VerifyEmailUrl })
+
+<p>
+    Amennyiben nem te regisztráltál a LovassyAppra, kérlek hagyd figyelmen kívül ezt az e-mailt!
+</p>
+<br>
+<p>A LovasssyApp csapata</p>

@@ -1,0 +1,19 @@
+@model Blueboard.Core.Email.Shared.EmailButtonViewModel
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 20px 30px;">
+            <table border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td align="center" style="border-radius: 4px;" bgcolor="#228be6">
+                        <a href="@Model.Url" target="_blank" style="width: auto; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji; color: #ffffff; text-decoration: none; padding: 0px 18px; border-radius: 2px; height: 32px; display: inline-block;">
+                            <div style="display: flex; height: 100%; justify-content: center; align-items: center; font-weight: 600; line-height: 1">
+                                @Model.Text
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
