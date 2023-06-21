@@ -1,6 +1,7 @@
 using Blueboard.Core.Auth.Permissions;
 using Blueboard.Core.Auth.Policies.EmailConfirmed;
 using Blueboard.Core.Auth.Policies.Permissions;
+using Blueboard.Features.Shop.Commands;
 using Blueboard.Features.Shop.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
@@ -53,5 +54,27 @@ public class OwnedItemsController : ApiControllerBase
         var response = await Mediator.Send(new ViewOwnedItem.Query { Id = id });
 
         return Ok(response);
+    }
+
+    [HttpPost]
+    [Permissions(typeof(ShopPermissions.CreateOwnedItem))]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<CreateOwnedItem.Response>> Create([FromBody] CreateOwnedItem.RequestBody body)
+    {
+        var response = await Mediator.Send(new CreateOwnedItem.Command { Body = body });
+
+        return CreatedAtAction(nameof(View), new { id = response.Id }, response);
+    }
+
+    [HttpPatch("{id}")]
+    [Permissions(typeof(ShopPermissions.UpdateOwnedItem))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Update([FromRoute] int id,
+        [FromBody] UpdateOwnedItem.RequestBody body)
+    {
+        await Mediator.Send(new UpdateOwnedItem.Command { Id = id, Body = body });
+
+        return NoContent();
     }
 }

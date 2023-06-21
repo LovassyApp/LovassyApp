@@ -50,7 +50,7 @@ public class ImportKeysController : ApiControllerBase
             Body = body
         });
 
-        return Created(nameof(View), response);
+        return CreatedAtAction(nameof(View), new { id = response.Id }, response);
     }
 
     [HttpPatch("{id}")]

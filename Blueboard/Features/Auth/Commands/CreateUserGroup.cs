@@ -15,6 +15,13 @@ public static class CreateUserGroup
         public RequestBody Body { get; set; }
     }
 
+    public class Response
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string[] Permissions { get; set; }
+    }
+
     public class RequestBody
     {
         public string Name { get; set; }
@@ -36,12 +43,6 @@ public static class CreateUserGroup
 
             return permissions.All(permission => PermissionUtils.Permissions.Select(p => p.Name).Contains(permission));
         }
-    }
-
-    public class Response
-    {
-        public string Name { get; set; }
-        public string[] Permissions { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Command, Response>

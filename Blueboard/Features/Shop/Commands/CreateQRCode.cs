@@ -14,6 +14,13 @@ public static class CreateQRCode
         public RequestBody Body { get; set; }
     }
 
+    public class Response
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+    }
+
     public class RequestBody
     {
         public string Name { get; set; }
@@ -27,12 +34,6 @@ public static class CreateQRCode
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(255);
         }
-    }
-
-    public class Response
-    {
-        public string Name { get; set; }
-        public string Email { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Command, Response>

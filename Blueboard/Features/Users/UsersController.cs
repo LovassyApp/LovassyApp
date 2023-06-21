@@ -48,7 +48,7 @@ public class UsersController : ApiControllerBase
         var response = await Mediator.Send(new CreateUser.Command
             { Body = body, VerifyUrl = verifyUrl, VerifyTokenQueryKey = verifyTokenQueryKey });
 
-        return Created(nameof(View), response);
+        return CreatedAtAction(nameof(View), new { id = response.Id }, response);
     }
 
     [HttpPatch("{id}")]

@@ -18,6 +18,8 @@ public static class CreateProduct
 
     public class Response
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public string RichTextContent { get; set; }
