@@ -43,4 +43,15 @@ public class OwnedItemsController : ApiControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("{id}")]
+    [Permissions(typeof(ShopPermissions.ViewOwnedItem), typeof(ShopPermissions.ViewOwnOwnedItem))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ViewOwnedItem.Response>> View([FromRoute] int id)
+    {
+        var response = await Mediator.Send(new ViewOwnedItem.Query { Id = id });
+
+        return Ok(response);
+    }
 }

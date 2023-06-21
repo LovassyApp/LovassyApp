@@ -195,7 +195,7 @@ public class ShopPermissions
     {
         public string Name { get; } = "Shop.IndexOwnedItems";
         public string DisplayName { get; } = "Birtokolt termékek lekérése";
-        public string Description { get; } = "Az összes (valaki által) birtokolt termék lekérése és listázása";
+        public string Description { get; } = "Az összes (bárki által) birtokolt termék lekérése és listázása";
         public bool Dangerous { get; } = false;
     }
 
@@ -204,6 +204,25 @@ public class ShopPermissions
         public string Name { get; } = "Shop.IndexOwnOwnedItems";
         public string DisplayName { get; } = "Saját birtokolt termékek lekérése";
         public string Description { get; } = "Az összes saját birtokolt termék lekérése és listázása";
+        public bool Dangerous { get; } = false;
+    }
+
+    public class ViewOwnedItem : IPermission
+    {
+        public string Name { get; } = "Shop.ViewOwnedItem";
+        public string DisplayName { get; } = "Birtokolt termék megtekintése";
+
+        public string Description { get; } =
+            "Egy adott (bárki által) birtokolt termék lekérése és megtekintése id alapján";
+
+        public bool Dangerous { get; } = false;
+    }
+
+    public class ViewOwnOwnedItem : IPermission
+    {
+        public string Name { get; } = "Shop.ViewOwnOwnedItem";
+        public string DisplayName { get; } = "Saját birtokolt termék megtekintése";
+        public string Description { get; } = "Egy adott saját birtokolt termék lekérése és megtekintése id alapján";
         public bool Dangerous { get; } = false;
     }
 }

@@ -30,7 +30,7 @@ public class SendPasswordResetJob : IJob
 
         var passwordResetToken = _passwordResetService.GeneratePasswordResetToken(user!.Id);
 
-        var email = _fluentEmail.To(user.Email).Subject("Reset Password").Body(
+        var email = _fluentEmail.To(user.Email).Subject("Jelszó visszaállítása").Body(
             await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/PasswordReset/PasswordReset.cshtml",
                 new PasswordResetViewModel
                 {
