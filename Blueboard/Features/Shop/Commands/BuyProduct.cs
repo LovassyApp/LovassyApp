@@ -55,7 +55,9 @@ public static class BuyProduct
                     {
                         UserId = _userAccessor.User.Id,
                         ProductId = product.Id,
-                        Reason = "Bazárban vásárolva"
+                        LolosSpent =
+                            product.Price, // We don't want to trust the price from the product because it can change
+                        Reason = $"Bazárban vásárolva - {product.Name}"
                     }
                 };
 

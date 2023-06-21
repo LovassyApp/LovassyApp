@@ -15,7 +15,7 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230604153800_Initial")]
+    [Migration("20230621141534_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -455,11 +455,15 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("LolosSpent")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("OwnedItemId")
                         .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("Reason")
@@ -718,7 +722,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.Product", "Product")
                         .WithMany("StoreHistories")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
