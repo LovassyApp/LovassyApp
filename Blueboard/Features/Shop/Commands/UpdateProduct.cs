@@ -2,6 +2,7 @@ using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Blueboard.Infrastructure.Persistence.Entities.Owned;
 using FluentValidation;
+using Ganss.Xss;
 using Helpers.WebApi.Exceptions;
 using Mapster;
 using MediatR;
@@ -104,6 +105,9 @@ public static class UpdateProduct
                 throw new NotFoundException(nameof(Product), request.Id);
 
             request.Body.Adapt(product);
+
+            var htmlSanitizer = new HtmlSanitizer();
+            product.RichTextContent = htmlSanitizer.Sanitize(request.Body.RichTextContent);
 
             // Remove qr codes that are not in the new list
             var qrCodesToRemove = product.QRCodes.Where(c => !request.Body.QRCodes.Contains(c.Id)).ToList();
