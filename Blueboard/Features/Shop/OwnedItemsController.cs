@@ -77,4 +77,15 @@ public class OwnedItemsController : ApiControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    [Permissions(typeof(ShopPermissions.DeleteOwnedItem), typeof(ShopPermissions.DeleteOwnOwnedItem))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        await Mediator.Send(new DeleteOwnedItem.Command { Id = id });
+
+        return NoContent();
+    }
 }

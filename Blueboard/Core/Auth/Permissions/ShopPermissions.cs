@@ -241,4 +241,20 @@ public class ShopPermissions
         public string Description { get; } = "Egy adott (bárki által) birtokolt termék módosítása id alapján";
         public bool Dangerous { get; } = true;
     }
+
+    public class DeleteOwnedItem : IPermission
+    {
+        public string Name { get; } = "Shop.DeleteOwnedItem";
+        public string DisplayName { get; } = "Birtokolt termék törlése";
+        public string Description { get; } = "Egy adott (bárki által) birtokolt termék törlése id alapján";
+        public bool Dangerous { get; } = true;
+    }
+
+    public class DeleteOwnOwnedItem : IPermission
+    {
+        public string Name { get; } = "Shop.DeleteOwnOwnedItem";
+        public string DisplayName { get; } = "Saját birtokolt termék törlése";
+        public string Description { get; } = "Egy adott saját birtokolt termék törlése id alapján";
+        public bool Dangerous { get; } = false;
+    }
 }
