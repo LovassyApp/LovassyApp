@@ -69,9 +69,9 @@ public static class CreateOwnedItem
             _context = context;
 
             RuleFor(x => x.UserId).NotEmpty().MustAsync(BeExistingUserAsync)
-                .WithMessage("No user with exists with the given id");
+                .WithMessage("Nem létezik felhasználó a megadott azonosítóval");
             RuleFor(x => x.ProductId).NotEmpty().MustAsync(BeExistingProductAsync)
-                .WithMessage("No product with exists with the given id");
+                .WithMessage("Nem létezik termék a megadott azonosítóval");
         }
 
         private async Task<bool> BeExistingUserAsync(Guid userId, CancellationToken cancellationToken)

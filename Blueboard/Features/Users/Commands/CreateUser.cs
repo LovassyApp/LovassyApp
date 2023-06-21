@@ -54,15 +54,16 @@ public static class CreateUser
             _hashService = hashService;
 
             RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(255)
-                .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'")
-                .MustAsync(BeUniqueEmailAsync).WithMessage("The email is already in use");
+                .Must(EndWithAllowedDomainEmail)
+                .WithMessage("Az email cím '@lovassy.edu.hu'-ra kell hogy végződjön.")
+                .MustAsync(BeUniqueEmailAsync).WithMessage("Az email cím már használatban van.");
             RuleFor(x => x.Password).NotEmpty()
                 .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$").WithMessage(
-                    "The password must contain at least one uppercase letter, lower case letter, number and must be at least 8 characters long");
+                    "A jelszónak legalább 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy kisbetűt, egy nagybetűt és egy számot.");
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.OmCode).NotEmpty()
-                .MustAsync(BeUniqueOmCodeAsync).WithMessage("The om code is already in use")
-                .Matches(@"^\d{11}$").WithMessage("The om code must be 11 digits long and contain only numbers");
+                .MustAsync(BeUniqueOmCodeAsync).WithMessage("Az OM azonosító már használatban van.")
+                .Matches(@"^\d{11}$").WithMessage("Az OM azonosítónak 11 számjegyből kell állnia.");
         }
 
         private bool EndWithAllowedDomainEmail(RequestBody model, string email)
@@ -103,7 +104,8 @@ public static class CreateUser
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             if (!_resetService.IsResetKeyPasswordSet())
-                throw new UnavailableException("Reset key password is not yet set");
+                throw new UnavailableException(
+                    "A visszaállítási jelszó a LovassyApp legutóbbi újraindítása óta még nem lett beállítva.");
 
             var masterKeySalt = _hashService.GenerateSalt();
             var masterKey = new EncryptableKey();

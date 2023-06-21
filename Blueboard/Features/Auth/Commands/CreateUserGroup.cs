@@ -34,12 +34,14 @@ public static class CreateUserGroup
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Permissions).NotNull().Must(BeExistingPermissions)
-                .WithMessage("The provided permissions are not all valid");
+                .WithMessage("A megadott jogosultságok közül legalább egy nem létezik.");
         }
 
         private bool BeExistingPermissions(RequestBody model, string[] permissions)
         {
-            if (PermissionUtils.Permissions == null) throw new UnavailableException("Permissions are not yet loaded");
+            if (PermissionUtils.Permissions == null)
+                throw new UnavailableException(
+                    "A jogosultságok még nincsenek betöltve. (Ennek nem kéne megtörténnie, kérlek jelezd a hibát a fejlesztőknek)");
 
             return permissions.All(permission => PermissionUtils.Permissions.Select(p => p.Name).Contains(permission));
         }

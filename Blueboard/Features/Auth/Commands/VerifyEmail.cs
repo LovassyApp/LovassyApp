@@ -28,7 +28,7 @@ public static class VerifyEmail
             var tokenContents = _verifyEmailService.DecryptVerifyToken(request.VerifyToken);
 
             if (tokenContents == null)
-                throw new BadRequestException("Invalid verify token");
+                throw new BadRequestException("Hibás verify token");
 
             var user = await _context.Users.FindAsync(tokenContents.UserId, cancellationToken);
 
@@ -36,7 +36,7 @@ public static class VerifyEmail
                 throw new NotFoundException();
 
             if (user.EmailVerifiedAt != null)
-                throw new BadRequestException("Email already verified");
+                throw new BadRequestException("Ez a felhasználó már megerősítette az email címét.");
 
             user.EmailVerifiedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync(cancellationToken);

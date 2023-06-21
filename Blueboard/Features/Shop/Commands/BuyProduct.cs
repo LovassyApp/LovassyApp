@@ -36,9 +36,10 @@ public static class BuyProduct
 
             await _loloManager.LoadAsync();
 
-            if (product.Quantity < 1) throw new BadRequestException("Product is out of stock");
+            if (product.Quantity < 1) throw new BadRequestException("A termék elfogyott.");
 
-            if (_loloManager.Balance < product.Price) throw new BadRequestException("Insufficient funds");
+            if (_loloManager.Balance < product.Price)
+                throw new BadRequestException("Nincs elég lolód a termék megvásárlásához.");
 
             var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 
@@ -67,7 +68,7 @@ public static class BuyProduct
             }
             catch (InsufficientFundsException)
             {
-                throw new BadRequestException("Insufficient funds");
+                throw new BadRequestException("Nincs elég lolód a termék megvásárlásához.");
             }
 
             //TODO: Send notification to user about a new owned item and to all users about the quantity update

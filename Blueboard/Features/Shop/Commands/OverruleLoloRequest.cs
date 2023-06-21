@@ -49,7 +49,7 @@ public static class OverruleLoloRequest
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
 
             if (loloRequest.AcceptedAt != null || loloRequest.DeniedAt != null)
-                throw new BadRequestException("This request has already been handled");
+                throw new BadRequestException("Ez a kérvény már el lett fogadva vagy el lett utasítva.");
 
             if (request.Body.Accepted)
             {

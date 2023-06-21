@@ -53,7 +53,7 @@ public static class ViewQRCode
                 Secret = qrcode.Secret
             }), QrCode.Ecc.Medium).ToSvgString(1);
 
-            //Example of using this on the frontend: <img src={`data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(imageSvg)))}`} />
+            // Example of using this on the frontend: <img src={`data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(imageSvg)))}`} />
             // /\ Kind of disgusting, but I tried to find a better way and couldn't
             response.ImageSvg = svgString.Substring(svgString.IndexOf("<svg", StringComparison.Ordinal))
                 .Replace("\n", "").Replace("\t", "");

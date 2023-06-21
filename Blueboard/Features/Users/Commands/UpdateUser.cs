@@ -35,10 +35,11 @@ public static class UpdateUser
             _context = context;
 
             RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(255)
-                .Must(EndWithAllowedDomainEmail).WithMessage("The email must end with '@lovassy.edu.hu'");
+                .Must(EndWithAllowedDomainEmail).WithMessage("Az email cím '@lovassy.edu.hu'-ra kell hogy végződjön.");
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.UserGroups).NotNull()
-                .MustAsync(BeExistingUserGroups).WithMessage("The provided user groups are not all valid");
+                .MustAsync(BeExistingUserGroups)
+                .WithMessage("A megadott felhasználói csoportok közül legalább egy nem létezik.");
         }
 
         private bool EndWithAllowedDomainEmail(RequestBody model, string email)
@@ -82,7 +83,7 @@ public static class UpdateUser
                 await _context.Users.AnyAsync(x => x.Email == request.Body.Email, cancellationToken))
                 throw new ValidationException(new[]
                 {
-                    new ValidationFailure(nameof(request.Body.Email), "This email is already taken")
+                    new ValidationFailure(nameof(request.Body.Email), "A megadott email cím már foglalt.")
                 }); // We have to do this here as the validator is not aware of the user
 
             request.Body.Adapt(user);

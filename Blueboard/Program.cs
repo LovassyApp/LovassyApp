@@ -59,6 +59,14 @@ builder.Services.AddLoloServices(builder.Configuration);
 
 builder.Services.AddFeatures(builder.Configuration);
 
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "hu" };
+    options.SetDefaultCulture(supportedCultures[0])
+        .AddSupportedCultures(supportedCultures)
+        .AddSupportedUICultures(supportedCultures);
+});
+
 builder.Services.AddCors();
 builder.Services.AddRateLimiter(o =>
 {
@@ -83,9 +91,29 @@ builder.Services.AddRateLimiter(o =>
             Window = TimeSpan.FromSeconds(30)
         }));
 });
-builder.Services.AddControllers(o => o.Filters.Add(new ExceptionFilter())).AddJsonOptions(x =>
+builder.Services.AddControllers(o =>
+{
+    o.Filters.Add(new ExceptionFilter());
+
+    // A fairly unideal solution but regular localization is a hot mess
+    o.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((x, y) =>
+        $"Az érték '{x}' érvénytelen a(z) '{y}' mezőben.");
+    o.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(
+        x => $"Nem lett megadva érték a(z) '{x}' mezőhöz.");
+    o.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => "Kötelező értéket megadni.");
+    o.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(() => "A kérvény 'body' nem lehet üres.");
+    o.ModelBindingMessageProvider.SetNonPropertyAttemptedValueIsInvalidAccessor(x => $"Az érték '{x}' nem érvényes.");
+    o.ModelBindingMessageProvider.SetNonPropertyUnknownValueIsInvalidAccessor(() => "A megadott érték érvénytelen.");
+    o.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => "Az érték csak szám lehet.");
+    o.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(x =>
+        $"A megadott érték érvénytelen a(z) '{x}' mezőben.");
+    o.ModelBindingMessageProvider.SetValueIsInvalidAccessor(x => $"Az érték '{x}' érvénytelen.");
+    o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => $"A mező '{0}' értéke csak szám lehet.");
+    o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => $"Az érték '{x}' érvénytelen.");
+    o.ModelValidatorProviders.Clear(); // Disable automatic model validation, fluent validation is used instead
+}).AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-;
+
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
@@ -112,6 +140,8 @@ app.UseHttpMetrics();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRequestLocalization();
 
 app.MapControllers();
 app.MapMetrics();

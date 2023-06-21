@@ -30,7 +30,7 @@ public static class ResetPassword
         {
             RuleFor(x => x.NewPassword).NotEmpty()
                 .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$").WithMessage(
-                    "The password must contain at least one uppercase letter, lower case letter, number and must be at least 8 characters long");
+                    "A jelszónak legalább 8 karakter hosszúnak kell lennie, tartalmaznia kell legalább egy kisbetűt, egy nagybetűt és egy számot.");
         }
     }
 
@@ -55,14 +55,15 @@ public static class ResetPassword
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
             if (!_resetService.IsResetKeyPasswordSet())
-                throw new UnavailableException("Reset key password is not yet set");
+                throw new UnavailableException(
+                    "A visszaállítási jelszó a LovassyApp legutóbbi újraindítása óta még nem lett beállítva.");
 
 
             var tokenContents = _passwordResetService.DecryptPasswordResetToken(request.PasswordResetToken);
 
 
             if (tokenContents == null)
-                throw new BadRequestException("Invalid password reset token");
+                throw new BadRequestException("Hibás reset token");
 
             var user = await _context.Users.FindAsync(tokenContents.UserId, cancellationToken);
 
@@ -78,7 +79,7 @@ public static class ResetPassword
             catch (CryptographicException)
             {
                 throw new UnavailableException(
-                    "An invalid reset key password was set, the password reset feature will remain unavailable until the old reset key password is set again (Please contact a system administrator to resolve this issue)");
+                    "Hibás visszaállítási jelszó lett beállítva, a jelszó visszaállítása funkció elérhetetlen marad amíg az eredeti visszaállítási jelszó be nem lesz állítva. (Kérlek vedd fel a kapcsolatot a fejlesztőkkel a hiba elhárításához)");
             }
 
             var newMasterKeyEncrypted = EncryptionUtils.Encrypt(resetKey,

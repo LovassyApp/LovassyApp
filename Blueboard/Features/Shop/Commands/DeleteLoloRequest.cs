@@ -39,7 +39,8 @@ public static class DeleteLoloRequest
                 throw new ForbiddenException();
 
             if (loloRequest.AcceptedAt != null || loloRequest.DeniedAt != null)
-                throw new BadRequestException("This request has already been handled");
+                throw new BadRequestException(
+                    "Ez a kérvény már nem törölhető. (el lett fogadva vagy el lett utasítva)");
 
             _context.LoloRequests.Remove(loloRequest);
             await _context.SaveChangesAsync(cancellationToken);

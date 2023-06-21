@@ -36,7 +36,7 @@ public static class Login
             _context = context;
 
             RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(255)
-                .MustAsync(BeExistingUsersEmailAsync).WithMessage("The email is not yet registered");
+                .MustAsync(BeExistingUsersEmailAsync).WithMessage("Nem létezik ilyen email című felhasználó.");
             RuleFor(x => x.Password).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Remember).NotNull();
         }
@@ -97,7 +97,7 @@ public static class Login
 
             if (!_hashService.VerifyPassword(request.Body.Password, user!.PasswordHashed))
                 throw new ValidationException(new[]
-                    { new ValidationFailure(nameof(request.Body.Password), "Invalid password") });
+                    { new ValidationFailure(nameof(request.Body.Password), "A megadott jelszó hibás.") });
 
             var token = await _sessionManager.StartSessionAsync(user.Id);
 

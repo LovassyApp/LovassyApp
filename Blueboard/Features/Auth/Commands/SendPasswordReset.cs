@@ -31,7 +31,7 @@ public static class SendPasswordReset
             _context = context;
 
             RuleFor(x => x.Email).NotEmpty().MustAsync(BeRegisteredEmail)
-                .WithMessage("The email does not belong to a registered user");
+                .WithMessage("Nem létezik ilyen email című felhasználó.");
         }
 
         private async Task<bool> BeRegisteredEmail(RequestBody model, string email,

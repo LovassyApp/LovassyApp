@@ -32,7 +32,7 @@ public static class DeleteUser
                 throw new NotFoundException(nameof(User), request.Id);
 
             if (user.Id == _userAccessor.User.Id)
-                throw new BadRequestException("You cannot delete yourself");
+                throw new BadRequestException("Nem törölheted saját magad.");
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync(cancellationToken);

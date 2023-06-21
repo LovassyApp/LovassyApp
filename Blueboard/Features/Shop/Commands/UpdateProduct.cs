@@ -60,15 +60,15 @@ public static class UpdateProduct
             RuleFor(x => x.Visible).NotNull();
             RuleFor(x => x.QRCodeActivated).NotNull();
             RuleFor(x => x.QRCodes).NotNull().MustAsync(BeExistingQRCodes)
-                .WithMessage("The provided QR codes are not all valid");
+                .WithMessage("A megadott QR kódok közül legalább egy nem létezik.");
             RuleFor(x => x.Price).NotNull().GreaterThanOrEqualTo(0);
             RuleFor(x => x.Quantity).NotNull().GreaterThanOrEqualTo(0);
             RuleFor(x => x.Inputs).NotNull().Must(i => i.DistinctBy(e => e.Key).Count() == i.Count)
-                .WithMessage("The provided inputs don't all have a unique key");
+                .WithMessage("A megadott inputok között van két azonos kulcsú elem.");
             RuleForEach(x => x.Inputs).ChildRules(v =>
             {
                 v.RuleFor(i => i.Key).NotEmpty().Matches("^[a-zA-Z][a-zA-Z0-9_]*$").WithMessage(
-                    "The key must start with a letter and can only contain letters, numbers and underscores");
+                    "A kulcs csak angol kis- és nagybetűket, számokat és alulvonásokat tartalmazhat, és nem kezdődhet számmal.");
                 v.RuleFor(i => i.Label).NotEmpty();
                 v.RuleFor(i => i.Type).NotEmpty().IsEnumName(typeof(ProductInputType));
             });

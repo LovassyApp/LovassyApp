@@ -36,7 +36,8 @@ public static class IndexPermissions
             var permissions = PermissionUtils.Permissions;
 
             if (permissions == null)
-                throw new UnavailableException("Permissions are not yet loaded");
+                throw new UnavailableException(
+                    "A jogosultságok még nincsenek betöltve. (Ennek nem kéne megtörténnie, kérlek jelezd a hibát a fejlesztőknek)");
 
             var filteredPermissions = _sieveProcessor.Apply(request.SieveModel, permissions.AsQueryable()).ToList();
 

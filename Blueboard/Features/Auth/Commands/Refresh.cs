@@ -59,7 +59,7 @@ public static class Refresh
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             if (request.RefreshToken is null)
-                throw new BadRequestException("Refresh token or cookie is missing");
+                throw new BadRequestException("A 'refreshToken' vagy a refresh süti hiányzik.");
 
             RefreshTokenContents? refreshTokenContents;
             try
@@ -68,17 +68,17 @@ public static class Refresh
             }
             catch
             {
-                throw new BadRequestException("Invalid refresh token");
+                throw new BadRequestException("Hibás refresh token.");
             }
 
             if (refreshTokenContents is null)
-                throw new BadRequestException("Invalid refresh token");
+                throw new BadRequestException("Hibás refresh token.");
 
             // I wouldn't risk as no tracking here as the user might be updated by the update grades job (although it's reattached there)
             var user = await _context.Users.FindAsync(refreshTokenContents.UserId);
 
             if (user == null)
-                throw new BadRequestException("Invalid refresh token");
+                throw new BadRequestException("Hibás refresh token.");
 
             var token = await _sessionManager.StartSessionAsync(user.Id);
 

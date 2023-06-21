@@ -26,6 +26,7 @@
         <Folder Include="Core\Email\" />
         <Folder Include="Features\Status\Services\" />
         <Folder Include="Infrastructure\Persistence\Migrations\" />
+        <Folder Include="Resources\" />
     </ItemGroup>
 
     <ItemGroup>
