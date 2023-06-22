@@ -57,7 +57,7 @@ export const ResetKeyPasswordInput = (): JSX.Element => {
     const showWarning = () => {
         if (security.resetKeyPassword.length !== 0) {
             openConfirmModal({
-                title: "Visszaállítási jelszót feloldása",
+                title: "Visszaállítási jelszó feloldása",
                 children: (
                     <Text size="sm">A biztonsági jelszó feloldása nem ajánlott, csak
                         akkor változtasd meg a biztonsági jelszót, ha tudod mit csinálsz!</Text>
