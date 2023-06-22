@@ -27,6 +27,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<StoreHistory> StoreHistories { get; set; }
     public DbSet<OwnedItem> OwnedItems { get; set; }
     public DbSet<OwnedItemUse> OwnedItemUses { get; set; }
+    public DbSet<ResetKeyPasswordSetNotifier> ResetKeyPasswordSetNotifiers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

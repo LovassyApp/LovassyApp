@@ -441,6 +441,32 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.ToTable("QRCodes");
                 });
 
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ResetKeyPasswordSetNotifier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("ResetKeyPasswordSetNotifiers");
+                });
+
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.StoreHistory", b =>
                 {
                     b.Property<int>("Id")

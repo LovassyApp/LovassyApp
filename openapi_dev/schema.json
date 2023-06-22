@@ -2485,6 +2485,37 @@
         }
       }
     },
+    "/Api/Status/NotifyOnResetKeyPasswordSet": {
+      "post": {
+        "tags": [
+          "Status"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusNotifyOnResetKeyPasswordSetRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusNotifyOnResetKeyPasswordSetRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusNotifyOnResetKeyPasswordSetRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/Api/UserGroups": {
       "get": {
         "tags": [
@@ -4932,6 +4963,20 @@
           "name": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StatusNotifyOnResetKeyPasswordSetRequestBody": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "format": "email"
           }
         },
         "additionalProperties": false

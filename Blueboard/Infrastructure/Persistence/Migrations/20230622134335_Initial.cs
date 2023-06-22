@@ -112,6 +112,21 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ResetKeyPasswordSetNotifiers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResetKeyPasswordSetNotifiers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserGroups",
                 columns: table => new
                 {
@@ -458,6 +473,12 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ResetKeyPasswordSetNotifiers_Email",
+                table: "ResetKeyPasswordSetNotifiers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StoreHistories_OwnedItemId",
                 table: "StoreHistories",
                 column: "OwnedItemId",
@@ -529,6 +550,9 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductQRCode");
+
+            migrationBuilder.DropTable(
+                name: "ResetKeyPasswordSetNotifiers");
 
             migrationBuilder.DropTable(
                 name: "StoreHistories");

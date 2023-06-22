@@ -1,3 +1,4 @@
+using Blueboard.Features.Status.Commands;
 using Blueboard.Features.Status.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Mvc;
@@ -25,5 +26,17 @@ public class StatusController : ApiControllerBase
         var response = await Mediator.Send(new ViewServiceStatus.Query());
 
         return Ok(response);
+    }
+
+    [HttpPost("NotifyOnResetKeyPasswordSet")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> NotifyOnResetKeyPasswordSet([FromBody] NotifyOnResetKeyPasswordSet.RequestBody body)
+    {
+        await Mediator.Send(new NotifyOnResetKeyPasswordSet.Command
+        {
+            Body = body
+        });
+
+        return NoContent();
     }
 }
