@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using Blueboard.Core.Auth;
@@ -110,9 +111,14 @@ builder.Services.AddControllers(o =>
     o.ModelBindingMessageProvider.SetValueIsInvalidAccessor(x => $"Az érték '{x}' érvénytelen.");
     o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => $"A mező '{0}' értéke csak szám lehet.");
     o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => $"Az érték '{x}' érvénytelen.");
+
     o.ModelValidatorProviders.Clear(); // Disable automatic model validation, fluent validation is used instead
-}).AddJsonOptions(x =>
-    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+}).AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    o.JsonSerializerOptions.DictionaryKeyPolicy =
+        JsonNamingPolicy.CamelCase; // Because the validation errors need to be camel cased
+});
 
 builder.Services.AddEndpointsApiExplorer();
 
