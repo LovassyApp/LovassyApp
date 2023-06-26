@@ -441,8 +441,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_OwnedItemUses_OwnedItemId",
                 table: "OwnedItemUses",
-                column: "OwnedItemId",
-                unique: true);
+                column: "OwnedItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalAccessTokens_Token",

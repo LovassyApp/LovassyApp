@@ -10,7 +10,7 @@ A Lovassy László Gimnázium diákjainak életét megkönnyíteni hivatott alka
   - [x] Automatikus LoLó generáció
   - [x] LoLó kérvények benyújtása (pl.: versenyeredményért járó LoLó)
   - [x] LoLó elköltése kimentésekre és egyéb termékekre
-  - [x] Vásárolt termékek felhasználása (*jelenleg csak 3.x.x-ben*)
+  - [x] Vásárolt termékek felhasználása
 - [X] Jegyek megtekintése
 - [ ] Szavazó rendszer (farsangi jelmezversenyhez, stb.)
 - [ ] Párt rendszer (párthéthez)

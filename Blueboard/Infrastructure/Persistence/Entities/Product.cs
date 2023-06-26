@@ -27,7 +27,7 @@ public class Product : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public string RichTextContent { get; set; }
 
-    public NpgsqlTsVector SearchVector { get; set; }
+    [JsonIgnore] public NpgsqlTsVector SearchVector { get; set; }
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]

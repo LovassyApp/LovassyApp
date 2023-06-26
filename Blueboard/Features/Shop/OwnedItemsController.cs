@@ -88,4 +88,16 @@ public class OwnedItemsController : ApiControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("{id}/Use")]
+    [Permissions(typeof(ShopPermissions.UseOwnOwnedItem))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> Use([FromRoute] int id,
+        [FromBody] UseOwnedItem.RequestBody body)
+    {
+        await Mediator.Send(new UseOwnedItem.Command { Id = id, Body = body });
+
+        return NoContent();
+    }
 }

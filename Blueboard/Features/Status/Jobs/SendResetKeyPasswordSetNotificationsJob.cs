@@ -11,14 +11,14 @@ namespace Blueboard.Features.Status.Jobs;
 public class SendResetKeyPasswordSetNotificationsJob : IJob
 {
     private readonly ApplicationDbContext _context;
-    private readonly IFluentEmailFactory _emailFactory;
+    private readonly IFluentEmail _fluentEmail;
     private readonly RazorViewToStringRenderer _razorViewToStringRenderer;
 
-    public SendResetKeyPasswordSetNotificationsJob(ApplicationDbContext context, IFluentEmailFactory emailFactory,
+    public SendResetKeyPasswordSetNotificationsJob(ApplicationDbContext context, IFluentEmail fluentEmail,
         RazorViewToStringRenderer razorViewToStringRenderer)
     {
         _context = context;
-        _emailFactory = emailFactory;
+        _fluentEmail = fluentEmail;
         _razorViewToStringRenderer = razorViewToStringRenderer;
     }
 
@@ -28,7 +28,7 @@ public class SendResetKeyPasswordSetNotificationsJob : IJob
 
         var addresses = notifiers.Select(n => new Address(n.Email)).ToList();
 
-        var email = _emailFactory.Create().BCC(addresses).Subject("A visszaállítási jelszó be lett állítva")
+        var email = _fluentEmail.BCC(addresses).Subject("A visszaállítási jelszó be lett állítva")
             .Body(
                 await _razorViewToStringRenderer.RenderViewToStringAsync(
                     "/Views/Emails/ResetKeyPasswordSetNotification/ResetKeyPasswordSetNotification.cshtml",

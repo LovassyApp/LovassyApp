@@ -15,7 +15,7 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230622134335_Initial")]
+    [Migration("20230626154157_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -304,8 +304,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnedItemId")
-                        .IsUnique();
+                    b.HasIndex("OwnedItemId");
 
                     b.ToTable("OwnedItemUses");
                 });
@@ -718,8 +717,8 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.OwnedItemUse", b =>
                 {
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.OwnedItem", "OwnedItem")
-                        .WithOne("OwnedItemUse")
-                        .HasForeignKey("Blueboard.Infrastructure.Persistence.Entities.OwnedItemUse", "OwnedItemId")
+                        .WithMany("OwnedItemUses")
+                        .HasForeignKey("OwnedItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -796,8 +795,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.OwnedItem", b =>
                 {
-                    b.Navigation("OwnedItemUse")
-                        .IsRequired();
+                    b.Navigation("OwnedItemUses");
 
                     b.Navigation("StoreHistory")
                         .IsRequired();

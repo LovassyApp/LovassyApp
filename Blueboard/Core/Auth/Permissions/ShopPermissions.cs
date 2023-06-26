@@ -257,4 +257,12 @@ public class ShopPermissions
         public string Description { get; } = "Egy adott saját birtokolt termék törlése id alapján";
         public bool Dangerous { get; } = false;
     }
+
+    public class UseOwnOwnedItem : IPermission
+    {
+        public string Name { get; } = "Shop.UseOwnOwnedItem";
+        public string DisplayName { get; } = "Saját birtokolt termék felhasználása";
+        public string Description { get; } = "Egy adott saját birtokolt termék felhasználása id alapján";
+        public bool Dangerous { get; } = false;
+    }
 }

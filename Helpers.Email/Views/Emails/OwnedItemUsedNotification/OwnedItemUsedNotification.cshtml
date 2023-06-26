@@ -1,0 +1,32 @@
+@model Helpers.Email.Views.Emails.OwnedItemUsedNotification.OwnedItemUsedNotificationViewModel
+
+@{
+    ViewData["EmailTitle"] = "Egy termék fel lett használva";
+}
+
+<p>
+    Egy @Model.ProductName nevű termék nemrég fel lett használva <strong>@Model.UserDisplayName</strong>
+    @if (Model.UserClass != null)
+    {
+        <span>(@Model.UserClass)</span>
+    }
+    által a LovassyAppon.
+</p>
+<p style="color: #2C2E33;">
+    A termék leírása: @Model.ProductDescription
+</p>
+
+@if (Model.InputValues.Count > 0)
+{
+    <p>A felhasználó a kövezkezőket adta meg a felhasználáskor:</p>
+    <ul>
+        @foreach (var input in Model.InputValues)
+        {
+            <li>@input.Key: @input.Value</li>
+        }
+    </ul>
+}
+
+<br/>
+<p>Üdvözlettel:</p>
+<p>A LovasssyApp csapata</p>

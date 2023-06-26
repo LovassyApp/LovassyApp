@@ -23,7 +23,7 @@ public class OwnedItemUseConfiguration : IEntityTypeConfiguration<OwnedItemUse>
 {
     public void Configure(EntityTypeBuilder<OwnedItemUse> builder)
     {
-        builder.HasOne(u => u.OwnedItem).WithOne(i => i.OwnedItemUse).HasForeignKey<OwnedItemUse>(u => u.OwnedItemId)
+        builder.HasOne(u => u.OwnedItem).WithMany(i => i.OwnedItemUses).HasForeignKey(u => u.OwnedItemId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

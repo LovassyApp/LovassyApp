@@ -1732,6 +1732,71 @@
         ]
       }
     },
+    "/Api/OwnedItems/{id}/Use": {
+      "post": {
+        "tags": [
+          "OwnedItems"
+        ],
+        "description": "<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UseOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopUseOwnedItemRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopUseOwnedItemRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopUseOwnedItemRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/Permissions": {
       "get": {
         "tags": [
@@ -4730,6 +4795,23 @@
             "minLength": 1,
             "type": "string",
             "format": "email"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShopUseOwnedItemRequestBody": {
+        "type": "object",
+        "properties": {
+          "qrCodeContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "inputs": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

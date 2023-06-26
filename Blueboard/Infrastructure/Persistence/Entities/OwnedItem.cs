@@ -21,7 +21,7 @@ public class OwnedItem : TimestampedEntity
 
     public DateTime? UsedAt { get; set; }
 
-    [JsonIgnore] public OwnedItemUse OwnedItemUse { get; set; }
+    [JsonIgnore] public List<OwnedItemUse> OwnedItemUses { get; set; }
 }
 
 public class OwnedProductConfiguration : IEntityTypeConfiguration<OwnedItem>
