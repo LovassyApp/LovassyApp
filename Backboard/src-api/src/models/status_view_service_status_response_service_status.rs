@@ -11,7 +11,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StatusViewServiceStatusResponseServiceStatus {
     #[serde(rename = "database", skip_serializing_if = "Option::is_none")]
     pub database: Option<bool>,

@@ -11,7 +11,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StatusViewVersionResponse {
     #[serde(rename = "whoAmI", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub who_am_i: Option<Option<String>>,

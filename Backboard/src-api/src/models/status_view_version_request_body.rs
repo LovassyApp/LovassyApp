@@ -11,7 +11,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StatusViewVersionRequestBody {
     #[serde(rename = "sendOk")]
     pub send_ok: bool,
