@@ -74,7 +74,7 @@ builder.Services.AddRateLimiter(o =>
     o.RejectionStatusCode = 429;
     o.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
         RateLimitPartition.GetTokenBucketLimiter(
-            context.Connection.RemoteIpAddress.ToString(),
+            context.Connection.RemoteIpAddress!.ToString(),
             partition => new TokenBucketRateLimiterOptions
             {
                 AutoReplenishment = true,
@@ -84,7 +84,7 @@ builder.Services.AddRateLimiter(o =>
             }));
 
     o.AddPolicy("Strict", context => RateLimitPartition.GetFixedWindowLimiter(
-        context.Connection.RemoteIpAddress.ToString() + context.Request.Path,
+        context.Connection.RemoteIpAddress!.ToString() + context.Request.Path,
         partition => new FixedWindowRateLimiterOptions
         {
             AutoReplenishment = true,
