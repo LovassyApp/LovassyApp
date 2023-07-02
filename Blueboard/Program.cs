@@ -18,7 +18,7 @@ using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
 builder.Services.AddWebApiHelpers(builder.Configuration, Assembly.GetExecutingAssembly(),
     new FrameworkHelpersConfiguration
     {
@@ -127,7 +127,7 @@ var app = builder.Build();
 
 await app.RunStartupActions();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

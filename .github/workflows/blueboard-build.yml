@@ -60,8 +60,7 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add openapi_dev/schema.json
-          git add Backboard/src-api/**
+          git add .
           git commit -m "Updated the api schema and clients"
       - name: Push changes
         if: steps.verify-changed-files.outputs.files_changed == 'true'
