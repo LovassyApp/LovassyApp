@@ -6,7 +6,8 @@
 
 - **Helper**: Olyan osztályok összesége, amelyeket az alkalmazás minden része használhat akár direkt vagy indirekt
   módon, de nem tartoznak semmilyen funkciós csoportba sem (kell a funkciós csoportok működéséhez, de nem tartozik
-  hozzájuk).
+  hozzájuk). *Megjegyzés: Amikor ilyet hozunk létre, akkor ne felejtsük el hozzáadni a blueboard-build GitHub Actions
+  Workflow-hoz a mappáját!*
 - **Core**: Olyan funkciós csoportokra osztott osztályok összessége, amelyeket több **feature** is használhat vagy
   kihatással vannak akár indirekt módon az egész alkalmazásra (pl.: Auth).
 - **Feature**: Olyan funkciós csoportokra osztott osztályok összessége, amelyek logikusan összetartoznak és a saját
