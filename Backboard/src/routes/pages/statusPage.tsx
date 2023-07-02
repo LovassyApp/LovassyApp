@@ -2,6 +2,7 @@ import { Body, getClient } from "@tauri-apps/api/http";
 import { Box, Button, Center, Divider, Group, Loader, Stack, Text, Title, createStyles } from "@mantine/core";
 import { useEffect, useState } from "react";
 
+import { invoke } from "@tauri-apps/api/tauri";
 import { useSettingStore } from "../../stores/settingsStore";
 
 const useStyles = createStyles((theme) => ({
@@ -21,10 +22,9 @@ const StatusPage = (): JSX.Element => {
     const fetchData = async (url: string) => {
         // TODO: use a generated client!!!
         try {
-            const client = await getClient();
-            const response = await client.get(url);
+            const response = await invoke("status", { blueboardUrl }) as any;
             setError(null);
-            setData(response.data);
+            setData(response);
         } catch (error) {
             setError("Nem sikerült lekérni az adatokat");
         }

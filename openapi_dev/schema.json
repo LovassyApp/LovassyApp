@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Blueboard",
-    "version": "v4"
+    "version": "v4.0.0"
   },
   "paths": {
     "/Api/Auth/Login": {
