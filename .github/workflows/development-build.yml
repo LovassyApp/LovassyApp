@@ -1,0 +1,88 @@
+name: Development Build
+run-name: ${{ github.actor }} is doing a development build 🚀
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env: 
+      ASPNETCORE_ENVIRONMENT: development
+    strategy:
+      matrix:
+        dotnet-version: [ '7.0' ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Install backend dependencies
+        run: dotnet restore
+      - name: Build backend
+        run: dotnet build --configuration Debug --no-restore
+      - name: Test backend
+        run: dotnet test --no-restore --verbosity normal
+      - name: Generate Rust API Client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: rust
+          openapi-file: openapi_dev/schema.json
+          command-args: -o Backboard/src-api --additional-properties=packageName=api
+      - name: Install frontend dependencies
+        run: |
+          cd Backboard
+          pnpm install
+      - name: Build frontend
+        run: |
+          cd Backboard
+          pnpm tauri build
+      - name: Verify changed files
+        uses: tj-actions/verify-changed-files@v13
+        id: verify-changed-files
+        with:
+          files: |
+            openapi_dev/schema.json
+            Backboard/src-api/**
+      - name: Commit new schema
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add openapi_dev/schema.json
+          git add Backboard/src-api/**
+          git commit -m "Updated the api schema and clients"
+      - name: Push changes
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          

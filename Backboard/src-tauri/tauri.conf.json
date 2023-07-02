@@ -7,7 +7,7 @@
         "withGlobalTauri": false
     },
     "package": {
-        "productName": "backboard",
+        "productName": "LovassyApp - Backboard",
         "version": "2.0.0"
     },
     "tauri": {
@@ -34,7 +34,7 @@
         "bundle": {
             "active": true,
             "targets": "all",
-            "identifier": "com.tauri.dev",
+            "identifier": "me.lovassyapp.backboard",
             "icon": [
                 "icons/32x32.png",
                 "icons/128x128.png",
@@ -51,7 +51,7 @@
                 "decorations": false,
                 "fullscreen": false,
                 "resizable": true,
-                "title": "backboard",
+                "title": "LovassyApp - Backboard",
                 "width": 800,
                 "height": 600,
                 "minWidth": 600,
