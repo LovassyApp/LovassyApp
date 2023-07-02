@@ -30,7 +30,7 @@ jobs:
         uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: 7
+          version: latest
           run_install: false
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -44,11 +44,11 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Install backend dependencies
+      - name: Install Blueboard dependencies
         run: dotnet restore
-      - name: Build backend
+      - name: Build Blueboard
         run: dotnet build --configuration Debug --no-restore
-      - name: Test backend
+      - name: Test Blueboard
         run: dotnet test --no-restore --verbosity normal
       - name: Generate Rust API Client
         uses: openapi-generators/openapitools-generator-action@v1
@@ -56,11 +56,11 @@ jobs:
           generator: rust
           openapi-file: openapi_dev/schema.json
           command-args: -o Backboard/src-api --additional-properties=packageName=api
-      - name: Install frontend dependencies
+      - name: Install Backboard dependencies
         run: |
           cd Backboard
           pnpm install --no-frozen-lockfile
-      - name: Build frontend
+      - name: Build Backboard
         run: |
           cd Backboard
           pnpm tauri build
