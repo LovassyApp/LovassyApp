@@ -1,12 +1,26 @@
-name: Development Build
-run-name: ${{ github.actor }} is doing a development build 🚀
+name: Blueboard Build
+run-name: ${{ github.actor }} is doing a development build of Blueboard 🚀
 on:
   push:
     branches:
       - master
+    paths:
+        - Blueboard/**
+        - Helpers.Cryptography/**
+        - Helpers.Cryptography.Tests/**
+        - Helpers.Email/**
+        - Helpers.WebApi/**
+        - openapi_dev/**
   pull_request:
     branches:
       - master
+    paths:
+      - Blueboard/**
+      - Helpers.Cryptography/**
+      - Helpers.Cryptography.Tests/**
+      - Helpers.Email/**
+      - Helpers.WebApi/**
+      - openapi_dev/**
 jobs:
   build:
     name: Build
@@ -22,38 +36,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        id: pnpm-install
-        with:
-          version: latest
-          run_install: false
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-      - name: Install Tauri dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
-      - name: Setup rust
-        uses: dtolnay/rust-toolchain@stable
-      - name: Setup rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: 'Backboard/src-tauri -> target'
       - name: Install Blueboard dependencies
         run: dotnet restore
       - name: Build Blueboard
@@ -66,14 +48,6 @@ jobs:
           generator: rust
           openapi-file: openapi_dev/schema.json
           command-args: -o Backboard/src-api --additional-properties=packageName=api
-      - name: Install Backboard dependencies
-        run: |
-          cd Backboard
-          pnpm install --no-frozen-lockfile
-      - name: Build Backboard
-        run: |
-          cd Backboard
-          pnpm tauri build
       - name: Verify changed files
         uses: tj-actions/verify-changed-files@v13
         id: verify-changed-files
