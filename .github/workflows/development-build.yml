@@ -46,6 +46,8 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install libgtk-3-dev
         run: sudo apt-get install libgtk-3-dev
+      - name: Install libsoup2.4-dev
+        run: sudo apt install libsoup2.4-dev
       - name: Install Blueboard dependencies
         run: dotnet restore
       - name: Build Blueboard
