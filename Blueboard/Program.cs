@@ -117,7 +117,8 @@ builder.Services.AddControllers(o =>
 {
     o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     o.JsonSerializerOptions.DictionaryKeyPolicy =
-        JsonNamingPolicy.CamelCase; // Because the validation errors need to be camel cased
+        JsonNamingPolicy
+            .CamelCase; // Because the validation errors need to be camel cased, IMPORTANT: pay attention to this when returning dictionaries
 });
 
 builder.Services.AddEndpointsApiExplorer();
