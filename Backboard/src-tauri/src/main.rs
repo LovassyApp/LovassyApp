@@ -13,7 +13,7 @@ async fn status(blueboard_url: String) -> Result<StatusViewServiceStatusResponse
     api_status_service_status_get(&config)
         .await
         .map_err(|e| match e {
-            _ => "error".to_string(),
+            _ => "error".to_string(), // TODO: maybe find a better way to handle this
         })
 }
 
