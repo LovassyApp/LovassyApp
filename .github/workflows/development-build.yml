@@ -59,7 +59,7 @@ jobs:
       - name: Install frontend dependencies
         run: |
           cd Backboard
-          pnpm install
+          pnpm install --no-frozen-lockfile
       - name: Build frontend
         run: |
           cd Backboard
