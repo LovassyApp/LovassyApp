@@ -26,6 +26,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'pnpm'
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         id: pnpm-install
@@ -44,10 +45,16 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Install libgtk-3-dev
-        run: sudo apt-get install libgtk-3-dev
-      - name: Install libsoup2.4-dev
-        run: sudo apt install libsoup2.4-dev
+      - name: Install Tauri dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
+      - name: Setup rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Setup rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: 'Backboard/src-tauri -> target'
       - name: Install Blueboard dependencies
         run: dotnet restore
       - name: Build Blueboard
