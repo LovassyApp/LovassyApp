@@ -143,7 +143,7 @@ const WindowHeader = () => {
 
 const WindowLayout = (): JSX.Element => {
     return (
-        <AppShell header={<WindowHeader />} navbar={<WindowNavbar />}>
+        <AppShell header={<WindowHeader />} navbar={<WindowNavbar />} padding="xs">
             <Outlet />
         </AppShell>
     );
