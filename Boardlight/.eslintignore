@@ -1,0 +1,4 @@
+.eslintrc.cjs
+vite.config.js
+
+src/api/generated/**
