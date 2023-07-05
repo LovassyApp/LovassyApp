@@ -7,6 +7,7 @@ use api::apis::status_api::api_status_service_status_get;
 use api::apis::Error;
 use api::models::{ImportUpdateResetKeyPasswordRequestBody, StatusViewServiceStatusResponse};
 use tauri::http::status::StatusCode;
+use tauri_plugin_autostart::MacosLauncher;
 
 #[tauri::command]
 async fn upload_reset_key_password(
@@ -55,6 +56,10 @@ async fn status(blueboard_url: String) -> Result<StatusViewServiceStatusResponse
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_autostart::init(
+            MacosLauncher::LaunchAgent,
+            None,
+        ))
         .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![status, upload_reset_key_password])
         .run(tauri::generate_context!())
