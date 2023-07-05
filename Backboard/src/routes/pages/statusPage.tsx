@@ -1,5 +1,4 @@
-import { Body, getClient } from "@tauri-apps/api/http";
-import { Box, Button, Center, Divider, Group, Loader, Stack, Text, Title, createStyles } from "@mantine/core";
+import { Button, Center, Divider, Group, Loader, Stack, Text, Title, createStyles } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import { invoke } from "@tauri-apps/api/tauri";
@@ -19,8 +18,7 @@ const StatusPage = (): JSX.Element => {
     const [data, setData] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchData = async (url: string) => {
-        // TODO: use a generated client!!!
+    const fetchData = async () => {
         try {
             const response = await invoke("status", { blueboardUrl }) as any;
             setError(null);
@@ -38,7 +36,7 @@ const StatusPage = (): JSX.Element => {
                 setLoading(false);
                 return;
             }
-            await fetchData(`${blueboardUrl}/Api/Status/ServiceStatus`);
+            await fetchData();
 
             setLoading(false);
         })();
@@ -99,7 +97,7 @@ const StatusPage = (): JSX.Element => {
                             setLoading(false);
                             return;
                         }
-                        await fetchData(`${blueboardUrl}/Api/Status/ServiceStatus`);
+                        await fetchData();
                         setLoading(false);
                     }} sx={{ alignSelf: "center" }}>
                         Frissítés

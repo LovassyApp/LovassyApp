@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AppRouter } from "./routes/appRouter";
 import { MemoryRouter } from "react-router-dom";
 import { ModalsProvider } from "@mantine/modals";
+import { Notifications } from "@mantine/notifications";
 import ReactDOM from "react-dom/client";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { appWindow } from "@tauri-apps/api/window";
@@ -52,6 +53,7 @@ const App = () => {
             withGlobalStyles={true}
             withNormalizeCSS={true}>
                 <ModalsProvider>
+                    <Notifications limit={3} />
                     <AppRouter />
                 </ModalsProvider>
             </MantineProvider>

@@ -6,8 +6,8 @@ import { preferencesStorage } from "../preferencesStore";
 interface SettingsState {
     blueboardUrl: string;
     setBlueboardUrl(url: string): void;
-    apiKey: string;
-    setApiKey(key: string): void;
+    importKey: string;
+    setImportKey(key: string): void;
 }
 
 export const useSettingStore = create<SettingsState>()(
@@ -15,8 +15,8 @@ export const useSettingStore = create<SettingsState>()(
         (set) => ({
             blueboardUrl: "",
             setBlueboardUrl: (url: string) => set({ blueboardUrl: url }),
-            apiKey: "",
-            setApiKey: (key: string) => set({ apiKey: key }),
+            importKey: "",
+            setImportKey: (key: string) => set({ importKey: key }),
         }), {
             name: "settings",
             storage: createJSONStorage(() => preferencesStorage)

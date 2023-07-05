@@ -18,9 +18,9 @@ const SettingsPage = (): JSX.Element => {
                 onChange={(event) => settings.setBlueboardUrl(event.currentTarget.value)}
                 onBlur={async () => await saveSettings()} withAsterisk={true}
                 placeholder="https://blueboard.lovassy.hu" />
-            <TextInput label="API kulcs"
-                description="A hozzáfést biztosító API kulcs, LovassyApp fejlesztőktől kérhető"
-                value={settings.apiKey} onChange={(event) => settings.setApiKey(event.currentTarget.value)}
+            <TextInput label="Import kulcs"
+                description="A hozzáfést biztosító import kulcs, LovassyApp fejlesztőktől kérhető"
+                value={settings.importKey} onChange={(event) => settings.setImportKey(event.currentTarget.value)}
                 onBlur={async () => await saveSettings()}
                 withAsterisk={true} />
         </Stack>

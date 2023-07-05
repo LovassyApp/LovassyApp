@@ -89,7 +89,8 @@ export const ResetKeyPasswordInput = (): JSX.Element => {
                             <PasswordInput
                                 withAsterisk={true}
                                 label="Visszaállítási jelszó"
-                                description="Ez a jelszó a jövőben nem változtatható, amennyiben új értéket kapna a felhasználók nem tudnák megváltoztatni a jelszavukat"
+                                description="Ez a jelszó a jövőben nem változtatható, amennyiben új értéket kapna a
+                                felhasználók nem tudnák megváltoztatni a jelszavukat"
                                 value={security.resetKeyPassword}
                                 onChange={(event) => security.setResetKeyPassword(event.currentTarget.value)}
                                 onBlur={async () => {

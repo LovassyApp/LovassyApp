@@ -34,8 +34,9 @@ public class ImportKeyAuthenticationSchemeHandler : AuthenticationHandler<Import
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        var key = Request.Headers.FirstOrDefault(q => q.Key == "X-Authorization").Value
-            .FirstOrDefault();
+        var key = Request.Headers
+            .FirstOrDefault(q => string.Equals(q.Key, "X-Authorization", StringComparison.OrdinalIgnoreCase)).Value
+            .FirstOrDefault(); //Amazingly, the generated rust code uses X-Authorization in lowercase... For some reason...
 
         if (key.IsNullOrEmpty())
             return AuthenticateResult.Fail("Import key not found");
