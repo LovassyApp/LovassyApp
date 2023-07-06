@@ -44,6 +44,12 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: 'Backboard/src-tauri -> target'
+      - name: Generate Rust API Client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: rust
+          openapi-file: openapi_dev/schema.json
+          command-args: -o Backboard/src-api --additional-properties=packageName=api
       - name: Install Backboard dependencies
         run: |
           cd Backboard
@@ -52,12 +58,6 @@ jobs:
         run: |
           cd Backboard
           pnpm tauri build -b none
-      - name: Generate Rust API Client
-        uses: openapi-generators/openapitools-generator-action@v1
-        with:
-          generator: rust
-          openapi-file: openapi_dev/schema.json
-          command-args: -o Backboard/src-api --additional-properties=packageName=api
       - name: Commit new API Client
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

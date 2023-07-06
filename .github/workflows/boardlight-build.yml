@@ -38,14 +38,14 @@ jobs:
         run: |
           cd Boardlight
           pnpm install --no-frozen-lockfile
-      - name: Build Boardlight
-        run: |
-          cd Boardlight
-          pnpm build
       - name: Generate Typescript API Client
         run: |
             cd Boardlight
             pnpm generate-api-client
+      - name: Build Boardlight
+        run: |
+          cd Boardlight
+          pnpm build
       - name: Commit new API Client
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
