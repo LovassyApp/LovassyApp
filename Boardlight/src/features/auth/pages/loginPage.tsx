@@ -1,5 +1,6 @@
 import { Box, Button, Center, Checkbox, Group, PasswordInput, TextInput, Title, createStyles } from "@mantine/core";
 import { IconLock, IconMail } from "@tabler/icons-react";
+import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
 import { useAuthStore } from "../../../core/stores/authStore";
 import { useForm } from "@mantine/form";
@@ -49,7 +50,8 @@ const LoginPage = (): JSX.Element => {
             const res = await login.mutateAsync({ data: values });
             setAccessToken(res.token);
         } catch (err) {
-            console.log(err);
+            if (err instanceof ValidationError)
+                handleValidationErrors(err, form);
         }
     });
 

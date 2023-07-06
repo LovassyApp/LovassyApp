@@ -52,13 +52,17 @@ export const useCustomClient = async <T>({
     data?: unknown;
     signal?: AbortSignal;
 }): Promise<T> => {
-    const baseUrl = blueboardURL.endsWith("/") ? blueboardURL.slice(0, -1) : blueboardURL;
+    const baseUrl = "/blueboard";
 
     let headersLocal;
     if (data instanceof FormData) {
         headersLocal = { Accept: "application/json" };
     } else {
         headersLocal = { ...headers, "Content-Type": "application/json", Accept: "application/json" };
+    }
+
+    if (useAuthStore.getState().accessToken) {
+        headersLocal.Authorization = `Bearer ${useAuthStore.getState().accessToken}`;
     }
 
     try {
@@ -77,6 +81,7 @@ export const useCustomClient = async <T>({
                 const res = await refreshOptions.mutationFn({});
 
                 useAuthStore.getState().setAccessToken(res.token);
+                headersLocal.Authorization = `Bearer ${res.token}`;
 
                 console.log("Successfully refreshed token");
 
@@ -91,7 +96,7 @@ export const useCustomClient = async <T>({
                 useAuthStore.getState().setAccessToken(undefined);
             }
         }
-        handleApiErrors(error, false);
+        handleApiErrors(error);
         throw error;
     }
 };

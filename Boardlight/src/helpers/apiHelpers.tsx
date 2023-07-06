@@ -1,4 +1,5 @@
 import { IconX } from "@tabler/icons-react";
+import { UseFormReturnType } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 
 export class ValidationError {
@@ -9,20 +10,10 @@ export class NotFoundError {
     public constructor(public readonly message: string) {}
 }
 
-export const handleApiErrors = (error: any, showBadRequest = true) => {
+export const handleApiErrors = (error: any) => {
     switch (error.status) {
     case 400:
-        if (!error.data.errors && showBadRequest) {
-            notifications.show({
-                title: "Hiba (400)",
-                color: "red",
-                icon: <IconX />,
-                message: error.data.detail ?? "Hibás kérvény.",
-            });
-            break;
-        }
-
-        throw new ValidationError("Validációs hiba történt", error.data.errors ?? []);
+        throw new ValidationError(error.data.detail ?? "Hibás kérvény.", error.data.errors ?? []);
     case 401:
         notifications.show({
             title: "Hiba (401)",
@@ -65,5 +56,25 @@ export const handleApiErrors = (error: any, showBadRequest = true) => {
             message: "Egy ismeretlen hiba történt.",
         });
         break;
+    }
+};
+
+export const handleValidationErrors = (error: ValidationError, form: UseFormReturnType<any>) => {
+    if (Object.keys(error.errors).length === 0) {
+        notifications.show({
+            title: "Hiba (400)",
+            color: "red",
+            icon: <IconX />,
+            message: error.message,
+        });
+        return;
+    }
+
+    for (const validationError in error.errors) {
+        let message = "";
+        for (const err of error.errors[validationError]) {
+            message += `${err}\n`;
+        }
+        form.setFieldError(validationError, message);
     }
 };
