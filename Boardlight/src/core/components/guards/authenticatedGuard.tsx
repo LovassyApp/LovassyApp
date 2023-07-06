@@ -1,13 +1,9 @@
-import { Navigate, Outlet, useNavigate, useSearch } from "@tanstack/router";
-import { ReactNode, useEffect } from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
 import { useAuthStore } from "../../stores/authStore";
 
-export const AuthenticatedGuard = ({ redirect = "/auth/login", children }: { redirect?: string, children: ReactNode }) => {
+export const AuthenticatedGuard = ({ redirect = "/auth/login" }: { redirect?: string }) => {
     const accessToken = useAuthStore((state) => state.accessToken);
 
-    if (accessToken)
-        return children;
-
-    return <Navigate to={redirect} />;
+    return accessToken ? <Outlet /> : <Navigate to={redirect} replace={true} />;
 };

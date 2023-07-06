@@ -4,23 +4,9 @@ on:
   push:
     branches:
       - master
-    paths:
-        - Blueboard/**
-        - Helpers.Cryptography/**
-        - Helpers.Cryptography.Tests/**
-        - Helpers.Email/**
-        - Helpers.WebApi/**
-        - openapi_dev/**
   pull_request:
     branches:
       - master
-    paths:
-      - Blueboard/**
-      - Helpers.Cryptography/**
-      - Helpers.Cryptography.Tests/**
-      - Helpers.Email/**
-      - Helpers.WebApi/**
-      - openapi_dev/**
 jobs:
   build:
     name: Build
@@ -42,33 +28,19 @@ jobs:
         run: dotnet build --configuration Debug --no-restore
       - name: Test Blueboard
         run: dotnet test --no-restore --verbosity normal
-      - name: Generate Rust API Client (Backboard)
-        uses: openapi-generators/openapitools-generator-action@v1
-        with:
-          generator: rust
-          openapi-file: openapi_dev/schema.json
-          command-args: -o Backboard/src-api --additional-properties=packageName=api
-      - name: Generate Typescript API Client (Boardlight)
-        uses: openapi-generators/openapitools-generator-action@v1
-        with:
-          generator: typescript-axios
-          openapi-file: openapi_dev/schema.json
-          command-args: -o Boardlight/src/api/generated --additional-properties=useSingleRequestParameter=true,supportsES6=true
       - name: Verify changed files
         uses: tj-actions/verify-changed-files@v13
         id: verify-changed-files
         with:
           files: |
             openapi_dev/schema.json
-            Backboard/src-api/**
-            Boardlight/src/api/generated/**
       - name: Commit new schema
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add .
-          git commit -m "Updated the api schema and clients"
+          git commit -m "Updated the API schema"
       - name: Push changes
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         uses: ad-m/github-push-action@master

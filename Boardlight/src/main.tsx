@@ -1,12 +1,18 @@
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
+import {
+    QueryClient,
+    QueryClientProvider,
+} from "@tanstack/react-query";
 
+import { AppRouter } from "./core/routing/appRouter";
+import { BrowserRouter } from "react-router-dom";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "@tanstack/router";
-import { appRouter } from "./core/routing/appRouter";
 import { useHotkeys } from "@mantine/hooks";
 import { useSettingsStore } from "./core/stores/settingsStore";
+
+const queryClient = new QueryClient();
 
 const App = () => {
     const settings = useSettingsStore();
@@ -17,8 +23,10 @@ const App = () => {
         <ColorSchemeProvider colorScheme={settings.colorScheme} toggleColorScheme={settings.toggleColorScheme}>
             <MantineProvider theme={{ colorScheme: settings.colorScheme }} withNormalizeCSS={true} withGlobalStyles={true}>
                 <ModalsProvider>
-                    <Notifications />
-                    <RouterProvider router={appRouter} />
+                    <QueryClientProvider client={queryClient}>
+                        <Notifications />
+                        <AppRouter />
+                    </QueryClientProvider>
                 </ModalsProvider>
             </MantineProvider>
         </ColorSchemeProvider>
@@ -26,5 +34,7 @@ const App = () => {
 };
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <App />
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
 );
