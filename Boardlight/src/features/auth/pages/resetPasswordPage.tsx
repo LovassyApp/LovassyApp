@@ -1,20 +1,8 @@
-import {
-    Box,
-    Button,
-    Center,
-    Input,
-    LoadingOverlay,
-    PasswordInput,
-    Text,
-    TextInput,
-    Title,
-    createStyles,
-} from "@mantine/core";
+import { Box, Button, Center, LoadingOverlay, PasswordInput, Title, createStyles } from "@mantine/core";
+import { IconCheck, IconLock } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { IconCheck } from "@tabler/icons-react";
-import { InputError } from "@mantine/core/lib/Input/InputError/InputError";
 import { UnavailableModalContent } from "../components/unavailableModalContent";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
@@ -87,7 +75,7 @@ const ResetPasswordPage = (): JSX.Element => {
     const submit = form.onSubmit(async (values) => {
         try {
             await resetPassword.mutateAsync({
-                data: { newPassword: values.newPassword },
+                data: values,
                 params: { passwordResetToken: queryParams.get("resetToken") },
             });
             notifications.show({
@@ -112,9 +100,15 @@ const ResetPasswordPage = (): JSX.Element => {
                         Új jelszó beállítása
                     </Title>
                     <form onSubmit={submit}>
-                        <PasswordInput label="Jelszó" mb="sm" {...form.getInputProps("newPassword")} />
+                        <PasswordInput
+                            label="Jelszó"
+                            icon={<IconLock size={20} stroke={1.5} />}
+                            mb="sm"
+                            {...form.getInputProps("newPassword")}
+                        />
                         <PasswordInput
                             label="Jelszó megerősítése"
+                            icon={<IconLock size={20} stroke={1.5} />}
                             mb="md"
                             {...form.getInputProps("confirmNewPassword")}
                         />

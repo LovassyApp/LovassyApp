@@ -76,6 +76,7 @@ const LoginPage = (): JSX.Element => {
                 <form onSubmit={submit}>
                     <TextInput
                         label="Email"
+                        type="email"
                         icon={<IconMail size={20} stroke={1.5} />}
                         required={true}
                         mb="sm"

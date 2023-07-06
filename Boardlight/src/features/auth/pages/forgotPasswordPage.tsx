@@ -1,7 +1,7 @@
 import { Anchor, Box, Button, Center, LoadingOverlay, Text, TextInput, Title, createStyles } from "@mantine/core";
+import { IconCheck, IconMail } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
-import { IconCheck } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { UnavailableModalContent } from "../components/unavailableModalContent";
 import { modals } from "@mantine/modals";
@@ -92,7 +92,9 @@ const ForgotPasswordPage = (): JSX.Element => {
                     <form onSubmit={submit}>
                         <TextInput
                             label="Email"
+                            type="email"
                             description="Kérlek azt az email címed add meg, amely a fiókodhoz tartozik!"
+                            icon={<IconMail size={20} stroke={1.5} />}
                             mb="sm"
                             required={true}
                             {...form.getInputProps("email")}
