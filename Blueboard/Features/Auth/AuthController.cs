@@ -29,7 +29,6 @@ public class AuthController : ApiControllerBase
     }
 
     [HttpPost("Refresh")]
-    [EnableRateLimiting("Strict")]
     public async Task<ActionResult<Refresh.Response>> Refresh([FromQuery] string? token)
     {
         var response = await Mediator.Send(new Refresh.Command

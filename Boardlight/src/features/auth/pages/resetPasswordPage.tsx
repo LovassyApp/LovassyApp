@@ -1,15 +1,27 @@
-import { Anchor, Box, Button, Center, LoadingOverlay, Text, TextInput, Title, createStyles } from "@mantine/core";
+import {
+    Box,
+    Button,
+    Center,
+    Input,
+    LoadingOverlay,
+    PasswordInput,
+    Text,
+    TextInput,
+    Title,
+    createStyles,
+} from "@mantine/core";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { IconCheck } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { InputError } from "@mantine/core/lib/Input/InputError/InputError";
 import { UnavailableModalContent } from "../components/unavailableModalContent";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 import { useEffect } from "react";
 import { useForm } from "@mantine/form";
 import { useGetApiStatusServiceStatus } from "../../../api/generated/features/status/status";
-import { usePostApiAuthSendPasswordReset } from "../../../api/generated/features/auth/auth";
+import { usePostApiAuthResetPassword } from "../../../api/generated/features/auth/auth";
 
 const useStyles = createStyles((theme) => ({
     center: {
@@ -36,11 +48,15 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const ForgotPasswordPage = (): JSX.Element => {
+const ResetPasswordPage = (): JSX.Element => {
     const { classes } = useStyles();
 
+    const [queryParams] = useSearchParams();
+
     const status = useGetApiStatusServiceStatus();
-    const sendPasswordReset = usePostApiAuthSendPasswordReset();
+    const resetPassword = usePostApiAuthResetPassword();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (status.isSuccess && !status.data?.serviceStatus.resetKeyPassword) {
@@ -56,26 +72,32 @@ const ForgotPasswordPage = (): JSX.Element => {
 
     const form = useForm({
         initialValues: {
-            email: "",
+            newPassword: "",
+            confirmNewPassword: "",
+        },
+        validate: {
+            confirmNewPassword: (value, values) => {
+                if (value !== values.newPassword) {
+                    return "A két jelszó nem egyezik meg";
+                }
+            },
         },
     });
 
     const submit = form.onSubmit(async (values) => {
         try {
-            await sendPasswordReset.mutateAsync({
-                data: values,
-                params: {
-                    passwordResetUrl: `${window.location.origin}/auth/reset-password`,
-                    passwordResetTokenQueryKey: "resetToken",
-                },
+            await resetPassword.mutateAsync({
+                data: { newPassword: values.newPassword },
+                params: { passwordResetToken: queryParams.get("resetToken") },
             });
             notifications.show({
-                title: "Email elküldve",
+                title: "Sikeres jelszóváltoztatás",
                 message:
-                    "Az email sikeresen el lett küldve. Ne felejtsd el megnézni a spam mappádat is, ha nem találod!",
+                    "A jelszavad sikeresen megváltoztatásra került. Mostantól ezzel a jelszóval tudsz bejelentkezni.",
                 color: "green",
                 icon: <IconCheck />,
             });
+            navigate("/auth/login", { replace: true });
         } catch (err) {
             if (err instanceof ValidationError) handleValidationErrors(err, form);
         }
@@ -87,29 +109,23 @@ const ForgotPasswordPage = (): JSX.Element => {
                 <LoadingOverlay radius="md" visible={status.isLoading} />
                 <Box className={classes.content} m="md">
                     <Title align="center" mb="sm">
-                        Jelszó visszaállítása
+                        Új jelszó beállítása
                     </Title>
                     <form onSubmit={submit}>
-                        <TextInput
-                            label="Email"
-                            description="Kérlek azt az email címed add meg, amely a fiókodhoz tartozik!"
-                            mb="sm"
-                            required={true}
-                            {...form.getInputProps("email")}
+                        <PasswordInput label="Jelszó" mb="sm" {...form.getInputProps("newPassword")} />
+                        <PasswordInput
+                            label="Jelszó megerősítése"
+                            mb="md"
+                            {...form.getInputProps("confirmNewPassword")}
                         />
-                        <Button type="submit" fullWidth={true} mb="md" loading={sendPasswordReset.isLoading}>
-                            Email küldése
+                        <Button type="submit" fullWidth={true} loading={resetPassword.isLoading}>
+                            Új jelszó beállítása
                         </Button>
                     </form>
-                    <Text align="center" size="sm">
-                        <Anchor component={Link} to="/auth/login">
-                            Vissza a bejelentkezéshez
-                        </Anchor>
-                    </Text>
                 </Box>
             </Box>
         </Center>
     );
 };
 
-export default ForgotPasswordPage;
+export default ResetPasswordPage;
