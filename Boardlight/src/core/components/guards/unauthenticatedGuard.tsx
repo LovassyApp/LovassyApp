@@ -24,8 +24,7 @@ export const UnauthenticatedGuard = ({ redirect = "/" }: { redirect?: string }) 
         })();
     }, [accessToken]);
 
-    if (refresh.isLoading)
-        return <FullScreenLoading />;
+    if (refresh.isLoading) return <FullScreenLoading />;
 
     return accessToken ? <Navigate to={redirect} replace={true} /> : <Outlet />;
 };

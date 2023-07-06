@@ -1,4 +1,5 @@
 import { AuthenticatedGuard } from "../../core/components/guards/authenticatedGuard";
+import { EmailVerifiedGuard } from "../../core/components/guards/emailVerifiedGuard";
 import { Route } from "react-router-dom";
 import { lazy } from "react";
 
@@ -8,7 +9,9 @@ export const useBaseRoutes = () => {
     return (
         <>
             <Route element={<AuthenticatedGuard />}>
-                <Route path="/" element={<HomePage />} />
+                <Route element={<EmailVerifiedGuard />}>
+                    <Route path="/" element={<HomePage />} />
+                </Route>
             </Route>
         </>
     );

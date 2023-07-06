@@ -88,7 +88,13 @@ const RegisterPage = (): JSX.Element => {
 
     const submit = form.onSubmit(async (values) => {
         try {
-            await createUser.mutateAsync({ data: values });
+            await createUser.mutateAsync({
+                data: values,
+                params: {
+                    verifyUrl: `${window.location.origin}/auth/verify-email`,
+                    verifyTokenQueryKey: "verifyToken",
+                },
+            });
             const res = await login.mutateAsync({
                 data: { email: values.email, password: values.password, remember: true },
             });
