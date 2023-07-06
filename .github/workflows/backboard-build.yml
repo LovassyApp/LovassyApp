@@ -58,23 +58,9 @@ jobs:
           generator: rust
           openapi-file: openapi_dev/schema.json
           command-args: -o Backboard/src-api --additional-properties=packageName=api
-      - name: Verify changed files
-        uses: tj-actions/verify-changed-files@v13
-        id: verify-changed-files
+      - name: Commit new API Client
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          files: |
-            Backboard/src-api/**
-      - name: Commit new schema
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add .
-          git commit -m "Updated the Rust API client for Backboard"
-      - name: Push changes
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          file_pattern: Backboard/src-api/**
+          commit_message: Updated the Rust API client for Backboard
           
