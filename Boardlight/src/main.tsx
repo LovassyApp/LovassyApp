@@ -1,10 +1,10 @@
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 
-import { AppRouter } from "./core/routing/appRouter";
-import { BrowserRouter } from "react-router-dom";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import ReactDOM from "react-dom/client";
+import { RouterProvider } from "@tanstack/router";
+import { appRouter } from "./core/routing/appRouter";
 import { useHotkeys } from "@mantine/hooks";
 import { useSettingsStore } from "./core/stores/settingsStore";
 
@@ -18,7 +18,7 @@ const App = () => {
             <MantineProvider theme={{ colorScheme: settings.colorScheme }} withNormalizeCSS={true} withGlobalStyles={true}>
                 <ModalsProvider>
                     <Notifications />
-                    <AppRouter />
+                    <RouterProvider router={appRouter} />
                 </ModalsProvider>
             </MantineProvider>
         </ColorSchemeProvider>
@@ -26,7 +26,5 @@ const App = () => {
 };
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>,
+    <App />
 );

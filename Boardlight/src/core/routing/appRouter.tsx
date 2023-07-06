@@ -1,16 +1,40 @@
+import { Outlet, RootRoute, Router } from "@tanstack/router";
+
 import { FullScreenLoading } from "../components/fullScreenLoading";
-import { Routes } from "react-router-dom";
-import { Suspense } from "react";
-import { useAuthRoutes } from "../../features/auth/useAuthRoutes";
+import { authRoutes } from "../../features/auth/authRoutes";
+import { lazy } from "react";
 
-export const AppRouter = () => {
-    const authRoutes = useAuthRoutes();
+const TanStackRouterDevtools =
+  import.meta.env.PROD
+      ? () => null
+      : lazy(() =>
+          import("@tanstack/router-devtools").then((res) => ({
+              default: res.TanStackRouterDevtools,
+          })),
+      );
 
-    return (
-        <Suspense fallback={<FullScreenLoading />}>
-            <Routes>
-                {authRoutes}
-            </Routes>
-        </Suspense>
-    );
-};
+export const rootRoute = new RootRoute({
+    component: () => (
+        <>
+            <TanStackRouterDevtools />
+            <Outlet />
+        </>
+    ),
+});
+
+const routeTree = rootRoute.addChildren([
+    ...authRoutes,
+]);
+
+export const appRouter = new Router({
+    routeTree,
+    defaultPendingComponent: () => (
+        <FullScreenLoading />
+    )
+});
+
+declare module "@tanstack/router" {
+    interface Register {
+      router: typeof appRouter
+    }
+  }
