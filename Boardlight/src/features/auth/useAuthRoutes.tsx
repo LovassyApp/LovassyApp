@@ -6,14 +6,16 @@ import { lazy } from "react";
 export const useAuthRoutes = () => {
     const LoginPage = lazy(() => import("./pages/loginPage"));
     const RegisterPage = lazy(() => import("./pages/registerPage"));
+    const ForgotPasswordPage = lazy(() => import("./pages/forgotPasswordPage"));
 
     return (
         <>
             <Route element={<UnauthenticatedGuard />}>
                 <Route element={<TippsLayout />}>
                     <Route path="/auth/login" element={<LoginPage />} />
-                    <Route path="/auth/register" element={<RegisterPage />} />
                 </Route>
+                <Route path="/auth/register" element={<RegisterPage />} />
+                <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
             </Route>
         </>
     );

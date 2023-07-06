@@ -2,7 +2,7 @@ import { Box, createStyles } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 import { Outlet } from "react-router-dom";
-import { getRandomTipp } from "../../../helpers/tipsHelpers";
+import { getRandomTipp } from "../../../helpers/tippsHelpers";
 
 const useStyles = createStyles((theme) => ({
     content: {

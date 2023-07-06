@@ -48,7 +48,18 @@ export const handleApiErrors = (error: any) => {
             message: "Szerverhiba. Kérlek próbáld újra később.",
         });
         break;
+    case 503:
+        notifications.show({
+            title: "Hiba (503)",
+            color: "red",
+            icon: <IconX />,
+            message: "Funkció nem elérhető. Kérlek próbáld újra később.",
+        });
+        break;
     default:
+        if (error instanceof DOMException)
+            break;
+        console.error(error);
         notifications.show({
             title: "Hiba",
             color: "red",
