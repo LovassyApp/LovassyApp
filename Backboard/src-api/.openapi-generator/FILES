@@ -53,6 +53,7 @@ docs/ShopCreateQrCodeRequestBody.md
 docs/ShopCreateQrCodeResponse.md
 docs/ShopIndexLoloRequestsResponse.md
 docs/ShopIndexLolosResponse.md
+docs/ShopIndexOwnLoloRequestsResponse.md
 docs/ShopIndexOwnLolosResponse.md
 docs/ShopIndexOwnLolosResponseCoin.md
 docs/ShopIndexOwnLolosResponseGrade.md
@@ -149,6 +150,7 @@ src/models/shop_create_qr_code_request_body.rs
 src/models/shop_create_qr_code_response.rs
 src/models/shop_index_lolo_requests_response.rs
 src/models/shop_index_lolos_response.rs
+src/models/shop_index_own_lolo_requests_response.rs
 src/models/shop_index_own_lolos_response.rs
 src/models/shop_index_own_lolos_response_coin.rs
 src/models/shop_index_own_lolos_response_grade.rs
