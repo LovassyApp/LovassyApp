@@ -111,19 +111,19 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
 
     return (
         <Modal opened={opened} onClose={close} title="Fiók információk" size="xl">
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Név:</Text>
                 <Text weight="bold">{control.data.user.realName ?? "Ismeretlen"}</Text>
             </Group>
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Osztály:</Text>
                 <Text weight="bold">{control.data.user.class ?? "Ismeretlen"}</Text>
             </Group>
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Felhasználónév:</Text>
                 <Text weight="bold">{control.data.user.name}</Text>
             </Group>
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Email cím:</Text>
                 <Text weight="bold">{control.data.user.email}</Text>
             </Group>
@@ -134,7 +134,7 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
             <Text>Felhasználói csoportok:</Text>
             <Text weight="bold">{control.data.userGroups.join(", ")}</Text>
             <Divider my="md" />
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Adminisztrátor:</Text>
                 <Text weight="bold">{control.data.isSupeUser ? "Igen" : "Nem"}</Text>
             </Group>
@@ -167,24 +167,24 @@ const SystemInformationModal = ({ opened, close }: { opened: boolean; close(): v
 
     return (
         <Modal opened={opened} onClose={close} title="Rendszer információk" size="lg">
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Frontend verzió:</Text>
                 <Text weight="bold">Boardlight {import.meta.env.PACKAGE_VERSION}</Text>
             </Group>
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Backend verzió:</Text>
                 <Text weight="bold">Blueboard {version.data.version}</Text>
             </Group>
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>.NET verzió:</Text>
                 <Text weight="bold">{version.data.dotNetVersion}</Text>
             </Group>
             <Divider my="md" />
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Fejlesztők:</Text>
                 <Text weight="bold">Gyimesi Máté (minigyima), Ocskó Nándor (Xeretis)</Text>
             </Group>
-            <Group position="apart">
+            <Group position="apart" spacing={0}>
                 <Text>Forráskód:</Text>
                 <Anchor href={version.data.repository} weight="bold">
                     Github
