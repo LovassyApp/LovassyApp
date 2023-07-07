@@ -17,6 +17,8 @@ pub struct AuthViewControlResponse {
     pub user: Option<Box<crate::models::AuthViewControlResponseUser>>,
     #[serde(rename = "session", skip_serializing_if = "Option::is_none")]
     pub session: Option<Box<crate::models::AuthViewControlResponseSession>>,
+    #[serde(rename = "isSupeUser", skip_serializing_if = "Option::is_none")]
+    pub is_supe_user: Option<bool>,
     #[serde(rename = "userGroups", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub user_groups: Option<Option<Vec<String>>>,
     #[serde(rename = "permissions", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
@@ -30,6 +32,7 @@ impl AuthViewControlResponse {
         AuthViewControlResponse {
             user: None,
             session: None,
+            is_supe_user: None,
             user_groups: None,
             permissions: None,
             features: None,

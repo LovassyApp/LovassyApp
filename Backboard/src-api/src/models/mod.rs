@@ -80,6 +80,8 @@ pub mod shop_index_lolo_requests_response;
 pub use self::shop_index_lolo_requests_response::ShopIndexLoloRequestsResponse;
 pub mod shop_index_lolos_response;
 pub use self::shop_index_lolos_response::ShopIndexLolosResponse;
+pub mod shop_index_own_lolo_requests_response;
+pub use self::shop_index_own_lolo_requests_response::ShopIndexOwnLoloRequestsResponse;
 pub mod shop_index_own_lolos_response;
 pub use self::shop_index_own_lolos_response::ShopIndexOwnLolosResponse;
 pub mod shop_index_own_lolos_response_coin;

@@ -47,6 +47,7 @@ Class | Method | HTTP request | Description
 *LoloRequestsApi* | [**api_lolo_requests_id_get**](docs/LoloRequestsApi.md#api_lolo_requests_id_get) | **GET** /Api/LoloRequests/{id} | 
 *LoloRequestsApi* | [**api_lolo_requests_id_patch**](docs/LoloRequestsApi.md#api_lolo_requests_id_patch) | **PATCH** /Api/LoloRequests/{id} | 
 *LoloRequestsApi* | [**api_lolo_requests_overrule_id_post**](docs/LoloRequestsApi.md#api_lolo_requests_overrule_id_post) | **POST** /Api/LoloRequests/Overrule/{id} | 
+*LoloRequestsApi* | [**api_lolo_requests_own_get**](docs/LoloRequestsApi.md#api_lolo_requests_own_get) | **GET** /Api/LoloRequests/Own | 
 *LoloRequestsApi* | [**api_lolo_requests_post**](docs/LoloRequestsApi.md#api_lolo_requests_post) | **POST** /Api/LoloRequests | 
 *LolosApi* | [**api_lolos_get**](docs/LolosApi.md#api_lolos_get) | **GET** /Api/Lolos | 
 *LolosApi* | [**api_lolos_own_get**](docs/LolosApi.md#api_lolos_own_get) | **GET** /Api/Lolos/Own | 
@@ -129,6 +130,7 @@ Class | Method | HTTP request | Description
  - [ShopCreateQrCodeResponse](docs/ShopCreateQrCodeResponse.md)
  - [ShopIndexLoloRequestsResponse](docs/ShopIndexLoloRequestsResponse.md)
  - [ShopIndexLolosResponse](docs/ShopIndexLolosResponse.md)
+ - [ShopIndexOwnLoloRequestsResponse](docs/ShopIndexOwnLoloRequestsResponse.md)
  - [ShopIndexOwnLolosResponse](docs/ShopIndexOwnLolosResponse.md)
  - [ShopIndexOwnLolosResponseCoin](docs/ShopIndexOwnLolosResponseCoin.md)
  - [ShopIndexOwnLolosResponseGrade](docs/ShopIndexOwnLolosResponseGrade.md)

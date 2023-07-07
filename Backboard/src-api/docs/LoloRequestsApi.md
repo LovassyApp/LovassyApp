@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**api_lolo_requests_id_get**](LoloRequestsApi.md#api_lolo_requests_id_get) | **GET** /Api/LoloRequests/{id} | 
 [**api_lolo_requests_id_patch**](LoloRequestsApi.md#api_lolo_requests_id_patch) | **PATCH** /Api/LoloRequests/{id} | 
 [**api_lolo_requests_overrule_id_post**](LoloRequestsApi.md#api_lolo_requests_overrule_id_post) | **POST** /Api/LoloRequests/Overrule/{id} | 
+[**api_lolo_requests_own_get**](LoloRequestsApi.md#api_lolo_requests_own_get) | **GET** /Api/LoloRequests/Own | 
 [**api_lolo_requests_post**](LoloRequestsApi.md#api_lolo_requests_post) | **POST** /Api/LoloRequests | 
 
 
@@ -163,6 +164,39 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json, text/json, application/*+json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## api_lolo_requests_own_get
+
+> Vec<crate::models::ShopIndexOwnLoloRequestsResponse> api_lolo_requests_own_get(filters, sorts, page, page_size)
+
+
+<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**filters** | Option<**String**> |  |  |
+**sorts** | Option<**String**> |  |  |
+**page** | Option<**i32**> |  |  |
+**page_size** | Option<**i32**> |  |  |
+
+### Return type
+
+[**Vec<crate::models::ShopIndexOwnLoloRequestsResponse>**](ShopIndexOwnLoloRequestsResponse.md)
+
+### Authorization
+
+[Token](../README.md#Token)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
