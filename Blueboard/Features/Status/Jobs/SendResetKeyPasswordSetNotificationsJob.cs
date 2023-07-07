@@ -26,6 +26,8 @@ public class SendResetKeyPasswordSetNotificationsJob : IJob
     {
         var notifiers = await _context.ResetKeyPasswordSetNotifiers.ToListAsync();
 
+        if (notifiers.Count == 0) return;
+
         var addresses = notifiers.Select(n => new Address(n.Email)).ToList();
 
         var email = _fluentEmail.BCC(addresses).Subject("A visszaállítási jelszó be lett állítva")
