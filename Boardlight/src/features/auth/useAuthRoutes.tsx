@@ -1,11 +1,12 @@
-import { AuthenticatedGuard } from "../../core/components/guards/authenticatedGuard";
-import { EmailUnverifiedGuard } from "../../core/components/guards/emailUnverifiedGuard";
+import { AuthenticatedGuard } from "../../core/routing/guards/authenticatedGuard";
+import { EmailUnverifiedGuard } from "../../core/routing/guards/emailUnverifiedGuard";
 import { Route } from "react-router-dom";
-import { TippsLayout } from "../../core/routing/layouts/tippsLayout";
-import { UnauthenticatedGuard } from "../../core/components/guards/unauthenticatedGuard";
+import { UnauthenticatedGuard } from "../../core/routing/guards/unauthenticatedGuard";
 import { lazy } from "react";
 
 export const useAuthRoutes = () => {
+    const TippsLayout = lazy(() => import("../../core/routing/layouts/tippsLayout"));
+
     const LoginPage = lazy(() => import("./pages/loginPage"));
     const RegisterPage = lazy(() => import("./pages/registerPage"));
     const ForgotPasswordPage = lazy(() => import("./pages/forgotPasswordPage"));

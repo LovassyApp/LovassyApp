@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { FullScreenLoading } from "../fullScreenLoading";
+import { FullScreenLoading } from "../../components/fullScreenLoading";
 import { useAuthStore } from "../../stores/authStore";
 import { useEffect } from "react";
 import { usePostApiAuthRefresh } from "../../../api/generated/features/auth/auth";

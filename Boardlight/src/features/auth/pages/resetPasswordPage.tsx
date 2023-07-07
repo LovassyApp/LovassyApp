@@ -3,9 +3,9 @@ import { IconCheck, IconLock } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { UnavailableModalContent } from "../components/unavailableModalContent";
-import { modals } from "@mantine/modals";
+import { UnavailableModal } from "../components/unavailableModal";
 import { notifications } from "@mantine/notifications";
+import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
 import { useForm } from "@mantine/form";
 import { useGetApiStatusServiceStatus } from "../../../api/generated/features/status/status";
@@ -46,15 +46,11 @@ const ResetPasswordPage = (): JSX.Element => {
 
     const navigate = useNavigate();
 
+    const [unavaliableModalOpened, { open: openUnavailableModal }] = useDisclosure();
+
     useEffect(() => {
         if (status.isSuccess && !status.data?.serviceStatus.resetKeyPassword) {
-            modals.open({
-                children: <UnavailableModalContent />,
-                size: "lg",
-                withCloseButton: false,
-                closeOnEscape: false,
-                closeOnClickOutside: false,
-            });
+            openUnavailableModal();
         }
     }, [status]);
 
@@ -92,33 +88,36 @@ const ResetPasswordPage = (): JSX.Element => {
     });
 
     return (
-        <Center className={classes.center}>
-            <Box pos="relative">
-                <LoadingOverlay radius="md" visible={status.isLoading} />
-                <Box className={classes.content} m="md">
-                    <Title align="center" mb="sm">
-                        Új jelszó beállítása
-                    </Title>
-                    <form onSubmit={submit}>
-                        <PasswordInput
-                            label="Jelszó"
-                            icon={<IconLock size={20} stroke={1.5} />}
-                            mb="sm"
-                            {...form.getInputProps("newPassword")}
-                        />
-                        <PasswordInput
-                            label="Jelszó megerősítése"
-                            icon={<IconLock size={20} stroke={1.5} />}
-                            mb="md"
-                            {...form.getInputProps("confirmNewPassword")}
-                        />
-                        <Button type="submit" fullWidth={true} loading={resetPassword.isLoading}>
+        <>
+            <UnavailableModal opened={unavaliableModalOpened} />
+            <Center className={classes.center}>
+                <Box pos="relative">
+                    <LoadingOverlay radius="md" visible={status.isLoading} />
+                    <Box className={classes.content} m="md">
+                        <Title align="center" mb="sm">
                             Új jelszó beállítása
-                        </Button>
-                    </form>
+                        </Title>
+                        <form onSubmit={submit}>
+                            <PasswordInput
+                                label="Jelszó"
+                                icon={<IconLock size={20} stroke={1.5} />}
+                                mb="sm"
+                                {...form.getInputProps("newPassword")}
+                            />
+                            <PasswordInput
+                                label="Jelszó megerősítése"
+                                icon={<IconLock size={20} stroke={1.5} />}
+                                mb="md"
+                                {...form.getInputProps("confirmNewPassword")}
+                            />
+                            <Button type="submit" fullWidth={true} loading={resetPassword.isLoading}>
+                                Új jelszó beállítása
+                            </Button>
+                        </form>
+                    </Box>
                 </Box>
-            </Box>
-        </Center>
+            </Center>
+        </>
     );
 };
 

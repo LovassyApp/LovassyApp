@@ -21,6 +21,8 @@ import type {
   GetApiLoloRequestsParams,
   ShopCreateLoloRequestResponse,
   ShopCreateLoloRequestRequestBody,
+  ShopIndexOwnLoloRequestsResponse,
+  GetApiLoloRequestsOwnParams,
   ShopViewLoloRequestResponse,
   ProblemDetails,
   ShopUpdateLoloRequestRequestBody,
@@ -134,6 +136,56 @@ export const getPostApiLoloRequestsMutationOptions = <TError = ErrorType<void>,
       return useMutation(mutationOptions);
     }
     /**
+ * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+ */
+export const getApiLoloRequestsOwn = (
+    params?: GetApiLoloRequestsOwnParams,
+ signal?: AbortSignal
+) => {
+      return useCustomClient<ShopIndexOwnLoloRequestsResponse[]>(
+      {url: `/Api/LoloRequests/Own`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiLoloRequestsOwnQueryKey = (params?: GetApiLoloRequestsOwnParams,) => [`/Api/LoloRequests/Own`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiLoloRequestsOwnQueryOptions = <TData = Awaited<ReturnType<typeof getApiLoloRequestsOwn>>, TError = ErrorType<void>>(params?: GetApiLoloRequestsOwnParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiLoloRequestsOwn>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiLoloRequestsOwn>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiLoloRequestsOwnQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiLoloRequestsOwn>>> = ({ signal }) => getApiLoloRequestsOwn(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiLoloRequestsOwnQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLoloRequestsOwn>>>
+export type GetApiLoloRequestsOwnQueryError = ErrorType<void>
+
+export const useGetApiLoloRequestsOwn = <TData = Awaited<ReturnType<typeof getApiLoloRequestsOwn>>, TError = ErrorType<void>>(
+ params?: GetApiLoloRequestsOwnParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiLoloRequestsOwn>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiLoloRequestsOwnQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+/**
  * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
  */
 export const getApiLoloRequestsId = (

@@ -24,7 +24,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export const TippsLayout = (): JSX.Element => {
+const TippsLayout = (): JSX.Element => {
     const { classes } = useStyles();
 
     const [tipp, setTipp] = useState<JSX.Element>();
@@ -40,3 +40,5 @@ export const TippsLayout = (): JSX.Element => {
         </Box>
     );
 };
+
+export default TippsLayout;

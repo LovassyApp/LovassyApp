@@ -1,16 +1,14 @@
-import { Anchor, Button, Text, TextInput } from "@mantine/core";
+import { Anchor, Button, Modal, Text, TextInput } from "@mantine/core";
 import { IconCheck, IconMail } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
-import { QueryClientProvider } from "@tanstack/react-query";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
-import { queryClient } from "../../../main";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import { usePostApiStatusNotifyOnResetKeyPasswordSet } from "../../../api/generated/features/status/status";
 
-const UnavailableModalContentInner = (): JSX.Element => {
+export const UnavailableModal = ({ opened }: { opened: boolean }): JSX.Element => {
     const navigate = useNavigate();
     const notifyOnResetKeyPasswordSet = usePostApiStatusNotifyOnResetKeyPasswordSet();
 
@@ -40,7 +38,15 @@ const UnavailableModalContentInner = (): JSX.Element => {
     });
 
     return (
-        <>
+        <Modal
+            opened={opened}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onClose={() => {}}
+            size="lg"
+            withCloseButton={false}
+            closeOnEscape={false}
+            closeOnClickOutside={false}
+        >
             <Text mb="sm">Sajnáljuk, de jelenleg ez a funkció nem elérhető...</Text>
             <Text weight="bold" mb="sm">
                 Miért van ez?
@@ -69,14 +75,6 @@ const UnavailableModalContentInner = (): JSX.Element => {
                     Vissza a bejelentkezéshez
                 </Anchor>
             </Text>
-        </>
-    );
-};
-
-export const UnavailableModalContent = (): JSX.Element => {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <UnavailableModalContentInner />
-        </QueryClientProvider>
+        </Modal>
     );
 };

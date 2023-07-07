@@ -14,9 +14,9 @@ import { Icon123, IconLock, IconMail, IconUser } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
 import { Link } from "react-router-dom";
-import { UnavailableModalContent } from "../components/unavailableModalContent";
-import { modals } from "@mantine/modals";
+import { UnavailableModal } from "../components/unavailableModal";
 import { useAuthStore } from "../../../core/stores/authStore";
+import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
 import { useForm } from "@mantine/form";
 import { useGetApiStatusServiceStatus } from "../../../api/generated/features/status/status";
@@ -56,16 +56,11 @@ const RegisterPage = (): JSX.Element => {
     const login = usePostApiAuthLogin();
 
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
+    const [unavaliableModalOpened, { open: openUnavailableModal }] = useDisclosure();
 
     useEffect(() => {
         if (status.isSuccess && !status.data?.serviceStatus.resetKeyPassword) {
-            modals.open({
-                children: <UnavailableModalContent />,
-                size: "lg",
-                withCloseButton: false,
-                closeOnEscape: false,
-                closeOnClickOutside: false,
-            });
+            openUnavailableModal();
         }
     }, [status]);
 
@@ -105,68 +100,71 @@ const RegisterPage = (): JSX.Element => {
     });
 
     return (
-        <Center className={classes.center}>
-            <Box pos="relative">
-                <LoadingOverlay radius="md" visible={status.isLoading} />
-                <Box className={classes.content} m="md">
-                    <Title align="center" mb="sm">
-                        Regisztráció
-                    </Title>
-                    <form onSubmit={submit}>
-                        <TextInput
-                            label="Email"
-                            type="email"
-                            icon={<IconMail size={20} stroke={1.5} />}
-                            required={true}
-                            mb="sm"
-                            {...form.getInputProps("email")}
-                        />
-                        <TextInput
-                            label="Név"
-                            icon={<IconUser size={20} stroke={1.5} />}
-                            required={true}
-                            mb="sm"
-                            {...form.getInputProps("name")}
-                        />
-                        <TextInput
-                            label="OM Azonosító"
-                            icon={<Icon123 size={20} stroke={1.5} />}
-                            required={true}
-                            mb="sm"
-                            {...form.getInputProps("omCode")}
-                        />
-                        <PasswordInput
-                            label="Jelszó"
-                            icon={<IconLock size={20} stroke={1.5} />}
-                            required={true}
-                            mb="sm"
-                            {...form.getInputProps("password")}
-                        />
-                        <PasswordInput
-                            label="Jelszó megerősítése"
-                            icon={<IconLock size={20} stroke={1.5} />}
-                            required={true}
-                            mb="md"
-                            {...form.getInputProps("confirmPassword")}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth={true}
-                            mb="md"
-                            loading={createUser.isLoading || login.isLoading}
-                        >
-                            Regisztrálás
-                        </Button>
-                    </form>
-                    <Text align="center" size="sm">
-                        Már van fiókod?{" "}
-                        <Anchor component={Link} to="/auth/login">
-                            Lépj be itt
-                        </Anchor>
-                    </Text>
+        <>
+            <UnavailableModal opened={unavaliableModalOpened} />
+            <Center className={classes.center}>
+                <Box pos="relative">
+                    <LoadingOverlay radius="md" visible={status.isLoading} />
+                    <Box className={classes.content} m="md">
+                        <Title align="center" mb="sm">
+                            Regisztráció
+                        </Title>
+                        <form onSubmit={submit}>
+                            <TextInput
+                                label="Email"
+                                type="email"
+                                icon={<IconMail size={20} stroke={1.5} />}
+                                required={true}
+                                mb="sm"
+                                {...form.getInputProps("email")}
+                            />
+                            <TextInput
+                                label="Név"
+                                icon={<IconUser size={20} stroke={1.5} />}
+                                required={true}
+                                mb="sm"
+                                {...form.getInputProps("name")}
+                            />
+                            <TextInput
+                                label="OM Azonosító"
+                                icon={<Icon123 size={20} stroke={1.5} />}
+                                required={true}
+                                mb="sm"
+                                {...form.getInputProps("omCode")}
+                            />
+                            <PasswordInput
+                                label="Jelszó"
+                                icon={<IconLock size={20} stroke={1.5} />}
+                                required={true}
+                                mb="sm"
+                                {...form.getInputProps("password")}
+                            />
+                            <PasswordInput
+                                label="Jelszó megerősítése"
+                                icon={<IconLock size={20} stroke={1.5} />}
+                                required={true}
+                                mb="md"
+                                {...form.getInputProps("confirmPassword")}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth={true}
+                                mb="md"
+                                loading={createUser.isLoading || login.isLoading}
+                            >
+                                Regisztrálás
+                            </Button>
+                        </form>
+                        <Text align="center" size="sm">
+                            Már van fiókod?{" "}
+                            <Anchor component={Link} to="/auth/login">
+                                Lépj be itt
+                            </Anchor>
+                        </Text>
+                    </Box>
                 </Box>
-            </Box>
-        </Center>
+            </Center>
+        </>
     );
 };
 

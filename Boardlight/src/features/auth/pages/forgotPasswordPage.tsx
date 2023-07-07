@@ -3,9 +3,9 @@ import { IconCheck, IconMail } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
 import { Link } from "react-router-dom";
-import { UnavailableModalContent } from "../components/unavailableModalContent";
-import { modals } from "@mantine/modals";
+import { UnavailableModal } from "../components/unavailableModal";
 import { notifications } from "@mantine/notifications";
+import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
 import { useForm } from "@mantine/form";
 import { useGetApiStatusServiceStatus } from "../../../api/generated/features/status/status";
@@ -42,15 +42,11 @@ const ForgotPasswordPage = (): JSX.Element => {
     const status = useGetApiStatusServiceStatus();
     const sendPasswordReset = usePostApiAuthSendPasswordReset();
 
+    const [unavaliableModalOpened, { open: openUnavailableModal }] = useDisclosure();
+
     useEffect(() => {
         if (status.isSuccess && !status.data?.serviceStatus.resetKeyPassword) {
-            modals.open({
-                children: <UnavailableModalContent />,
-                size: "lg",
-                withCloseButton: false,
-                closeOnEscape: false,
-                closeOnClickOutside: false,
-            });
+            openUnavailableModal();
         }
     }, [status]);
 
@@ -82,35 +78,38 @@ const ForgotPasswordPage = (): JSX.Element => {
     });
 
     return (
-        <Center className={classes.center}>
-            <Box pos="relative">
-                <LoadingOverlay radius="md" visible={status.isLoading} />
-                <Box className={classes.content} m="md">
-                    <Title align="center" mb="sm">
-                        Jelszó visszaállítása
-                    </Title>
-                    <form onSubmit={submit}>
-                        <TextInput
-                            label="Email"
-                            type="email"
-                            description="Kérlek azt az email címed add meg, amely a fiókodhoz tartozik!"
-                            icon={<IconMail size={20} stroke={1.5} />}
-                            mb="sm"
-                            required={true}
-                            {...form.getInputProps("email")}
-                        />
-                        <Button type="submit" fullWidth={true} mb="md" loading={sendPasswordReset.isLoading}>
-                            Email küldése
-                        </Button>
-                    </form>
-                    <Text align="center" size="sm">
-                        <Anchor component={Link} to="/auth/login">
-                            Vissza a bejelentkezéshez
-                        </Anchor>
-                    </Text>
+        <>
+            <UnavailableModal opened={unavaliableModalOpened} />
+            <Center className={classes.center}>
+                <Box pos="relative">
+                    <LoadingOverlay radius="md" visible={status.isLoading} />
+                    <Box className={classes.content} m="md">
+                        <Title align="center" mb="sm">
+                            Jelszó visszaállítása
+                        </Title>
+                        <form onSubmit={submit}>
+                            <TextInput
+                                label="Email"
+                                type="email"
+                                description="Kérlek azt az email címed add meg, amely a fiókodhoz tartozik!"
+                                icon={<IconMail size={20} stroke={1.5} />}
+                                mb="sm"
+                                required={true}
+                                {...form.getInputProps("email")}
+                            />
+                            <Button type="submit" fullWidth={true} mb="md" loading={sendPasswordReset.isLoading}>
+                                Email küldése
+                            </Button>
+                        </form>
+                        <Text align="center" size="sm">
+                            <Anchor component={Link} to="/auth/login">
+                                Vissza a bejelentkezéshez
+                            </Anchor>
+                        </Text>
+                    </Box>
                 </Box>
-            </Box>
-        </Center>
+            </Center>
+        </>
     );
 };
 
