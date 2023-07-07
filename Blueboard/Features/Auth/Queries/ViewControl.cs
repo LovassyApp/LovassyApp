@@ -16,7 +16,7 @@ public static class ViewControl
     {
         public ResponseUser User { get; set; }
         public ResponseSession Session { get; set; }
-        public bool IsSupeUser { get; set; }
+        public bool IsSuperUser { get; set; }
         public string[] UserGroups { get; set; }
         public string[] Permissions { get; set; }
         public string[] Features { get; set; }
@@ -70,7 +70,7 @@ public static class ViewControl
             {
                 User = _userAccessor.User!.Adapt<ResponseUser>(),
                 Session = _sessionManager.Session!.Adapt<ResponseSession>(),
-                IsSupeUser = _permissionManager.CheckSuperUser(),
+                IsSuperUser = _permissionManager.CheckSuperUser(),
                 Permissions = _contextAccessor.HttpContext!.User.FindAll(AuthConstants.PermissionClaim)
                     .Select(c => c.Value).ToArray(),
                 UserGroups = _userAccessor.User!.UserGroups.Select(userGroup => userGroup.Name).ToArray(),

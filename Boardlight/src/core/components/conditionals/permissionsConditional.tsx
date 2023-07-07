@@ -1,8 +1,5 @@
 import { ReactNode } from "react";
-import { createStyles } from "@mantine/core";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-
-const useStyles = createStyles((theme) => ({}));
 
 export const PermissionsConditional = ({
     permissions,
@@ -15,8 +12,6 @@ export const PermissionsConditional = ({
     children: ReactNode;
     fetchControl?: boolean;
 }): JSX.Element => {
-    const { classes } = useStyles();
-
     const control = useGetApiAuthControl({ query: { retry: 0, enabled: fetchControl } });
 
     if (control.isLoading) return undefined; // Shouldn't happen in theory
@@ -25,7 +20,7 @@ export const PermissionsConditional = ({
 
     if (
         control.isSuccess &&
-        (control.data.permissions.some((permission) => permissions.includes(permission)) || control.data.isSupeUser)
+        (control.data.permissions.some((permission) => permissions.includes(permission)) || control.data.isSuperUser)
     )
         return <>{children}</>;
 

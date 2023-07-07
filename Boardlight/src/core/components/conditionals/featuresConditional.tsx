@@ -1,8 +1,5 @@
 import { ReactNode } from "react";
-import { createStyles } from "@mantine/core";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-
-const useStyles = createStyles((theme) => ({}));
 
 export const FeaturesConditional = ({
     features,
@@ -15,8 +12,6 @@ export const FeaturesConditional = ({
     children: ReactNode;
     fetchControl?: boolean;
 }): JSX.Element => {
-    const { classes } = useStyles();
-
     const control = useGetApiAuthControl({ query: { retry: 0, enabled: fetchControl } });
 
     if (control.isLoading) return undefined; // Shouldn't happen in theory

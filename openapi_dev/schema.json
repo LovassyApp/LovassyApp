@@ -3561,7 +3561,7 @@
           "session": {
             "$ref": "#/components/schemas/AuthViewControlResponseSession"
           },
-          "isSupeUser": {
+          "isSuperUser": {
             "type": "boolean"
           },
           "userGroups": {

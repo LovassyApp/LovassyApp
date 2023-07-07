@@ -3,7 +3,6 @@ import {
     Anchor,
     AppShell,
     Avatar,
-    Box,
     Burger,
     Center,
     Container,
@@ -34,9 +33,6 @@ import { useDeleteApiAuthLogout, useGetApiAuthControl } from "../../../api/gener
 
 import { FeaturesConditional } from "../../components/conditionals/featuresConditional";
 import { PermissionsConditional } from "../../components/conditionals/permissionsConditional";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { modals } from "@mantine/modals";
-import { queryClient } from "../../../main";
 import { useAuthStore } from "../../stores/authStore";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiStatusVersion } from "../../../api/generated/features/status/status";
@@ -136,7 +132,7 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
             <Divider my="md" />
             <Group position="apart" spacing={0}>
                 <Text>Adminisztrátor:</Text>
-                <Text weight="bold">{control.data.isSupeUser ? "Igen" : "Nem"}</Text>
+                <Text weight="bold">{control.data.isSuperUser ? "Igen" : "Nem"}</Text>
             </Group>
             <Text>Jogosultságok:</Text>
             <Text weight="bold">{control.data.permissions.join(", ")}</Text>
@@ -460,7 +456,7 @@ const links = [
         label: "Kezdőlap",
     },
     {
-        link: "/grades",
+        link: "/school/grades",
         label: "Jegyek",
         permissions: ["School.IndexGrades"],
         features: ["School"],

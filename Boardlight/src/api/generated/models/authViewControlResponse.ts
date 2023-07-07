@@ -10,7 +10,7 @@ import type { AuthViewControlResponseSession } from './authViewControlResponseSe
 export interface AuthViewControlResponse {
   user?: AuthViewControlResponseUser;
   session?: AuthViewControlResponseSession;
-  isSupeUser?: boolean;
+  isSuperUser?: boolean;
   userGroups?: string[] | null;
   permissions?: string[] | null;
   features?: string[] | null;
