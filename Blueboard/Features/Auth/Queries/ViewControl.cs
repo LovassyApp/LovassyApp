@@ -16,6 +16,7 @@ public static class ViewControl
     {
         public ResponseUser User { get; set; }
         public ResponseSession Session { get; set; }
+        public bool IsSupeUser { get; set; }
         public string[] UserGroups { get; set; }
         public string[] Permissions { get; set; }
         public string[] Features { get; set; }
@@ -43,16 +44,18 @@ public static class ViewControl
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IFeatureManager _featureManager;
+        private readonly PermissionManager _permissionManager;
         private readonly SessionManager _sessionManager;
         private readonly UserAccessor _userAccessor;
 
         public Handler(IHttpContextAccessor contextAccessor, SessionManager sessionManager,
-            UserAccessor userAccessor, IFeatureManager featureManager)
+            UserAccessor userAccessor, IFeatureManager featureManager, PermissionManager permissionManager)
         {
             _contextAccessor = contextAccessor;
             _sessionManager = sessionManager;
             _userAccessor = userAccessor;
             _featureManager = featureManager;
+            _permissionManager = permissionManager;
         }
 
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
@@ -67,6 +70,7 @@ public static class ViewControl
             {
                 User = _userAccessor.User!.Adapt<ResponseUser>(),
                 Session = _sessionManager.Session!.Adapt<ResponseSession>(),
+                IsSupeUser = _permissionManager.CheckSuperUser(),
                 Permissions = _contextAccessor.HttpContext!.User.FindAll(AuthConstants.PermissionClaim)
                     .Select(c => c.Value).ToArray(),
                 UserGroups = _userAccessor.User!.UserGroups.Select(userGroup => userGroup.Name).ToArray(),
