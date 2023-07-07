@@ -30,7 +30,8 @@ public class SessionCreatedEventHandler : INotificationHandler<SessionCreatedEve
             .UsingJobData("masterKey", notification.MasterKey)
             .Build();
 
-        var updateGradesTrigger = TriggerBuilder.Create().WithIdentity("updateGradesTrigger", "sessionCreatedJobs")
+        var updateGradesTrigger = TriggerBuilder.Create()
+            .WithIdentity("updateGradesTrigger" + idSalt, "sessionCreatedJobs")
             .StartNow()
             .Build();
 
