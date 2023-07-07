@@ -20,6 +20,14 @@ public class ShopPermissions
         public bool Dangerous { get; } = false;
     }
 
+    public class IndexOwnLoloRequests : IPermission
+    {
+        public string Name { get; } = "Shop.IndexOwnLoloRequests";
+        public string DisplayName { get; } = "Saját loló kérvények lekérése";
+        public string Description { get; } = "A saját loló kérvények lekérése és listázása";
+        public bool Dangerous { get; } = false;
+    }
+
     public class IndexLoloRequests : IPermission
     {
         public string Name { get; } = "Shop.IndexLoloRequests";

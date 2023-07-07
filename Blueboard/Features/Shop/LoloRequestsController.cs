@@ -28,6 +28,19 @@ public class LoloRequestsController : ApiControllerBase
         return Ok(loloRequests);
     }
 
+    [HttpGet("Own")]
+    [Permissions(typeof(ShopPermissions.IndexOwnLoloRequests))]
+    public async Task<ActionResult<IEnumerable<IndexOwnLoloRequests.Response>>> IndexOwn(
+        [FromQuery] SieveModel sieveModel)
+    {
+        var loloRequests = await Mediator.Send(new IndexOwnLoloRequests.Query
+        {
+            SieveModel = sieveModel
+        });
+
+        return Ok(loloRequests);
+    }
+
     [HttpGet("{id}")]
     [Permissions(typeof(ShopPermissions.ViewLoloRequest))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
