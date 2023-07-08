@@ -93,6 +93,23 @@ const useStyles = createStyles((theme) => ({
     },
     avatarSectionContainer: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[1],
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+
+        [theme.fn.smallerThan("sm")]: {
+            flexDirection: "column",
+        },
+    },
+    avatarSectionLabel: {
+        [theme.fn.largerThan("sm")]: {
+            display: "none",
+        },
+    },
+    avatarSectionIcon: {
+        [theme.fn.smallerThan("sm")]: {
+            display: "none",
+        },
     },
     accordionLink: {
         display: "block",
@@ -147,41 +164,47 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
                 </Text>
             )}
             <Paper p="xs" className={classes.avatarSectionContainer} mt="sm">
-                <Group position="apart" align="center" spacing={0}>
-                    <Tooltip label="Email" position="right" withArrow={true}>
-                        <IconMail stroke={1.5} size={rem(20)} />
-                    </Tooltip>
-                    <Text>{control.data.user.email}</Text>
+                <Tooltip label="Email" position="right" withArrow={true}>
+                    <IconMail className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
+                </Tooltip>
+                <Group position="center" spacing={rem(2)} className={classes.avatarSectionLabel} mb="md">
+                    <IconMail stroke={1.5} size={rem(20)} />
+                    <Text align="center">Email</Text>
+                </Group>
+                <Text>{control.data.user.email}</Text>
+            </Paper>
+            <Divider my="md" />
+            <Paper p="xs" className={classes.avatarSectionContainer}>
+                <Tooltip label="Elérhtő funkciók" position="right" withArrow={true}>
+                    <IconPackages className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
+                </Tooltip>
+                <Group position="center" spacing={rem(2)} className={classes.avatarSectionLabel} mb="md">
+                    <IconPackages stroke={1.5} size={rem(20)} />
+                    <Text align="center">Elérhető funkciók</Text>
+                </Group>
+                <Group position="center" spacing="xs">
+                    {control.data.features.map((feature) => (
+                        <Badge key={feature} color="violet" variant="filled">
+                            {feature}
+                        </Badge>
+                    ))}
                 </Group>
             </Paper>
             <Divider my="md" />
             <Paper p="xs" className={classes.avatarSectionContainer}>
-                <Group position="apart" align="center" spacing={0}>
-                    <Tooltip label="Elérhtő funkciók" position="right" withArrow={true}>
-                        <IconPackages stroke={1.5} size={rem(20)} />
-                    </Tooltip>
-                    <Group spacing="xs">
-                        {control.data.features.map((feature) => (
-                            <Badge key={feature} color="violet" variant="filled">
-                                {feature}
-                            </Badge>
-                        ))}
-                    </Group>
+                <Tooltip label="Felhasználói csoportok" position="right" withArrow={true}>
+                    <IconUsersGroup className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
+                </Tooltip>
+                <Group position="center" spacing={rem(2)} className={classes.avatarSectionLabel} mb="md">
+                    <IconUsersGroup stroke={1.5} size={rem(20)} />
+                    <Text align="center">Felhasználói csoportok</Text>
                 </Group>
-            </Paper>
-            <Divider my="md" />
-            <Paper p="xs" className={classes.avatarSectionContainer}>
-                <Group position="apart" align="center" spacing={0}>
-                    <Tooltip label="Felhasználói csoportok" position="right" withArrow={true}>
-                        <IconUsersGroup stroke={1.5} size={rem(20)} />
-                    </Tooltip>
-                    <Group spacing="xs">
-                        {control.data.userGroups.map((userGroup) => (
-                            <Badge key={userGroup} color="indigo" variant="filled">
-                                {userGroup}
-                            </Badge>
-                        ))}
-                    </Group>
+                <Group position="center" spacing="xs">
+                    {control.data.userGroups.map((userGroup) => (
+                        <Badge key={userGroup} color="indigo" variant="filled">
+                            {userGroup}
+                        </Badge>
+                    ))}
                 </Group>
             </Paper>
             <Paper p="xs" className={classes.avatarSectionContainer} mt="sm">
