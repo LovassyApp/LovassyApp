@@ -3,6 +3,8 @@ import {
     Anchor,
     AppShell,
     Avatar,
+    Badge,
+    Box,
     Burger,
     Center,
     Container,
@@ -10,11 +12,14 @@ import {
     Drawer,
     Group,
     Header,
+    Indicator,
     Loader,
     Menu,
     Modal,
+    Paper,
     Stack,
     Text,
+    Tooltip,
     UnstyledButton,
     createStyles,
     rem,
@@ -24,9 +29,15 @@ import {
     IconChevronDown,
     IconInfoCircle,
     IconInfoSquareRounded,
+    IconKey,
     IconLogout,
+    IconMail,
+    IconPackages,
     IconPalette,
+    IconUser,
     IconUserCircle,
+    IconUserCog,
+    IconUsersGroup,
 } from "@tabler/icons-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDeleteApiAuthLogout, useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
@@ -80,6 +91,9 @@ const useStyles = createStyles((theme) => ({
     avatarPlaceholder: {
         color: theme.colorScheme === "dark" ? theme.white : theme.black,
     },
+    avatarSectionContainer: {
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[1],
+    },
     accordionLink: {
         display: "block",
         lineHeight: 1,
@@ -92,6 +106,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const UserInformationModal = ({ opened, close }: { opened: boolean; close(): void }) => {
+    const { classes } = useStyles();
     const control = useGetApiAuthControl({ query: { retry: 0 } });
 
     if (control.isLoading)
@@ -107,35 +122,83 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
 
     return (
         <Modal opened={opened} onClose={close} title="Fiók információk" size="xl">
-            <Group position="apart" spacing={0}>
-                <Text>Név:</Text>
-                <Text weight="bold">{control.data.user.realName ?? "Ismeretlen"}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text>Osztály:</Text>
-                <Text weight="bold">{control.data.user.class ?? "Ismeretlen"}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text>Felhasználónév:</Text>
-                <Text weight="bold">{control.data.user.name}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text>Email cím:</Text>
-                <Text weight="bold">{control.data.user.email}</Text>
-            </Group>
+            <Center>
+                <Indicator
+                    color="blue"
+                    position="bottom-center"
+                    label="Admin"
+                    size={20}
+                    offset={22}
+                    inline={true}
+                    disabled={!control.data.isSuperUser}
+                    withBorder={true}
+                >
+                    <IconUserCircle stroke={1.5} size={rem(96)} />
+                </Indicator>
+            </Center>
+            <Text weight="bold" align="center" size="xl">
+                {control.data.user.realName
+                    ? `${control.data.user.realName} (${control.data.user.class})`
+                    : control.data.user.name}
+            </Text>
+            {control.data.user.realName && (
+                <Text color="dimmed" align="center">
+                    {control.data.user.name}
+                </Text>
+            )}
+            <Paper p="xs" className={classes.avatarSectionContainer} mt="sm">
+                <Group position="apart" align="center" spacing={0}>
+                    <Tooltip label="Email" position="right" withArrow={true}>
+                        <IconMail stroke={1.5} size={rem(20)} />
+                    </Tooltip>
+                    <Text>{control.data.user.email}</Text>
+                </Group>
+            </Paper>
             <Divider my="md" />
-            <Text>Elérhető funkciók:</Text>
-            <Text weight="bold">{control.data.features.join(", ")}</Text>
+            <Paper p="xs" className={classes.avatarSectionContainer}>
+                <Group position="apart" align="center" spacing={0}>
+                    <Tooltip label="Elérhtő funkciók" position="right" withArrow={true}>
+                        <IconPackages stroke={1.5} size={rem(20)} />
+                    </Tooltip>
+                    <Group spacing="xs">
+                        {control.data.features.map((feature) => (
+                            <Badge key={feature} color="violet" variant="filled">
+                                {feature}
+                            </Badge>
+                        ))}
+                    </Group>
+                </Group>
+            </Paper>
             <Divider my="md" />
-            <Text>Felhasználói csoportok:</Text>
-            <Text weight="bold">{control.data.userGroups.join(", ")}</Text>
-            <Divider my="md" />
-            <Group position="apart" spacing={0}>
-                <Text>Adminisztrátor:</Text>
-                <Text weight="bold">{control.data.isSuperUser ? "Igen" : "Nem"}</Text>
-            </Group>
-            <Text>Jogosultságok:</Text>
-            <Text weight="bold">{control.data.permissions.join(", ")}</Text>
+            <Paper p="xs" className={classes.avatarSectionContainer}>
+                <Group position="apart" align="center" spacing={0}>
+                    <Tooltip label="Felhasználói csoportok" position="right" withArrow={true}>
+                        <IconUsersGroup stroke={1.5} size={rem(20)} />
+                    </Tooltip>
+                    <Group spacing="xs">
+                        {control.data.userGroups.map((userGroup) => (
+                            <Badge key={userGroup} color="indigo" variant="filled">
+                                {userGroup}
+                            </Badge>
+                        ))}
+                    </Group>
+                </Group>
+            </Paper>
+            <Paper p="xs" className={classes.avatarSectionContainer} mt="sm">
+                <Stack>
+                    <Group position="center" spacing={rem(2)}>
+                        <IconKey stroke={1.5} size={rem(20)} />
+                        <Text align="center">Jogosultságok</Text>
+                    </Group>
+                    <Group spacing="xs" position="center">
+                        {control.data.permissions.map((userGroup) => (
+                            <Badge key={userGroup} variant="filled">
+                                {userGroup}
+                            </Badge>
+                        ))}
+                    </Group>
+                </Stack>
+            </Paper>
         </Modal>
     );
 };
