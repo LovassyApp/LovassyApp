@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 
-export const FeaturesConditional = ({
-    features,
+export const PermissionRequirement = ({
+    permissions,
     fallback,
     children,
     fetchControl = false,
 }: {
-    features?: string[];
+    permissions?: string[];
     fallback?: ReactNode;
     children: ReactNode;
     fetchControl?: boolean;
@@ -16,9 +16,12 @@ export const FeaturesConditional = ({
 
     if (control.isLoading) return undefined; // Shouldn't happen in theory
 
-    if (!features) return <>{children}</>;
+    if (!permissions) return <>{children}</>;
 
-    if (control.isSuccess && control.data.features.some((feature) => features.includes(feature)))
+    if (
+        control.isSuccess &&
+        (control.data.permissions.some((permission) => permissions.includes(permission)) || control.data.isSuperUser)
+    )
         return <>{children}</>;
 
     if (fallback) return <>{fallback}</>;

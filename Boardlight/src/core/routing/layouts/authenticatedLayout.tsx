@@ -4,7 +4,6 @@ import {
     AppShell,
     Avatar,
     Badge,
-    Box,
     Burger,
     Center,
     Container,
@@ -34,16 +33,14 @@ import {
     IconMail,
     IconPackages,
     IconPalette,
-    IconUser,
     IconUserCircle,
-    IconUserCog,
     IconUsersGroup,
 } from "@tabler/icons-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDeleteApiAuthLogout, useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 
-import { FeaturesConditional } from "../../components/conditionals/featuresConditional";
-import { PermissionsConditional } from "../../components/conditionals/permissionsConditional";
+import { FeatureRequirement } from "../../components/requirements/featuresRequirement";
+import { PermissionRequirement } from "../../components/requirements/permissionsRequirement";
 import { useAuthStore } from "../../stores/authStore";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiStatusVersion } from "../../../api/generated/features/status/status";
@@ -358,19 +355,19 @@ const AuthenticatedHeader = ({ links, toggleDrawer }: AuthenticatedHeaderProps) 
 
     const items = links.map((link) => {
         const menuItems = link.links?.map((item) => (
-            <FeaturesConditional key={item.label} features={item.features}>
-                <PermissionsConditional permissions={item.permissions}>
+            <FeatureRequirement key={item.label} features={item.features}>
+                <PermissionRequirement permissions={item.permissions}>
                     <Menu.Item component={Link} to={item.link}>
                         {item.label}
                     </Menu.Item>
-                </PermissionsConditional>
-            </FeaturesConditional>
+                </PermissionRequirement>
+            </FeatureRequirement>
         ));
 
         if (menuItems) {
             return (
-                <FeaturesConditional key={link.label} features={link.features}>
-                    <PermissionsConditional permissions={link.permissions}>
+                <FeatureRequirement key={link.label} features={link.features}>
+                    <PermissionRequirement permissions={link.permissions}>
                         <Menu
                             trigger="hover"
                             transitionProps={{ transition: "fade", duration: 100 }}
@@ -386,20 +383,20 @@ const AuthenticatedHeader = ({ links, toggleDrawer }: AuthenticatedHeaderProps) 
                             </Menu.Target>
                             <Menu.Dropdown>{menuItems}</Menu.Dropdown>
                         </Menu>
-                    </PermissionsConditional>
-                </FeaturesConditional>
+                    </PermissionRequirement>
+                </FeatureRequirement>
             );
         }
 
         return (
-            <FeaturesConditional key={link.label} features={link.features}>
-                <PermissionsConditional permissions={link.permissions}>
+            <FeatureRequirement key={link.label} features={link.features}>
+                <PermissionRequirement permissions={link.permissions}>
                     {/* @ts-ignore */}
                     <Link to={link.link} className={classes.link}>
                         {link.label}
                     </Link>
-                </PermissionsConditional>
-            </FeaturesConditional>
+                </PermissionRequirement>
+            </FeatureRequirement>
         );
     });
 
@@ -449,19 +446,19 @@ const AuthenticatedDrawer = ({ links, drawerOpened, closeDrawer }: Authenticated
 
     const items = links.map((link) => {
         const accordionItems = link.links?.map((item) => (
-            <FeaturesConditional key={item.label} features={item.features}>
-                <PermissionsConditional permissions={item.permissions}>
+            <FeatureRequirement key={item.label} features={item.features}>
+                <PermissionRequirement permissions={item.permissions}>
                     <UnstyledButton onClick={() => doNavigate(item.link)} className={classes.accordionLink}>
                         {item.label}
                     </UnstyledButton>
-                </PermissionsConditional>
-            </FeaturesConditional>
+                </PermissionRequirement>
+            </FeatureRequirement>
         ));
 
         if (accordionItems) {
             return (
-                <FeaturesConditional key={link.label} features={link.features}>
-                    <PermissionsConditional permissions={link.permissions}>
+                <FeatureRequirement key={link.label} features={link.features}>
+                    <PermissionRequirement permissions={link.permissions}>
                         <Accordion
                             variant="filled"
                             chevron={false}
@@ -487,20 +484,20 @@ const AuthenticatedDrawer = ({ links, drawerOpened, closeDrawer }: Authenticated
                                 </Accordion.Panel>
                             </Accordion.Item>
                         </Accordion>
-                    </PermissionsConditional>
-                </FeaturesConditional>
+                    </PermissionRequirement>
+                </FeatureRequirement>
             );
         }
 
         return (
-            <FeaturesConditional key={link.label} features={link.features}>
-                <PermissionsConditional permissions={link.permissions}>
+            <FeatureRequirement key={link.label} features={link.features}>
+                <PermissionRequirement permissions={link.permissions}>
                     {/* @ts-ignore */}
                     <UnstyledButton onClick={() => doNavigate(link.link)} className={classes.accordionLink}>
                         {link.label}
                     </UnstyledButton>
-                </PermissionsConditional>
-            </FeaturesConditional>
+                </PermissionRequirement>
+            </FeatureRequirement>
         );
     });
 
