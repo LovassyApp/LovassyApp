@@ -3,7 +3,6 @@ using Blueboard.Core.Lolo.Exceptions;
 using Blueboard.Core.Lolo.Services.Options;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
-using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -124,7 +123,13 @@ public class LoloManager
             UpdatedAt = DateTime.UtcNow
         }, amount).ToArray();
 
-        await _context.BulkInsertAsync(coins);
+        await _context.Database.BeginTransactionAsync();
+
+        foreach (var coin in coins) await _context.Lolos.AddAsync(coin);
+
+        await _context.SaveChangesAsync();
+
+        await _context.Database.CommitTransactionAsync();
     }
 
     /// <summary>
