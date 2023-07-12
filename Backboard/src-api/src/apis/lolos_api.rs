@@ -35,7 +35,7 @@ pub enum ApiLolosOwnGetError {
 
 
 /// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLolos<br><b>Requires the following features to be enabled</b>: Shop
-pub async fn api_lolos_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<crate::models::ShopIndexLolosResponse, Error<ApiLolosGetError>> {
+pub async fn api_lolos_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ShopIndexLolosResponse>, Error<ApiLolosGetError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;

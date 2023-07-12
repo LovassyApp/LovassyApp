@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## api_lolos_get
 
-> crate::models::ShopIndexLolosResponse api_lolos_get(filters, sorts, page, page_size)
+> Vec<crate::models::ShopIndexLolosResponse> api_lolos_get(filters, sorts, page, page_size)
 
 
 <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLolos<br><b>Requires the following features to be enabled</b>: Shop
@@ -28,7 +28,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ShopIndexLolosResponse**](ShopIndexLolosResponse.md)
+[**Vec<crate::models::ShopIndexLolosResponse>**](ShopIndexLolosResponse.md)
 
 ### Authorization
 
