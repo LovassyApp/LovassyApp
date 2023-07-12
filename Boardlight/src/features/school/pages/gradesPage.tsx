@@ -2,7 +2,6 @@ import {
     Box,
     Center,
     Group,
-    Indicator,
     Loader,
     Paper,
     RingProgress,

@@ -556,7 +556,7 @@ const links = [
             },
             {
                 link: "/shop/own-lolo-requests",
-                label: "Saját kérvények",
+                label: "Kérvények",
                 permissions: ["Shop.IndexOwnLoloRequests"],
             },
             {
@@ -578,7 +578,7 @@ const links = [
         links: [
             {
                 link: "/shop/lolo-requests",
-                label: "Kérvények",
+                label: "Összes kérvény",
                 permissions: ["Shop.IndexLoloRequests"],
             },
             {
