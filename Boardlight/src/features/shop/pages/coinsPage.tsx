@@ -35,7 +35,9 @@ const CoinsPage = (): JSX.Element => {
     return (
         <>
             <Title mb="md">Összevont statisztikák</Title>
-            <CoinsStats data={coins.data} />
+            <SimpleGrid cols={2} breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}>
+                <CoinsStats data={coins.data} />
+            </SimpleGrid>
             <Title my="md">Összes érme</Title>
             <SimpleGrid
                 cols={4}

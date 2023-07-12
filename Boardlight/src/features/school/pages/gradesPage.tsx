@@ -72,9 +72,9 @@ const SubjectCard = ({
             onClick={() => setActive(active === index ? undefined : index)}
             p="xs"
         >
-            <Group position="apart" align="stretch" h="100%">
-                <Stack justify="space-between" align="stretch" spacing="xs" maw="68%" h="100%">
-                    <Box w="100%">
+            <Group position="apart" maw="100%" sx={{ flexWrap: "nowrap" }}>
+                <Stack justify="space-between" align="stretch" spacing="xs" sx={{ flex: 1, overflow: "hidden" }}>
+                    <Box maw="100%">
                         <Text size="lg" weight={500} truncate={true}>
                             {subject}
                         </Text>
@@ -115,9 +115,9 @@ const GradeCard = ({ grade }: { grade: SchoolIndexGradesResponseGrade }): JSX.El
 
     return (
         <Paper withBorder={true} radius="md" p="sm">
-            <Group position="apart" align="center" h="100%">
-                <Stack justify="space-between" align="stretch" spacing={0} maw="68%" h="100%">
-                    <Box w="100%">
+            <Group position="apart" align="center" maw="100%" sx={{ flexWrap: "nowrap" }}>
+                <Stack justify="space-between" align="stretch" spacing={0} sx={{ flex: 1, overflow: "hidden" }}>
+                    <Box maw="100%">
                         <Text size="lg" weight={500} truncate={true}>
                             {grade.name}
                         </Text>
