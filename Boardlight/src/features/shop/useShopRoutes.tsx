@@ -5,19 +5,19 @@ import { PermissionGuard } from "../../core/routing/guards/permissionGuard";
 import { Route } from "react-router-dom";
 import { lazy } from "react";
 
-export const useSchoolRoutes = () => {
+export const useShopRoutes = () => {
     const AuthenticatedLayout = lazy(() => import("../../core/routing/layouts/authenticatedLayout"));
 
-    const GradesPage = lazy(() => import("./pages/gradesPage"));
+    const CoinsPage = lazy(() => import("./pages/coinsPage"));
 
     return (
         <>
             <Route element={<AuthenticatedGuard />}>
                 <Route element={<EmailVerifiedGuard />}>
                     <Route element={<AuthenticatedLayout />}>
-                        <Route element={<FeatureGuard features={["School"]} />}>
-                            <Route element={<PermissionGuard permissions={["School.IndexGrades"]} />}>
-                                <Route path="/school/grades" element={<GradesPage />} />
+                        <Route element={<FeatureGuard features={["Shop"]} />}>
+                            <Route element={<PermissionGuard permissions={["Shop.IndexOwnLolos"]} />}>
+                                <Route path="/shop/own-coins" element={<CoinsPage />} />
                             </Route>
                         </Route>
                     </Route>

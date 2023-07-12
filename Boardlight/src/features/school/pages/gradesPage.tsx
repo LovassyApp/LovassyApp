@@ -24,11 +24,9 @@ const useStyles = createStyles((theme) => ({
         height: "100%",
     },
     card: {
-        position: "relative",
         cursor: "pointer",
         overflow: "hidden",
         transition: "box-shadow 100ms ease",
-        padding: theme.spacing.xs,
     },
     cardActive: {
         boxShadow: `inset 0 0 0 ${rem(1)} ${theme.colors.blue[6]}`,
@@ -72,6 +70,7 @@ const SubjectCard = ({
             radius="md"
             className={cx(classes.card, { [classes.cardActive]: active === index })}
             onClick={() => setActive(active === index ? undefined : index)}
+            p="xs"
         >
             <Group position="apart" align="stretch" h="100%">
                 <Stack justify="space-between" align="stretch" spacing="xs" maw="68%" h="100%">

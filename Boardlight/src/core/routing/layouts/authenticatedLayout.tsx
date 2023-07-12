@@ -170,7 +170,7 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
                 </Group>
                 <Text>{control.data.user.email}</Text>
             </Paper>
-            <Divider my="md" />
+            <Divider variant="dashed" my="sm" />
             <Paper p="xs" className={classes.avatarSectionContainer}>
                 <Tooltip label="Elérhtő funkciók" position="right" withArrow={true}>
                     <IconPackages className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
@@ -187,7 +187,7 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
                     ))}
                 </Group>
             </Paper>
-            <Divider my="md" />
+            <Divider variant="dashed" my="sm" />
             <Paper p="xs" className={classes.avatarSectionContainer}>
                 <Tooltip label="Felhasználói csoportok" position="right" withArrow={true}>
                     <IconUsersGroup className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
