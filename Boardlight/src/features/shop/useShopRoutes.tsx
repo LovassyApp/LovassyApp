@@ -8,6 +8,7 @@ import { lazy } from "react";
 export const useShopRoutes = () => {
     const AuthenticatedLayout = lazy(() => import("../../core/routing/layouts/authenticatedLayout"));
 
+    const OwnCoinsPage = lazy(() => import("./pages/ownCoinsPage"));
     const CoinsPage = lazy(() => import("./pages/coinsPage"));
 
     return (
@@ -17,7 +18,12 @@ export const useShopRoutes = () => {
                     <Route element={<AuthenticatedLayout />}>
                         <Route element={<FeatureGuard features={["Shop"]} />}>
                             <Route element={<PermissionGuard permissions={["Shop.IndexOwnLolos"]} />}>
-                                <Route path="/shop/own-coins" element={<CoinsPage />} />
+                                <Route path="/shop/own-coins" element={<OwnCoinsPage />} />
+                            </Route>
+                        </Route>
+                        <Route element={<FeatureGuard features={["Shop"]} />}>
+                            <Route element={<PermissionGuard permissions={["Shop.IndexLolos"]} />}>
+                                <Route path="/shop/coins" element={<CoinsPage />} />
                             </Route>
                         </Route>
                     </Route>

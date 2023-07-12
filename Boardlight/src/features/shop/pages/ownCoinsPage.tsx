@@ -1,8 +1,8 @@
-import { Box, Center, Loader, SimpleGrid, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
-import { useGetApiLolos, useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
+import { Center, Loader, SimpleGrid, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
 
 import { CoinCard } from "../components/coinCard";
 import { CoinsStats } from "../components/coinStats";
+import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 
 const useStyles = createStyles((theme) => ({
     center: {
@@ -10,11 +10,11 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const CoinsPage = (): JSX.Element => {
+const OwnCoinsPage = (): JSX.Element => {
     const { classes } = useStyles();
     const theme = useMantineTheme();
 
-    const coins = useGetApiLolos({ Sorts: "isSpent" });
+    const coins = useGetApiLolosOwn({ Sorts: "isSpent" });
 
     if (coins.isLoading)
         return (
@@ -34,9 +34,9 @@ const CoinsPage = (): JSX.Element => {
 
     return (
         <>
-            <Title mb="md">Összevont statisztikák</Title>
+            <Title mb="md">Statisztikák</Title>
             <CoinsStats data={coins.data} />
-            <Title my="md">Összes érme</Title>
+            <Title my="md">Érmék</Title>
             <SimpleGrid
                 cols={4}
                 breakpoints={[
@@ -45,7 +45,7 @@ const CoinsPage = (): JSX.Element => {
                     { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
                 ]}
             >
-                {coins.data?.map((coin) => (
+                {coins.data?.coins.map((coin) => (
                     <CoinCard key={coin.id} coin={coin} />
                 ))}
             </SimpleGrid>
@@ -53,4 +53,4 @@ const CoinsPage = (): JSX.Element => {
     );
 };
 
-export default CoinsPage;
+export default OwnCoinsPage;

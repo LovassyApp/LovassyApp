@@ -84,7 +84,7 @@ export const getApiLolos = (
     params?: GetApiLolosParams,
  signal?: AbortSignal
 ) => {
-      return useCustomClient<ShopIndexLolosResponse>(
+      return useCustomClient<ShopIndexLolosResponse[]>(
       {url: `/Api/Lolos`, method: 'get',
         params, signal
     },

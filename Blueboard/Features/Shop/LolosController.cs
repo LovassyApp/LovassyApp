@@ -25,7 +25,7 @@ public class LolosController : ApiControllerBase
 
     [HttpGet]
     [Permissions(typeof(ShopPermissions.IndexLolos))]
-    public async Task<ActionResult<IndexLolos.Response>> Index([FromQuery] SieveModel sieveModel)
+    public async Task<ActionResult<IEnumerable<IndexLolos.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var response = await Mediator.Send(new IndexLolos.Query { SieveModel = sieveModel });
         return Ok(response);
