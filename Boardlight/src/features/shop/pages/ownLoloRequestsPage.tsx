@@ -2,6 +2,7 @@ import {
     ActionIcon,
     Button,
     Center,
+    Divider,
     Group,
     Loader,
     Modal,
@@ -13,9 +14,10 @@ import {
     createStyles,
     useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconPlus } from "@tabler/icons-react";
+import { IconCheck, IconPlus, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
+    useDeleteApiLoloRequestsId,
     useGetApiLoloRequests,
     useGetApiLoloRequestsOwn,
     usePostApiLoloRequests,
@@ -24,10 +26,12 @@ import {
 import { LoloRequestCard } from "../components/loloRequestCard";
 import { LoloRequestStats } from "../components/loloRequestStats";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
+import { ShopIndexLoloRequestsResponse } from "../../../api/generated/models";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
     center: {
@@ -73,10 +77,108 @@ const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): v
             <form onSubmit={submit}>
                 <TextInput label="Cím" required={true} {...form.getInputProps("title")} mb="sm" />
                 <Textarea label="Törzsszöveg" required={true} {...form.getInputProps("body")} mb="md" />
-                <Button type="submit" fullWidth={true}>
+                <Button type="submit" fullWidth={true} loading={createLoloRequest.isLoading}>
                     Létrehozás
                 </Button>
             </form>
+        </Modal>
+    );
+};
+
+const DetailsModal = ({
+    loloRequest,
+    opened,
+    close,
+}: {
+    loloRequest: ShopIndexLoloRequestsResponse;
+    opened: boolean;
+    close(): void;
+}): JSX.Element => {
+    const deleteLoloRequest = useDeleteApiLoloRequestsId();
+    const queryClient = useQueryClient();
+
+    const { queryKey: ownQueryKey } = useGetApiLoloRequestsOwn({}, { query: { enabled: false } });
+    const { queryKey: allQueryKey } = useGetApiLoloRequests({}, { query: { enabled: false } });
+
+    const doDeleteLoloRequest = async () => {
+        try {
+            await deleteLoloRequest.mutateAsync({ id: loloRequest.id });
+            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
+            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
+            notifications.show({
+                title: "Kérvény törölve",
+                message: "A kérvényed sikeresen töröltük.",
+                color: "green",
+                icon: <IconCheck />,
+            });
+            close();
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                notifications.show({
+                    title: "Hiba (400)",
+                    message: err.message,
+                    color: "red",
+                    icon: <IconX />,
+                });
+            }
+        }
+    };
+
+    return (
+        <Modal opened={opened} onClose={close} size="lg" title="Részletek">
+            <Group position="apart" spacing={0}>
+                <Text>Cím:</Text>
+                <Text weight="bold">{loloRequest?.title}</Text>
+            </Group>
+            <Text>Törzsszöveg:</Text>
+            <Text weight="bold">{loloRequest?.body}</Text>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Állapot:</Text>
+                {loloRequest?.acceptedAt && (
+                    <Text weight="bold" color="green">
+                        Elfogadva
+                    </Text>
+                )}
+                {loloRequest?.deniedAt && (
+                    <Text weight="bold" color="red">
+                        Elutasítva
+                    </Text>
+                )}
+                {!loloRequest?.acceptedAt && !loloRequest?.deniedAt && (
+                    <Text weight="bold" color="yellow">
+                        Függőben
+                    </Text>
+                )}
+            </Group>
+            {loloRequest?.acceptedAt && (
+                <Group position="apart" spacing={0}>
+                    <Text>Elfogadás dátuma:</Text>
+                    <Text weight="bold">{new Date(loloRequest?.acceptedAt).toLocaleDateString("hu-HU", {})}</Text>
+                </Group>
+            )}
+            {loloRequest?.deniedAt && (
+                <Group position="apart" spacing={0}>
+                    <Text>Elutasítás dátuma:</Text>
+                    <Text weight="bold">{new Date(loloRequest?.deniedAt).toLocaleDateString("hu-HU", {})}</Text>
+                </Group>
+            )}
+            <Group position="apart" spacing={0}>
+                <Text>Létrehozás dátuma:</Text>
+                <Text weight="bold">{new Date(loloRequest?.createdAt).toLocaleDateString("hu-HU", {})}</Text>
+            </Group>
+            <PermissionRequirement permissions={["Shop.DeleteOwnLoloRequest", "Shop.DeleteLoloRequest"]}>
+                <Button
+                    fullWidth={true}
+                    mt="md"
+                    color="red"
+                    disabled={!!loloRequest?.acceptedAt || !!loloRequest?.deniedAt}
+                    onClick={async () => await doDeleteLoloRequest()}
+                    loading={deleteLoloRequest.isLoading}
+                >
+                    Törlés
+                </Button>
+            </PermissionRequirement>
         </Modal>
     );
 };
@@ -89,6 +191,8 @@ const OwnLoloRequestsPage = (): JSX.Element => {
 
     const [createLoloRequestModalOpened, { close: closeCreateLoloRequestModal, open: openCreateLoloRequestModal }] =
         useDisclosure(false);
+    const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
+    const [detailsModalLoloRequest, setDetailsModalLoloRequest] = useState<ShopIndexLoloRequestsResponse>();
 
     if (loloRequests.isLoading)
         return (
@@ -109,6 +213,7 @@ const OwnLoloRequestsPage = (): JSX.Element => {
     return (
         <>
             <CreateLoloRequestModal opened={createLoloRequestModalOpened} close={closeCreateLoloRequestModal} />
+            <DetailsModal opened={detailsModalOpened} close={closeDetailsModal} loloRequest={detailsModalLoloRequest} />
             <Title mb="md">Statisztikák</Title>
             <SimpleGrid cols={2} breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}>
                 <LoloRequestStats data={loloRequests.data} />
@@ -130,7 +235,14 @@ const OwnLoloRequestsPage = (): JSX.Element => {
                 ]}
             >
                 {loloRequests.data?.map((loloRequest) => (
-                    <LoloRequestCard key={loloRequest.id} loloRequest={loloRequest} />
+                    <LoloRequestCard
+                        key={loloRequest.id}
+                        loloRequest={loloRequest}
+                        openDetails={() => {
+                            setDetailsModalLoloRequest(loloRequest);
+                            openDetailsModal();
+                        }}
+                    />
                 ))}
             </SimpleGrid>
         </>
