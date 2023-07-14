@@ -11,6 +11,7 @@ export const useShopRoutes = () => {
     const OwnCoinsPage = lazy(() => import("./pages/ownCoinsPage"));
     const CoinsPage = lazy(() => import("./pages/coinsPage"));
     const OwnLoloRequestsPage = lazy(() => import("./pages/ownLoloRequestsPage"));
+    const LoloRequestsPage = lazy(() => import("./pages/loloRequestsPage"));
 
     return (
         <>
@@ -26,6 +27,9 @@ export const useShopRoutes = () => {
                             </Route>
                             <Route element={<PermissionGuard permissions={["Shop.IndexOwnLoloRequests"]} />}>
                                 <Route path="/shop/own-lolo-requests" element={<OwnLoloRequestsPage />} />
+                            </Route>
+                            <Route element={<PermissionGuard permissions={["Shop.IndexLoloRequests"]} />}>
+                                <Route path="/shop/lolo-requests" element={<LoloRequestsPage />} />
                             </Route>
                         </Route>
                     </Route>

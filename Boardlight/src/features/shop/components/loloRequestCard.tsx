@@ -1,8 +1,7 @@
-import { Box, Divider, Group, Paper, Stack, Text, createStyles, rem, useMantineTheme } from "@mantine/core";
+import { Box, Group, Paper, Stack, Text, createStyles, rem, useMantineTheme } from "@mantine/core";
 import { IconCircleCheck, IconCircleX, IconHelpCircle } from "@tabler/icons-react";
 
 import { ShopIndexLoloRequestsResponse } from "../../../api/generated/models";
-import { modals } from "@mantine/modals";
 
 const useStyles = createStyles((theme) => ({
     card: {

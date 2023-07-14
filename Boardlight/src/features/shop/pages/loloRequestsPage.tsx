@@ -1,12 +1,15 @@
 import {
-    ActionIcon,
+    Box,
     Button,
     Center,
     Divider,
     Group,
     Loader,
     Modal,
+    NumberInput,
+    SegmentedControl,
     SimpleGrid,
+    Switch,
     Text,
     TextInput,
     Textarea,
@@ -14,16 +17,16 @@ import {
     createStyles,
     useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconPlus, IconX } from "@tabler/icons-react";
+import { IconCheck, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
     useDeleteApiLoloRequestsId,
     useGetApiLoloRequests,
     useGetApiLoloRequestsOwn,
     usePatchApiLoloRequestsId,
-    usePostApiLoloRequests,
+    usePostApiLoloRequestsOverruleId,
 } from "../../../api/generated/features/lolo-requests/lolo-requests";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { LoloRequestCard } from "../components/loloRequestCard";
 import { LoloRequestStats } from "../components/loloRequestStats";
@@ -42,52 +45,6 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
-    const createLoloRequest = usePostApiLoloRequests();
-    const queryClient = useQueryClient();
-
-    const { queryKey: ownQueryKey } = useGetApiLoloRequestsOwn({}, { query: { enabled: false } });
-    const { queryKey: allQueryKey } = useGetApiLoloRequests({}, { query: { enabled: false } });
-
-    const form = useForm({
-        initialValues: {
-            title: "",
-            body: "",
-        },
-    });
-
-    const submit = form.onSubmit(async (values) => {
-        try {
-            await createLoloRequest.mutateAsync({
-                data: values,
-            });
-            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
-            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
-            notifications.show({
-                title: "Kérvény létrehozva",
-                message: "A kérvényed sikeresen létrehoztuk.",
-                color: "green",
-                icon: <IconCheck />,
-            });
-            close();
-        } catch (err) {
-            if (err instanceof ValidationError) handleValidationErrors(err, form);
-        }
-    });
-
-    return (
-        <Modal opened={opened} onClose={close} title="Új kérvény" size="lg">
-            <form onSubmit={submit}>
-                <TextInput label="Cím" required={true} {...form.getInputProps("title")} mb="sm" />
-                <Textarea label="Törzsszöveg" required={true} {...form.getInputProps("body")} mb="md" />
-                <Button type="submit" fullWidth={true} loading={createLoloRequest.isLoading}>
-                    Létrehozás
-                </Button>
-            </form>
-        </Modal>
-    );
-};
-
 const DetailsModal = ({
     loloRequest,
     opened,
@@ -98,11 +55,18 @@ const DetailsModal = ({
     close(): void;
 }): JSX.Element => {
     const updateLoloRequest = usePatchApiLoloRequestsId();
+    const overruleLoloRequest = usePostApiLoloRequestsOverruleId();
     const deleteLoloRequest = useDeleteApiLoloRequestsId();
     const queryClient = useQueryClient();
 
     const { queryKey: ownQueryKey } = useGetApiLoloRequestsOwn({}, { query: { enabled: false } });
     const { queryKey: allQueryKey } = useGetApiLoloRequests({}, { query: { enabled: false } });
+
+    const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
+
+    const userQueryEnabled = useMemo(() => control.data?.permissions?.includes("Users.ViewUser") ?? false, [control]);
+
+    const user = useGetApiUsersId(loloRequest?.userId, { query: { enabled: userQueryEnabled && !!loloRequest } });
 
     useEffect(() => {
         updateForm.setValues({
@@ -125,7 +89,7 @@ const DetailsModal = ({
             await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény módosítva",
-                message: "A kérvényed sikeresen módosítottad.",
+                message: "A kérvényt sikeresen módosítottad.",
                 color: "green",
                 icon: <IconCheck />,
             });
@@ -138,6 +102,33 @@ const DetailsModal = ({
         }
     });
 
+    const overruleForm = useForm({
+        initialValues: {
+            accepted: false,
+            loloAmount: 0,
+        },
+    });
+
+    const overruleSubmit = overruleForm.onSubmit(async (values) => {
+        try {
+            await overruleLoloRequest.mutateAsync({ data: values, id: loloRequest.id });
+            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
+            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
+            notifications.show({
+                title: "Kérvény elbírálva",
+                message: "A kérvényt sikeresen elbíráltad.",
+                color: "green",
+                icon: <IconCheck />,
+            });
+            overruleForm.reset();
+            close();
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                handleValidationErrors(err, overruleForm);
+            }
+        }
+    });
+
     const doDeleteLoloRequest = async () => {
         try {
             await deleteLoloRequest.mutateAsync({ id: loloRequest.id });
@@ -145,10 +136,11 @@ const DetailsModal = ({
             await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény törölve",
-                message: "A kérvényed sikeresen törölted.",
+                message: "A kérvényt sikeresen törölted.",
                 color: "green",
                 icon: <IconCheck />,
             });
+            overruleForm.reset();
             close();
         } catch (err) {
             if (err instanceof ValidationError) {
@@ -162,14 +154,56 @@ const DetailsModal = ({
         }
     };
 
+    if (user.isInitialLoading)
+        return (
+            <Modal
+                opened={opened}
+                onClose={() => {
+                    overruleForm.reset();
+                    close();
+                }}
+                title="Részletek"
+                size="lg"
+            >
+                <Center>
+                    <Loader />
+                </Center>
+            </Modal>
+        );
+
     return (
-        <Modal opened={opened} onClose={close} size="lg" title="Részletek">
+        <Modal
+            opened={opened}
+            onClose={() => {
+                overruleForm.reset();
+                close();
+            }}
+            size="lg"
+            title="Részletek"
+        >
             <Group position="apart" spacing={0}>
                 <Text>Cím:</Text>
                 <Text weight="bold">{loloRequest?.title}</Text>
             </Group>
             <Text>Törzsszöveg:</Text>
             <Text weight="bold">{loloRequest?.body}</Text>
+            {user.data && (
+                <>
+                    <Divider my="sm" />
+                    <Group position="apart" spacing={0}>
+                        <Text>Felhasználó neve:</Text>
+                        <Text weight="bold">{user.data?.realName}</Text>
+                    </Group>
+                    <Group position="apart" spacing={0}>
+                        <Text>Felhasználó valódi neve:</Text>
+                        <Text weight="bold">{user.data?.realName ?? "Ismeretlen"}</Text>
+                    </Group>
+                    <Group position="apart" spacing={0}>
+                        <Text>Felhasználó osztálya:</Text>
+                        <Text weight="bold">{user.data?.class ?? "Ismeretlen"}</Text>
+                    </Group>
+                </>
+            )}
             <Divider my="sm" />
             <Group position="apart" spacing={0}>
                 <Text>Állapot:</Text>
@@ -206,18 +240,49 @@ const DetailsModal = ({
                 <Text weight="bold">{new Date(loloRequest?.createdAt).toLocaleDateString("hu-HU", {})}</Text>
             </Group>
             {!loloRequest?.acceptedAt && !loloRequest?.deniedAt && (
-                <PermissionRequirement permissions={["Shop.UpdateOwnLoloRequest", "Shop.UpdateLoloRequest"]}>
-                    <Divider my="sm" />
-                    <form onSubmit={updateSubmit}>
-                        <TextInput required={true} label="Cím" {...updateForm.getInputProps("title")} />
-                        <Textarea required={true} label="Törzsszöveg" mt="sm" {...updateForm.getInputProps("body")} />
-                        <Button type="submit" fullWidth={true} mt="md" loading={updateLoloRequest.isLoading}>
-                            Módosítás
-                        </Button>
-                    </form>
-                </PermissionRequirement>
+                <>
+                    <PermissionRequirement permissions={["Shop.UpdateLoloRequest"]}>
+                        <Divider my="sm" />
+                        <form onSubmit={updateSubmit}>
+                            <TextInput required={true} label="Cím" {...updateForm.getInputProps("title")} />
+                            <Textarea
+                                required={true}
+                                label="Törzsszöveg"
+                                mt="sm"
+                                {...updateForm.getInputProps("body")}
+                            />
+                            <Button type="submit" fullWidth={true} mt="md" loading={updateLoloRequest.isLoading}>
+                                Módosítás
+                            </Button>
+                        </form>
+                    </PermissionRequirement>
+                    <PermissionRequirement permissions={["Shop.OverruleLoloRequest"]}>
+                        <Divider my="sm" />
+                        <form onSubmit={overruleSubmit}>
+                            <SegmentedControl
+                                data={[
+                                    { label: "Elutasítás", value: "false" },
+                                    { label: "Elfogadás", value: "true" },
+                                ]}
+                                fullWidth={true}
+                                value={overruleForm.values.accepted ? "true" : "false"}
+                                onChange={(value) => overruleForm.setFieldValue("accepted", value === "true")}
+                            />
+                            <NumberInput
+                                label="Lolo mennyiség"
+                                min={0}
+                                required={true}
+                                {...overruleForm.getInputProps("loloAmount")}
+                                mt="xs"
+                            />
+                            <Button type="submit" fullWidth={true} mt="md" loading={overruleLoloRequest.isLoading}>
+                                Elbírálás
+                            </Button>
+                        </form>
+                    </PermissionRequirement>
+                </>
             )}
-            <PermissionRequirement permissions={["Shop.DeleteOwnLoloRequest", "Shop.DeleteLoloRequest"]}>
+            <PermissionRequirement permissions={["Shop.DeleteLoloRequest"]}>
                 <Divider my="sm" />
                 <Button
                     fullWidth={true}
@@ -233,14 +298,12 @@ const DetailsModal = ({
     );
 };
 
-const OwnLoloRequestsPage = (): JSX.Element => {
+const LoloRequestsPage = (): JSX.Element => {
     const { classes } = useStyles();
     const theme = useMantineTheme();
 
-    const loloRequests = useGetApiLoloRequestsOwn();
+    const loloRequests = useGetApiLoloRequests();
 
-    const [createLoloRequestModalOpened, { close: closeCreateLoloRequestModal, open: openCreateLoloRequestModal }] =
-        useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
     const [detailsModalLoloRequest, setDetailsModalLoloRequest] = useState<ShopIndexLoloRequestsResponse>();
 
@@ -262,20 +325,12 @@ const OwnLoloRequestsPage = (): JSX.Element => {
 
     return (
         <>
-            <CreateLoloRequestModal opened={createLoloRequestModalOpened} close={closeCreateLoloRequestModal} />
             <DetailsModal opened={detailsModalOpened} close={closeDetailsModal} loloRequest={detailsModalLoloRequest} />
-            <Title mb="md">Statisztikák</Title>
+            <Title mb="md">Összevont statisztikák</Title>
             <SimpleGrid cols={2} breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}>
                 <LoloRequestStats data={loloRequests.data} />
             </SimpleGrid>
-            <Group position="apart" align="baseline" my="md" spacing={0}>
-                <Title>Kérvények</Title>
-                <PermissionRequirement permissions={["Shop.CreateLoloRequest"]}>
-                    <ActionIcon variant="transparent" color="dark" onClick={() => openCreateLoloRequestModal()}>
-                        <IconPlus />
-                    </ActionIcon>
-                </PermissionRequirement>
-            </Group>
+            <Title my="md">Összes kérvény</Title>
             <SimpleGrid
                 cols={4}
                 breakpoints={[
@@ -299,4 +354,4 @@ const OwnLoloRequestsPage = (): JSX.Element => {
     );
 };
 
-export default OwnLoloRequestsPage;
+export default LoloRequestsPage;
