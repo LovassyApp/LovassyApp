@@ -188,6 +188,12 @@ const GradesPage = (): JSX.Element => {
             >
                 {subjectCards}
             </SimpleGrid>
+            {subjectCards.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nem lettek importálva a jegyeid... Amint importálva lesznek, itt látod majd a
+                    tantárgyaid.
+                </Text>
+            )}
             <Title my="md">Jegyek</Title>
             {activeSubject === undefined ? (
                 <Text color="dimmed">Válassz ki egy tantárgyat, hogy láthasd a jegyeidet!</Text>
