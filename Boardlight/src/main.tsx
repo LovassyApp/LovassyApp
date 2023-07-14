@@ -1,15 +1,18 @@
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 
-import { AppRouter } from "./core/routing/appRouter";
-import { BrowserRouter } from "react-router-dom";
+import { FullScreenLoading } from "./core/components/fullScreenLoading";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import ReactDOM from "react-dom/client";
+import { Suspense } from "react";
+import { getAppRoutes } from "./core/routing/getAppRoutes";
 import { useHotkeys } from "@mantine/hooks";
 import { useSettingsStore } from "./core/stores/settingsStore";
 
 export const queryClient = new QueryClient();
+export const router = createBrowserRouter(createRoutesFromElements(getAppRoutes()));
 
 const App = () => {
     const settings = useSettingsStore();
@@ -26,7 +29,9 @@ const App = () => {
                 <ModalsProvider>
                     <QueryClientProvider client={queryClient}>
                         <Notifications limit={3} />
-                        <AppRouter />
+                        <Suspense fallback={<FullScreenLoading />}>
+                            <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
+                        </Suspense>
                     </QueryClientProvider>
                 </ModalsProvider>
             </MantineProvider>
@@ -34,8 +39,4 @@ const App = () => {
     );
 };
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>
-);
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(<App />);

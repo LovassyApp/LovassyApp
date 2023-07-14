@@ -1,9 +1,7 @@
-import { getPostApiAuthRefreshMutationOptions, usePostApiAuthRefresh } from "./generated/features/auth/auth";
-
+import { getPostApiAuthRefreshMutationOptions } from "./generated/features/auth/auth";
 import { handleApiErrors } from "../helpers/apiHelpers";
+import { router } from "../main";
 import { useAuthStore } from "../core/stores/authStore";
-
-const blueboardURL: string = import.meta.env.VITE_BLUEBOARD_URL;
 
 const callAPI = async (url: string, init: RequestInit) => {
     const response = await fetch(url, init);
@@ -77,7 +75,7 @@ export const useCustomClient = async <T>({
                 console.log("Attempting to refresh token...");
 
                 // eslint-disable-next-line react-hooks/rules-of-hooks
-                const refreshOptions = getPostApiAuthRefreshMutationOptions(); // This, despite it's appearance, is not a hook
+                const refreshOptions = getPostApiAuthRefreshMutationOptions();
                 const res = await refreshOptions.mutationFn({});
 
                 useAuthStore.getState().setAccessToken(res.token);
@@ -94,6 +92,7 @@ export const useCustomClient = async <T>({
                 console.log("Failed to refresh token");
 
                 useAuthStore.getState().setAccessToken(undefined);
+                await router.navigate("/auth/login");
             }
         }
         handleApiErrors(error);

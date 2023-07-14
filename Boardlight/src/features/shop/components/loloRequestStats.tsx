@@ -1,4 +1,4 @@
-import { Box, Group, Paper, RingProgress, Stack, Text, Title, createStyles } from "@mantine/core";
+import { Group, Paper, RingProgress, Stack, Text, Title, createStyles } from "@mantine/core";
 
 import { ShopIndexLoloRequestsResponse } from "../../../api/generated/models";
 import { useMemo } from "react";

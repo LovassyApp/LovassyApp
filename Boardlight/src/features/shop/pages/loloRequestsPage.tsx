@@ -1,5 +1,4 @@
 import {
-    Box,
     Button,
     Center,
     Divider,
@@ -9,7 +8,6 @@ import {
     NumberInput,
     SegmentedControl,
     SimpleGrid,
-    Switch,
     Text,
     TextInput,
     Textarea,
@@ -20,9 +18,10 @@ import {
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
+    getGetApiLoloRequestsOwnQueryKey,
+    getGetApiLoloRequestsQueryKey,
     useDeleteApiLoloRequestsId,
     useGetApiLoloRequests,
-    useGetApiLoloRequestsOwn,
     usePatchApiLoloRequestsId,
     usePostApiLoloRequestsOverruleId,
 } from "../../../api/generated/features/lolo-requests/lolo-requests";
@@ -59,8 +58,8 @@ const DetailsModal = ({
     const deleteLoloRequest = useDeleteApiLoloRequestsId();
     const queryClient = useQueryClient();
 
-    const { queryKey: ownQueryKey } = useGetApiLoloRequestsOwn({}, { query: { enabled: false } });
-    const { queryKey: allQueryKey } = useGetApiLoloRequests({}, { query: { enabled: false } });
+    const ownQueryKey = getGetApiLoloRequestsOwnQueryKey();
+    const allQueryKey = getGetApiLoloRequestsQueryKey();
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
@@ -280,20 +279,19 @@ const DetailsModal = ({
                             </Button>
                         </form>
                     </PermissionRequirement>
+                    <PermissionRequirement permissions={["Shop.DeleteLoloRequest"]}>
+                        <Divider my="sm" />
+                        <Button
+                            fullWidth={true}
+                            color="red"
+                            onClick={async () => await doDeleteLoloRequest()}
+                            loading={deleteLoloRequest.isLoading}
+                        >
+                            Törlés
+                        </Button>
+                    </PermissionRequirement>
                 </>
             )}
-            <PermissionRequirement permissions={["Shop.DeleteLoloRequest"]}>
-                <Divider my="sm" />
-                <Button
-                    fullWidth={true}
-                    color="red"
-                    disabled={!!loloRequest?.acceptedAt || !!loloRequest?.deniedAt}
-                    onClick={async () => await doDeleteLoloRequest()}
-                    loading={deleteLoloRequest.isLoading}
-                >
-                    Törlés
-                </Button>
-            </PermissionRequirement>
         </Modal>
     );
 };

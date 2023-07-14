@@ -3,7 +3,7 @@ import { EmailVerifiedGuard } from "../../core/routing/guards/emailVerifiedGuard
 import { Route } from "react-router-dom";
 import { lazy } from "react";
 
-export const useBaseRoutes = () => {
+export const getBaseRoutes = () => {
     const AuthenticatedLayout = lazy(() => import("../../core/routing/layouts/authenticatedLayout"));
 
     const HomePage = lazy(() => import("./pages/homePage"));

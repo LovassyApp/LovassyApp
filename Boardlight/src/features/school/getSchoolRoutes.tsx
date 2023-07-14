@@ -5,7 +5,7 @@ import { PermissionGuard } from "../../core/routing/guards/permissionGuard";
 import { Route } from "react-router-dom";
 import { lazy } from "react";
 
-export const useSchoolRoutes = () => {
+export const getSchoolRoutes = () => {
     const AuthenticatedLayout = lazy(() => import("../../core/routing/layouts/authenticatedLayout"));
 
     const GradesPage = lazy(() => import("./pages/gradesPage"));

@@ -17,6 +17,8 @@ import {
 import { IconCheck, IconPlus, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
+    getGetApiLoloRequestsOwnQueryKey,
+    getGetApiLoloRequestsQueryKey,
     useDeleteApiLoloRequestsId,
     useGetApiLoloRequests,
     useGetApiLoloRequestsOwn,
@@ -32,8 +34,6 @@ import { ShopIndexLoloRequestsResponse } from "../../../api/generated/models";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useGetApiUsersId } from "../../../api/generated/features/users/users";
 import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles((theme) => ({
@@ -46,8 +46,8 @@ const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): v
     const createLoloRequest = usePostApiLoloRequests();
     const queryClient = useQueryClient();
 
-    const { queryKey: ownQueryKey } = useGetApiLoloRequestsOwn({}, { query: { enabled: false } });
-    const { queryKey: allQueryKey } = useGetApiLoloRequests({}, { query: { enabled: false } });
+    const ownQueryKey = getGetApiLoloRequestsOwnQueryKey();
+    const allQueryKey = getGetApiLoloRequestsQueryKey();
 
     const form = useForm({
         initialValues: {
@@ -206,29 +206,35 @@ const DetailsModal = ({
                 <Text weight="bold">{new Date(loloRequest?.createdAt).toLocaleDateString("hu-HU", {})}</Text>
             </Group>
             {!loloRequest?.acceptedAt && !loloRequest?.deniedAt && (
-                <PermissionRequirement permissions={["Shop.UpdateOwnLoloRequest", "Shop.UpdateLoloRequest"]}>
-                    <Divider my="sm" />
-                    <form onSubmit={updateSubmit}>
-                        <TextInput required={true} label="Cím" {...updateForm.getInputProps("title")} />
-                        <Textarea required={true} label="Törzsszöveg" mt="sm" {...updateForm.getInputProps("body")} />
-                        <Button type="submit" fullWidth={true} mt="md" loading={updateLoloRequest.isLoading}>
-                            Módosítás
+                <>
+                    <PermissionRequirement permissions={["Shop.UpdateOwnLoloRequest", "Shop.UpdateLoloRequest"]}>
+                        <Divider my="sm" />
+                        <form onSubmit={updateSubmit}>
+                            <TextInput required={true} label="Cím" {...updateForm.getInputProps("title")} />
+                            <Textarea
+                                required={true}
+                                label="Törzsszöveg"
+                                mt="sm"
+                                {...updateForm.getInputProps("body")}
+                            />
+                            <Button type="submit" fullWidth={true} mt="md" loading={updateLoloRequest.isLoading}>
+                                Módosítás
+                            </Button>
+                        </form>
+                    </PermissionRequirement>
+                    <PermissionRequirement permissions={["Shop.DeleteOwnLoloRequest", "Shop.DeleteLoloRequest"]}>
+                        <Divider my="sm" />
+                        <Button
+                            fullWidth={true}
+                            color="red"
+                            onClick={async () => await doDeleteLoloRequest()}
+                            loading={deleteLoloRequest.isLoading}
+                        >
+                            Törlés
                         </Button>
-                    </form>
-                </PermissionRequirement>
+                    </PermissionRequirement>
+                </>
             )}
-            <PermissionRequirement permissions={["Shop.DeleteOwnLoloRequest", "Shop.DeleteLoloRequest"]}>
-                <Divider my="sm" />
-                <Button
-                    fullWidth={true}
-                    color="red"
-                    disabled={!!loloRequest?.acceptedAt || !!loloRequest?.deniedAt}
-                    onClick={async () => await doDeleteLoloRequest()}
-                    loading={deleteLoloRequest.isLoading}
-                >
-                    Törlés
-                </Button>
-            </PermissionRequirement>
         </Modal>
     );
 };

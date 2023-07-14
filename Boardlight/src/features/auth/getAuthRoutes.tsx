@@ -4,7 +4,7 @@ import { Route } from "react-router-dom";
 import { UnauthenticatedGuard } from "../../core/routing/guards/unauthenticatedGuard";
 import { lazy } from "react";
 
-export const useAuthRoutes = () => {
+export const getAuthRoutes = () => {
     const TippsLayout = lazy(() => import("../../core/routing/layouts/tippsLayout"));
 
     const LoginPage = lazy(() => import("./pages/loginPage"));

@@ -1,8 +1,8 @@
-import { Box, Center, Loader, SimpleGrid, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
-import { useGetApiLolos, useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
+import { Center, Loader, SimpleGrid, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
 
 import { CoinCard } from "../components/coinCard";
 import { CoinsStats } from "../components/coinStats";
+import { useGetApiLolos } from "../../../api/generated/features/lolos/lolos";
 
 const useStyles = createStyles((theme) => ({
     center: {

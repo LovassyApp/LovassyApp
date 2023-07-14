@@ -5,7 +5,7 @@ import { PermissionGuard } from "../../core/routing/guards/permissionGuard";
 import { Route } from "react-router-dom";
 import { lazy } from "react";
 
-export const useShopRoutes = () => {
+export const getShopRoutes = () => {
     const AuthenticatedLayout = lazy(() => import("../../core/routing/layouts/authenticatedLayout"));
 
     const OwnCoinsPage = lazy(() => import("./pages/ownCoinsPage"));
