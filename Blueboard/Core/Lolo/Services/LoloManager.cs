@@ -114,18 +114,18 @@ public class LoloManager
         if (_userId == null)
             Init();
 
-        var coins = Enumerable.Repeat(new Infrastructure.Persistence.Entities.Lolo
+        var coins = Enumerable.Range(1, amount).Select(i => new Infrastructure.Persistence.Entities.Lolo
         {
             UserId = _userId!.Value,
             Reason = $"Kérvényből generálva: {request.Title}",
             LoloType = LoloType.FromRequest,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
-        }, amount).ToArray();
+        }).ToArray();
 
         await _context.Database.BeginTransactionAsync();
 
-        foreach (var coin in coins) await _context.Lolos.AddAsync(coin);
+        await _context.Lolos.AddRangeAsync(coins);
 
         await _context.SaveChangesAsync();
 
