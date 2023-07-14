@@ -11,8 +11,9 @@ import { getAppRoutes } from "./core/routing/getAppRoutes";
 import { useHotkeys } from "@mantine/hooks";
 import { useSettingsStore } from "./core/stores/settingsStore";
 
-export const queryClient = new QueryClient();
 export const router = createBrowserRouter(createRoutesFromElements(getAppRoutes()));
+
+export const queryClient = new QueryClient();
 
 const App = () => {
     const settings = useSettingsStore();
