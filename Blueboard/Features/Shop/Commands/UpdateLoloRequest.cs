@@ -52,7 +52,7 @@ public static class UpdateLoloRequest
             if (loloRequest == null)
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
 
-            if (loloRequest.UserId != _userAccessor.User!.Id &&
+            if (loloRequest.UserId != _userAccessor.User.Id &&
                 !_permissionManager.CheckPermission(typeof(ShopPermissions.UpdateLoloRequest)))
                 throw new ForbiddenException();
 

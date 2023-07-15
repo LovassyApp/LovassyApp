@@ -26,7 +26,7 @@ public class PermissionsAttribute : AuthorizeAttribute
 
     public string Permissions
     {
-        get => Policy.Substring(PolicyPrefix.Length);
+        get => Policy!.Substring(PolicyPrefix.Length);
         set => Policy = $"{PolicyPrefix}{value}";
     }
 }

@@ -34,7 +34,7 @@ public static class DeleteLoloRequest
             if (loloRequest == null)
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
 
-            if (loloRequest.UserId != _userAccessor.User!.Id &&
+            if (loloRequest.UserId != _userAccessor.User.Id &&
                 !_permissionManager.CheckPermission(typeof(ShopPermissions.DeleteLoloRequest)))
                 throw new ForbiddenException();
 

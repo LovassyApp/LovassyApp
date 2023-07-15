@@ -16,7 +16,7 @@ public class SeedGradeImportsCommand : IConsoleCommand
         _environment = environment;
     }
 
-    public string Name { get; } = "seed:grade-imports";
+    public string Name => "seed:grade-imports";
 
     public void Execute(string[] args)
     {

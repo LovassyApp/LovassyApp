@@ -68,12 +68,12 @@ public static class ViewControl
 
             var response = new Response
             {
-                User = _userAccessor.User!.Adapt<ResponseUser>(),
+                User = _userAccessor.User.Adapt<ResponseUser>(),
                 Session = _sessionManager.Session!.Adapt<ResponseSession>(),
                 IsSuperUser = _permissionManager.CheckSuperUser(),
                 Permissions = _contextAccessor.HttpContext!.User.FindAll(AuthConstants.PermissionClaim)
                     .Select(c => c.Value).ToArray(),
-                UserGroups = _userAccessor.User!.UserGroups.Select(userGroup => userGroup.Name).ToArray(),
+                UserGroups = _userAccessor.User.UserGroups.Select(userGroup => userGroup.Name).ToArray(),
                 Features = enabledFeatures.ToArray()
             };
 

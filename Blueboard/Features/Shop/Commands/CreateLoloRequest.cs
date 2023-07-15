@@ -56,7 +56,7 @@ public static class CreateLoloRequest
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var loloRequest = request.Body.Adapt<LoloRequest>();
-            loloRequest.UserId = _userAccessor.User!.Id;
+            loloRequest.UserId = _userAccessor.User.Id;
 
             await _context.LoloRequests.AddAsync(loloRequest, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

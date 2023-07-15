@@ -16,7 +16,7 @@ public class SeedQRCodesCommand : IConsoleCommand
         _environment = environment;
     }
 
-    public string Name { get; } = "seed:qrcodes";
+    public string Name => "seed:qrcodes";
 
     public void Execute(string[] args)
     {

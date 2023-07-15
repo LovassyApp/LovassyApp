@@ -6,9 +6,9 @@ public static class SchoolPermissions
 {
     public class IndexGrades : IPermission
     {
-        public string Name { get; } = "School.IndexGrades";
-        public string DisplayName { get; } = "Jegyek lekérése";
-        public string Description { get; } = "Saját jegyek lekérése és listázása";
-        public bool Dangerous { get; } = false;
+        public string Name => "School.IndexGrades";
+        public string DisplayName => "Jegyek lekérése";
+        public string Description => "Saját jegyek lekérése és listázása";
+        public bool Dangerous => false;
     }
 }

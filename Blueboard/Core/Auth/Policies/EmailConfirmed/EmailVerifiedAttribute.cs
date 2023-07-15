@@ -20,7 +20,7 @@ public class EmailVerifiedAttribute : AuthorizeAttribute
 
     public bool ShouldBeVerified
     {
-        get => bool.Parse(Policy.Substring(PolicyPrefix.Length));
+        get => bool.Parse(Policy!.Substring(PolicyPrefix.Length));
         set => Policy = $"{PolicyPrefix}{value.ToString()}";
     }
 }

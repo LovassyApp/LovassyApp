@@ -16,7 +16,7 @@ public class SeedUsersCommand : IConsoleCommand
         _environment = environment;
     }
 
-    public string Name { get; } = "seed:users";
+    public string Name => "seed:users";
 
     public void Execute(string[] args)
     {

@@ -21,7 +21,7 @@ public class KickUsersJob : IJob
             JsonSerializer.Deserialize<IEnumerable<string>>((context.MergedJobDataMap.Get("tokensJson") as string)!)!
                 .ToArray();
 
-        foreach (var token in tokens!) _sessionService.StopSession(token);
+        foreach (var token in tokens) _sessionService.StopSession(token);
 
         //TODO: Send out a notification to the user that they have been kicked
 

@@ -69,7 +69,7 @@ public static class IndexGrades
         public async Task<IEnumerable<Response>> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            var userIdHashed = _hashManager.HashWithHasherSalt(_userAccessor.User!.Id.ToString());
+            var userIdHashed = _hashManager.HashWithHasherSalt(_userAccessor.User.Id.ToString());
 
             var grades = _context.Grades
                 .Where(g => g.UserIdHashed == userIdHashed && g.GradeType == GradeType.RegularGrade).AsNoTracking();

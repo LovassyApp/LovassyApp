@@ -95,7 +95,8 @@ public static class UseOwnedItem
             var inputLabelsToValues = new Dictionary<string, string>();
             foreach (var input in ownedItem.Product.Inputs)
             {
-                if (!request.Body.Inputs.ContainsKey(input.Key) || string.IsNullOrEmpty(request.Body.Inputs[input.Key]))
+                if (!request.Body.Inputs!.ContainsKey(input.Key) ||
+                    string.IsNullOrEmpty(request.Body.Inputs[input.Key]))
                     throw new ValidationException(new[]
                     {
                         new ValidationFailure(nameof(request.Body.Inputs),

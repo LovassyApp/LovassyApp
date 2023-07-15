@@ -16,7 +16,7 @@ public class SeedProductsCommand : IConsoleCommand
         _environment = environment;
     }
 
-    public string Name { get; } = "seed:products";
+    public string Name => "seed:products";
 
     public void Execute(string[] args)
     {
