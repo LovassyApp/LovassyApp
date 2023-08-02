@@ -65,7 +65,7 @@ pub enum ApiQrCodesPostError {
 
 
 /// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexQRCodes<br><b>Requires the following features to be enabled</b>: Shop
-pub async fn api_qr_codes_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<crate::models::ShopIndexQrCodesResponse, Error<ApiQrCodesGetError>> {
+pub async fn api_qr_codes_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ShopIndexQrCodesResponse>, Error<ApiQrCodesGetError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -139,7 +139,7 @@ pub async fn api_qr_codes_id_delete(configuration: &configuration::Configuration
 }
 
 /// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewQRCode<br><b>Requires the following features to be enabled</b>: Shop
-pub async fn api_qr_codes_id_get(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiQrCodesIdGetError>> {
+pub async fn api_qr_codes_id_get(configuration: &configuration::Configuration, id: i32) -> Result<crate::models::ShopViewQrCodeResponse, Error<ApiQrCodesIdGetError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -161,7 +161,7 @@ pub async fn api_qr_codes_id_get(configuration: &configuration::Configuration, i
     let local_var_content = local_var_resp.text().await?;
 
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        Ok(())
+        serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<ApiQrCodesIdGetError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };

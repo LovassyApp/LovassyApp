@@ -12,28 +12,28 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct ImportViewImportKeyResponse {
+pub struct ShopViewQrCodeResponse {
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<i32>,
     #[serde(rename = "name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub name: Option<Option<String>>,
-    #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]
-    pub enabled: Option<bool>,
-    #[serde(rename = "key", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
-    pub key: Option<Option<String>>,
+    #[serde(rename = "email", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub email: Option<Option<String>>,
+    #[serde(rename = "imageSvg", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub image_svg: Option<Option<String>>,
     #[serde(rename = "createdAt", skip_serializing_if = "Option::is_none")]
     pub created_at: Option<String>,
     #[serde(rename = "updatedAt", skip_serializing_if = "Option::is_none")]
     pub updated_at: Option<String>,
 }
 
-impl ImportViewImportKeyResponse {
-    pub fn new() -> ImportViewImportKeyResponse {
-        ImportViewImportKeyResponse {
+impl ShopViewQrCodeResponse {
+    pub fn new() -> ShopViewQrCodeResponse {
+        ShopViewQrCodeResponse {
             id: None,
             name: None,
-            enabled: None,
-            key: None,
+            email: None,
+            image_svg: None,
             created_at: None,
             updated_at: None,
         }

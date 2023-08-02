@@ -11,7 +11,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ImportUpdateResetKeyPasswordRequestBody {
     #[serde(rename = "resetKeyPassword")]
     pub reset_key_password: String,

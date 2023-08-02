@@ -128,6 +128,8 @@ pub mod shop_view_product_response_input;
 pub use self::shop_view_product_response_input::ShopViewProductResponseInput;
 pub mod shop_view_product_response_qr_code;
 pub use self::shop_view_product_response_qr_code::ShopViewProductResponseQrCode;
+pub mod shop_view_qr_code_response;
+pub use self::shop_view_qr_code_response::ShopViewQrCodeResponse;
 pub mod status_notify_on_reset_key_password_set_request_body;
 pub use self::status_notify_on_reset_key_password_set_request_body::StatusNotifyOnResetKeyPasswordSetRequestBody;
 pub mod status_view_service_status_response;

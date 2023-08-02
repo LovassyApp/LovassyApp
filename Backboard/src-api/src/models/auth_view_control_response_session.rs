@@ -11,7 +11,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AuthViewControlResponseSession {
     #[serde(rename = "expiry", skip_serializing_if = "Option::is_none")]
     pub expiry: Option<String>,

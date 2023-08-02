@@ -154,6 +154,7 @@ Class | Method | HTTP request | Description
  - [ShopViewProductResponse](docs/ShopViewProductResponse.md)
  - [ShopViewProductResponseInput](docs/ShopViewProductResponseInput.md)
  - [ShopViewProductResponseQrCode](docs/ShopViewProductResponseQrCode.md)
+ - [ShopViewQrCodeResponse](docs/ShopViewQrCodeResponse.md)
  - [StatusNotifyOnResetKeyPasswordSetRequestBody](docs/StatusNotifyOnResetKeyPasswordSetRequestBody.md)
  - [StatusViewServiceStatusResponse](docs/StatusViewServiceStatusResponse.md)
  - [StatusViewServiceStatusResponseServiceStatus](docs/StatusViewServiceStatusResponseServiceStatus.md)

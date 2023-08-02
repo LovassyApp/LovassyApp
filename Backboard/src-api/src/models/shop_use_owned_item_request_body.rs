@@ -11,7 +11,7 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShopUseOwnedItemRequestBody {
     #[serde(rename = "qrCodeContent", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub qr_code_content: Option<Option<String>>,

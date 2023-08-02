@@ -77,6 +77,7 @@ docs/ShopViewOwnedItemResponseProductInput.md
 docs/ShopViewProductResponse.md
 docs/ShopViewProductResponseInput.md
 docs/ShopViewProductResponseQrCode.md
+docs/ShopViewQrCodeResponse.md
 docs/StatusApi.md
 docs/StatusNotifyOnResetKeyPasswordSetRequestBody.md
 docs/StatusViewServiceStatusResponse.md
@@ -174,6 +175,7 @@ src/models/shop_view_owned_item_response_product_input.rs
 src/models/shop_view_product_response.rs
 src/models/shop_view_product_response_input.rs
 src/models/shop_view_product_response_qr_code.rs
+src/models/shop_view_qr_code_response.rs
 src/models/status_notify_on_reset_key_password_set_request_body.rs
 src/models/status_view_service_status_response.rs
 src/models/status_view_service_status_response_service_status.rs

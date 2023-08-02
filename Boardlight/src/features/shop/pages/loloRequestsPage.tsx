@@ -139,7 +139,6 @@ const DetailsModal = ({
                 color: "green",
                 icon: <IconCheck />,
             });
-
             close();
         } catch (err) {
             if (err instanceof ValidationError) {

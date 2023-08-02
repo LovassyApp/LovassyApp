@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## api_qr_codes_get
 
-> crate::models::ShopIndexQrCodesResponse api_qr_codes_get(filters, sorts, page, page_size)
+> Vec<crate::models::ShopIndexQrCodesResponse> api_qr_codes_get(filters, sorts, page, page_size)
 
 
 <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexQRCodes<br><b>Requires the following features to be enabled</b>: Shop
@@ -31,7 +31,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ShopIndexQrCodesResponse**](ShopIndexQRCodesResponse.md)
+[**Vec<crate::models::ShopIndexQrCodesResponse>**](ShopIndexQRCodesResponse.md)
 
 ### Authorization
 
@@ -77,7 +77,7 @@ Name | Type | Description  | Required | Notes
 
 ## api_qr_codes_id_get
 
-> api_qr_codes_id_get(id)
+> crate::models::ShopViewQrCodeResponse api_qr_codes_id_get(id)
 
 
 <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewQRCode<br><b>Requires the following features to be enabled</b>: Shop
@@ -91,7 +91,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
- (empty response body)
+[**crate::models::ShopViewQrCodeResponse**](ShopViewQRCodeResponse.md)
 
 ### Authorization
 
