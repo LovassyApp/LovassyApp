@@ -5,6 +5,7 @@ import {
     Loader,
     Paper,
     RingProgress,
+    Select,
     SimpleGrid,
     Stack,
     Text,
@@ -21,6 +22,16 @@ import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 const useStyles = createStyles((theme) => ({
     center: {
         height: "100%",
+    },
+    subjectsContainer: {
+        [theme.fn.smallerThan("xs")]: {
+            display: "none",
+        },
+    },
+    subjectSelect: {
+        [theme.fn.largerThan("xs")]: {
+            display: "none",
+        },
     },
     card: {
         cursor: "pointer",
@@ -159,6 +170,18 @@ const GradesPage = (): JSX.Element => {
         [activeSubject, grades.data]
     );
 
+    const subjectValues = useMemo(
+        () =>
+            grades.data?.map((subject, index) => ({
+                value: index.toString(),
+                label: `${subject.subject} - ${(
+                    subject.grades.reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
+                    subject.grades.reduce((acc, grade) => acc + grade.weight, 0)
+                ).toPrecision(3)}`,
+            })),
+        [grades.data]
+    );
+
     if (grades.isLoading)
         return (
             <Center className={classes.center}>
@@ -177,24 +200,35 @@ const GradesPage = (): JSX.Element => {
 
     return (
         <>
-            <Title mb="md">Tantárgyak</Title>
-            <SimpleGrid
-                cols={4}
-                breakpoints={[
-                    { maxWidth: theme.breakpoints.md, cols: 3, spacing: "md" },
-                    { maxWidth: theme.breakpoints.sm, cols: 2, spacing: "sm" },
-                    { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
-                ]}
-            >
-                {subjectCards}
-            </SimpleGrid>
+            <Box className={classes.subjectsContainer}>
+                <Title mb="md">Tantárgyak</Title>
+                <SimpleGrid
+                    cols={4}
+                    breakpoints={[
+                        { maxWidth: theme.breakpoints.md, cols: 3, spacing: "md" },
+                        { maxWidth: theme.breakpoints.sm, cols: 2, spacing: "sm" },
+                        { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
+                    ]}
+                    mb="md"
+                >
+                    {subjectCards}
+                </SimpleGrid>
+            </Box>
             {subjectCards.length === 0 && (
                 <Text color="dimmed">
                     Úgy néz ki még nem lettek importálva a jegyeid... Amint importálva lesznek, itt látod majd a
                     tantárgyaid.
                 </Text>
             )}
-            <Title my="md">Jegyek</Title>
+            <Title mb="md">Jegyek</Title>
+            <Select
+                label="Tantárgy"
+                data={subjectValues}
+                value={activeSubject?.toString()}
+                onChange={(value) => setActiveSubject(value ? +value : undefined)}
+                className={classes.subjectSelect}
+                mb="md"
+            />
             {activeSubject === undefined ? (
                 <Text color="dimmed">Válassz ki egy tantárgyat, hogy láthasd a jegyeidet!</Text>
             ) : (
