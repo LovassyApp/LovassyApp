@@ -50,6 +50,7 @@ jobs:
           generator: rust
           openapi-file: openapi_dev/schema.json
           command-args: -o Backboard/src-api --additional-properties=packageName=api
+          generator-tag: 6.6.0
       - name: Install Backboard dependencies
         run: |
           cd Backboard
