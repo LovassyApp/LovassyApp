@@ -21,7 +21,7 @@ export const CoinCard = ({ coin }: { coin: ShopIndexOwnLolosResponseCoin }): JSX
                 </Stack>
                 <IconCoin
                     stroke={1.5}
-                    size={rem(48)}
+                    size={48}
                     color={
                         coin.isSpent
                             ? theme.colorScheme === "dark"

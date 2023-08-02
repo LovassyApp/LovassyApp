@@ -92,6 +92,7 @@ export * from './shopViewOwnedItemResponseProductInput';
 export * from './shopViewProductResponse';
 export * from './shopViewProductResponseInput';
 export * from './shopViewProductResponseQRCode';
+export * from './shopViewQRCodeResponse';
 export * from './statusNotifyOnResetKeyPasswordSetRequestBody';
 export * from './statusViewServiceStatusResponse';
 export * from './statusViewServiceStatusResponseServiceStatus';

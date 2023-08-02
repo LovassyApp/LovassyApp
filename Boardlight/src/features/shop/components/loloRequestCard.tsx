@@ -38,21 +38,21 @@ export const LoloRequestCard = ({
                 {loloRequest.deniedAt && (
                     <IconCircleX
                         stroke={1.5}
-                        size={rem(48)}
+                        size={48}
                         color={theme.colors.red[theme.colorScheme === "dark" ? 6 : 7]}
                     />
                 )}
                 {loloRequest.acceptedAt && (
                     <IconCircleCheck
                         stroke={1.5}
-                        size={rem(48)}
+                        size={48}
                         color={theme.colors.green[theme.colorScheme === "dark" ? 6 : 7]}
                     />
                 )}
                 {!loloRequest.acceptedAt && !loloRequest.deniedAt && (
                     <IconHelpCircle
                         stroke={1.5}
-                        size={rem(48)}
+                        size={48}
                         color={theme.colors.yellow[theme.colorScheme === "dark" ? 6 : 7]}
                     />
                 )}

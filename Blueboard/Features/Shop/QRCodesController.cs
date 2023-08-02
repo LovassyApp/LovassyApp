@@ -18,7 +18,7 @@ public class QRCodesController : ApiControllerBase
 {
     [HttpGet]
     [Permissions(typeof(ShopPermissions.IndexQRCodes))]
-    public async Task<ActionResult<IndexQRCodes.Response>> Index([FromQuery] SieveModel sieveModel)
+    public async Task<ActionResult<IEnumerable<IndexQRCodes.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var response = await Mediator.Send(new IndexQRCodes.Query { SieveModel = sieveModel });
 
@@ -29,7 +29,7 @@ public class QRCodesController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.ViewQRCode))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> View([FromRoute] int id)
+    public async Task<ActionResult<ViewQRCode.Response>> View([FromRoute] int id)
     {
         var response = await Mediator.Send(new ViewQRCode.Query { Id = id });
 

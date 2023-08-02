@@ -147,7 +147,7 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
                     disabled={!control.data.isSuperUser}
                     withBorder={true}
                 >
-                    <IconUserCircle stroke={1.5} size={rem(96)} />
+                    <IconUserCircle stroke={1.5} size={96} />
                 </Indicator>
             </Center>
             <Text weight="bold" align="center" size="xl">
@@ -162,10 +162,10 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
             )}
             <Paper p="xs" className={classes.avatarSectionContainer} mt="sm">
                 <Tooltip label="Email" position="right" withArrow={true}>
-                    <IconMail className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
+                    <IconMail className={classes.avatarSectionIcon} stroke={1.5} size={20} />
                 </Tooltip>
                 <Group position="center" spacing={rem(2)} className={classes.avatarSectionLabel} mb="md">
-                    <IconMail stroke={1.5} size={rem(20)} />
+                    <IconMail stroke={1.5} size={20} />
                     <Text align="center">Email</Text>
                 </Group>
                 <Text>{control.data.user.email}</Text>
@@ -173,10 +173,10 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
             <Divider variant="dashed" my="sm" />
             <Paper p="xs" className={classes.avatarSectionContainer}>
                 <Tooltip label="Elérhtő funkciók" position="right" withArrow={true}>
-                    <IconPackages className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
+                    <IconPackages className={classes.avatarSectionIcon} stroke={1.5} size={20} />
                 </Tooltip>
                 <Group position="center" spacing={rem(2)} className={classes.avatarSectionLabel} mb="md">
-                    <IconPackages stroke={1.5} size={rem(20)} />
+                    <IconPackages stroke={1.5} size={20} />
                     <Text align="center">Elérhető funkciók</Text>
                 </Group>
                 <Group position="center" spacing="xs">
@@ -190,10 +190,10 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
             <Divider variant="dashed" my="sm" />
             <Paper p="xs" className={classes.avatarSectionContainer}>
                 <Tooltip label="Felhasználói csoportok" position="right" withArrow={true}>
-                    <IconUsersGroup className={classes.avatarSectionIcon} stroke={1.5} size={rem(20)} />
+                    <IconUsersGroup className={classes.avatarSectionIcon} stroke={1.5} size={20} />
                 </Tooltip>
                 <Group position="center" spacing={rem(2)} className={classes.avatarSectionLabel} mb="md">
-                    <IconUsersGroup stroke={1.5} size={rem(20)} />
+                    <IconUsersGroup stroke={1.5} size={20} />
                     <Text align="center">Felhasználói csoportok</Text>
                 </Group>
                 <Group position="center" spacing="xs">
@@ -207,7 +207,7 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
             <Paper p="xs" className={classes.avatarSectionContainer} mt="sm">
                 <Stack>
                     <Group position="center" spacing={rem(2)}>
-                        <IconKey stroke={1.5} size={rem(20)} />
+                        <IconKey stroke={1.5} size={20} />
                         <Text align="center">Jogosultságok</Text>
                     </Group>
                     <Group spacing="xs" position="center">
@@ -377,7 +377,7 @@ const AuthenticatedHeader = ({ links, toggleDrawer }: AuthenticatedHeaderProps) 
                                 <Text className={classes.link}>
                                     <Center>
                                         <span className={classes.linkLabel}>{link.label}</span>
-                                        <IconChevronDown size={rem(12)} stroke={1.5} />
+                                        <IconChevronDown size={12} stroke={1.5} />
                                     </Center>
                                 </Text>
                             </Menu.Target>
@@ -475,7 +475,7 @@ const AuthenticatedDrawer = ({ links, drawerOpened, closeDrawer }: Authenticated
                                     <Text>
                                         <Center>
                                             <span className={classes.linkLabel}>{link.label}</span>
-                                            <IconChevronDown size={rem(12)} stroke={1.5} />
+                                            <IconChevronDown size={12} stroke={1.5} />
                                         </Center>
                                     </Text>
                                 </Accordion.Control>

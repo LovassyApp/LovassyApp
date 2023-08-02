@@ -21,6 +21,7 @@ import type {
   GetApiQRCodesParams,
   ShopCreateQRCodeResponse,
   ShopCreateQRCodeRequestBody,
+  ShopViewQRCodeResponse,
   ProblemDetails,
   ShopUpdateQRCodeRequestBody
 } from '../../models'
@@ -39,7 +40,7 @@ export const getApiQRCodes = (
     params?: GetApiQRCodesParams,
  signal?: AbortSignal
 ) => {
-      return useCustomClient<ShopIndexQRCodesResponse>(
+      return useCustomClient<ShopIndexQRCodesResponse[]>(
       {url: `/Api/QRCodes`, method: 'get',
         params, signal
     },
@@ -138,7 +139,7 @@ export const getApiQRCodesId = (
     id: number,
  signal?: AbortSignal
 ) => {
-      return useCustomClient<void>(
+      return useCustomClient<ShopViewQRCodeResponse>(
       {url: `/Api/QRCodes/${id}`, method: 'get', signal
     },
       );
@@ -149,7 +150,7 @@ export const getGetApiQRCodesIdQueryKey = (id: number,) => [`/Api/QRCodes/${id}`
   
 
     
-export const getGetApiQRCodesIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiQRCodesId>>, TError = ErrorType<ProblemDetails>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiQRCodesId>>, TError, TData>, }
+export const getGetApiQRCodesIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiQRCodesId>>, TError = ErrorType<void | ProblemDetails>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiQRCodesId>>, TError, TData>, }
 ): UseQueryOptions<Awaited<ReturnType<typeof getApiQRCodesId>>, TError, TData> & { queryKey: QueryKey } => {
 const {query: queryOptions} = options ?? {};
 
@@ -164,9 +165,9 @@ const {query: queryOptions} = options ?? {};
    return  { queryKey, queryFn, enabled: !!(id), ...queryOptions}}
 
 export type GetApiQRCodesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiQRCodesId>>>
-export type GetApiQRCodesIdQueryError = ErrorType<ProblemDetails>
+export type GetApiQRCodesIdQueryError = ErrorType<void | ProblemDetails>
 
-export const useGetApiQRCodesId = <TData = Awaited<ReturnType<typeof getApiQRCodesId>>, TError = ErrorType<ProblemDetails>>(
+export const useGetApiQRCodesId = <TData = Awaited<ReturnType<typeof getApiQRCodesId>>, TError = ErrorType<void | ProblemDetails>>(
  id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiQRCodesId>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {

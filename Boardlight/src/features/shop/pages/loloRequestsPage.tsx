@@ -139,7 +139,7 @@ const DetailsModal = ({
                 color: "green",
                 icon: <IconCheck />,
             });
-            overruleForm.reset();
+
             close();
         } catch (err) {
             if (err instanceof ValidationError) {

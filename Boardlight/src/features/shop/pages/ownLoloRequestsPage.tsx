@@ -65,7 +65,7 @@ const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): v
             await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény létrehozva",
-                message: "A kérvényed sikeresen létrehoztuk.",
+                message: "A kérvényt sikeresen létrehoztad.",
                 color: "green",
                 icon: <IconCheck />,
             });

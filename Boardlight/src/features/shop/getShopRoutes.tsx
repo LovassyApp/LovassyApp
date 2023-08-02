@@ -12,6 +12,7 @@ export const getShopRoutes = () => {
     const CoinsPage = lazy(() => import("./pages/coinsPage"));
     const OwnLoloRequestsPage = lazy(() => import("./pages/ownLoloRequestsPage"));
     const LoloRequestsPage = lazy(() => import("./pages/loloRequestsPage"));
+    const QRCodesPage = lazy(() => import("./pages/qrCodesPage"));
 
     return (
         <>
@@ -30,6 +31,9 @@ export const getShopRoutes = () => {
                             </Route>
                             <Route element={<PermissionGuard permissions={["Shop.IndexLoloRequests"]} />}>
                                 <Route path="/shop/lolo-requests" element={<LoloRequestsPage />} />
+                            </Route>
+                            <Route element={<PermissionGuard permissions={["Shop.IndexQRCodes"]} />}>
+                                <Route path="/shop/qr-codes" element={<QRCodesPage />} />
                             </Route>
                         </Route>
                     </Route>

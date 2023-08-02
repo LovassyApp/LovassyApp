@@ -2339,7 +2339,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShopIndexQRCodesResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShopIndexQRCodesResponse"
+                  }
                 }
               }
             }
@@ -2436,7 +2439,14 @@
             }
           },
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShopViewQRCodeResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -5161,6 +5171,36 @@
           "name": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShopViewQRCodeResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageSvg": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
