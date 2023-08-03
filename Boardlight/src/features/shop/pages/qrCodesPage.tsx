@@ -115,9 +115,12 @@ const DetailsModal = ({
     const queryClient = useQueryClient();
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
-    const userQueryEnabled = useMemo(() => control.data?.permissions?.includes("Shop.ViewQRCode") ?? false, [control]);
+    const detailedQueryEnabled = useMemo(
+        () => control.data?.permissions?.includes("Shop.ViewQRCode") ?? false,
+        [control]
+    );
 
-    const qrCodeDetailed = useGetApiQRCodesId(qrCode?.id, { query: { enabled: userQueryEnabled && !!qrCode } });
+    const qrCodeDetailed = useGetApiQRCodesId(qrCode?.id, { query: { enabled: detailedQueryEnabled && !!qrCode } });
 
     const updateQRCode = usePatchApiQRCodesId();
     const deleteQRCode = useDeleteApiQRCodesId();
