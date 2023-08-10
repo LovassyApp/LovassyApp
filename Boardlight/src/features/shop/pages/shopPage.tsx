@@ -4,26 +4,36 @@ import {
     Box,
     Button,
     Center,
+    Divider,
     Drawer,
     Group,
     Loader,
+    Modal,
     SimpleGrid,
     Switch,
     Text,
     TextInput,
     Title,
+    TypographyStylesProvider,
     createStyles,
     useMantineTheme,
 } from "@mantine/core";
-import { IconFilter, IconSearch, IconX } from "@tabler/icons-react";
+import { IconCheck, IconFilter, IconSearch, IconX } from "@tabler/icons-react";
+import {
+    useGetApiProducts,
+    useGetApiProductsId,
+    usePostApiProductsBuyId,
+} from "../../../api/generated/features/products/products";
 import { useMemo, useState } from "react";
 
 import { ShopIndexProductsResponse } from "../../../api/generated/models";
 import { StoreProductCard } from "../components/storeProductCard";
+import { ValidationError } from "../../../helpers/apiHelpers";
+import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
-import { useGetApiProducts } from "../../../api/generated/features/products/products";
+import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles((theme) => ({
     center: {
@@ -90,6 +100,122 @@ const FiltersDrawer = ({
     );
 };
 
+const DetailsModal = ({
+    storeProduct,
+    balance,
+    opened,
+    close,
+}: {
+    storeProduct: ShopIndexProductsResponse;
+    balance?: number;
+    opened: boolean;
+    close(): void;
+}): JSX.Element => {
+    const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
+    const detailedQueryEnabled = useMemo(
+        () => control.data?.permissions?.includes("Shop.ViewStoreProduct") ?? false,
+        [control]
+    );
+
+    const storeProductDetailed = useGetApiProductsId(storeProduct?.id, {
+        query: { enabled: detailedQueryEnabled && !!storeProduct },
+    });
+
+    const buyProduct = usePostApiProductsBuyId();
+
+    const doBuyProduct = async () => {
+        try {
+            await buyProduct.mutateAsync({ id: storeProduct?.id });
+            notifications.show({
+                title: "Termék megvásárolva",
+                message: "A terméket sikeresen megvásároltad.",
+                color: "green",
+                icon: <IconCheck />,
+            });
+            close();
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                notifications.show({
+                    title: "Hiba (400)",
+                    message: err.message,
+                    color: "red",
+                    icon: <IconX />,
+                });
+            }
+        }
+    };
+
+    if (storeProductDetailed.isInitialLoading)
+        return (
+            <Modal opened={opened} onClose={close} title="Részletek" size="lg">
+                <Center>
+                    <Loader />
+                </Center>
+            </Modal>
+        );
+
+    return (
+        <Modal opened={opened} onClose={close} title="Részletek" size="lg">
+            <Group position="apart" spacing={0}>
+                <Text>Név:</Text>
+                <Text weight="bold">{storeProduct?.name}</Text>
+            </Group>
+            <Text>Leírás:</Text>
+            <Text weight="bold">{storeProduct?.description}</Text>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Ár:</Text>
+                <Text weight="bold">{storeProduct?.price} loló</Text>
+            </Group>
+            <Group position="apart" spacing={0}>
+                <Text>Mennyiség:</Text>
+                <Text weight="bold">{storeProduct?.quantity} db</Text>
+            </Group>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>QR kód aktivált:</Text>
+                <Text weight="bold">{storeProduct?.qrCodeActivated ? "Igen" : "Nem"}</Text>
+            </Group>
+            {storeProductDetailed.data?.inputs.length > 0 && (
+                <>
+                    <Group position="apart" spacing={0}>
+                        <Text>Inputok:</Text>
+                        <Text weight="bold">
+                            {storeProductDetailed.data.inputs.map((input) => input.label).join(", ")}
+                        </Text>
+                    </Group>
+                </>
+            )}
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Létrehozás dátuma:</Text>
+                <Text weight="bold">{new Date(storeProduct?.createdAt).toLocaleDateString("hu-HU", {})}</Text>
+            </Group>
+            <Group position="apart" spacing={0}>
+                <Text>Módosítás dátuma:</Text>
+                <Text weight="bold">{new Date(storeProduct?.updatedAt).toLocaleDateString("hu-HU", {})}</Text>
+            </Group>
+            {storeProductDetailed.data && (
+                <>
+                    <Divider my="sm" />
+                    <TypographyStylesProvider>
+                        <div dangerouslySetInnerHTML={{ __html: storeProductDetailed.data?.richTextContent ?? "" }} />
+                    </TypographyStylesProvider>
+                </>
+            )}
+            <Divider my="sm" />
+            <Button
+                fullWidth
+                loading={buyProduct.isLoading}
+                onClick={() => doBuyProduct()}
+                disabled={storeProduct?.quantity < 1 || (balance && storeProduct?.price > balance)}
+            >
+                Megveszem!
+            </Button>
+        </Modal>
+    );
+};
+
 const ShopPage = (): JSX.Element => {
     const { classes } = useStyles();
     const theme = useMantineTheme();
@@ -142,6 +268,12 @@ const ShopPage = (): JSX.Element => {
                 params={params}
                 setParams={setParams}
                 balance={lolos.data?.balance}
+            />
+            <DetailsModal
+                storeProduct={detailsModalStoreProduct}
+                balance={lolos.data?.balance}
+                opened={detailsModalOpened}
+                close={closeDetailsModal}
             />
             <Group position="apart" align="baseline" mb="md" spacing={0}>
                 <Title>Bazár</Title>
