@@ -219,7 +219,7 @@ const DetailsModal = ({
                         </Text>
                         <CopyButton value={importKeyDetailed.data.key} timeout={2000}>
                             {({ copied, copy }) => (
-                                <Tooltip label={copied ? "Copied" : "Copy"} withArrow position="right">
+                                <Tooltip label={copied ? "Kimásolva" : "Másolás"} withArrow position="right">
                                     <ActionIcon color={copied ? "teal" : "gray"} onClick={copy}>
                                         {copied ? <IconCheck stroke={1.5} /> : <IconCopy stroke={1.5} />}
                                     </ActionIcon>
