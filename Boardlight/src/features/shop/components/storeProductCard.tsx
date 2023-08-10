@@ -21,7 +21,7 @@ export const StoreProductCard = ({
     const theme = useMantineTheme();
 
     return (
-        <Card shadow="sm" radius="md" withBorder>
+        <Card radius="md" withBorder>
             <Card.Section>
                 <Image src={storeProduct.thumbnailUrl} alt="Tesla Model S" height={200} />
             </Card.Section>
