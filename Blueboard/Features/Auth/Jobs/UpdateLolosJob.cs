@@ -1,7 +1,9 @@
 using System.Text.Json;
 using Blueboard.Core.Auth.Services;
 using Blueboard.Core.Lolo.Services;
+using Blueboard.Features.Auth.Events;
 using Blueboard.Infrastructure.Persistence.Entities;
+using MediatR;
 using Quartz;
 
 namespace Blueboard.Features.Auth.Jobs;
@@ -10,14 +12,16 @@ public class UpdateLolosJob : IJob
 {
     private readonly EncryptionManager _encryptionManager;
     private readonly LoloManager _loloManager;
+    private readonly IPublisher _publisher;
     private readonly UserAccessor _userAccessor;
 
     public UpdateLolosJob(EncryptionManager encryptionManager, UserAccessor userAccessor,
-        LoloManager loloManager)
+        LoloManager loloManager, IPublisher publisher)
     {
         _encryptionManager = encryptionManager;
         _userAccessor = userAccessor;
         _loloManager = loloManager;
+        _publisher = publisher;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -31,6 +35,9 @@ public class UpdateLolosJob : IJob
 
         await _loloManager.GenerateAsync();
 
-        //TODO: Send out a notification through websockets informing the user that their lolos have finished updating (we should refetch them afterwards)
+        await _publisher.Publish(new LolosUpdatedEvent
+        {
+            UserId = user!.Id
+        });
     }
 }

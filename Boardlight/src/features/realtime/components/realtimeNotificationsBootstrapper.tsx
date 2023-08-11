@@ -1,6 +1,8 @@
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { ReactNode, useEffect } from "react";
 
+import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
+import { getGetApiLolosOwnQueryKey } from "../../../api/generated/features/lolos/lolos";
 import { getGetApiProductsQueryKey } from "../../../api/generated/features/products/products";
 import { useAuthStore } from "../../../core/stores/authStore";
 import { useQueryClient } from "@tanstack/react-query";
@@ -11,6 +13,8 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const queryClient = useQueryClient();
 
     const productsQueryKey = getGetApiProductsQueryKey();
+    const gradesQueryKey = getGetApiGradesQueryKey();
+    const lolosQueryKey = getGetApiLolosOwnQueryKey();
 
     useEffect(() => {
         let hubConnection: HubConnection | undefined;
@@ -29,6 +33,16 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                     queryClient.invalidateQueries({ queryKey: [productsQueryKey[0]] });
                 });
 
+                hubConnection.on("RefreshGrades", () => {
+                    console.log("RefreshGrades notification received");
+                    queryClient.invalidateQueries({ queryKey: [gradesQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshLolos", () => {
+                    console.log("RefreshLolos notification received");
+                    queryClient.invalidateQueries({ queryKey: [lolosQueryKey[0]] });
+                });
+
                 try {
                     await hubConnection.start();
                     console.log("Connected to realtime notifications");
@@ -36,14 +50,14 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                     console.error(err);
                 }
             }
-
-            return () => {
-                if (hubConnection) {
-                    hubConnection.stop();
-                    console.log("Disconnected from realtime notifications");
-                }
-            };
         })();
+
+        return () => {
+            if (hubConnection) {
+                hubConnection.stop();
+                console.log("Disconnected from realtime notifications");
+            }
+        };
     }, [accessToken]);
 
     return <>{children}</>;
