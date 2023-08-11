@@ -1,3 +1,4 @@
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Blueboard.Infrastructure.Persistence.Entities.Owned;
@@ -117,10 +118,12 @@ public static class CreateProduct
     internal sealed class Handler : IRequestHandler<Command, Response>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context)
+        public Handler(ApplicationDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -144,6 +147,8 @@ public static class CreateProduct
 
             await _context.AddAsync(product, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
 
             var response = product.Adapt<Response>();
             response.QRCodes = request.Body.QRCodes;

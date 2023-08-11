@@ -123,6 +123,8 @@ builder.Services.AddControllers(o =>
 
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 await app.RunStartupActions();
@@ -151,6 +153,8 @@ app.UseAuthorization();
 app.UseRequestLocalization();
 
 app.MapControllers();
+app.MapFeatureHubs();
+
 app.MapMetrics();
 
 app.RunWithCommands(args);

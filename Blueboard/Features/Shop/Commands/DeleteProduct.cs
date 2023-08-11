@@ -1,3 +1,4 @@
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Helpers.WebApi.Exceptions;
@@ -15,10 +16,12 @@ public static class DeleteProduct
     internal sealed class Handler : IRequestHandler<Command>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context)
+        public Handler(ApplicationDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -28,6 +31,8 @@ public static class DeleteProduct
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

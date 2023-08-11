@@ -1,3 +1,4 @@
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Blueboard.Infrastructure.Persistence.Entities.Owned;
@@ -89,10 +90,12 @@ public static class UpdateProduct
     internal sealed class Handler : IRequestHandler<Command>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context)
+        public Handler(ApplicationDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -129,6 +132,8 @@ public static class UpdateProduct
                 }
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

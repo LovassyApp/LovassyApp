@@ -1,6 +1,8 @@
 using Blueboard.Features.Auth.Services;
 using Blueboard.Features.Auth.Services.Options;
+using Blueboard.Features.Realtime;
 using Blueboard.Features.Status.Services.Options;
+using Microsoft.AspNetCore.Http.Connections;
 
 namespace Blueboard.Features;
 
@@ -24,5 +26,15 @@ public static class AddFeaturesExtension
         services.AddSingleton<RefreshService>();
         services.AddSingleton<VerifyEmailService>();
         services.AddSingleton<PasswordResetService>();
+    }
+
+    public static void MapFeatureHubs(this IEndpointRouteBuilder endpointRouteBuilder)
+    {
+        endpointRouteBuilder.MapHub<NotificationsHub>("/Hubs/Notifications",
+            o =>
+            {
+                o.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling |
+                               HttpTransportType.ServerSentEvents;
+            });
     }
 }

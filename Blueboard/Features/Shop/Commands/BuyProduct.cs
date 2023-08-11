@@ -1,6 +1,7 @@
 using Blueboard.Core.Auth.Services;
 using Blueboard.Core.Lolo.Exceptions;
 using Blueboard.Core.Lolo.Services;
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Helpers.WebApi.Exceptions;
@@ -19,13 +20,16 @@ public static class BuyProduct
     {
         private readonly ApplicationDbContext _context;
         private readonly LoloManager _loloManager;
+        private readonly IPublisher _publisher;
         private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext context, LoloManager loloManager, UserAccessor userAccessor)
+        public Handler(ApplicationDbContext context, LoloManager loloManager, UserAccessor userAccessor,
+            IPublisher publisher)
         {
             _context = context;
             _loloManager = loloManager;
             _userAccessor = userAccessor;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -65,6 +69,8 @@ public static class BuyProduct
                 await _context.OwnedItems.AddAsync(ownedItem, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
                 await transaction.CommitAsync(cancellationToken);
+
+                await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
             }
             catch (InsufficientFundsException)
             {
