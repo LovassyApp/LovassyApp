@@ -130,6 +130,7 @@ const DetailsModal = ({
         try {
             await buyProduct.mutateAsync({ id: storeProduct?.id });
             await queryClient.invalidateQueries({ queryKey: [lolosQueryKey[0]] });
+            // We don't need to invalidate the products query, because the realtime notification will do it for us
             notifications.show({
                 title: "Termék megvásárolva",
                 message: "A terméket sikeresen megvásároltad.",

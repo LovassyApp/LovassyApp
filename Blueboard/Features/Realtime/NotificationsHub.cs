@@ -7,8 +7,4 @@ namespace Blueboard.Features.Realtime;
 [Authorize]
 public class NotificationsHub : Hub<INotificationsClient>
 {
-    public async Task ProductsUpdatedAsync()
-    {
-        await Clients.All.RefreshProducts();
-    }
 }
