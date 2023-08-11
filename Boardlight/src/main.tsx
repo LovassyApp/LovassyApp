@@ -6,6 +6,7 @@ import { FullScreenLoading } from "./core/components/fullScreenLoading";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import ReactDOM from "react-dom/client";
+import { RealtimeNotificationsBootstrapper } from "./features/realtime/components/realtimeNotificationsBootstrapper";
 import { Suspense } from "react";
 import { getAppRoutes } from "./core/routing/getAppRoutes";
 import { useHotkeys } from "@mantine/hooks";
@@ -30,9 +31,11 @@ const App = () => {
                 <ModalsProvider>
                     <QueryClientProvider client={queryClient}>
                         <Notifications limit={3} />
-                        <Suspense fallback={<FullScreenLoading />}>
-                            <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
-                        </Suspense>
+                        <RealtimeNotificationsBootstrapper>
+                            <Suspense fallback={<FullScreenLoading />}>
+                                <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
+                            </Suspense>
+                        </RealtimeNotificationsBootstrapper>
                     </QueryClientProvider>
                 </ModalsProvider>
             </MantineProvider>

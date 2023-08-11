@@ -1,7 +1,6 @@
 import {
     ActionIcon,
     Badge,
-    Box,
     Button,
     Center,
     Divider,
@@ -19,6 +18,7 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import { IconCheck, IconFilter, IconSearch, IconX } from "@tabler/icons-react";
+import { getGetApiLolosOwnQueryKey, useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 import {
     useGetApiProducts,
     useGetApiProductsId,
@@ -32,7 +32,6 @@ import { ValidationError } from "../../../helpers/apiHelpers";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles((theme) => ({
@@ -111,6 +110,8 @@ const DetailsModal = ({
     opened: boolean;
     close(): void;
 }): JSX.Element => {
+    const queryClient = useQueryClient();
+
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
     const detailedQueryEnabled = useMemo(
         () => control.data?.permissions?.includes("Shop.ViewStoreProduct") ?? false,
@@ -121,11 +122,14 @@ const DetailsModal = ({
         query: { enabled: detailedQueryEnabled && !!storeProduct },
     });
 
+    const lolosQueryKey = getGetApiLolosOwnQueryKey();
+
     const buyProduct = usePostApiProductsBuyId();
 
     const doBuyProduct = async () => {
         try {
             await buyProduct.mutateAsync({ id: storeProduct?.id });
+            await queryClient.invalidateQueries({ queryKey: [lolosQueryKey[0]] });
             notifications.show({
                 title: "Termék megvásárolva",
                 message: "A terméket sikeresen megvásároltad.",
@@ -238,6 +242,7 @@ const ShopPage = (): JSX.Element => {
             : control.data?.permissions?.includes("Shop.IndexProducts")
             ? "Visible==true"
             : "",
+        Sorts: "Name",
     }); //Big mess, basically if the user has the permission to see invisible products, we don't show them
 
     const [filtersDraweOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);

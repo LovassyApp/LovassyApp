@@ -9,6 +9,6 @@ public class NotificationsHub : Hub<INotificationsClient>
 {
     public async Task ProductsUpdatedAsync()
     {
-        await Clients.All.RefreshProductsAsync();
+        await Clients.All.RefreshProducts();
     }
 }

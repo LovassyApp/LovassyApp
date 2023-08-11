@@ -17,6 +17,6 @@ public class ProductsUpdatedEventHandler : INotificationHandler<ProductsUpdatedE
 
     public async Task Handle(ProductsUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        await _notificationsHub.Clients.All.RefreshProductsAsync();
+        await _notificationsHub.Clients.All.RefreshProducts();
     }
 }

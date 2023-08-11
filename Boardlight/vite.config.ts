@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
                     target: process.env.VITE_BLUEBOARD_URL,
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/blueboard/, ""),
+                    ws: true,
                 },
             },
         },

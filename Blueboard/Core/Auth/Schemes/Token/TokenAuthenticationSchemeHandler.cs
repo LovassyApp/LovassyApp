@@ -46,12 +46,12 @@ public class TokenAuthenticationSchemeHandler : AuthenticationHandler<TokenAuthe
 
         if ((isAuthorizationHeaderMissing && Options.HubsBasePath == null) ||
             (isAuthorizationHeaderMissing && !isHubPath) ||
-            (isHubPath && !Request.Query.ContainsKey("access_token")))
+            (isHubPath && isAuthorizationHeaderMissing && !Request.Query.ContainsKey("access_token")))
             return AuthenticateResult.Fail("Token Not Found");
 
-        var token = !isHubPath
-            ? HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""))
-            : HttpUtility.UrlDecode(Request.Query["access_token"]);
+        var token = isAuthorizationHeaderMissing
+            ? HttpUtility.UrlDecode(Request.Query["access_token"])
+            : HttpUtility.UrlDecode(Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""));
 
         try
         {

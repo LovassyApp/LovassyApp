@@ -20,6 +20,7 @@
         "@mantine/notifications": "^6.0.17",
         "@mantine/spotlight": "^6.0.17",
         "@mantine/tiptap": "^6.0.17",
+        "@microsoft/signalr": "^7.0.10",
         "@tabler/icons-react": "^2.30.0",
         "@tanstack/react-query": "^4.32.1",
         "@tiptap/extension-link": "^2.0.4",
