@@ -5,6 +5,7 @@ using System.Threading.RateLimiting;
 using Blueboard.Core.Auth;
 using Blueboard.Core.Backboard;
 using Blueboard.Core.Lolo;
+using Blueboard.Core.Realtime;
 using Blueboard.Features;
 using Blueboard.Infrastructure;
 using Helpers.Cryptography;
@@ -153,7 +154,7 @@ app.UseAuthorization();
 app.UseRequestLocalization();
 
 app.MapControllers();
-app.MapFeatureHubs();
+app.MapRealtimeHubs();
 
 app.MapMetrics();
 

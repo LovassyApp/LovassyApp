@@ -1,5 +1,6 @@
-using Blueboard.Features.Realtime;
-using Blueboard.Features.Realtime.Interfaces;
+using Blueboard.Core.Realtime;
+using Blueboard.Core.Realtime.Hubs;
+using Blueboard.Core.Realtime.Interfaces;
 using Blueboard.Features.Shop.Events;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;

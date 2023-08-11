@@ -1,4 +1,4 @@
-namespace Blueboard.Features.Realtime.Interfaces;
+namespace Blueboard.Core.Realtime.Interfaces;
 
 public interface INotificationsClient
 {
