@@ -123,7 +123,6 @@ const GradeImportPage = (): JSX.Element => {
                 error={fileError}
             />
             {fileLoading && <Progress value={progress} label={`${progress}%`} size="xl" radius="xl" mt="xs" />}
-
             <Button
                 loading={fileLoading}
                 variant="default"
