@@ -5,7 +5,6 @@ mod cryptography;
 mod grades_processor;
 
 use std::collections::HashMap;
-use std::io::Write;
 
 use api::apis::configuration::{ApiKey, Configuration};
 use api::apis::import_api::{
@@ -17,16 +16,15 @@ use api::models::{
     ImportImportGradesRequestBody, ImportUpdateResetKeyPasswordRequestBody,
     StatusViewServiceStatusResponse,
 };
-use base64::{engine::general_purpose, Engine as _};
-use crypto_hash::{Algorithm, Hasher};
 use tauri::http::status::StatusCode;
+use tauri::Window;
 use tauri_plugin_autostart::MacosLauncher;
 
 use crate::grades_processor::process_excel_file;
 use crate::grades_processor::BackboardGrade;
 use crate::grades_processor::GradeCollection;
 
-use crate::cryptography::kyber_encrypt;
+use crate::cryptography::{hash, kyber_encrypt};
 
 #[tauri::command]
 async fn upload_reset_key_password(
@@ -63,13 +61,21 @@ async fn upload_reset_key_password(
 
 #[tauri::command]
 async fn import_grades(
+    window: Window,
     file_path: String,
     blueboard_url: String,
     reset_key_password: String,
     import_key: String,
     update_reset_key_password: bool,
 ) -> Result<(), String> {
-    println!("importGrades: {}", file_path);
+    if (update_reset_key_password) {
+        upload_reset_key_password(
+            blueboard_url.clone(),
+            reset_key_password,
+            import_key.clone(),
+        )
+        .await?;
+    }
 
     let mut config = Configuration::new();
     config.base_path = blueboard_url;
@@ -91,22 +97,21 @@ async fn import_grades(
             _ => "error".to_string(), // TODO: maybe find a better way to handle this (not important for now)
         })?;
 
+    window.emit("import-users", &users.len()).unwrap();
+
     let grades = process_excel_file(file_path).map_err(|err: calamine::Error| err.to_string())?;
 
     let mut grade_map: HashMap<String, Vec<BackboardGrade>> = HashMap::new();
 
     for grade in grades {
-        let mut hasher = Hasher::new(Algorithm::SHA256);
-        let _ = hasher.write_all(grade.om_code.as_bytes());
-        let hash_result = hasher.finish();
-
         grade_map
-            .entry(general_purpose::STANDARD.encode(&hash_result))
+            .entry(hash(grade.clone().om_code))
             .or_insert(Vec::new())
             .push(grade);
     }
 
-    for user in users {
+    let mut count = 0;
+    for user in &users {
         let user_grades = grade_map.get(&user.clone().om_code_hashed.unwrap().unwrap());
 
         match user_grades {
@@ -155,6 +160,10 @@ async fn import_grades(
                 })?;
             }
         }
+        count += 1;
+        window
+            .emit("import-progress", (count / &users.len()) * 100)
+            .unwrap();
     }
 
     Ok(())

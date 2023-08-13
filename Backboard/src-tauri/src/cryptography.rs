@@ -1,4 +1,7 @@
+use std::io::Write;
+
 use base64::{engine::general_purpose, Engine};
+use crypto_hash::{Algorithm, Hasher};
 use libaes::Cipher;
 use pbkdf2::pbkdf2_hmac_array;
 use pqc_kyber::{encapsulate, KyberError};
@@ -40,4 +43,12 @@ pub fn kyber_encrypt(data: String, public_key: String) -> Result<String, KyberEr
     let encrypted_data = aes_encrypt(data, encryption_key.clone());
 
     Ok(general_purpose::STANDARD.encode(encapsulation) + "|" + &salt + "|" + &encrypted_data)
+}
+
+pub fn hash(data: String) -> String {
+    let mut hasher = Hasher::new(Algorithm::SHA256);
+    let _ = hasher.write_all(data.as_bytes());
+    let hash_result = hasher.finish();
+
+    general_purpose::STANDARD.encode(hash_result)
 }
