@@ -7,7 +7,7 @@ import { useSettingStore } from "../../stores/settingsStore";
 const useStyles = createStyles((theme) => ({
     container: {
         height: "100%",
-    }
+    },
 }));
 
 const StatusPage = (): JSX.Element => {
@@ -20,7 +20,7 @@ const StatusPage = (): JSX.Element => {
 
     const fetchData = async () => {
         try {
-            const response = await invoke("status", { blueboardUrl }) as any;
+            const response = (await invoke("status", { blueboardUrl })) as any;
             setError(null);
             setData(response);
         } catch (error) {
@@ -44,7 +44,9 @@ const StatusPage = (): JSX.Element => {
 
     return (
         <Stack spacing="xs" className={classes.container}>
-            <Title order={2} size="h1">Állapot</Title>
+            <Title order={2} size="h1">
+                Állapot
+            </Title>
             {loading && (
                 <Center sx={{ height: "100%" }}>
                     <Loader />
@@ -52,59 +54,56 @@ const StatusPage = (): JSX.Element => {
             )}
             {!loading && error !== null && (
                 <Center sx={{ height: "100%" }}>
-                    <Text color="red" size="sm">{error}</Text>
+                    <Text color="red" size="sm">
+                        {error}
+                    </Text>
                 </Center>
             )}
             {!loading && error === null && data !== null && (
                 <>
                     <Group position="apart">
                         <Text size="sm">Blueboard készen áll:</Text>
-                        <Text size="sm"
-                            weight="bold"
-                            color={data.ready ? "green" : "red"}>
+                        <Text size="sm" weight="bold" color={data.ready ? "green" : "red"}>
                             {data.ready ? "Igen" : "Nem"}
                         </Text>
                     </Group>
                     <Divider />
                     <Group position="apart">
                         <Text size="sm">Adatbázis:</Text>
-                        <Text size="sm"
-                            weight="bold"
-                            color={data.serviceStatus.database ? "green" : "red"}>
+                        <Text size="sm" weight="bold" color={data.serviceStatus.database ? "green" : "red"}>
                             {data.serviceStatus.database ? "Fut" : "Nem fut"}
                         </Text>
                     </Group>
                     <Group position="apart">
                         <Text size="sm">Valósidejű funkciók:</Text>
-                        <Text size="sm"
-                            weight="bold"
-                            color={data.serviceStatus.realtime ? "green" : "red"}>
+                        <Text size="sm" weight="bold" color={data.serviceStatus.realtime ? "green" : "red"}>
                             {data.serviceStatus.realtime ? "Fut" : "Nem fut"}
                         </Text>
                     </Group>
                     <Group position="apart">
                         <Text size="sm">Visszaállítási jelszó:</Text>
-                        <Text size="sm"
-                            weight="bold"
-                            color={data.serviceStatus.resetKeyPassword ? "green" : "yellow"}>
+                        <Text size="sm" weight="bold" color={data.serviceStatus.resetKeyPassword ? "green" : "yellow"}>
                             {data.serviceStatus.resetKeyPassword ? "Beállítva" : "Nincs beállítva"}
                         </Text>
                     </Group>
-                    <Button variant="default" onClick={async () => {
-                        setLoading(true);
-                        if (blueboardUrl === "") {
-                            setError("Nincs beállítva Blueboard URL!");
+                    <Button
+                        variant="default"
+                        onClick={async () => {
+                            setLoading(true);
+                            if (blueboardUrl === "") {
+                                setError("Nincs beállítva Blueboard URL!");
+                                setLoading(false);
+                                return;
+                            }
+                            await fetchData();
                             setLoading(false);
-                            return;
-                        }
-                        await fetchData();
-                        setLoading(false);
-                    }} sx={{ alignSelf: "center" }}>
+                        }}
+                        sx={{ alignSelf: "center" }}
+                    >
                         Frissítés
                     </Button>
                 </>
             )}
-
         </Stack>
     );
 };

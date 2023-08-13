@@ -27,7 +27,11 @@ const SecurityPage = (): JSX.Element => {
     const updateResetKeyPassword = async () => {
         setUploadLoading(true);
         try {
-            await invoke("upload_reset_key_password", { blueboardUrl: settings.blueboardUrl, resetKeyPassword: security.resetKeyPassword, importKey: settings.importKey });
+            await invoke("upload_reset_key_password", {
+                blueboardUrl: settings.blueboardUrl,
+                resetKeyPassword: security.resetKeyPassword,
+                importKey: settings.importKey,
+            });
             notifications.show({
                 id: "reset-key-password-uploaded",
                 withCloseButton: true,
@@ -38,17 +42,17 @@ const SecurityPage = (): JSX.Element => {
                 color: "green",
             });
         } catch (error) {
-            if (error === "401")
-                setError("Hibás import kulcs!");
-            else
-                setError("Nem sikerült feltölteni a visszaállítási jelszót!");
+            if (error === "401") setError("Hibás import kulcs!");
+            else setError("Nem sikerült feltölteni a visszaállítási jelszót!");
         }
         setUploadLoading(false);
     };
 
     return (
         <Stack spacing="xs">
-            <Title order={2} size="h1">Biztonság</Title>
+            <Title order={2} size="h1">
+                Biztonság
+            </Title>
             <ResetKeyPasswordInput />
             <Checkbox
                 label="Visszaállítási jelszó automatikus feltöltése importáláskor"
@@ -56,17 +60,22 @@ const SecurityPage = (): JSX.Element => {
                 onChange={async (event) => {
                     security.setUpdateResetKeyPasswordOnImport(event.currentTarget.checked);
                     await preferencesStore.save();
-                }} />
-            <Button loading={uploadLoading}
+                }}
+            />
+            <Button
+                loading={uploadLoading}
                 disabled={settings.blueboardUrl === "" || security.resetKeyPassword === "" || settings.importKey === ""}
                 variant="default"
                 sx={{ alignSelf: "center" }}
                 mt="xs"
-                onClick={async () => await updateResetKeyPassword()}>
-                    Feltöltés most
+                onClick={async () => await updateResetKeyPassword()}
+            >
+                Feltöltés most
             </Button>
             {error && (
-                <Text color="red" size="sm" sx={{ alignSelf: "center" }}>{error}</Text>
+                <Text color="red" size="sm" sx={{ alignSelf: "center" }}>
+                    {error}
+                </Text>
             )}
         </Stack>
     );

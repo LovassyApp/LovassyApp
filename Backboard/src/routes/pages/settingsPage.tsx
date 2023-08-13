@@ -25,7 +25,9 @@ const SettingsPage = (): JSX.Element => {
 
     return (
         <Stack spacing="xs">
-            <Title order={2} size="h1">Beállítások</Title>
+            <Title order={2} size="h1">
+                Beállítások
+            </Title>
             {loading && (
                 <Center sx={{ height: "100%" }}>
                     <Loader />
@@ -33,24 +35,34 @@ const SettingsPage = (): JSX.Element => {
             )}
             {!loading && (
                 <>
-                    <TextInput label="Blueboard URL"
-                        description="A LovassyApp backend URL-je" value={settings.blueboardUrl}
+                    <TextInput
+                        label="Blueboard URL"
+                        description="A LovassyApp backend URL-je"
+                        value={settings.blueboardUrl}
                         onChange={(event) => settings.setBlueboardUrl(event.currentTarget.value)}
-                        onBlur={async () => await saveSettings()} withAsterisk={true}
-                        placeholder="https://blueboard.lovassy.hu" />
-                    <TextInput label="Import kulcs"
-                        description="A hozzáfést biztosító import kulcs, LovassyApp fejlesztőktől kérhető"
-                        value={settings.importKey} onChange={(event) => settings.setImportKey(event.currentTarget.value)}
                         onBlur={async () => await saveSettings()}
-                        withAsterisk={true} />
+                        withAsterisk={true}
+                        placeholder="https://blueboard.lovassy.hu"
+                    />
+                    <TextInput
+                        label="Import kulcs"
+                        description="A hozzáfést biztosító import kulcs, LovassyApp fejlesztőktől kérhető"
+                        value={settings.importKey}
+                        onChange={(event) => settings.setImportKey(event.currentTarget.value)}
+                        onBlur={async () => await saveSettings()}
+                        withAsterisk={true}
+                    />
                     <Divider variant="dashed" />
                     <Group position="apart">
                         <Text size="sm">Automatikus indítás</Text>
-                        <Switch checked={autostart} onChange={async (event) => {
-                            event.persist(); // To prevent React reclaiming the synthetic event
-                            event.currentTarget.checked ? enable() : disable();
-                            setAutostart(event.currentTarget.checked);
-                        }} />
+                        <Switch
+                            checked={autostart}
+                            onChange={async (event) => {
+                                event.persist(); // To prevent React reclaiming the synthetic event
+                                event.currentTarget.checked ? enable() : disable();
+                                setAutostart(event.currentTarget.checked);
+                            }}
+                        />
                     </Group>
                 </>
             )}
