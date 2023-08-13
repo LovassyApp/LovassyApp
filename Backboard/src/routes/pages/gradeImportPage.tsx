@@ -2,9 +2,14 @@ import { Button, FileInput, Stack, Title } from "@mantine/core";
 
 import { invoke } from "@tauri-apps/api";
 import { open } from "@tauri-apps/api/dialog";
+import { useSecurityStore } from "../../stores/securityStore";
+import { useSettingStore } from "../../stores/settingsStore";
 import { useState } from "react";
 
 const GradeImportPage = (): JSX.Element => {
+    const security = useSecurityStore();
+    const settings = useSettingStore();
+
     const [fileValue, setFileValue] = useState<File | null>(null);
     const [filePath, setFilePath] = useState<string | null>(null);
     const [fileError, setFileError] = useState<string | null>(null);
@@ -21,7 +26,12 @@ const GradeImportPage = (): JSX.Element => {
         setFileDisabled(true);
         // call rust function
         try {
-            await invoke("import_grades", { filePath });
+            await invoke("import_grades", {
+                filePath,
+                importKey: settings.importKey,
+                resetKeyPassword: security.resetKeyPassword,
+                updateResetKeyPassword: security.updateResetKeyPasswordOnImport,
+            });
         } catch (error) {
             console.error(error);
         }
