@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **uid** | Option<**String**> |  | [optional]
 **subject** | Option<**String**> |  | [optional]
 **subject_category** | Option<**String**> |  | [optional]
+**theme** | Option<**String**> |  | [optional]
 **teacher** | Option<**String**> |  | [optional]
 **group** | Option<**String**> |  | [optional]
 **grade_value** | Option<**i32**> |  | [optional]
