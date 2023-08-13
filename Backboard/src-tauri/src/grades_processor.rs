@@ -1,3 +1,4 @@
+use api::models::ImportIndexUsersResponse;
 use calamine::{
     open_workbook, DataType, DeError, Error as CalamineError, RangeDeserializer,
     RangeDeserializerBuilder, Reader, Xlsx, XlsxError,
@@ -60,11 +61,11 @@ pub struct BackboardGrade {
     #[serde(rename(deserialize = "Rögzítés dátuma", serialize = "RecordDate"))]
     record_date: String,
     #[serde(rename(deserialize = "Tanuló név", serialize = "Name"))]
-    name: String,
+    pub name: String,
     #[serde(rename(deserialize = "Tanuló azonosítója"), skip_serializing)]
-    om_code: String,
+    pub om_code: String,
     #[serde(rename(deserialize = "Tanuló osztálya"), skip_serializing)]
-    school_class: Option<String>,
+    pub school_class: Option<String>,
 }
 
 pub fn process_excel_file(file_path: String) -> Result<Vec<BackboardGrade>, CalamineError> {
@@ -83,4 +84,31 @@ pub fn process_excel_file(file_path: String) -> Result<Vec<BackboardGrade>, Cala
     }
 
     Ok(grades)
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct BackboardUser {
+    #[serde(rename(serialize = "Id"))]
+    id: String,
+    #[serde(rename(serialize = "PublicKey"))]
+    public_key: String,
+    #[serde(rename(serialize = "OmCodeHashed"))]
+    om_code_hashed: String,
+}
+
+impl From<ImportIndexUsersResponse> for BackboardUser {
+    fn from(user: ImportIndexUsersResponse) -> Self {
+        BackboardUser {
+            id: user.id.unwrap().to_string(),
+            public_key: user.public_key.unwrap().unwrap(),
+            om_code_hashed: user.om_code_hashed.unwrap().unwrap(),
+        }
+    }
+}
+
+pub struct GradeCollection {
+    grades: Vec<BackboardGrade>,
+    school_class: String,
+    student_name: String,
+    user: BackboardUser,
 }

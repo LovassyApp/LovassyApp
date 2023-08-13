@@ -28,6 +28,7 @@ const GradeImportPage = (): JSX.Element => {
         try {
             await invoke("import_grades", {
                 filePath,
+                blueboardUrl: settings.blueboardUrl,
                 importKey: settings.importKey,
                 resetKeyPassword: security.resetKeyPassword,
                 updateResetKeyPassword: security.updateResetKeyPasswordOnImport,

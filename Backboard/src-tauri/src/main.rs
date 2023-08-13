@@ -3,15 +3,21 @@
 
 mod grades_processor;
 
+use std::collections::HashMap;
+use std::io::Write;
+
 use api::apis::configuration::{ApiKey, Configuration};
-use api::apis::import_api::api_import_reset_key_password_put;
+use api::apis::import_api::{api_import_reset_key_password_put, api_import_users_get};
 use api::apis::status_api::api_status_service_status_get;
 use api::apis::Error;
 use api::models::{ImportUpdateResetKeyPasswordRequestBody, StatusViewServiceStatusResponse};
+use base64::{engine::general_purpose, Engine as _};
+use crypto_hash::{Algorithm, Hasher};
 use tauri::http::status::StatusCode;
 use tauri_plugin_autostart::MacosLauncher;
 
 use crate::grades_processor::process_excel_file;
+use crate::grades_processor::BackboardGrade;
 
 #[tauri::command]
 async fn upload_reset_key_password(
@@ -49,13 +55,49 @@ async fn upload_reset_key_password(
 #[tauri::command]
 async fn import_grades(
     file_path: String,
+    blueboard_url: String,
     reset_key_password: String,
     import_key: String,
     update_reset_key_password: bool,
 ) -> Result<(), String> {
     println!("importGrades: {}", file_path);
 
+    let mut config = Configuration::new();
+    config.base_path = blueboard_url;
+    config.api_key = Some(ApiKey {
+        prefix: None,
+        key: import_key,
+    });
+
+    let users = api_import_users_get(&config, None, None, None, None)
+        .await
+        .map_err(|e| match e {
+            Error::ResponseError(response_error) => {
+                if let StatusCode::UNAUTHORIZED = response_error.status {
+                    "401".to_string()
+                } else {
+                    "error".to_string() // TODO: maybe find a better way to handle this (not important for now)
+                }
+            }
+            _ => "error".to_string(), // TODO: maybe find a better way to handle this (not important for now)
+        })?;
+
     let grades = process_excel_file(file_path).map_err(|err: calamine::Error| err.to_string())?;
+
+    let mut grade_map: HashMap<String, Vec<BackboardGrade>> = HashMap::new();
+
+    for grade in grades {
+        let mut hasher = Hasher::new(Algorithm::SHA256);
+        let _ = hasher.write_all(grade.om_code.as_bytes());
+        let hash_result = hasher.finish();
+
+        grade_map
+            .entry(general_purpose::STANDARD.encode(&hash_result))
+            .or_insert(Vec::new())
+            .push(grade);
+    }
+
+    println!("gradeMap: {:?}", grade_map);
 
     Ok(())
 }
