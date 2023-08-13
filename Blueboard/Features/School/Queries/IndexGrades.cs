@@ -30,6 +30,9 @@ public static class IndexGrades
 
         public string Subject { get; set; }
         public string SubjectCategory { get; set; }
+
+        public string Theme { get; set; }
+
         public string Teacher { get; set; }
         public string Group { get; set; }
 

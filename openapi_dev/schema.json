@@ -3889,6 +3889,10 @@
             "type": "string",
             "nullable": true
           },
+          "theme": {
+            "type": "string",
+            "nullable": true
+          },
           "teacher": {
             "type": "string",
             "nullable": true

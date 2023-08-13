@@ -1,16 +1,22 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod cryptography;
 mod grades_processor;
 
 use std::collections::HashMap;
 use std::io::Write;
 
 use api::apis::configuration::{ApiKey, Configuration};
-use api::apis::import_api::{api_import_reset_key_password_put, api_import_users_get};
+use api::apis::import_api::{
+    api_import_grades_user_id_post, api_import_reset_key_password_put, api_import_users_get,
+};
 use api::apis::status_api::api_status_service_status_get;
 use api::apis::Error;
-use api::models::{ImportUpdateResetKeyPasswordRequestBody, StatusViewServiceStatusResponse};
+use api::models::{
+    ImportImportGradesRequestBody, ImportUpdateResetKeyPasswordRequestBody,
+    StatusViewServiceStatusResponse,
+};
 use base64::{engine::general_purpose, Engine as _};
 use crypto_hash::{Algorithm, Hasher};
 use tauri::http::status::StatusCode;
@@ -18,6 +24,9 @@ use tauri_plugin_autostart::MacosLauncher;
 
 use crate::grades_processor::process_excel_file;
 use crate::grades_processor::BackboardGrade;
+use crate::grades_processor::GradeCollection;
+
+use crate::cryptography::kyber_encrypt;
 
 #[tauri::command]
 async fn upload_reset_key_password(
@@ -69,7 +78,7 @@ async fn import_grades(
         key: import_key,
     });
 
-    let users = api_import_users_get(&config, None, None, None, None)
+    let users = api_import_users_get(&config.clone(), None, None, None, None)
         .await
         .map_err(|e| match e {
             Error::ResponseError(response_error) => {
@@ -97,7 +106,56 @@ async fn import_grades(
             .push(grade);
     }
 
-    println!("gradeMap: {:?}", grade_map);
+    for user in users {
+        let user_grades = grade_map.get(&user.clone().om_code_hashed.unwrap().unwrap());
+
+        match user_grades {
+            None => continue,
+            Some(_) => {
+                let public_key = user.public_key.clone().unwrap().unwrap();
+
+                let school_class: Option<String> = user_grades
+                    .unwrap()
+                    .iter()
+                    .find(|grade| grade.school_class.is_some())
+                    .map(|grade| grade.school_class.clone().unwrap());
+
+                let student_name = user_grades.unwrap()[0].name.clone();
+
+                let grade_collection = GradeCollection {
+                    grades: user_grades.unwrap().clone(),
+                    school_class: school_class,
+                    student_name: student_name,
+                    user: user.clone().into(),
+                };
+
+                let grade_collection_encrypted = kyber_encrypt(
+                    serde_json::to_string(&grade_collection).unwrap(),
+                    public_key,
+                )
+                .map_err(|e| e.to_string())?;
+
+                api_import_grades_user_id_post(
+                    &config,
+                    &user.id.unwrap().to_string(),
+                    Some(ImportImportGradesRequestBody {
+                        json_encrypted: grade_collection_encrypted,
+                    }),
+                )
+                .await
+                .map_err(|e| match e {
+                    Error::ResponseError(response_error) => {
+                        if let StatusCode::UNAUTHORIZED = response_error.status {
+                            "401".to_string()
+                        } else {
+                            "error".to_string() // TODO: maybe find a better way to handle this (not important for now)
+                        }
+                    }
+                    _ => "error".to_string(), // TODO: maybe find a better way to handle this (not important for now)
+                })?;
+            }
+        }
+    }
 
     Ok(())
 }

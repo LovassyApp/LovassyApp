@@ -80,7 +80,7 @@ public class BackboardAdapter
         await _context.BulkInsertOrUpdateAsync(grades, new BulkConfig
         {
             UpdateByProperties = new List<string> { nameof(Grade.Uid) },
-            PropertiesToExclude = new List<string> { nameof(Grade.Id) }
+            PropertiesToExclude = new List<string> { nameof(Grade.Id), nameof(Grade.LoloIdHashed) }
         });
         await _context.GradeImports.Where(i => i.UserId == _user.Id).BatchDeleteAsync();
 

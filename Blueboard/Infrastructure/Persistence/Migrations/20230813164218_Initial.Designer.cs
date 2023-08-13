@@ -15,7 +15,7 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230626154157_Initial")]
+    [Migration("20230813164218_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -81,6 +81,10 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TextGrade")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Theme")
                         .IsRequired()
                         .HasColumnType("text");
 

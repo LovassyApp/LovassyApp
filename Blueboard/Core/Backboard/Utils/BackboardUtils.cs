@@ -42,10 +42,12 @@ public static class BackboardUtils
             Subject = char.ToUpper(grade.Subject[0]) + grade.Subject.Substring(1),
             SubjectCategory = char.ToUpper(grade.SubjectCategory[0]) + grade.SubjectCategory.Substring(1),
 
+            Theme = grade.Theme == " - " ? "Névtelen jegy" : char.ToUpper(grade.Theme[0]) + grade.Theme.Substring(1),
+
             GradeType = GetType(grade),
 
             Teacher = grade.Teacher ?? "Névtelen hős",
-            Name = grade.Name == " - " ? "Névtelen jegy" : char.ToUpper(grade.Name[0]) + grade.Name.Substring(1),
+            Name = grade.Name,
             Type = grade.Type ?? "Nincs leírás",
             Group = grade.Group,
 
@@ -59,8 +61,8 @@ public static class BackboardUtils
         };
 
         result.Uid = HashingUtils.Hash(result.EvaluationDate.ToLongDateString() + result.CreateDate.ToLongDateString() +
-                                       result.Subject + result.SubjectCategory + result.Teacher + result.Name +
-                                       result.Type + result.GradeType + result.Group + result.Weight +
+                                       result.Subject + result.SubjectCategory + result.Theme + result.Teacher +
+                                       result.Name + result.Type + result.GradeType + result.Group + result.Weight +
                                        result.TextGrade + result.ShortTextGrade + result.GradeValue);
 
         return result;
@@ -80,7 +82,7 @@ public static class BackboardUtils
 
     private static GradeType GetType(BackboardGrade grade)
     {
-        if (grade.BehaviourGrade != " - ")
+        if (grade.BehaviorGrade != " - ")
             return GradeType.BehaviourGrade;
         if (grade.DiligenceGrade != " - ")
             return GradeType.DiligenceGrade;
@@ -90,8 +92,8 @@ public static class BackboardUtils
 
     private static string GetTextGrade(BackboardGrade grade)
     {
-        if (grade.BehaviourGrade != " - ")
-            return grade.BehaviourGrade;
+        if (grade.BehaviorGrade != " - ")
+            return grade.BehaviorGrade;
 
         if (grade.DiligenceGrade != " - ")
             return grade.DiligenceGrade;

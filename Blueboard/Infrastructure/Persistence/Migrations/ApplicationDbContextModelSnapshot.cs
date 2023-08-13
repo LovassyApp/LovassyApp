@@ -81,6 +81,10 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Theme")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");

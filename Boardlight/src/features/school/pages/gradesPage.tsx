@@ -83,7 +83,6 @@ const GradesPage = (): JSX.Element => {
                         { maxWidth: theme.breakpoints.sm, cols: 2, spacing: "sm" },
                         { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
                     ]}
-                    mb="md"
                 >
                     {subjectCards}
                 </SimpleGrid>
@@ -94,7 +93,7 @@ const GradesPage = (): JSX.Element => {
                     tantárgyaid.
                 </Text>
             )}
-            <Title mb="md">Jegyek</Title>
+            <Title my="md">Jegyek</Title>
             <Select
                 label="Tantárgy"
                 data={subjectValues}

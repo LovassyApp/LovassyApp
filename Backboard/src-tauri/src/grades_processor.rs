@@ -1,11 +1,6 @@
 use api::models::ImportIndexUsersResponse;
-use calamine::{
-    open_workbook, DataType, DeError, Error as CalamineError, RangeDeserializer,
-    RangeDeserializerBuilder, Reader, Xlsx, XlsxError,
-};
+use calamine::{open_workbook, Error as CalamineError, RangeDeserializerBuilder, Reader, Xlsx};
 use serde::{Deserialize, Serialize};
-use tauri::http::status::StatusCode;
-use tauri_plugin_autostart::MacosLauncher;
 
 fn de_opt_string<'de, D>(deserializer: D) -> Result<Option<String>, D::Error>
 where
@@ -28,6 +23,8 @@ pub struct BackboardGrade {
     subject_category: String,
     #[serde(rename(deserialize = "Tantárgy", serialize = "Subject"))]
     subject: String,
+    #[serde(rename(deserialize = "Téma", serialize = "Theme"))]
+    theme: String,
     #[serde(rename(deserialize = "Osztály/Csoport név", serialize = "Group"))]
     group: String,
     #[serde(
@@ -106,9 +103,14 @@ impl From<ImportIndexUsersResponse> for BackboardUser {
     }
 }
 
+#[derive(Debug, Clone, Serialize)]
 pub struct GradeCollection {
-    grades: Vec<BackboardGrade>,
-    school_class: String,
-    student_name: String,
-    user: BackboardUser,
+    #[serde(rename(serialize = "Grades"))]
+    pub grades: Vec<BackboardGrade>,
+    #[serde(rename(serialize = "SchoolClass"))]
+    pub school_class: Option<String>,
+    #[serde(rename(serialize = "StudentName"))]
+    pub student_name: String,
+    #[serde(rename(serialize = "User"))]
+    pub user: BackboardUser,
 }

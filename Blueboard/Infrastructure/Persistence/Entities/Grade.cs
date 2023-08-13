@@ -29,6 +29,10 @@ public class Grade : TimestampedEntity
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
+    public string Theme { get; set; }
+
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
     public string Teacher { get; set; }
 
     [Required]

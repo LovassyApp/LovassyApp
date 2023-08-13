@@ -25,7 +25,7 @@ export const GradeCard = ({ grade }: { grade: SchoolIndexGradesResponseGrade }):
                             {grade.name}
                         </Text>
                     </Box>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" color="dimmed" truncate={true}>
                         {grade.teacher}
                     </Text>
                     <Text size="sm" color="dimmed">

@@ -30,6 +30,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     Uid = table.Column<string>(type: "text", nullable: false),
                     Subject = table.Column<string>(type: "text", nullable: false),
                     SubjectCategory = table.Column<string>(type: "text", nullable: false),
+                    Theme = table.Column<string>(type: "text", nullable: false),
                     Teacher = table.Column<string>(type: "text", nullable: false),
                     Group = table.Column<string>(type: "text", nullable: false),
                     GradeValue = table.Column<int>(type: "integer", nullable: false),

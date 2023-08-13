@@ -104,6 +104,7 @@ public class GradeImportSeeder
                 {
                     SubjectCategory = subjects[i] + "_Category",
                     Subject = subjects[i],
+                    Theme = Faker.Lorem.Sentence(),
                     Group = groupId,
                     Teacher = Faker.Name.FullName(),
                     Type = Faker.Random.ArrayElement(Types),
@@ -111,7 +112,7 @@ public class GradeImportSeeder
                     Grade = gradeValue.ToString(),
                     ShortTextGrade = "",
                     DiligenceGrade = " - ",
-                    BehaviourGrade = " - ",
+                    BehaviorGrade = " - ",
                     CreateDate = DateTime.Now.ToString("yyyy.M.d"),
                     RecordDate = DateTime.Now.ToString("yyyy.M.d"),
                     Name = Faker.Lorem.Sentence(3)
