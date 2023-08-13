@@ -10,6 +10,7 @@ export interface SchoolIndexGradesResponseGrade {
   uid?: string | null;
   subject?: string | null;
   subjectCategory?: string | null;
+  theme?: string | null;
   teacher?: string | null;
   group?: string | null;
   gradeValue?: number;
