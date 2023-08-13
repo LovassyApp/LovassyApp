@@ -92,6 +92,15 @@ builder.Services.AddRateLimiter(o =>
             PermitLimit = 10,
             Window = TimeSpan.FromSeconds(30)
         }));
+
+    o.AddPolicy("Relaxed", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress!.ToString() + context.Request.Path,
+        partition => new FixedWindowRateLimiterOptions
+        {
+            AutoReplenishment = true,
+            PermitLimit = 1200,
+            Window = TimeSpan.FromMinutes(1)
+        })); // Primarily used for the grade import endpoint
 });
 builder.Services.AddControllers(o =>
 {

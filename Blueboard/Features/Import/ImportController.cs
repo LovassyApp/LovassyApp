@@ -4,6 +4,7 @@ using Blueboard.Features.Import.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.FeatureManagement.Mvc;
 using Sieve.Models;
 
@@ -24,6 +25,7 @@ public class ImportController : ApiControllerBase
         return Ok(users);
     }
 
+    [EnableRateLimiting("Relaxed")]
     [HttpPost("Grades/{userId}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
