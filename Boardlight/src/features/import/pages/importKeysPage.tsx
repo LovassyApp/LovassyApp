@@ -110,7 +110,7 @@ const DetailsModal = ({
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
     const detailedQueryEnabled = useMemo(
-        () => control.data?.permissions?.includes("Import.ViewImportKey") ?? false,
+        () => (control.data?.permissions?.includes("Import.ViewImportKey") || control.data?.isSuperUser) ?? false,
         [control]
     );
 

@@ -116,7 +116,7 @@ const DetailsModal = ({
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
     const detailedQueryEnabled = useMemo(
-        () => control.data?.permissions?.includes("Shop.ViewQRCode") ?? false,
+        () => (control.data?.permissions?.includes("Shop.ViewQRCode") || control.data?.isSuperUser) ?? false,
         [control]
     );
 

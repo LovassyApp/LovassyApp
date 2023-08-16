@@ -26,6 +26,7 @@ import {
 } from "../../../api/generated/features/products/products";
 import { useMemo, useState } from "react";
 
+import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { ShopIndexProductsResponse } from "../../../api/generated/models";
 import { StoreProductCard } from "../components/storeProductCard";
 import { ValidationError } from "../../../helpers/apiHelpers";
@@ -40,7 +41,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-interface StoreParams {
+interface ShopParams {
     Search?: string;
     Filters?: string;
 }
@@ -54,8 +55,8 @@ const FiltersDrawer = ({
 }: {
     opened: boolean;
     close(): void;
-    params: StoreParams;
-    setParams: (arg0: StoreParams) => void;
+    params: ShopParams;
+    setParams: (arg0: ShopParams) => void;
     balance?: number;
 }): JSX.Element => {
     const [search, setSearch] = useState<string>(params.Search ?? "");
@@ -114,7 +115,7 @@ const DetailsModal = ({
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
     const detailedQueryEnabled = useMemo(
-        () => control.data?.permissions?.includes("Shop.ViewStoreProduct") ?? false,
+        () => (control.data?.permissions?.includes("Shop.ViewStoreProduct") || control.data?.isSuperUser) ?? false,
         [control]
     );
 
@@ -209,14 +210,16 @@ const DetailsModal = ({
                 </>
             )}
             <Divider my="sm" />
-            <Button
-                fullWidth
-                loading={buyProduct.isLoading}
-                onClick={() => doBuyProduct()}
-                disabled={storeProduct?.quantity < 1 || (balance && storeProduct?.price > balance)}
-            >
-                Megveszem!
-            </Button>
+            <PermissionRequirement permissions={["Shop.BuyProduct"]}>
+                <Button
+                    fullWidth
+                    loading={buyProduct.isLoading}
+                    onClick={() => doBuyProduct()}
+                    disabled={storeProduct?.quantity < 1 || (balance && storeProduct?.price > balance)}
+                >
+                    Megveszem!
+                </Button>
+            </PermissionRequirement>
         </Modal>
     );
 };
@@ -225,12 +228,12 @@ const ShopPage = (): JSX.Element => {
     const { classes } = useStyles();
     const theme = useMantineTheme();
 
-    const [params, setParams] = useState<StoreParams>({});
+    const [params, setParams] = useState<ShopParams>({});
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
     const userQueryEnabled = useMemo(
-        () => control.data?.permissions?.includes("Shop.IndexOwnLolos") ?? false,
+        () => (control.data?.permissions?.includes("Shop.IndexOwnLolos") || control.data?.isSuperUser) ?? false,
         [control]
     );
 
@@ -239,8 +242,11 @@ const ShopPage = (): JSX.Element => {
     const storeProducts = useGetApiProducts({
         Search: params.Search ?? "",
         Filters: params.Filters
-            ? params.Filters + (control.data?.permissions?.includes("Shop.IndexProducts") ? ",Visible==true" : "")
-            : control.data?.permissions?.includes("Shop.IndexProducts")
+            ? params.Filters +
+              (control.data?.permissions?.includes("Shop.IndexProducts") || control.data?.isSuperUser
+                  ? ",Visible==true"
+                  : "")
+            : control.data?.permissions?.includes("Shop.IndexProducts") || control.data?.isSuperUser
             ? "Visible==true"
             : "",
         Sorts: "Name",

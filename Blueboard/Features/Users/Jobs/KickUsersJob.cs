@@ -23,8 +23,6 @@ public class KickUsersJob : IJob
 
         foreach (var token in tokens) _sessionService.StopSession(token);
 
-        //TODO: Send out a notification to the user that they have been kicked
-
         _logger.LogInformation("Stopped sessions belonging to {Count} tokens, due to users being kicked",
             tokens.Count());
     }

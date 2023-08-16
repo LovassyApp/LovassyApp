@@ -6,7 +6,7 @@ import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth"
 
 export const AuthenticatedGuard = ({ redirect = "/auth/login" }: { redirect?: string }) => {
     const accessToken = useAuthStore((state) => state.accessToken);
-    const control = useGetApiAuthControl({ query: { retry: 0 } });
+    const control = useGetApiAuthControl({ query: { retry: 0, enabled: !!accessToken } });
 
     if (control.isLoading) return <FullScreenLoading />;
 

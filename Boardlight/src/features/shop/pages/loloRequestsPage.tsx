@@ -63,7 +63,10 @@ const DetailsModal = ({
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
-    const userQueryEnabled = useMemo(() => control.data?.permissions?.includes("Users.ViewUser") ?? false, [control]);
+    const userQueryEnabled = useMemo(
+        () => (control.data?.permissions?.includes("Users.ViewUser") || control.data?.isSuperUser) ?? false,
+        [control]
+    );
 
     const user = useGetApiUsersId(loloRequest?.userId, { query: { enabled: userQueryEnabled && !!loloRequest } });
 
