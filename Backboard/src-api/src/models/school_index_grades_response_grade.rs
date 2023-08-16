@@ -21,6 +21,8 @@ pub struct SchoolIndexGradesResponseGrade {
     pub subject: Option<Option<String>>,
     #[serde(rename = "subjectCategory", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub subject_category: Option<Option<String>>,
+    #[serde(rename = "theme", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub theme: Option<Option<String>>,
     #[serde(rename = "teacher", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub teacher: Option<Option<String>>,
     #[serde(rename = "group", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
@@ -56,6 +58,7 @@ impl SchoolIndexGradesResponseGrade {
             uid: None,
             subject: None,
             subject_category: None,
+            theme: None,
             teacher: None,
             group: None,
             grade_value: None,
