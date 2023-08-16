@@ -18,5 +18,5 @@ public class BackboardGrade
     public string DiligenceGrade { get; set; }
     public string CreateDate { get; set; }
     public string RecordDate { get; set; }
-    public string Name { get; set; }
+    public string StudentName { get; set; }
 }

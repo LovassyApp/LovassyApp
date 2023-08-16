@@ -57,8 +57,8 @@ pub struct BackboardGrade {
     create_date: String,
     #[serde(rename(deserialize = "Rögzítés dátuma", serialize = "RecordDate"))]
     record_date: String,
-    #[serde(rename(deserialize = "Tanuló név", serialize = "Name"))]
-    pub name: String,
+    #[serde(rename(deserialize = "Tanuló név", serialize = "StudentName"))]
+    pub student_name: String,
     #[serde(rename(deserialize = "Tanuló azonosítója"), skip_serializing)]
     pub om_code: String,
     #[serde(rename(deserialize = "Tanuló osztálya"), skip_serializing)]

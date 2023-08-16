@@ -65,10 +65,6 @@ public class Grade : TimestampedEntity
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
-    public string Name { get; set; }
-
-    [Required]
-    [Sieve(CanFilter = true, CanSort = true)]
     public string Type { get; set; }
 
     [Required] public GradeType GradeType { get; set; }

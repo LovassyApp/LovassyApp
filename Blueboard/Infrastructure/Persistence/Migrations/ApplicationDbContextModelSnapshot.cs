@@ -57,10 +57,6 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("LoloIdHashed")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("ShortTextGrade")
                         .IsRequired()
                         .HasColumnType("text");

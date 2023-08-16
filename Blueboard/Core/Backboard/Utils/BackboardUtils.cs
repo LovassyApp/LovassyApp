@@ -47,7 +47,6 @@ public static class BackboardUtils
             GradeType = GetType(grade),
 
             Teacher = grade.Teacher ?? "Névtelen hős",
-            Name = grade.Name,
             Type = grade.Type ?? "Nincs leírás",
             Group = grade.Group,
 
@@ -62,8 +61,10 @@ public static class BackboardUtils
 
         result.Uid = HashingUtils.Hash(result.EvaluationDate.ToLongDateString() + result.CreateDate.ToLongDateString() +
                                        result.Subject + result.SubjectCategory + result.Theme + result.Teacher +
-                                       result.Name + result.Type + result.GradeType + result.Group + result.Weight +
-                                       result.TextGrade + result.ShortTextGrade + result.GradeValue);
+                                       result.Type + result.GradeType + result.Group +
+                                       result.Weight + result.TextGrade + result.ShortTextGrade + result.GradeValue +
+                                       grade
+                                           .StudentName); // We also add the name to the hash, so it's more unique (there are some cases where the same grade is given to multiple students)
 
         return result;
     }

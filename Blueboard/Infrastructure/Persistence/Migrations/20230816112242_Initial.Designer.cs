@@ -15,7 +15,7 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230813164218_Initial")]
+    [Migration("20230816112242_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -58,10 +58,6 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LoloIdHashed")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ShortTextGrade")

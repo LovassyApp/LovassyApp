@@ -125,7 +125,7 @@ async fn import_grades(
                     .find(|grade| grade.school_class.is_some())
                     .map(|grade| grade.school_class.clone().unwrap());
 
-                let student_name = user_grades.unwrap()[0].name.clone();
+                let student_name = user_grades.unwrap()[0].student_name.clone();
 
                 let grade_collection = GradeCollection {
                     grades: user_grades.unwrap().clone(),

@@ -115,7 +115,7 @@ public class GradeImportSeeder
                     BehaviorGrade = " - ",
                     CreateDate = DateTime.Now.ToString("yyyy.M.d"),
                     RecordDate = DateTime.Now.ToString("yyyy.M.d"),
-                    Name = Faker.Lorem.Sentence(3)
+                    StudentName = Faker.Name.FullName()
                 };
 
                 grades.Add(grade);
