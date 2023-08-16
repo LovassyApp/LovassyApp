@@ -345,8 +345,8 @@ const DetailsModal = ({
                     <TextInput required={true} label="Név" {...form.getInputProps("name")} />
                     <TextInput required={true} label="Email" {...form.getInputProps("email")} mt="sm" />
                     <PermissionRequirement permissions={["Auth.IndexUserGroups"]}>
-                        <Text size="sm" mt="sm">
-                            Csoportok:
+                        <Text size="sm" mt="sm" weight={500}>
+                            Csoportok
                         </Text>
                         {displayedUserGroups}
                         {groupsData && (
@@ -355,6 +355,7 @@ const DetailsModal = ({
                                 disabled={groups.data.length < 1}
                                 variant="outline"
                                 fullWidth
+                                mt="md"
                             >
                                 Csoport hozzáadása
                             </Button>
