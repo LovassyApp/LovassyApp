@@ -3925,10 +3925,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
           "type": {
             "type": "string",
             "nullable": true

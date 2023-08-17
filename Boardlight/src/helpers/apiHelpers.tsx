@@ -1,6 +1,7 @@
 import { IconX } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { queryClient } from "../main";
 
 export class ValidationError {
     public constructor(public readonly message: string, public readonly errors: { [key: string]: string[] }) {}
@@ -12,61 +13,60 @@ export class NotFoundError {
 
 export const handleApiErrors = (error: any) => {
     switch (error.status) {
-    case 400:
-        throw new ValidationError(error.data.detail ?? "Hibás kérvény.", error.data.errors ?? []);
-    case 401:
-        notifications.show({
-            title: "Hiba (401)",
-            color: "red",
-            icon: <IconX />,
-            message: "Lejárt a munkameneted. Kérlek lépj be újra.",
-        });
-        break;
-    case 403:
-        notifications.show({
-            title: "Hiba (403)",
-            color: "red",
-            icon: <IconX />,
-            message: "Nincs jogosultságod a kérés végrehajtásához.",
-        });
-        break;
-    case 404:
-        throw new NotFoundError(error.message);
-    case 429:
-        notifications.show({
-            title: "Hiba (429)",
-            color: "red",
-            icon: <IconX />,
-            message: "Túl sok kérés. Kérlek próbáld újra később.",
-        });
-        break;
-    case 500:
-        notifications.show({
-            title: "Hiba (500)",
-            color: "red",
-            icon: <IconX />,
-            message: "Szerverhiba. Kérlek próbáld újra később.",
-        });
-        break;
-    case 503:
-        notifications.show({
-            title: "Hiba (503)",
-            color: "red",
-            icon: <IconX />,
-            message: "Funkció nem elérhető. Kérlek próbáld újra később.",
-        });
-        break;
-    default:
-        if (error instanceof DOMException)
+        case 400:
+            throw new ValidationError(error.data.detail ?? "Hibás kérvény.", error.data.errors ?? []);
+        case 401:
+            notifications.show({
+                title: "Hiba (401)",
+                color: "red",
+                icon: <IconX />,
+                message: "Lejárt a munkameneted. Kérlek lépj be újra.",
+            });
             break;
-        console.error(error);
-        notifications.show({
-            title: "Hiba",
-            color: "red",
-            icon: <IconX />,
-            message: "Egy ismeretlen hiba történt.",
-        });
-        break;
+        case 403:
+            notifications.show({
+                title: "Hiba (403)",
+                color: "red",
+                icon: <IconX />,
+                message: "Nincs jogosultságod a kérés végrehajtásához.",
+            });
+            break;
+        case 404:
+            throw new NotFoundError(error.message);
+        case 429:
+            notifications.show({
+                title: "Hiba (429)",
+                color: "red",
+                icon: <IconX />,
+                message: "Túl sok kérés. Kérlek próbáld újra később.",
+            });
+            break;
+        case 500:
+            notifications.show({
+                title: "Hiba (500)",
+                color: "red",
+                icon: <IconX />,
+                message: "Szerverhiba. Kérlek próbáld újra később.",
+            });
+            break;
+        case 503:
+            notifications.show({
+                title: "Hiba (503)",
+                color: "red",
+                icon: <IconX />,
+                message: "Funkció nem elérhető. Kérlek próbáld újra később.",
+            });
+            break;
+        default:
+            if (error instanceof DOMException) break;
+            console.error(error);
+            notifications.show({
+                title: "Hiba",
+                color: "red",
+                icon: <IconX />,
+                message: "Egy ismeretlen hiba történt.",
+            });
+            break;
     }
 };
 

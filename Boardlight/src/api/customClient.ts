@@ -1,6 +1,5 @@
 import { getPostApiAuthRefreshMutationOptions } from "./generated/features/auth/auth";
 import { handleApiErrors } from "../helpers/apiHelpers";
-import { queryClient } from "../main";
 import { useAuthStore } from "../core/stores/authStore";
 
 const callAPI = async (url: string, init: RequestInit) => {
@@ -92,7 +91,7 @@ export const useCustomClient = async <T>({
                 console.log("Failed to refresh token");
 
                 useAuthStore.getState().setAccessToken(undefined);
-                queryClient.clear();
+                document.dispatchEvent(new Event("resetQueryClient")); // You may ask why not just call queryClient.clear() here... Well, the thing is that even tho that works perfectly, I can't for the love of god get it to generate the client if we do that. So we have this weird ass solution instead, and we listen to this event in main.tsx.
             }
         }
         handleApiErrors(error);

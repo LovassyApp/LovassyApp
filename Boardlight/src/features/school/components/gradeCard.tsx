@@ -22,7 +22,7 @@ export const GradeCard = ({ grade }: { grade: SchoolIndexGradesResponseGrade }):
                 <Stack justify="space-between" align="stretch" spacing={0} sx={{ flex: 1, overflow: "hidden" }}>
                     <Box maw="100%">
                         <Text size="lg" weight={500} truncate={true}>
-                            {grade.name}
+                            {grade.theme}
                         </Text>
                     </Box>
                     <Text size="sm" color="dimmed" truncate={true}>

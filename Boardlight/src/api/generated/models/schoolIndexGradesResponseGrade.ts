@@ -19,7 +19,6 @@ export interface SchoolIndexGradesResponseGrade {
   weight?: number;
   evaluationDate?: string;
   createDate?: string;
-  name?: string | null;
   type?: string | null;
   gradeType?: string | null;
   createdAt?: string;
