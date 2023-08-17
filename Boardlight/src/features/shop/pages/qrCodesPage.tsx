@@ -9,10 +9,8 @@ import {
     Loader,
     Modal,
     SimpleGrid,
-    Stack,
     Text,
     TextInput,
-    Textarea,
     Title,
     createStyles,
     useMantineTheme,
@@ -20,7 +18,6 @@ import {
 import { IconCheck, IconPlus, IconPrinter, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
-    getGetApiQRCodesQueryKey,
     useDeleteApiQRCodesId,
     useGetApiQRCodes,
     useGetApiQRCodesId,
@@ -36,7 +33,6 @@ import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles((theme) => ({
     center: {
@@ -107,8 +103,6 @@ const DetailsModal = ({
     close(): void;
 }): JSX.Element => {
     const { classes } = useStyles();
-
-    const queryClient = useQueryClient();
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
     const detailedQueryEnabled = useMemo(
@@ -188,7 +182,7 @@ const DetailsModal = ({
         <>
             {qrCodeDetailed.data && opened && (
                 <Box className={classes.printOverlay}>
-                    <Group position="left" align="flex-start" spacing="lg" noWrap>
+                    <Group position="left" align="flex-start" spacing="lg" noWrap={true}>
                         <Box w="50%">
                             <Image
                                 src={`data:image/svg+xml;base64,${btoa(
@@ -233,7 +227,12 @@ const DetailsModal = ({
                             radius="md"
                             alt="QR kód"
                         />
-                        <Button fullWidth onClick={() => print()} mt="md" leftIcon={<IconPrinter stroke={1.5} />}>
+                        <Button
+                            fullWidth={true}
+                            onClick={() => print()}
+                            mt="md"
+                            leftIcon={<IconPrinter stroke={1.5} />}
+                        >
                             Nyomtatás
                         </Button>
                     </>

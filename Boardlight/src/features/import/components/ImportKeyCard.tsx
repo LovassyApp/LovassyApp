@@ -1,9 +1,9 @@
 import { Box, Group, Paper, Stack, Text, createStyles, useMantineTheme } from "@mantine/core";
-import { IconCircleKey, IconQrcode } from "@tabler/icons-react";
 
+import { IconCircleKey } from "@tabler/icons-react";
 import { ImportIndexImportKeysResponse } from "../../../api/generated/models";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     card: {
         cursor: "pointer",
         overflow: "hidden",

@@ -14,10 +14,11 @@ module.exports = {
     parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
+        project: ["./tsconfig.json"],
     },
     plugins: ["react", "@typescript-eslint"],
     rules: {
-        indent: ["warn", 4],
+        indent: ["warn", 4, { SwitchCase: 1, flatTernaryExpressions: true }],
         quotes: ["warn", "double"],
         semi: ["warn", "always"],
         eqeqeq: "warn",
@@ -81,5 +82,6 @@ module.exports = {
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/array-type": ["warn", { default: "array-simple" }],
         "@typescript-eslint/consistent-type-definitions": ["warn", "interface"],
+        "@typescript-eslint/no-unused-vars": "warn",
     },
 };

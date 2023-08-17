@@ -3,7 +3,7 @@ import { Box, Group, Paper, Stack, Text, createStyles, useMantineTheme } from "@
 import { IconUser } from "@tabler/icons-react";
 import { UsersIndexUsersResponse } from "../../../api/generated/models";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     card: {
         cursor: "pointer",
         overflow: "hidden",
@@ -34,7 +34,7 @@ export const UserCard = ({
                             )}
                         </Text>
                     </Box>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" color="dimmed" truncate={true}>
                         {user.email}
                     </Text>
                 </Stack>

@@ -1,4 +1,4 @@
-import { Box, Button, Center, Container, Group, Text, Title, createStyles, rem } from "@mantine/core";
+import { Box, Button, Center, Group, Text, Title, createStyles, rem } from "@mantine/core";
 
 import { Link } from "react-router-dom";
 import { useEffect } from "react";

@@ -1,6 +1,5 @@
 import {
     ActionIcon,
-    Box,
     Button,
     Center,
     CopyButton,
@@ -18,7 +17,6 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import { IconCheck, IconCopy, IconPlus, IconX } from "@tabler/icons-react";
-import { ImportIndexImportKeysResponse, ShopIndexLoloRequestsResponse } from "../../../api/generated/models";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
     getGetApiImportKeysQueryKey,
@@ -28,14 +26,9 @@ import {
     usePatchApiImportKeysId,
     usePostApiImportKeys,
 } from "../../../api/generated/features/import-keys/import-keys";
-import {
-    getGetApiQRCodesQueryKey,
-    useDeleteApiQRCodesId,
-    useGetApiQRCodesId,
-    usePatchApiQRCodesId,
-} from "../../../api/generated/features/qrcodes/qrcodes";
 import { useEffect, useMemo, useState } from "react";
 
+import { ImportIndexImportKeysResponse } from "../../../api/generated/models";
 import { ImportKeyCard } from "../components/ImportKeyCard";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { notifications } from "@mantine/notifications";
@@ -44,7 +37,7 @@ import { useForm } from "@mantine/form";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 import { useQueryClient } from "@tanstack/react-query";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     center: {
         height: "100%",
     },
@@ -213,13 +206,13 @@ const DetailsModal = ({
                 <>
                     <Divider my="sm" />
                     <Text>Kulcs:</Text>
-                    <Group position="apart" spacing={0} noWrap>
-                        <Text weight="bold" truncate>
+                    <Group position="apart" spacing={0} noWrap={true}>
+                        <Text weight="bold" truncate={true}>
                             {importKeyDetailed.data.key}
                         </Text>
                         <CopyButton value={importKeyDetailed.data.key} timeout={2000}>
                             {({ copied, copy }) => (
-                                <Tooltip label={copied ? "Kimásolva" : "Másolás"} withArrow position="right">
+                                <Tooltip label={copied ? "Kimásolva" : "Másolás"} withArrow={true} position="right">
                                     <ActionIcon color={copied ? "teal" : "gray"} onClick={copy}>
                                         {copied ? <IconCheck stroke={1.5} /> : <IconCopy stroke={1.5} />}
                                     </ActionIcon>
@@ -237,7 +230,7 @@ const DetailsModal = ({
                         <Text size="sm">Állapot</Text>
                         <Switch {...form.getInputProps("enabled", { type: "checkbox" })} />
                     </Group>
-                    <Button type="submit" fullWidth mt="sm" loading={updateImportKey.isLoading}>
+                    <Button type="submit" fullWidth={true} mt="sm" loading={updateImportKey.isLoading}>
                         Módosítás
                     </Button>
                 </form>
@@ -246,7 +239,7 @@ const DetailsModal = ({
                 <Divider my="sm" />
                 <Button
                     color="red"
-                    fullWidth
+                    fullWidth={true}
                     onClick={async () => await doDeleteImportKey()}
                     loading={deleteImportKey.isLoading}
                 >

@@ -1,4 +1,4 @@
-import { Box, Group, Paper, Stack, Text, rem, useMantineTheme } from "@mantine/core";
+import { Box, Group, Paper, Stack, Text, useMantineTheme } from "@mantine/core";
 
 import { IconCoin } from "@tabler/icons-react";
 import { ShopIndexOwnLolosResponseCoin } from "../../../api/generated/models";

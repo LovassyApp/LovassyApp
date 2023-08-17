@@ -2,7 +2,7 @@ import { Box, Button, Center, Text, Title, createStyles } from "@mantine/core";
 
 import { usePostApiAuthResendVerifyEmail } from "../../../api/generated/features/auth/auth";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     center: {
         height: "100vh",
     },

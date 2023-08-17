@@ -18,7 +18,6 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import { IconCheck, IconFilter, IconSearch, IconX } from "@tabler/icons-react";
-import { getGetApiLolosOwnQueryKey, useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 import {
     useGetApiProducts,
     useGetApiProductsId,
@@ -33,9 +32,9 @@ import { ValidationError } from "../../../helpers/apiHelpers";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useQueryClient } from "@tanstack/react-query";
+import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     center: {
         height: "100%",
     },
@@ -56,7 +55,7 @@ const FiltersDrawer = ({
     opened: boolean;
     close(): void;
     params: ShopParams;
-    setParams: (arg0: ShopParams) => void;
+    setParams(arg0: ShopParams): void;
     balance?: number;
 }): JSX.Element => {
     const [search, setSearch] = useState<string>(params.Search ?? "");
@@ -93,7 +92,7 @@ const FiltersDrawer = ({
                 <Text size="sm">Csak megvásárolható</Text>
                 <Switch checked={buyable} onChange={() => setBuyable(!buyable)} />
             </Group>
-            <Button onClick={() => doSetParams()} fullWidth variant="outline" mt="md">
+            <Button onClick={() => doSetParams()} fullWidth={true} variant="outline" mt="md">
                 Gyerünk!
             </Button>
         </Drawer>
@@ -207,7 +206,7 @@ const DetailsModal = ({
             <Divider my="sm" />
             <PermissionRequirement permissions={["Shop.BuyProduct"]}>
                 <Button
-                    fullWidth
+                    fullWidth={true}
                     loading={buyProduct.isLoading}
                     onClick={() => doBuyProduct()}
                     disabled={storeProduct?.quantity < 1 || (balance && storeProduct?.price > balance)}
@@ -245,7 +244,7 @@ const ShopPage = (): JSX.Element => {
             ? "Visible==true"
             : "",
         Sorts: "Name",
-    }); //Big mess, basically if the user has the permission to see invisible products, we don't show them
+    }); // Big mess, basically if the user has the permission to see invisible products, we don't show them
 
     const [filtersDraweOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);

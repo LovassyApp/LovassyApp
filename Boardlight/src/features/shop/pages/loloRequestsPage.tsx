@@ -18,8 +18,6 @@ import {
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
-    getGetApiLoloRequestsOwnQueryKey,
-    getGetApiLoloRequestsQueryKey,
     useDeleteApiLoloRequestsId,
     useGetApiLoloRequests,
     usePatchApiLoloRequestsId,
@@ -36,9 +34,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 import { useGetApiUsersId } from "../../../api/generated/features/users/users";
-import { useQueryClient } from "@tanstack/react-query";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     center: {
         height: "100%",
     },

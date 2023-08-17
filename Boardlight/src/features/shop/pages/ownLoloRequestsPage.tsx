@@ -17,10 +17,7 @@ import {
 import { IconCheck, IconPlus, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
-    getGetApiLoloRequestsOwnQueryKey,
-    getGetApiLoloRequestsQueryKey,
     useDeleteApiLoloRequestsId,
-    useGetApiLoloRequests,
     useGetApiLoloRequestsOwn,
     usePatchApiLoloRequestsId,
     usePostApiLoloRequests,
@@ -34,9 +31,8 @@ import { ShopIndexLoloRequestsResponse } from "../../../api/generated/models";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { useQueryClient } from "@tanstack/react-query";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     center: {
         height: "100%",
     },

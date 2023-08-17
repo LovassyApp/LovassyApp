@@ -1,5 +1,5 @@
-import { Box, Center, MediaQuery, Stack, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
-import { IconCircleCheckFilled, IconCircleX, IconCircleXFilled } from "@tabler/icons-react";
+import { Center, MediaQuery, Stack, Text, Title, createStyles } from "@mantine/core";
+import { IconCircleCheckFilled, IconCircleXFilled } from "@tabler/icons-react";
 
 import { FullScreenLoading } from "../../../core/components/fullScreenLoading";
 import { useEffect } from "react";
@@ -20,7 +20,6 @@ const useStyles = createStyles((theme) => ({
 
 const VerifyEmailPage = (): JSX.Element => {
     const { classes } = useStyles();
-    const theme = useMantineTheme();
 
     const [queryParams] = useSearchParams();
     const verifyEmail = usePostApiAuthVerifyEmail();

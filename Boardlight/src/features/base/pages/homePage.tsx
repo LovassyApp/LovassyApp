@@ -8,9 +8,7 @@ const HomePage = (): JSX.Element => {
     const { classes } = useStyles();
     const produts = useGetApiProducts();
 
-    return (
-        <Text>Test</Text>
-    );
+    return <Text>Test</Text>;
 };
 
 export default HomePage;

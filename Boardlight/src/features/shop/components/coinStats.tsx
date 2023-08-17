@@ -11,7 +11,6 @@ const useStyles = createStyles((theme) => ({
 
 export const CoinsStats = ({ data }: { data: ShopIndexLolosResponse[] | ShopIndexOwnLolosResponse }): JSX.Element[] => {
     const { classes } = useStyles();
-    const theme = useMantineTheme();
 
     const coins = useMemo(() => {
         if ("coins" in data) {

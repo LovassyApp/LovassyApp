@@ -18,15 +18,14 @@ export const StoreProductCard = ({
     openDetails(ShopIndexProductsResponse): void;
 }): JSX.Element => {
     const { classes } = useStyles();
-    const theme = useMantineTheme();
 
     return (
-        <Card radius="md" withBorder>
+        <Card radius="md" withBorder={true}>
             <Card.Section>
                 <Image src={storeProduct.thumbnailUrl} alt="Tesla Model S" height={200} />
             </Card.Section>
             <Card.Section className={classes.section}>
-                <Text size="lg" truncate weight={500}>
+                <Text size="lg" truncate={true} weight={500}>
                     {storeProduct.name}
                 </Text>
                 <Text size="sm" color="dimmed" lineClamp={2}>
@@ -40,7 +39,7 @@ export const StoreProductCard = ({
                     ) : (
                         <IconQrcodeOff stroke={1.5} size={20} />
                     )}
-                    <Text size="sm" truncate>
+                    <Text size="sm" truncate={true}>
                         {storeProduct.qrCodeActivated ? "QR kód aktivált" : "Nem QR kód aktivált"}
                     </Text>
                 </Group>
@@ -56,7 +55,7 @@ export const StoreProductCard = ({
                         {storeProduct.quantity} db
                     </Text>
                 </Group>
-                <Button fullWidth color="blue" mt="sm" onClick={() => openDetails(storeProduct)}>
+                <Button fullWidth={true} color="blue" mt="sm" onClick={() => openDetails(storeProduct)}>
                     {"Részletek"}
                 </Button>
             </Card.Section>

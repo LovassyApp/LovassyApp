@@ -1,7 +1,7 @@
-import { Navigate, Outlet } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 import { FullScreenLoading } from "../../components/fullScreenLoading";
+import { Outlet } from "react-router-dom";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 
 export const FeatureGuard = ({ features }: { features: string[] }) => {

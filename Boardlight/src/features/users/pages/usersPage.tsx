@@ -2,7 +2,6 @@ import "dayjs/locale/hu";
 
 import {
     ActionIcon,
-    Box,
     Button,
     Center,
     Divider,
@@ -12,7 +11,6 @@ import {
     Modal,
     Select,
     SimpleGrid,
-    Switch,
     Text,
     TextInput,
     Title,
@@ -45,7 +43,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 dayjs.extend(relativeTime);
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     center: {
         height: "100%",
     },
@@ -64,7 +62,7 @@ const FiltersDrawer = ({
     opened: boolean;
     close(): void;
     params: UsersParams;
-    setParams: (arg0: UsersParams) => void;
+    setParams(arg0: UsersParams): void;
 }): JSX.Element => {
     const [nameSearch, setNameSearch] = useState<string>(
         params.Filters?.split(",")
@@ -85,9 +83,9 @@ const FiltersDrawer = ({
     const doSetParams = () => {
         const filters = [];
 
-        if (nameSearch !== "") filters.push("Name@=*" + nameSearch);
-        if (realNameSearch !== "") filters.push("RealName@=*" + realNameSearch);
-        if (classSearch !== "") filters.push("Class@=*" + classSearch);
+        if (nameSearch !== "") filters.push(`Name@=*${nameSearch}`);
+        if (realNameSearch !== "") filters.push(`RealName@=*${realNameSearch}`);
+        if (classSearch !== "") filters.push(`Class@=*${classSearch}`);
 
         setParams({ Filters: filters.join(",") });
         close();
@@ -136,7 +134,7 @@ const FiltersDrawer = ({
                 onChange={(event) => setClassSearch(event.currentTarget.value)}
                 mt="sm"
             />
-            <Button onClick={() => doSetParams()} fullWidth variant="outline" mt="md">
+            <Button onClick={() => doSetParams()} fullWidth={true} variant="outline" mt="md">
                 Gyerünk!
             </Button>
         </Drawer>
@@ -354,7 +352,7 @@ const DetailsModal = ({
                                 onClick={() => form.insertListItem("userGroups", groups.data[0])}
                                 disabled={groups.data.length < 1}
                                 variant="outline"
-                                fullWidth
+                                fullWidth={true}
                                 mt="md"
                             >
                                 Csoport hozzáadása

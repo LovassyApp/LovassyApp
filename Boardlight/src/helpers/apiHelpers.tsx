@@ -1,7 +1,6 @@
 import { IconX } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { queryClient } from "../main";
 
 export class ValidationError {
     public constructor(public readonly message: string, public readonly errors: { [key: string]: string[] }) {}

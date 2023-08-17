@@ -1,9 +1,9 @@
-import { Box, Group, Paper, Stack, Text, createStyles, rem, useMantineTheme } from "@mantine/core";
+import { Box, Group, Paper, Stack, Text, createStyles, useMantineTheme } from "@mantine/core";
 
 import { IconQrcode } from "@tabler/icons-react";
 import { ShopIndexQRCodesResponse } from "../../../api/generated/models";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     card: {
         cursor: "pointer",
         overflow: "hidden",
