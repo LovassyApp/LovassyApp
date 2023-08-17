@@ -1,5 +1,6 @@
 import { getPostApiAuthRefreshMutationOptions } from "./generated/features/auth/auth";
 import { handleApiErrors } from "../helpers/apiHelpers";
+import { queryClient } from "../main";
 import { useAuthStore } from "../core/stores/authStore";
 
 const callAPI = async (url: string, init: RequestInit) => {
@@ -91,6 +92,7 @@ export const useCustomClient = async <T>({
                 console.log("Failed to refresh token");
 
                 useAuthStore.getState().setAccessToken(undefined);
+                queryClient.clear();
             }
         }
         handleApiErrors(error);
