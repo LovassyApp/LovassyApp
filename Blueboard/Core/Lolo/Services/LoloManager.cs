@@ -111,9 +111,6 @@ public class LoloManager
     /// <param name="amount">The amount of new coins to save.</param>
     public async Task SaveFromRequestAsync(LoloRequest request, int amount)
     {
-        if (_userId == null)
-            Init();
-
         var coins = Enumerable.Range(1, amount).Select(i => new Infrastructure.Persistence.Entities.Lolo
         {
             UserId = request.UserId,
