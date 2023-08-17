@@ -11,9 +11,9 @@ import {
     createStyles,
 } from "@mantine/core";
 import { Icon123, IconLock, IconMail, IconUser } from "@tabler/icons-react";
+import { Link, useNavigate } from "react-router-dom";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
-import { Link } from "react-router-dom";
 import { UnavailableModal } from "../components/unavailableModal";
 import { useAuthStore } from "../../../core/stores/authStore";
 import { useDisclosure } from "@mantine/hooks";
@@ -58,6 +58,8 @@ const RegisterPage = (): JSX.Element => {
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const [unavaliableModalOpened, { open: openUnavailableModal }] = useDisclosure();
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (status.isSuccess && !status.data?.serviceStatus.resetKeyPassword) {
             openUnavailableModal();
@@ -94,6 +96,7 @@ const RegisterPage = (): JSX.Element => {
                 data: { email: values.email, password: values.password, remember: true },
             });
             setAccessToken(res.token);
+            navigate("/");
         } catch (err) {
             if (err instanceof ValidationError) handleValidationErrors(err, form);
         }

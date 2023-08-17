@@ -66,6 +66,10 @@ const FourOFour = (): JSX.Element => {
         window.onscroll = () => {
             window.scrollTo(scrollLeft, scrollTop);
         };
+
+        return () => {
+            window.onscroll = null;
+        };
     }, []);
 
     return (

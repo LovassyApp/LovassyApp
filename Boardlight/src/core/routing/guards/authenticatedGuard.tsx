@@ -8,7 +8,7 @@ export const AuthenticatedGuard = ({ redirect = "/auth/login" }: { redirect?: st
     const accessToken = useAuthStore((state) => state.accessToken);
     const control = useGetApiAuthControl({ query: { retry: 0, enabled: !!accessToken } });
 
-    if (control.isLoading) return <FullScreenLoading />;
+    if (control.isInitialLoading) return <FullScreenLoading />;
 
     return accessToken && control.isSuccess ? <Outlet /> : <Navigate to={redirect} replace={true} />;
 };

@@ -12,9 +12,9 @@ import {
     createStyles,
 } from "@mantine/core";
 import { IconLock, IconMail } from "@tabler/icons-react";
+import { Link, useNavigate } from "react-router-dom";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
-import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../core/stores/authStore";
 import { useForm } from "@mantine/form";
 import { usePostApiAuthLogin } from "../../../api/generated/features/auth/auth";
@@ -48,7 +48,10 @@ const LoginPage = (): JSX.Element => {
     const { classes } = useStyles();
 
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
     const login = usePostApiAuthLogin();
+
+    const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
@@ -62,6 +65,7 @@ const LoginPage = (): JSX.Element => {
         try {
             const res = await login.mutateAsync({ data: values });
             setAccessToken(res.token);
+            navigate("/");
         } catch (err) {
             if (err instanceof ValidationError) handleValidationErrors(err, form);
         }
