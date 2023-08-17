@@ -7,6 +7,7 @@ export const getBaseRoutes = () => {
     const AuthenticatedLayout = lazy(() => import("../../core/routing/layouts/authenticatedLayout"));
 
     const HomePage = lazy(() => import("./pages/homePage"));
+    const FourOFour = lazy(() => import("./pages/fourOFour"));
 
     return (
         <>
@@ -17,6 +18,7 @@ export const getBaseRoutes = () => {
                     </Route>
                 </Route>
             </Route>
+            <Route path="*" element={<FourOFour />} />
         </>
     );
 };
