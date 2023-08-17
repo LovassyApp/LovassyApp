@@ -116,7 +116,7 @@ public class LoloManager
 
         var coins = Enumerable.Range(1, amount).Select(i => new Infrastructure.Persistence.Entities.Lolo
         {
-            UserId = _userId!.Value,
+            UserId = request.UserId,
             Reason = $"Kérvényből generálva: {request.Title}",
             LoloType = LoloType.FromRequest,
             CreatedAt = DateTime.UtcNow,
