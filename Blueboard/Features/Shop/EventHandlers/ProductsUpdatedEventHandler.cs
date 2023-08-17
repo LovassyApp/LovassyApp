@@ -1,4 +1,5 @@
-using Blueboard.Core.Realtime;
+using Blueboard.Core.Auth.Permissions;
+using Blueboard.Core.Auth.Utils;
 using Blueboard.Core.Realtime.Hubs;
 using Blueboard.Core.Realtime.Interfaces;
 using Blueboard.Features.Shop.Events;
@@ -18,6 +19,11 @@ public class ProductsUpdatedEventHandler : INotificationHandler<ProductsUpdatedE
 
     public async Task Handle(ProductsUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        await _notificationsHub.Clients.All.RefreshProducts();
+        if (PermissionUtils.PermissionTypesToNames == null)
+            throw new InvalidOperationException("Permissions are not loaded yet");
+
+        await _notificationsHub.Clients
+            .Groups(PermissionUtils.PermissionTypesToNames[typeof(ShopPermissions.IndexStoreProducts)],
+                PermissionUtils.PermissionTypesToNames[typeof(ShopPermissions.IndexProducts)]).RefreshProducts();
     }
 }
