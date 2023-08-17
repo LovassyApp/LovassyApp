@@ -1,3 +1,4 @@
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
@@ -33,10 +34,12 @@ public static class UpdateQRCode
     internal sealed class Handler : IRequestHandler<Command>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context)
+        public Handler(ApplicationDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -48,6 +51,8 @@ public static class UpdateQRCode
             request.Body.Adapt(qrcode);
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new QRCodeUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

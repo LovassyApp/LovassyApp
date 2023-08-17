@@ -1,10 +1,10 @@
 using Blueboard.Core.Realtime.Hubs;
 using Blueboard.Core.Realtime.Interfaces;
-using Blueboard.Features.Auth.Events;
+using Blueboard.Features.School.Events;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Blueboard.Features.Auth.EventHandlers;
+namespace Blueboard.Features.School.EventHandlers;
 
 public class GradesUpdatedEventHandler : INotificationHandler<GradesUpdatedEvent>
 {

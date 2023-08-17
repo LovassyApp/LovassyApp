@@ -1,9 +1,11 @@
 using Blueboard.Core.Lolo.Services;
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
 using Helpers.WebApi.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Features.Shop.Commands;
 
@@ -34,11 +36,13 @@ public static class OverruleLoloRequest
     {
         private readonly ApplicationDbContext _context;
         private readonly LoloManager _loloManager;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context, LoloManager loloManager)
+        public Handler(ApplicationDbContext context, LoloManager loloManager, IPublisher publisher)
         {
             _context = context;
             _loloManager = loloManager;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -57,7 +61,10 @@ public static class OverruleLoloRequest
 
                 await _loloManager.SaveFromRequestAsync(loloRequest, request.Body.LoloAmount);
 
-                //TODO: Send out an event and a notification through websockets informing the user that their lolo amount has been updated
+                await _publisher.Publish(new LolosUpdatedEvent
+                {
+                    UserId = loloRequest.UserId
+                }, cancellationToken);
             }
             else
             {
@@ -65,6 +72,11 @@ public static class OverruleLoloRequest
             }
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new LoloRequestUpdatedEvent
+            {
+                UserId = loloRequest.UserId
+            }, cancellationToken);
 
             return Unit.Value;
         }

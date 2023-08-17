@@ -70,7 +70,11 @@ public static class BuyProduct
                 await _context.SaveChangesAsync(cancellationToken);
                 await transaction.CommitAsync(cancellationToken);
 
-                await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
+                await _publisher.Publish(new ProductUpdatedEvent(), cancellationToken);
+                await _publisher.Publish(new LolosUpdatedEvent
+                {
+                    UserId = _userAccessor.User.Id
+                }, cancellationToken);
             }
             catch (InsufficientFundsException)
             {

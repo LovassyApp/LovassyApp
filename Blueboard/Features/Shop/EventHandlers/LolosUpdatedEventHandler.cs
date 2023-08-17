@@ -1,10 +1,12 @@
+using Blueboard.Core.Auth.Permissions;
+using Blueboard.Core.Auth.Utils;
 using Blueboard.Core.Realtime.Hubs;
 using Blueboard.Core.Realtime.Interfaces;
-using Blueboard.Features.Auth.Events;
+using Blueboard.Features.Shop.Events;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Blueboard.Features.Auth.EventHandlers;
+namespace Blueboard.Features.Shop.EventHandlers;
 
 public class LolosUpdatedEventHandler : INotificationHandler<LolosUpdatedEvent>
 {
@@ -17,6 +19,11 @@ public class LolosUpdatedEventHandler : INotificationHandler<LolosUpdatedEvent>
 
     public async Task Handle(LolosUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        await _notificationsHub.Clients.User(notification.UserId.ToString()).RefreshLolos();
+        if (PermissionUtils.PermissionTypesToNames == null)
+            throw new InvalidOperationException("Permissions are not loaded yet");
+
+        await _notificationsHub.Clients.User(notification.UserId.ToString()).RefreshOwnLolos();
+        await _notificationsHub.Clients
+            .Group(PermissionUtils.PermissionTypesToNames[typeof(ShopPermissions.IndexLolos)]).RefreshLolos();
     }
 }

@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Blueboard.Core.Auth.Services;
 using Blueboard.Core.Lolo.Services;
-using Blueboard.Features.Auth.Events;
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence.Entities;
 using MediatR;
 using Quartz;

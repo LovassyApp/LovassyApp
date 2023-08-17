@@ -1,4 +1,5 @@
 using Blueboard.Core.Auth.Services;
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
@@ -45,12 +46,14 @@ public static class CreateLoloRequest
     internal sealed class Handler : IRequestHandler<Command, Response>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
         private readonly UserAccessor _userAccessor;
 
-        public Handler(UserAccessor userAccessor, ApplicationDbContext context)
+        public Handler(UserAccessor userAccessor, ApplicationDbContext context, IPublisher publisher)
         {
             _userAccessor = userAccessor;
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -61,7 +64,10 @@ public static class CreateLoloRequest
             await _context.LoloRequests.AddAsync(loloRequest, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            //TODO: Send out an event and when handling it send a notification through websockets and maybe even an email to users who can handle it
+            await _publisher.Publish(new LoloRequestUpdatedEvent
+            {
+                UserId = _userAccessor.User.Id
+            }, cancellationToken);
 
             return loloRequest.Adapt<Response>();
         }

@@ -56,10 +56,6 @@ const DetailsModal = ({
     const updateLoloRequest = usePatchApiLoloRequestsId();
     const overruleLoloRequest = usePostApiLoloRequestsOverruleId();
     const deleteLoloRequest = useDeleteApiLoloRequestsId();
-    const queryClient = useQueryClient();
-
-    const ownQueryKey = getGetApiLoloRequestsOwnQueryKey();
-    const allQueryKey = getGetApiLoloRequestsQueryKey();
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
@@ -87,8 +83,6 @@ const DetailsModal = ({
     const updateSubmit = updateForm.onSubmit(async (values) => {
         try {
             await updateLoloRequest.mutateAsync({ data: values, id: loloRequest.id });
-            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
-            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény módosítva",
                 message: "A kérvényt sikeresen módosítottad.",
@@ -114,8 +108,6 @@ const DetailsModal = ({
     const overruleSubmit = overruleForm.onSubmit(async (values) => {
         try {
             await overruleLoloRequest.mutateAsync({ data: values, id: loloRequest.id });
-            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
-            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény elbírálva",
                 message: "A kérvényt sikeresen elbíráltad.",
@@ -134,8 +126,6 @@ const DetailsModal = ({
     const doDeleteLoloRequest = async () => {
         try {
             await deleteLoloRequest.mutateAsync({ id: loloRequest.id });
-            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
-            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény törölve",
                 message: "A kérvényt sikeresen törölted.",

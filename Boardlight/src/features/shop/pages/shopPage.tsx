@@ -111,8 +111,6 @@ const DetailsModal = ({
     opened: boolean;
     close(): void;
 }): JSX.Element => {
-    const queryClient = useQueryClient();
-
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
     const detailedQueryEnabled = useMemo(
         () => (control.data?.permissions?.includes("Shop.ViewStoreProduct") || control.data?.isSuperUser) ?? false,
@@ -123,14 +121,11 @@ const DetailsModal = ({
         query: { enabled: detailedQueryEnabled && !!storeProduct },
     });
 
-    const lolosQueryKey = getGetApiLolosOwnQueryKey();
-
     const buyProduct = usePostApiProductsBuyId();
 
     const doBuyProduct = async () => {
         try {
             await buyProduct.mutateAsync({ id: storeProduct?.id });
-            await queryClient.invalidateQueries({ queryKey: [lolosQueryKey[0]] });
             // We don't need to invalidate the products query, because the realtime notification will do it for us
             notifications.show({
                 title: "Termék megvásárolva",
@@ -290,7 +285,7 @@ const ShopPage = (): JSX.Element => {
             <Group position="apart" align="baseline" mb="md" spacing={0}>
                 <Title>Bazár</Title>
                 <Group align="baseline">
-                    {lolos.data?.balance && (
+                    {lolos.data?.balance !== undefined && (
                         <Badge
                             color={lolos.data.balance > 0 ? "green" : "red"}
                             variant="light"

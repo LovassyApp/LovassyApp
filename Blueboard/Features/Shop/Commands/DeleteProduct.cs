@@ -32,7 +32,7 @@ public static class DeleteProduct
             _context.Products.Remove(product);
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
+            await _publisher.Publish(new ProductUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

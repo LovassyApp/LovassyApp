@@ -148,7 +148,7 @@ public static class CreateProduct
             await _context.AddAsync(product, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
+            await _publisher.Publish(new ProductUpdatedEvent(), cancellationToken);
 
             var response = product.Adapt<Response>();
             response.QRCodes = request.Body.QRCodes;

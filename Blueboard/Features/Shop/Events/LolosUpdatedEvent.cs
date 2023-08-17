@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Blueboard.Features.Auth.Events;
+namespace Blueboard.Features.Shop.Events;
 
 public class LolosUpdatedEvent : INotification
 {

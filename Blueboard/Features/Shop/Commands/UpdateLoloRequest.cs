@@ -1,5 +1,6 @@
 using Blueboard.Core.Auth.Permissions;
 using Blueboard.Core.Auth.Services;
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
@@ -36,13 +37,16 @@ public static class UpdateLoloRequest
     {
         private readonly ApplicationDbContext _context;
         private readonly PermissionManager _permissionManager;
+        private readonly IPublisher _publisher;
         private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager)
+        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager,
+            IPublisher publisher)
         {
             _context = context;
             _userAccessor = userAccessor;
             _permissionManager = permissionManager;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -62,6 +66,11 @@ public static class UpdateLoloRequest
 
             request.Body.Adapt(loloRequest);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new LoloRequestUpdatedEvent
+            {
+                UserId = loloRequest.UserId
+            }, cancellationToken).ConfigureAwait(false);
 
             return Unit.Value;
         }

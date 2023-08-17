@@ -44,10 +44,6 @@ const useStyles = createStyles((theme) => ({
 
 const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
     const createLoloRequest = usePostApiLoloRequests();
-    const queryClient = useQueryClient();
-
-    const ownQueryKey = getGetApiLoloRequestsOwnQueryKey();
-    const allQueryKey = getGetApiLoloRequestsQueryKey();
 
     const form = useForm({
         initialValues: {
@@ -61,8 +57,6 @@ const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): v
             await createLoloRequest.mutateAsync({
                 data: values,
             });
-            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
-            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény létrehozva",
                 message: "A kérvényt sikeresen létrehoztad.",
@@ -99,10 +93,6 @@ const DetailsModal = ({
 }): JSX.Element => {
     const updateLoloRequest = usePatchApiLoloRequestsId();
     const deleteLoloRequest = useDeleteApiLoloRequestsId();
-    const queryClient = useQueryClient();
-
-    const { queryKey: ownQueryKey } = useGetApiLoloRequestsOwn({}, { query: { enabled: false } });
-    const { queryKey: allQueryKey } = useGetApiLoloRequests({}, { query: { enabled: false } });
 
     useEffect(() => {
         updateForm.setValues({
@@ -121,8 +111,6 @@ const DetailsModal = ({
     const updateSubmit = updateForm.onSubmit(async (values) => {
         try {
             await updateLoloRequest.mutateAsync({ data: values, id: loloRequest.id });
-            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
-            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény módosítva",
                 message: "A kérvényed sikeresen módosítottad.",
@@ -141,8 +129,6 @@ const DetailsModal = ({
     const doDeleteLoloRequest = async () => {
         try {
             await deleteLoloRequest.mutateAsync({ id: loloRequest.id });
-            await queryClient.invalidateQueries({ queryKey: [ownQueryKey[0]] });
-            await queryClient.invalidateQueries({ queryKey: [allQueryKey[0]] });
             notifications.show({
                 title: "Kérvény törölve",
                 message: "A kérvényed sikeresen törölted.",

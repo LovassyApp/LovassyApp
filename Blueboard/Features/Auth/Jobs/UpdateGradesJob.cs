@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Blueboard.Core.Auth.Services;
 using Blueboard.Core.Backboard.Services;
-using Blueboard.Features.Auth.Events;
+using Blueboard.Features.School.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using MediatR;

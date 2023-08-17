@@ -59,9 +59,6 @@ const useStyles = createStyles((theme) => ({
 
 const CreateQRCodeModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
     const createQRCode = usePostApiQRCodes();
-    const queryClient = useQueryClient();
-
-    const queryKey = getGetApiQRCodesQueryKey();
 
     const form = useForm({
         initialValues: {
@@ -75,7 +72,6 @@ const CreateQRCodeModal = ({ opened, close }: { opened: boolean; close(): void }
             await createQRCode.mutateAsync({
                 data: values,
             });
-            await queryClient.invalidateQueries({ queryKey: [queryKey[0]] });
             notifications.show({
                 title: "QR kód létrehozva",
                 message: "A QR kódot sikeresen létrehoztad.",
@@ -125,8 +121,6 @@ const DetailsModal = ({
     const updateQRCode = usePatchApiQRCodesId();
     const deleteQRCode = useDeleteApiQRCodesId();
 
-    const queryKey = getGetApiQRCodesQueryKey();
-
     useEffect(() => {
         form.setValues({
             name: qrCode?.name,
@@ -144,7 +138,6 @@ const DetailsModal = ({
     const submit = form.onSubmit(async (values) => {
         try {
             await updateQRCode.mutateAsync({ id: qrCode.id, data: values });
-            await queryClient.invalidateQueries({ queryKey: [queryKey[0]] });
             notifications.show({
                 title: "QR kód módosítva",
                 message: "A QR kódot sikeresen módosítottad.",
@@ -163,7 +156,6 @@ const DetailsModal = ({
     const doDeleteQRCode = async () => {
         try {
             await deleteQRCode.mutateAsync({ id: qrCode.id });
-            await queryClient.invalidateQueries({ queryKey: [queryKey[0]] });
             notifications.show({
                 title: "QR kód törölve",
                 message: "A QR kódot sikeresen törölted.",

@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Blueboard.Features.Auth.Events;
+namespace Blueboard.Features.School.Events;
 
 public class GradesUpdatedEvent : INotification
 {
