@@ -74,6 +74,7 @@ export const BlueboardStatusChecker = ({ children }: { children: ReactNode }) =>
             clearInterval(interval.current);
             setError(false);
             setLoading(false);
+            document.dispatchEvent(new Event("resetQueryClient")); // Listened to in main.tsx.
         }
     }, []);
 
