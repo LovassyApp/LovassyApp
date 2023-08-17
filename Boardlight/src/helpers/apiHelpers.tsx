@@ -41,12 +41,13 @@ export const handleApiErrors = (error: any) => {
             });
             break;
         case 500:
-            notifications.show({
-                title: "Hiba (500)",
-                color: "red",
-                icon: <IconX />,
-                message: "Szerverhiba. Kérlek próbáld újra később.",
-            });
+            if (Object.keys(error.data).length > 0)
+                notifications.show({
+                    title: "Hiba (500)",
+                    color: "red",
+                    icon: <IconX />,
+                    message: "Szerverhiba. Kérlek próbáld újra később.",
+                });
             break;
         case 503:
             notifications.show({

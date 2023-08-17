@@ -74,7 +74,7 @@ const FourOFour = (): JSX.Element => {
 
     return (
         <Center className={classes.root}>
-            <Box className={classes.content}>
+            <Box className={classes.content} p="md">
                 <div className={classes.label}>404</div>
                 <Title className={classes.title}>Hoppá! Úgy néz ki eltévedtél...</Title>
                 <Text color="dimmed" size="lg" align="center" className={classes.description}>

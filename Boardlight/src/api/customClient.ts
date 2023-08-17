@@ -95,6 +95,7 @@ export const useCustomClient = async <T>({
             }
         }
         handleApiErrors(error);
+
         throw error;
     }
 };

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import { Suspense, useEffect } from "react";
 
+import { BlueboardStatusChecker } from "./core/components/blueboardStatusChecker";
 import { FullScreenLoading } from "./core/components/fullScreenLoading";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
@@ -37,11 +38,13 @@ const App = () => {
                 <ModalsProvider>
                     <QueryClientProvider client={queryClient}>
                         <Notifications limit={3} />
-                        <RealtimeNotificationsBootstrapper>
-                            <Suspense fallback={<FullScreenLoading />}>
-                                <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
-                            </Suspense>
-                        </RealtimeNotificationsBootstrapper>
+                        <BlueboardStatusChecker>
+                            <RealtimeNotificationsBootstrapper>
+                                <Suspense fallback={<FullScreenLoading />}>
+                                    <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
+                                </Suspense>
+                            </RealtimeNotificationsBootstrapper>
+                        </BlueboardStatusChecker>
                     </QueryClientProvider>
                 </ModalsProvider>
             </MantineProvider>
