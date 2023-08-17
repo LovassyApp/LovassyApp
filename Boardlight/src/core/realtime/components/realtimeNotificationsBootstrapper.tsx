@@ -1,10 +1,11 @@
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
+import { FullScreenLoading } from "../../components/fullScreenLoading";
 import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
 import { getGetApiLolosOwnQueryKey } from "../../../api/generated/features/lolos/lolos";
 import { getGetApiProductsQueryKey } from "../../../api/generated/features/products/products";
-import { useAuthStore } from "../../../core/stores/authStore";
+import { useAuthStore } from "../../stores/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const RealtimeNotificationsBootstrapper = ({ children }: { children: ReactNode }): JSX.Element => {
@@ -15,6 +16,8 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const productsQueryKey = getGetApiProductsQueryKey();
     const gradesQueryKey = getGetApiGradesQueryKey();
     const lolosQueryKey = getGetApiLolosOwnQueryKey();
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         let hubConnection: HubConnection | undefined;
@@ -44,10 +47,13 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                 });
 
                 try {
+                    setLoading(true);
                     await hubConnection.start();
                     console.log("Connected to realtime notifications");
                 } catch (err) {
                     console.error(err);
+                } finally {
+                    setLoading(false);
                 }
             }
         })();
@@ -59,6 +65,8 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
             }
         };
     }, [accessToken]);
+
+    if (loading) return <FullScreenLoading />;
 
     return <>{children}</>;
 };

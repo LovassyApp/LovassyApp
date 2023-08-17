@@ -6,7 +6,7 @@ import { FullScreenLoading } from "./core/components/fullScreenLoading";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import ReactDOM from "react-dom/client";
-import { RealtimeNotificationsBootstrapper } from "./features/realtime/components/realtimeNotificationsBootstrapper";
+import { RealtimeNotificationsBootstrapper } from "./core/realtime/components/realtimeNotificationsBootstrapper";
 import { Suspense } from "react";
 import { getAppRoutes } from "./core/routing/getAppRoutes";
 import { useHotkeys } from "@mantine/hooks";
