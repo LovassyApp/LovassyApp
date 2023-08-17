@@ -3,6 +3,20 @@
     "private": true,
     "version": "2.0.0",
     "type": "module",
+    "repository": "https://github.com/LovassyApp/LovassyApp",
+    "license": "MIT",
+    "author": {
+        "name": "Xeretis (Ocskó Nándor)",
+        "email": "ocskon@gmail.com",
+        "url": "https://xeretis.github.io"
+    },
+    "contributors": [
+        {
+            "name": "Xeretis (Ocskó Nándor)",
+            "email": "ocskon@gmail.com",
+            "url": "https://xeretis.github.io"
+        }
+    ],
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",

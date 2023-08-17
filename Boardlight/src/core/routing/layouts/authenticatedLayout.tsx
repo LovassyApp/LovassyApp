@@ -261,7 +261,7 @@ const SystemInformationModal = ({ opened, close }: { opened: boolean; close(): v
             <Divider my="md" />
             <Group position="apart" spacing={0}>
                 <Text>Fejlesztők:</Text>
-                <Text weight="bold">Gyimesi Máté (minigyima), Ocskó Nándor (Xeretis)</Text>
+                <Text weight="bold">Ocskó Nándor (Xeretis), Gyimesi Máté (minigyima)</Text>
             </Group>
             <Group position="apart" spacing={0}>
                 <Text>Forráskód:</Text>

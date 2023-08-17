@@ -1,10 +1,10 @@
 [package]
 name = "backboard"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+version = "2.0.0"
+description = "Backboard - Desktop App for LovassyApp"
+authors = ["Xeretis"]
+license = "MIT"
+repository = "https://github.com/LovassyApp/LovassyApp"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
