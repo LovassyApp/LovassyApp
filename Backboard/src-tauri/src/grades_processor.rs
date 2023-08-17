@@ -8,7 +8,7 @@ where
 {
     let data_type = calamine::DataType::deserialize(deserializer);
     match data_type {
-        Ok(calamine::DataType::Error(e)) => Ok(None),
+        Ok(calamine::DataType::Error(_e)) => Ok(None),
         Ok(calamine::DataType::Float(f)) => Ok(Some(f.to_string())),
         Ok(calamine::DataType::Int(i)) => Ok(Some(i.to_string())),
         Ok(calamine::DataType::String(s)) => Ok(Some(s)),

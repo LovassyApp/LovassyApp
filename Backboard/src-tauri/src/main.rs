@@ -68,7 +68,7 @@ async fn import_grades(
     import_key: String,
     update_reset_key_password: bool,
 ) -> Result<(), String> {
-    if (update_reset_key_password) {
+    if update_reset_key_password {
         upload_reset_key_password(
             blueboard_url.clone(),
             reset_key_password,
@@ -129,8 +129,8 @@ async fn import_grades(
 
                 let grade_collection = GradeCollection {
                     grades: user_grades.unwrap().clone(),
-                    school_class: school_class,
-                    student_name: student_name,
+                    school_class,
+                    student_name,
                     user: user.clone().into(),
                 };
 
