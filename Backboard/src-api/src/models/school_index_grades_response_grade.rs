@@ -39,8 +39,6 @@ pub struct SchoolIndexGradesResponseGrade {
     pub evaluation_date: Option<String>,
     #[serde(rename = "createDate", skip_serializing_if = "Option::is_none")]
     pub create_date: Option<String>,
-    #[serde(rename = "name", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
-    pub name: Option<Option<String>>,
     #[serde(rename = "type", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub r#type: Option<Option<String>>,
     #[serde(rename = "gradeType", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
@@ -67,7 +65,6 @@ impl SchoolIndexGradesResponseGrade {
             weight: None,
             evaluation_date: None,
             create_date: None,
-            name: None,
             r#type: None,
             grade_type: None,
             created_at: None,

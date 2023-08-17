@@ -17,7 +17,6 @@ Name | Type | Description | Notes
 **weight** | Option<**i32**> |  | [optional]
 **evaluation_date** | Option<**String**> |  | [optional]
 **create_date** | Option<**String**> |  | [optional]
-**name** | Option<**String**> |  | [optional]
 **r#type** | Option<**String**> |  | [optional]
 **grade_type** | Option<**String**> |  | [optional]
 **created_at** | Option<**String**> |  | [optional]
