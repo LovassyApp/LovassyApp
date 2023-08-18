@@ -49,7 +49,7 @@ export const useCustomClient = async <T>({
     data?: unknown;
     signal?: AbortSignal;
 }): Promise<T> => {
-    const baseUrl = "/blueboard";
+    const baseUrl = import.meta.env.VITE_BLUEBOARD_URL;
 
     let headersLocal;
     if (data instanceof FormData) {

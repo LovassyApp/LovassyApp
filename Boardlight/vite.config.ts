@@ -12,15 +12,5 @@ export default defineConfig(({ mode }) => {
         define: {
             "import.meta.env.PACKAGE_VERSION": JSON.stringify(packageJson.version),
         },
-        server: {
-            proxy: {
-                "/blueboard": {
-                    target: process.env.VITE_BLUEBOARD_URL,
-                    changeOrigin: true,
-                    rewrite: (path) => path.replace(/^\/blueboard/, ""),
-                    ws: true,
-                },
-            },
-        },
     };
 });

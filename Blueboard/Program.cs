@@ -69,7 +69,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         .AddSupportedUICultures(supportedCultures);
 });
 
-builder.Services.AddCors(o => o.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors(o =>
+    o.AddDefaultPolicy(p => p.SetIsOriginAllowed(o => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 builder.Services.AddRateLimiter(o =>
 {
     o.RejectionStatusCode = 429;

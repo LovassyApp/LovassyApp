@@ -35,7 +35,9 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
 
         if (accessToken && accessToken !== "") {
             hubConnection = new HubConnectionBuilder()
-                .withUrl("/blueboard/Hubs/Notifications", { accessTokenFactory: () => accessToken })
+                .withUrl(`${import.meta.env.VITE_BLUEBOARD_URL}/Hubs/Notifications`, {
+                    accessTokenFactory: () => accessToken,
+                })
                 .configureLogging(LogLevel.Information)
                 .build();
         }
