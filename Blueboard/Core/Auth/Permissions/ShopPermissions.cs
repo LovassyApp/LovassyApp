@@ -63,7 +63,7 @@ public class ShopPermissions
     public class UpdateOwnLoloRequest : IPermission
     {
         public string Name => "Shop.UpdateOwnLoloRequest";
-        public string DisplayName => "Loló kérvény módosítása";
+        public string DisplayName => "Saját loló kérvény módosítása";
         public string Description => "Egy adott saját loló kérvény módosítása id alapján";
         public bool Dangerous => false;
     }
@@ -79,7 +79,7 @@ public class ShopPermissions
     public class DeleteOwnLoloRequest : IPermission
     {
         public string Name => "Shop.DeleteOwnLoloRequest";
-        public string DisplayName => "Loló kérvény törlése";
+        public string DisplayName => "Saját loló kérvény törlése";
         public string Description => "Egy adott saját loló kérvény törlése id alapján";
         public bool Dangerous => false;
     }

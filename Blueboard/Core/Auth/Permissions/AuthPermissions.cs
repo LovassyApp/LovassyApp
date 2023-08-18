@@ -7,7 +7,7 @@ public static class AuthPermissions
     public class ViewControl : IPermission
     {
         public string Name => "Auth.Control";
-        public string DisplayName => "Control";
+        public string DisplayName => "Control lekérése";
         public string Description => "Én ezt nem venném el, megbénítja az adott csoport minden felhasználóját";
         public bool Dangerous => false;
     }
