@@ -1,3 +1,4 @@
+using Blueboard.Core.Auth;
 using Blueboard.Features.Auth.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
@@ -30,6 +31,9 @@ public static class DeleteUserGroup
 
             if (userGroup == null)
                 throw new NotFoundException(nameof(UserGroup), request.Id);
+
+            if (userGroup.Id == AuthConstants.DefaultUserGroupID)
+                throw new BadRequestException("Nem törölheted az alapértelmezett csoportot.");
 
             _context.UserGroups.Remove(userGroup);
             await _context.SaveChangesAsync(cancellationToken);
