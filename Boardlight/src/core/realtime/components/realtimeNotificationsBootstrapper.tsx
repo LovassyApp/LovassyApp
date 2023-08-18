@@ -10,6 +10,7 @@ import { FullScreenLoading } from "../../components/fullScreenLoading";
 import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
 import { getGetApiProductsQueryKey } from "../../../api/generated/features/products/products";
 import { getGetApiQRCodesQueryKey } from "../../../api/generated/features/qrcodes/qrcodes";
+import { getGetApiUserGroupsQueryKey } from "../../../api/generated/features/user-groups/user-groups";
 import { useAuthStore } from "../../stores/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -25,6 +26,7 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const qrcodesQueryKey = getGetApiQRCodesQueryKey();
     const ownLoloRequestsQueryKey = getGetApiLoloRequestsOwnQueryKey();
     const loloRequestsQueryKey = getGetApiLoloRequestsQueryKey();
+    const userGroupsQueryKey = getGetApiUserGroupsQueryKey();
 
     const [loading, setLoading] = useState(false);
 
@@ -73,6 +75,11 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                 hubConnection.on("RefreshLoloRequests", async () => {
                     console.log("RefreshLoloRequests notification received");
                     await queryClient.invalidateQueries({ queryKey: [loloRequestsQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshUserGroups", async () => {
+                    console.log("RefreshUserGroups notification received");
+                    await queryClient.invalidateQueries({ queryKey: [userGroupsQueryKey[0]] });
                 });
 
                 try {

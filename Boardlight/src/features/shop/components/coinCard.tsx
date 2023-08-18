@@ -15,7 +15,7 @@ export const CoinCard = ({ coin }: { coin: ShopIndexOwnLolosResponseCoin }): JSX
                             {coin.reason}
                         </Text>
                     </Box>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" color="dimmed" truncate={true}>
                         {new Date(coin.createdAt).toLocaleDateString("hu-HU", {})}
                     </Text>
                 </Stack>

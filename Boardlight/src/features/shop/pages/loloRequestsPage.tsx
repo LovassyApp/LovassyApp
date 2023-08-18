@@ -330,7 +330,7 @@ const LoloRequestsPage = (): JSX.Element => {
                     <LoloRequestCard
                         key={loloRequest.id}
                         loloRequest={loloRequest}
-                        openDetails={() => {
+                        openDetails={(loloRequest) => {
                             setDetailsModalLoloRequest(loloRequest);
                             openDetailsModal();
                         }}

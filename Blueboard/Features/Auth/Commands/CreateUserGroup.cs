@@ -1,4 +1,5 @@
 using Blueboard.Core.Auth.Utils;
+using Blueboard.Features.Auth.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
@@ -50,10 +51,12 @@ public static class CreateUserGroup
     internal sealed class Handler : IRequestHandler<Command, Response>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context)
+        public Handler(ApplicationDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -62,6 +65,8 @@ public static class CreateUserGroup
 
             await _context.UserGroups.AddAsync(userGroup, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new UserGroupsUpdatedEvent(), cancellationToken);
 
             return userGroup.Adapt<Response>();
         }

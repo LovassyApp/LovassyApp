@@ -91,20 +91,20 @@ const DetailsModal = ({
     const deleteLoloRequest = useDeleteApiLoloRequestsId();
 
     useEffect(() => {
-        updateForm.setValues({
+        form.setValues({
             title: loloRequest?.title,
             body: loloRequest?.body,
         }); // If we don't do this, the form will be one version behind after an update
     }, [loloRequest, opened]);
 
-    const updateForm = useForm({
+    const form = useForm({
         initialValues: {
             title: loloRequest?.title,
             body: loloRequest?.body,
         },
     });
 
-    const updateSubmit = updateForm.onSubmit(async (values) => {
+    const submit = form.onSubmit(async (values) => {
         try {
             await updateLoloRequest.mutateAsync({ data: values, id: loloRequest.id });
             notifications.show({
@@ -113,11 +113,11 @@ const DetailsModal = ({
                 color: "green",
                 icon: <IconCheck />,
             });
-            updateForm.reset();
+            form.reset();
             close();
         } catch (err) {
             if (err instanceof ValidationError) {
-                handleValidationErrors(err, updateForm);
+                handleValidationErrors(err, form);
             }
         }
     });
@@ -191,14 +191,9 @@ const DetailsModal = ({
                 <>
                     <PermissionRequirement permissions={["Shop.UpdateOwnLoloRequest", "Shop.UpdateLoloRequest"]}>
                         <Divider my="sm" />
-                        <form onSubmit={updateSubmit}>
-                            <TextInput required={true} label="Cím" {...updateForm.getInputProps("title")} />
-                            <Textarea
-                                required={true}
-                                label="Törzsszöveg"
-                                mt="sm"
-                                {...updateForm.getInputProps("body")}
-                            />
+                        <form onSubmit={submit}>
+                            <TextInput required={true} label="Cím" {...form.getInputProps("title")} />
+                            <Textarea required={true} label="Törzsszöveg" mt="sm" {...form.getInputProps("body")} />
                             <Button type="submit" fullWidth={true} mt="md" loading={updateLoloRequest.isLoading}>
                                 Módosítás
                             </Button>
@@ -276,7 +271,7 @@ const OwnLoloRequestsPage = (): JSX.Element => {
                     <LoloRequestCard
                         key={loloRequest.id}
                         loloRequest={loloRequest}
-                        openDetails={() => {
+                        openDetails={(loloRequest) => {
                             setDetailsModalLoloRequest(loloRequest);
                             openDetailsModal();
                         }}

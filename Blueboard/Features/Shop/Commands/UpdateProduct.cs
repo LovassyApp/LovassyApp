@@ -133,7 +133,7 @@ public static class UpdateProduct
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ProductUpdatedEvent(), cancellationToken);
+            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

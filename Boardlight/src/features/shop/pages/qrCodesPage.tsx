@@ -320,7 +320,7 @@ const QRCodesPage = (): JSX.Element => {
                     <QRCodeCard
                         key={qrCode.id}
                         qrCode={qrCode}
-                        openDetails={() => {
+                        openDetails={(qrCode) => {
                             setDetailsModalQRCode(qrCode);
                             openDetailsModal();
                         }}

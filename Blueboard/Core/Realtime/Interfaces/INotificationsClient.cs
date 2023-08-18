@@ -9,4 +9,5 @@ public interface INotificationsClient
     Task RefreshQRCodes();
     Task RefreshOwnLoloRequests();
     Task RefreshLoloRequests();
+    Task RefreshUserGroups();
 }
