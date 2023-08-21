@@ -271,7 +271,7 @@ const OwnLoloRequestsPage = (): JSX.Element => {
                     <LoloRequestCard
                         key={loloRequest.id}
                         loloRequest={loloRequest}
-                        openDetails={(loloRequest) => {
+                        openDetails={() => {
                             setDetailsModalLoloRequest(loloRequest);
                             openDetailsModal();
                         }}

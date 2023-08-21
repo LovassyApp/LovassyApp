@@ -17,10 +17,10 @@ public class StoreHistory : TimestampedEntity
     [JsonIgnore] public User User { get; set; }
 
     public int? ProductId { get; set; }
-    [JsonIgnore] public Product Product { get; set; }
+    [JsonIgnore] public Product? Product { get; set; }
 
     public int? OwnedItemId { get; set; }
-    [JsonIgnore] public OwnedItem OwnedItem { get; set; }
+    [JsonIgnore] public OwnedItem? OwnedItem { get; set; }
 }
 
 public class StoreHistoryConfiguration : IEntityTypeConfiguration<StoreHistory>

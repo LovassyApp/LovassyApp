@@ -438,7 +438,7 @@ const UsersPage = (): JSX.Element => {
                     <UserCard
                         key={user.id}
                         user={user}
-                        openDetails={(user) => {
+                        openDetails={() => {
                             setDetailsModalUser(user);
                             openDetailsModal();
                         }}

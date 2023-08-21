@@ -4,12 +4,14 @@
  * Blueboard
  * OpenAPI spec version: v4.0.0
  */
+import type { ShopIndexOwnOwnedItemsResponseInput } from './shopIndexOwnOwnedItemsResponseInput';
 
 export interface ShopIndexOwnOwnedItemsResponseProduct {
   id?: number;
   name?: string | null;
   description?: string | null;
   qrCodeActivated?: boolean;
+  inputs?: ShopIndexOwnOwnedItemsResponseInput[] | null;
   thumbnailUrl?: string | null;
   createdAt?: string;
   updatedAt?: string;

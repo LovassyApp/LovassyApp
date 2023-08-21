@@ -310,8 +310,8 @@ const ShopPage = (): JSX.Element => {
                     <StoreProductCard
                         key={product.id}
                         storeProduct={product}
-                        openDetails={(storeProduct) => {
-                            setDetailsModalStoreProduct(storeProduct);
+                        openDetails={() => {
+                            setDetailsModalStoreProduct(product);
                             openDetailsModal();
                         }}
                     />

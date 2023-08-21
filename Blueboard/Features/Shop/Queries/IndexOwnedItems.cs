@@ -38,10 +38,19 @@ public static class IndexOwnedItems
 
         public bool QRCodeActivated { get; set; }
 
+        public List<ResponseInput> Inputs { get; set; }
+
         public string ThumbnailUrl { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+    }
+
+    public class ResponseInput
+    {
+        public string Type { get; set; }
+        public string Key { get; set; }
+        public string Label { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>

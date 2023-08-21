@@ -15,7 +15,7 @@ export const StoreProductCard = ({
     openDetails,
 }: {
     storeProduct: ShopIndexProductsResponse;
-    openDetails(ShopIndexProductsResponse): void;
+    openDetails(): void;
 }): JSX.Element => {
     const { classes } = useStyles();
 
@@ -55,7 +55,7 @@ export const StoreProductCard = ({
                         {storeProduct.quantity} db
                     </Text>
                 </Group>
-                <Button fullWidth={true} color="blue" mt="sm" onClick={() => openDetails(storeProduct)}>
+                <Button fullWidth={true} color="blue" mt="sm" onClick={() => openDetails()}>
                     {"Részletek"}
                 </Button>
             </Card.Section>

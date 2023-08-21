@@ -4594,6 +4594,24 @@
         },
         "additionalProperties": false
       },
+      "ShopIndexOwnOwnedItemsResponseInput": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ShopIndexOwnOwnedItemsResponseProduct": {
         "type": "object",
         "properties": {
@@ -4611,6 +4629,13 @@
           },
           "qrCodeActivated": {
             "type": "boolean"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShopIndexOwnOwnedItemsResponseInput"
+            },
+            "nullable": true
           },
           "thumbnailUrl": {
             "type": "string",
@@ -4657,6 +4682,24 @@
         },
         "additionalProperties": false
       },
+      "ShopIndexOwnedItemsResponseInput": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ShopIndexOwnedItemsResponseProduct": {
         "type": "object",
         "properties": {
@@ -4674,6 +4717,13 @@
           },
           "qrCodeActivated": {
             "type": "boolean"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShopIndexOwnedItemsResponseInput"
+            },
+            "nullable": true
           },
           "thumbnailUrl": {
             "type": "string",

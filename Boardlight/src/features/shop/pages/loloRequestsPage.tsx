@@ -50,10 +50,6 @@ const DetailsModal = ({
     opened: boolean;
     close(): void;
 }): JSX.Element => {
-    const updateLoloRequest = usePatchApiLoloRequestsId();
-    const overruleLoloRequest = usePostApiLoloRequestsOverruleId();
-    const deleteLoloRequest = useDeleteApiLoloRequestsId();
-
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
     const userQueryEnabled = useMemo(
@@ -62,6 +58,10 @@ const DetailsModal = ({
     );
 
     const user = useGetApiUsersId(loloRequest?.userId, { query: { enabled: userQueryEnabled && !!loloRequest } });
+
+    const updateLoloRequest = usePatchApiLoloRequestsId();
+    const overruleLoloRequest = usePostApiLoloRequestsOverruleId();
+    const deleteLoloRequest = useDeleteApiLoloRequestsId();
 
     useEffect(() => {
         updateForm.setValues({
@@ -330,7 +330,7 @@ const LoloRequestsPage = (): JSX.Element => {
                     <LoloRequestCard
                         key={loloRequest.id}
                         loloRequest={loloRequest}
-                        openDetails={(loloRequest) => {
+                        openDetails={() => {
                             setDetailsModalLoloRequest(loloRequest);
                             openDetailsModal();
                         }}

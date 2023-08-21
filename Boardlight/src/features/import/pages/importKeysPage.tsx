@@ -29,7 +29,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 import { ImportIndexImportKeysResponse } from "../../../api/generated/models";
-import { ImportKeyCard } from "../components/ImportKeyCard";
+import { ImportKeyCard } from "../components/importKeyCard";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
