@@ -21,6 +21,8 @@ pub struct ShopIndexOwnedItemsResponseProduct {
     pub description: Option<Option<String>>,
     #[serde(rename = "qrCodeActivated", skip_serializing_if = "Option::is_none")]
     pub qr_code_activated: Option<bool>,
+    #[serde(rename = "inputs", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub inputs: Option<Option<Vec<crate::models::ShopIndexOwnedItemsResponseInput>>>,
     #[serde(rename = "thumbnailUrl", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub thumbnail_url: Option<Option<String>>,
     #[serde(rename = "createdAt", skip_serializing_if = "Option::is_none")]
@@ -36,6 +38,7 @@ impl ShopIndexOwnedItemsResponseProduct {
             name: None,
             description: None,
             qr_code_activated: None,
+            inputs: None,
             thumbnail_url: None,
             created_at: None,
             updated_at: None,
