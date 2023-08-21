@@ -59,12 +59,12 @@ const FiltersDrawer = ({
     setParams(arg0: OwnOwnedItemsParams): void;
 }): JSX.Element => {
     const [search, setSearch] = useState<string>(params.Search ?? "");
-    const [unused, setUnused] = useState<boolean>(params.Filters?.includes("UsedAt==null") ?? false);
+    // const [unused, setUnused] = useState<boolean>(params.Filters?.includes("UsedAt==null") ?? false);
 
     const doSetParams = () => {
         const filters = [];
 
-        if (unused) filters.push("UsedAt==null");
+        // if (unused) filters.push("UsedAt==null");
 
         setParams({ Search: search, Filters: filters.join(",") });
         close();
@@ -85,10 +85,10 @@ const FiltersDrawer = ({
                 }
                 onChange={(event) => setSearch(event.currentTarget.value)}
             />
-            <Group position="apart" align="center" mt="sm">
+            {/* <Group position="apart" align="center" mt="sm">
                 <Text size="sm">Csak fel nem használt</Text>
                 <Switch checked={unused} onChange={() => setUnused(!unused)} />
-            </Group>
+            </Group> */}
             <Button onClick={() => doSetParams()} fullWidth={true} variant="outline" mt="md">
                 Gyerünk!
             </Button>
