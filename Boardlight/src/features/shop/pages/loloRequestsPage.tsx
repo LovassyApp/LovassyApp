@@ -163,7 +163,7 @@ const DetailsModal = ({
                     <Divider my="sm" />
                     <Group position="apart" spacing={0}>
                         <Text>Felhasználó neve:</Text>
-                        <Text weight="bold">{user.data?.realName}</Text>
+                        <Text weight="bold">{user.data?.name}</Text>
                     </Group>
                     <Group position="apart" spacing={0}>
                         <Text>Felhasználó valódi neve:</Text>

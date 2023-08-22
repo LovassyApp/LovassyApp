@@ -389,7 +389,7 @@ const UsersPage = (): JSX.Element => {
 
     const users = useGetApiUsers({ Filters: params.Filters ?? "", Sorts: "Name" });
 
-    const [filtersDraweOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
+    const [filtersDrawerOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
     const [detailsModalUser, setDetailsModalUser] = useState<UsersIndexUsersResponse>();
 
@@ -412,7 +412,7 @@ const UsersPage = (): JSX.Element => {
     return (
         <>
             <FiltersDrawer
-                opened={filtersDraweOpened}
+                opened={filtersDrawerOpened}
                 close={closeFiltersDrawer}
                 params={params}
                 setParams={setParams}

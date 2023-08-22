@@ -311,7 +311,7 @@ const OwnOwnedItemsPage = (): JSX.Element => {
         Sorts: "-CreatedAt",
     });
 
-    const [filtersDraweOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
+    const [filtersDrawerOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
     const [detailsModalOwnedItem, setDetailsModalOwnedItem] = useState<ShopIndexOwnOwnedItemsResponse>();
 
@@ -334,7 +334,7 @@ const OwnOwnedItemsPage = (): JSX.Element => {
     return (
         <>
             <FiltersDrawer
-                opened={filtersDraweOpened}
+                opened={filtersDrawerOpened}
                 close={closeFiltersDrawer}
                 params={params}
                 setParams={setParams}

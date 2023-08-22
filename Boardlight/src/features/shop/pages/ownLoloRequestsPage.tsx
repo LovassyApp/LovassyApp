@@ -61,7 +61,9 @@ const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): v
             });
             close();
         } catch (err) {
-            if (err instanceof ValidationError) handleValidationErrors(err, form);
+            if (err instanceof ValidationError) {
+                handleValidationErrors(err, form);
+            }
         }
     });
 

@@ -8,6 +8,7 @@ import {
     Group,
     Loader,
     Modal,
+    Select,
     SimpleGrid,
     Text,
     TextInput,
@@ -15,7 +16,7 @@ import {
     createStyles,
     useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconFilter, IconSearch, IconX } from "@tabler/icons-react";
+import { IconCheck, IconFilter, IconPlus, IconSearch, IconX } from "@tabler/icons-react";
 import { ShopIndexOwnOwnedItemsResponse, ShopIndexOwnedItemsResponse } from "../../../api/generated/models";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
@@ -23,8 +24,10 @@ import {
     useGetApiOwnedItems,
     useGetApiOwnedItemsOwn,
     usePatchApiOwnedItemsId,
+    usePostApiOwnedItems,
 } from "../../../api/generated/features/owned-items/owned-items";
 import { useEffect, useMemo, useState } from "react";
+import { useGetApiUsers, useGetApiUsersId } from "../../../api/generated/features/users/users";
 
 import { DateInput } from "@mantine/dates";
 import { OwnedItemCard } from "../components/ownedItemCard";
@@ -33,7 +36,7 @@ import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useGetApiUsersId } from "../../../api/generated/features/users/users";
+import { useGetApiProducts } from "../../../api/generated/features/products/products";
 
 const useStyles = createStyles(() => ({
     center: {
@@ -92,6 +95,126 @@ const FiltersDrawer = ({
                 Gyerünk!
             </Button>
         </Drawer>
+    );
+};
+
+const CreateOwnedItemModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
+    const createOwnedItem = usePostApiOwnedItems();
+
+    const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
+
+    const usersQueryEnabled = useMemo(
+        () => (control.data?.permissions?.includes("Users.IndexUsers") || control.data?.isSuperUser) ?? false,
+        [control]
+    );
+
+    const productsQueryEnabled = useMemo(
+        () => (control.data?.permissions?.includes("Shop.IndexProducts") || control.data?.isSuperUser) ?? false,
+        [control]
+    );
+
+    const users = useGetApiUsers({}, { query: { enabled: usersQueryEnabled } });
+    const products = useGetApiProducts({}, { query: { enabled: productsQueryEnabled } });
+
+    const form = useForm({
+        initialValues: {
+            userId: undefined,
+            productId: undefined,
+            usedAt: undefined,
+        },
+        transformValues: (values) => ({
+            ...values,
+            usedAt: values.usedAt?.toISOString(),
+        }),
+    });
+
+    const submit = form.onSubmit(async (values) => {
+        try {
+            await createOwnedItem.mutateAsync({ data: values });
+            notifications.show({
+                title: "Termék létrehozva",
+                message: "A kérvényt sikeresen létrehoztad a kincstárban.",
+                color: "green",
+                icon: <IconCheck />,
+            });
+            close();
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                handleValidationErrors(err, form);
+            }
+        }
+    });
+
+    const usersData = useMemo(
+        () =>
+            users.data?.map((user) => ({
+                value: user.id,
+                label: `${user.name} (${user.realName ?? "Ismeretlen"} - ${user.class ?? "Ismeretelen"})`,
+            })) ?? [],
+        [users]
+    );
+
+    const productsData = useMemo(
+        () =>
+            products.data?.map((product) => ({
+                value: product.id.toString(),
+                label: `${product.name} (${product.description.substring(
+                    0,
+                    Math.min(product.description.length, 50)
+                )}...)`,
+            })) ?? [],
+        [products]
+    );
+
+    if (users.isInitialLoading || products.isInitialLoading)
+        return (
+            <Modal opened={opened} onClose={close} title="Új kincstári termék" size="lg">
+                <Center>
+                    <Loader />
+                </Center>
+            </Modal>
+        );
+
+    return (
+        <Modal opened={opened} onClose={close} title="Új kincstári termék" size="lg">
+            <form onSubmit={submit}>
+                {usersData.length > 0 ? (
+                    <Select
+                        label="Felhasználó"
+                        withinPortal={true}
+                        required={true}
+                        data={usersData}
+                        onChange={(value) => form.setFieldValue("userId", value)}
+                        {...form.getInputProps("userId")}
+                    />
+                ) : (
+                    <TextInput label="Felhasználó id" required={true} {...form.getInputProps("userId")} />
+                )}
+                {productsData.length > 0 ? (
+                    <Select
+                        label="Termék"
+                        withinPortal={true}
+                        required={true}
+                        data={productsData}
+                        onChange={(value) => form.setFieldValue("productId", value)}
+                        {...form.getInputProps("productId")}
+                        mt="sm"
+                    />
+                ) : (
+                    <TextInput label="Termék id" required={true} {...form.getInputProps("productId")} mt="sm" />
+                )}
+                <DateInput
+                    popoverProps={{ withinPortal: true }}
+                    label="Felhasználás dátuma"
+                    clearable={true}
+                    {...form.getInputProps("usedAt")}
+                    mt="sm"
+                />
+                <Button type="submit" fullWidth={true} loading={createOwnedItem.isLoading} mt="md">
+                    Létrehozás
+                </Button>
+            </form>
+        </Modal>
     );
 };
 
@@ -192,7 +315,7 @@ const DetailsModal = ({
                     <Divider my="sm" />
                     <Group position="apart" spacing={0}>
                         <Text>Felhasználó neve:</Text>
-                        <Text weight="bold">{user.data?.realName}</Text>
+                        <Text weight="bold">{user.data?.name}</Text>
                     </Group>
                     <Group position="apart" spacing={0}>
                         <Text>Felhasználó valódi neve:</Text>
@@ -232,8 +355,13 @@ const DetailsModal = ({
             <PermissionRequirement permissions={["Shop.UpdateOwnedItem"]}>
                 <Divider my="sm" />
                 <form onSubmit={submit}>
-                    <DateInput label="Felhasználás dátuma" clearable={true} {...form.getInputProps("usedAt")} />
-                    <Button type="submit" fullWidth={true} mt="md">
+                    <DateInput
+                        popoverProps={{ withinPortal: true }}
+                        label="Felhasználás dátuma"
+                        clearable={true}
+                        {...form.getInputProps("usedAt")}
+                    />
+                    <Button type="submit" fullWidth={true} mt="md" loading={updateOwnedItem.isLoading}>
                         Mentés
                     </Button>
                 </form>
@@ -260,7 +388,9 @@ const OwnedItemsPage = (): JSX.Element => {
         Sorts: "-CreatedAt",
     });
 
-    const [filtersDraweOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
+    const [filtersDrawerOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
+    const [createOwnedItemModalOpened, { close: closeCreateOwnedItemModal, open: openCreateOwnedItemModal }] =
+        useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
     const [detailsModalOwnedItem, setDetailsModalOwnedItem] = useState<ShopIndexOwnedItemsResponse>();
 
@@ -283,17 +413,25 @@ const OwnedItemsPage = (): JSX.Element => {
     return (
         <>
             <FiltersDrawer
-                opened={filtersDraweOpened}
+                opened={filtersDrawerOpened}
                 close={closeFiltersDrawer}
                 params={params}
                 setParams={setParams}
             />
+            <CreateOwnedItemModal opened={createOwnedItemModalOpened} close={closeCreateOwnedItemModal} />
             <DetailsModal ownedItem={detailsModalOwnedItem} opened={detailsModalOpened} close={closeDetailsModal} />
             <Group position="apart" align="baseline" mb="md" spacing={0}>
                 <Title>Egyesített kincstár</Title>
-                <ActionIcon variant="transparent" color="dark" onClick={() => openFiltersDrawer()}>
-                    <IconFilter />
-                </ActionIcon>
+                <Group>
+                    <PermissionRequirement permissions={["Shop.CreateOwnedItem"]}>
+                        <ActionIcon variant="transparent" color="dark" onClick={() => openCreateOwnedItemModal()}>
+                            <IconPlus />
+                        </ActionIcon>
+                    </PermissionRequirement>
+                    <ActionIcon variant="transparent" color="dark" onClick={() => openFiltersDrawer()}>
+                        <IconFilter />
+                    </ActionIcon>
+                </Group>
             </Group>
             <SimpleGrid
                 cols={4}

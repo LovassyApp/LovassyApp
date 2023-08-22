@@ -246,7 +246,7 @@ const ShopPage = (): JSX.Element => {
         Sorts: "Name",
     }); // Big mess, basically if the user has the permission to see invisible products, we don't show them
 
-    const [filtersDraweOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
+    const [filtersDrawerOpened, { open: openFiltersDrawer, close: closeFiltersDrawer }] = useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
     const [detailsModalStoreProduct, setDetailsModalStoreProduct] = useState<ShopIndexProductsResponse>();
 
@@ -269,7 +269,7 @@ const ShopPage = (): JSX.Element => {
     return (
         <>
             <FiltersDrawer
-                opened={filtersDraweOpened}
+                opened={filtersDrawerOpened}
                 close={closeFiltersDrawer}
                 params={params}
                 setParams={setParams}
