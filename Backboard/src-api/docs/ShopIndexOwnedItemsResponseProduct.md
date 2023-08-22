@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **name** | Option<**String**> |  | [optional]
 **description** | Option<**String**> |  | [optional]
 **qr_code_activated** | Option<**bool**> |  | [optional]
+**inputs** | Option<[**Vec<crate::models::ShopIndexOwnedItemsResponseInput>**](ShopIndexOwnedItemsResponseInput.md)> |  | [optional]
 **thumbnail_url** | Option<**String**> |  | [optional]
 **created_at** | Option<**String**> |  | [optional]
 **updated_at** | Option<**String**> |  | [optional]

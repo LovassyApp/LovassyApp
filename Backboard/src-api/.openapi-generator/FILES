@@ -58,8 +58,10 @@ docs/ShopIndexOwnLolosResponse.md
 docs/ShopIndexOwnLolosResponseCoin.md
 docs/ShopIndexOwnLolosResponseGrade.md
 docs/ShopIndexOwnOwnedItemsResponse.md
+docs/ShopIndexOwnOwnedItemsResponseInput.md
 docs/ShopIndexOwnOwnedItemsResponseProduct.md
 docs/ShopIndexOwnedItemsResponse.md
+docs/ShopIndexOwnedItemsResponseInput.md
 docs/ShopIndexOwnedItemsResponseProduct.md
 docs/ShopIndexProductsResponse.md
 docs/ShopIndexQrCodesResponse.md
@@ -156,8 +158,10 @@ src/models/shop_index_own_lolos_response.rs
 src/models/shop_index_own_lolos_response_coin.rs
 src/models/shop_index_own_lolos_response_grade.rs
 src/models/shop_index_own_owned_items_response.rs
+src/models/shop_index_own_owned_items_response_input.rs
 src/models/shop_index_own_owned_items_response_product.rs
 src/models/shop_index_owned_items_response.rs
+src/models/shop_index_owned_items_response_input.rs
 src/models/shop_index_owned_items_response_product.rs
 src/models/shop_index_products_response.rs
 src/models/shop_index_qr_codes_response.rs
