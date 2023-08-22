@@ -75,6 +75,10 @@ public static class BuyProduct
                 {
                     UserId = _userAccessor.User.Id
                 }, cancellationToken);
+                await _publisher.Publish(new OwnedItemUpdatedEvent
+                {
+                    UserId = ownedItem.UserId
+                }, cancellationToken);
             }
             catch (InsufficientFundsException)
             {

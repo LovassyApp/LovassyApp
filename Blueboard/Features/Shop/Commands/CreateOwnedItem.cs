@@ -1,3 +1,4 @@
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
@@ -88,10 +89,12 @@ public static class CreateOwnedItem
     internal sealed class Handler : IRequestHandler<Command, Response>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context)
+        public Handler(ApplicationDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -104,6 +107,11 @@ public static class CreateOwnedItem
 
             await _context.OwnedItems.AddAsync(ownedItem, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new OwnedItemUpdatedEvent
+            {
+                UserId = ownedItem.UserId
+            }, cancellationToken);
 
             return ownedItem.Adapt<Response>();
         }

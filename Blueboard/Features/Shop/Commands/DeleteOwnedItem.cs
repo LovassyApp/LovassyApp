@@ -1,5 +1,6 @@
 using Blueboard.Core.Auth.Permissions;
 using Blueboard.Core.Auth.Services;
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Helpers.WebApi.Exceptions;
@@ -18,13 +19,16 @@ public static class DeleteOwnedItem
     {
         private readonly ApplicationDbContext _context;
         private readonly PermissionManager _permissionManager;
+        private readonly IPublisher _publisher;
         private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager, UserAccessor userAccessor)
+        public Handler(ApplicationDbContext context, PermissionManager permissionManager, UserAccessor userAccessor,
+            IPublisher publisher)
         {
             _context = context;
             _permissionManager = permissionManager;
             _userAccessor = userAccessor;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -40,6 +44,11 @@ public static class DeleteOwnedItem
 
             _context.OwnedItems.Remove(ownedItem);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new OwnedItemUpdatedEvent
+            {
+                UserId = ownedItem.UserId
+            }, cancellationToken);
 
             return Unit.Value;
         }

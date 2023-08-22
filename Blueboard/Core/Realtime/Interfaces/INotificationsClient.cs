@@ -10,4 +10,6 @@ public interface INotificationsClient
     Task RefreshOwnLoloRequests();
     Task RefreshLoloRequests();
     Task RefreshUserGroups();
+    Task RefreshOwnOwnedItems();
+    Task RefreshOwnedItems();
 }

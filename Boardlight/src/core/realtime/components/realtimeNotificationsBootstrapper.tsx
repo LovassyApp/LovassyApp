@@ -5,6 +5,10 @@ import {
     getGetApiLoloRequestsQueryKey,
 } from "../../../api/generated/features/lolo-requests/lolo-requests";
 import { getGetApiLolosOwnQueryKey, getGetApiLolosQueryKey } from "../../../api/generated/features/lolos/lolos";
+import {
+    getGetApiOwnedItemsOwnQueryKey,
+    getGetApiOwnedItemsQueryKey,
+} from "../../../api/generated/features/owned-items/owned-items";
 
 import { FullScreenLoading } from "../../components/fullScreenLoading";
 import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
@@ -27,6 +31,8 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const ownLoloRequestsQueryKey = getGetApiLoloRequestsOwnQueryKey();
     const loloRequestsQueryKey = getGetApiLoloRequestsQueryKey();
     const userGroupsQueryKey = getGetApiUserGroupsQueryKey();
+    const ownOwnedItemsQueryKey = getGetApiOwnedItemsOwnQueryKey();
+    const ownedItemsQueryKey = getGetApiOwnedItemsQueryKey();
 
     const [loading, setLoading] = useState(false);
 
@@ -82,6 +88,16 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                 hubConnection.on("RefreshUserGroups", async () => {
                     console.log("RefreshUserGroups notification received");
                     await queryClient.invalidateQueries({ queryKey: [userGroupsQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshOwnOwnedItems", async () => {
+                    console.log("RefreshOwnOwnedItems notification received");
+                    await queryClient.invalidateQueries({ queryKey: [ownOwnedItemsQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshOwnedItems", async () => {
+                    console.log("RefreshOwnedItems notification received");
+                    await queryClient.invalidateQueries({ queryKey: [ownedItemsQueryKey[0]] });
                 });
 
                 try {

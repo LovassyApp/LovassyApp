@@ -143,6 +143,11 @@ public static class UseOwnedItem
                 QRCodeEmail = qrCodeEmail
             }, cancellationToken);
 
+            await _publisher.Publish(new OwnedItemUpdatedEvent
+            {
+                UserId = ownedItem.UserId
+            }, cancellationToken);
+
             return Unit.Value;
         }
     }

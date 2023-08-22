@@ -1,7 +1,5 @@
 import {
     ActionIcon,
-    Badge,
-    Box,
     Button,
     Center,
     Divider,
@@ -21,7 +19,6 @@ import { IconCheck, IconFilter, IconSearch, IconX } from "@tabler/icons-react";
 import { ShopIndexOwnOwnedItemsResponse, ShopUseOwnedItemRequestBody } from "../../../api/generated/models";
 import {
     useDeleteApiOwnedItemsId,
-    useGetApiOwnedItems,
     useGetApiOwnedItemsOwn,
     usePostApiOwnedItemsIdUse,
 } from "../../../api/generated/features/owned-items/owned-items";
@@ -34,7 +31,6 @@ import { ValidationError } from "../../../helpers/apiHelpers";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 
 const useStyles = createStyles((theme) => ({
     center: {
@@ -169,7 +165,7 @@ const DetailsModal = ({
             await deleteOwnedItem.mutateAsync({ id: ownedItem?.id });
             notifications.show({
                 title: "Termék törölve",
-                message: "A terméket sikeresen törölted.",
+                message: "A terméket sikeresen törölted a kincstárból.",
                 color: "green",
                 icon: <IconCheck />,
             });
