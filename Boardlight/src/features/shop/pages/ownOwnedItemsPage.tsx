@@ -32,7 +32,7 @@ import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     center: {
         height: "100%",
     },

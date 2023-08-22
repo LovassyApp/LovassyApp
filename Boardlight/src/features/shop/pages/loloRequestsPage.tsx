@@ -142,23 +142,6 @@ const DetailsModal = ({
         }
     };
 
-    if (user.isInitialLoading)
-        return (
-            <Modal
-                opened={opened}
-                onClose={() => {
-                    overruleForm.reset();
-                    close();
-                }}
-                title="Részletek"
-                size="lg"
-            >
-                <Center>
-                    <Loader />
-                </Center>
-            </Modal>
-        );
-
     return (
         <Modal
             opened={opened}

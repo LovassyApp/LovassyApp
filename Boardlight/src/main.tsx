@@ -1,9 +1,12 @@
+import "dayjs/locale/hu";
+
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import { Suspense, useEffect } from "react";
 
 import { BlueboardStatusChecker } from "./core/components/blueboardStatusChecker";
+import { DatesProvider } from "@mantine/dates";
 import { FullScreenLoading } from "./core/components/fullScreenLoading";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
@@ -35,18 +38,20 @@ const App = () => {
                 withNormalizeCSS={true}
                 withGlobalStyles={true}
             >
-                <ModalsProvider>
-                    <QueryClientProvider client={queryClient}>
-                        <Notifications limit={3} />
-                        <BlueboardStatusChecker>
-                            <RealtimeNotificationsBootstrapper>
-                                <Suspense fallback={<FullScreenLoading />}>
-                                    <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
-                                </Suspense>
-                            </RealtimeNotificationsBootstrapper>
-                        </BlueboardStatusChecker>
-                    </QueryClientProvider>
-                </ModalsProvider>
+                <DatesProvider settings={{ locale: "hu" }}>
+                    <ModalsProvider>
+                        <QueryClientProvider client={queryClient}>
+                            <Notifications limit={3} />
+                            <BlueboardStatusChecker>
+                                <RealtimeNotificationsBootstrapper>
+                                    <Suspense fallback={<FullScreenLoading />}>
+                                        <RouterProvider router={router} fallbackElement={<FullScreenLoading />} />
+                                    </Suspense>
+                                </RealtimeNotificationsBootstrapper>
+                            </BlueboardStatusChecker>
+                        </QueryClientProvider>
+                    </ModalsProvider>
+                </DatesProvider>
             </MantineProvider>
         </ColorSchemeProvider>
     );
