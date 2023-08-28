@@ -183,6 +183,7 @@ const CreateOwnedItemModal = ({ opened, close }: { opened: boolean; close(): voi
                         required={true}
                         data={usersData}
                         onChange={(value) => form.setFieldValue("userId", value)}
+                        searchable={true}
                         {...form.getInputProps("userId")}
                     />
                 ) : (
@@ -195,6 +196,7 @@ const CreateOwnedItemModal = ({ opened, close }: { opened: boolean; close(): voi
                         required={true}
                         data={productsData}
                         onChange={(value) => form.setFieldValue("productId", value)}
+                        searchable={true}
                         {...form.getInputProps("productId")}
                         mt="sm"
                     />
