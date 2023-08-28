@@ -1,6 +1,5 @@
 import {
     ActionIcon,
-    Box,
     Button,
     Center,
     Divider,
@@ -17,12 +16,10 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import { IconCheck, IconFilter, IconPlus, IconSearch, IconX } from "@tabler/icons-react";
-import { ShopIndexOwnOwnedItemsResponse, ShopIndexOwnedItemsResponse } from "../../../api/generated/models";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
     useDeleteApiOwnedItemsId,
     useGetApiOwnedItems,
-    useGetApiOwnedItemsOwn,
     usePatchApiOwnedItemsId,
     usePostApiOwnedItems,
 } from "../../../api/generated/features/owned-items/owned-items";
@@ -32,6 +29,7 @@ import { useGetApiUsers, useGetApiUsersId } from "../../../api/generated/feature
 import { DateInput } from "@mantine/dates";
 import { OwnedItemCard } from "../components/ownedItemCard";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
+import { ShopIndexOwnedItemsResponse } from "../../../api/generated/models";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";

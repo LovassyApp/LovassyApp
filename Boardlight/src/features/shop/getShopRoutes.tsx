@@ -16,6 +16,7 @@ export const getShopRoutes = () => {
     const ShopPage = lazy(() => import("./pages/shopPage"));
     const OwnOwnedItemsPage = lazy(() => import("./pages/ownOwnedItemsPage"));
     const OwnedItemsPage = lazy(() => import("./pages/ownedItemsPage"));
+    const ProductsPage = lazy(() => import("./pages/productsPage"));
 
     return (
         <>
@@ -46,6 +47,9 @@ export const getShopRoutes = () => {
                             </Route>
                             <Route element={<PermissionGuard permissions={["Shop.IndexOwnedItems"]} />}>
                                 <Route path="/shop/owned-items" element={<OwnedItemsPage />} />
+                            </Route>
+                            <Route element={<PermissionGuard permissions={["Shop.IndexProducts"]} />}>
+                                <Route path="/shop/products" element={<ProductsPage />} />
                             </Route>
                         </Route>
                     </Route>
