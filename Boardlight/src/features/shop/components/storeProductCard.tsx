@@ -22,7 +22,7 @@ export const StoreProductCard = ({
     return (
         <Card radius="md" withBorder={true}>
             <Card.Section>
-                <Image src={storeProduct.thumbnailUrl} alt="Tesla Model S" height={200} />
+                <Image src={storeProduct.thumbnailUrl} alt={storeProduct.name} height={200} />
             </Card.Section>
             <Card.Section className={classes.section}>
                 <Text size="lg" truncate={true} weight={500}>

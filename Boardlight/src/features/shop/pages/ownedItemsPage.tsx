@@ -131,7 +131,7 @@ const CreateOwnedItemModal = ({ opened, close }: { opened: boolean; close(): voi
             await createOwnedItem.mutateAsync({ data: values });
             notifications.show({
                 title: "Termék létrehozva",
-                message: "A kérvényt sikeresen létrehoztad a kincstárban.",
+                message: "A terméket sikeresen létrehoztad a kincstárban.",
                 color: "green",
                 icon: <IconCheck />,
             });

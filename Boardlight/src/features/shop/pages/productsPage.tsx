@@ -30,6 +30,7 @@ import {
     useGetApiProducts,
     useGetApiProductsId,
     usePatchApiProductsId,
+    usePostApiProducts,
 } from "../../../api/generated/features/products/products";
 import { useEffect, useMemo, useState } from "react";
 
@@ -49,6 +50,227 @@ const useStyles = createStyles((theme) => ({
         height: "100%",
     },
 }));
+
+const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
+    const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
+
+    const qrCodesQueryEnabled = useMemo(
+        () => (control.data?.permissions?.includes("Shop.IndexQRCodes") || control.data?.isSuperUser) ?? false,
+        [control]
+    );
+
+    const qrCodes = useGetApiQRCodes({}, { query: { enabled: qrCodesQueryEnabled } });
+
+    const createProduct = usePostApiProducts();
+
+    const form = useForm({
+        initialValues: {
+            name: "",
+            description: "",
+            richTextContent: "",
+            visible: false,
+            qrCodeActivated: false,
+            qrCodes: [],
+            price: 0,
+            quantity: 0,
+            inputs: [],
+            notifiedEmails: [],
+            thumbnailUrl: "",
+        },
+        transformValues: (values) => ({
+            ...values,
+            qrCodes: values.qrCodes.map((qrCode) => +qrCode),
+        }),
+        validate: (values) => ({
+            notifiedEmails: values.notifiedEmails.some((email) => !email.includes("@"))
+                ? "Található egy érvénytelen email"
+                : null,
+        }),
+    });
+
+    const rteEditor = useEditor({
+        extensions: tiptapExtensions,
+        content: "",
+        onUpdate: ({ editor }) => {
+            form.setFieldValue("richTextContent", editor.getHTML());
+        },
+    });
+
+    const submit = form.onSubmit(async (values) => {
+        try {
+            await createProduct.mutateAsync({ data: values as ShopUpdateProductRequestBody });
+            notifications.show({
+                title: "Termék létrehozva",
+                message: "A terméket sikeresen létrehoztad.",
+                color: "green",
+                icon: <IconCheck />,
+            });
+            close();
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                handleValidationErrors(err, form);
+            }
+        }
+    });
+
+    const qrCodesData = useMemo(() => {
+        if (!qrCodes.data) return [];
+        return qrCodes.data.map((qrCode) => ({
+            label: qrCode.name,
+            value: qrCode.id.toString(),
+        }));
+    }, [qrCodes.data]);
+
+    const [creatableQRCodesData, setCreatableQRCodesData] = useState([]);
+    const [creatableNotifiedEmailsData, setCreatableNotifiedEmailsData] = useState([]);
+
+    const displayedInputs = useMemo(
+        () =>
+            form.values.inputs.map((input, index) => (
+                <Group key={input.key} spacing="sm" mb="xs" noWrap={true} align="flex-end">
+                    <TextInput
+                        label="Név"
+                        required={true}
+                        {...form.getInputProps(`inputs.${index}.label`)}
+                        sx={{ flex: 1 }}
+                    />
+                    <Select
+                        data={[
+                            { label: "Szövegdoboz", value: "Textbox" },
+                            { label: "Igen/Nem", value: "Boolean" },
+                        ]}
+                        label="Típus"
+                        required={true}
+                        {...form.getInputProps(`inputs.${index}.type`)}
+                    />
+                    <ActionIcon
+                        variant="transparent"
+                        color="red"
+                        onClick={() => form.removeListItem("inputs", index)}
+                        mb={rem(6)}
+                    >
+                        <IconTrash stroke={1.5} />
+                    </ActionIcon>
+                </Group>
+            )),
+        [form]
+    );
+
+    if (qrCodes.isInitialLoading)
+        return (
+            <Modal opened={opened} onClose={close} title="Új termék" size="lg">
+                <Center>
+                    <Loader />
+                </Center>
+            </Modal>
+        );
+
+    return (
+        <Modal opened={opened} onClose={close} size="lg" title="Új termék">
+            <Text align="center" color="dimmed" mb="sm">
+                Előnézet
+            </Text>
+            <Center>
+                <Box maw={400}>
+                    <StoreProductCard storeProduct={form.values} openDetails={() => {}} />
+                </Box>
+            </Center>
+            <Divider my="sm" />
+            <form onSubmit={submit}>
+                <TextInput label="Név" required={true} {...form.getInputProps("name")} />
+                <TextInput label="Leírás" required={true} {...form.getInputProps("description")} mt="sm" />
+                <CustomRichTextEditor editor={rteEditor} mt="md" />
+                {form.errors.richTextContent && (
+                    <Text color="red" size="sm">
+                        {form.errors.richTextContent}
+                    </Text>
+                )}
+                <Group position="apart" spacing={0} mt="md">
+                    <Text size="sm">Látható</Text>
+                    <Switch {...form.getInputProps("visible", { type: "checkbox" })} />
+                </Group>
+                <Group position="apart" spacing={0} mt="md">
+                    <Text size="sm">QR kód aktivált</Text>
+                    <Switch {...form.getInputProps("qrCodeActivated", { type: "checkbox" })} />
+                </Group>
+                {qrCodes.data && qrCodesData.length > 0 ? (
+                    <MultiSelect
+                        label="QR kódok"
+                        data={qrCodesData}
+                        {...form.getInputProps("qrCodes")}
+                        mt="sm"
+                        withinPortal={true}
+                        clearable={true}
+                        searchable={true}
+                    />
+                ) : (
+                    <MultiSelect
+                        label="QR kód id-k"
+                        {...form.getInputProps("qrCodes")}
+                        data={creatableQRCodesData}
+                        mt="sm"
+                        withinPortal={true}
+                        searchable={true}
+                        clearable={true}
+                        creatable={true}
+                        getCreateLabel={(value) => `+ Id hozzáadása: ${value}`}
+                        onCreate={(query) => {
+                            const id = +query;
+                            if (isNaN(id)) return;
+                            setCreatableQRCodesData([
+                                ...creatableQRCodesData,
+                                { label: id.toString(), value: id.toString() },
+                            ]);
+                            return { label: id.toString(), value: id.toString() };
+                        }}
+                    />
+                )}
+                <NumberInput label="Ár" required={true} min={0} {...form.getInputProps("price")} mt="sm" />
+                <NumberInput label="Mennyiség" required={true} min={0} {...form.getInputProps("quantity")} mt="sm" />
+                <Text size="sm" mt="sm" weight={500}>
+                    Beviteli mezők
+                </Text>
+                {displayedInputs}{" "}
+                <Button
+                    onClick={() =>
+                        form.insertListItem("inputs", {
+                            label: "",
+                            key: `i${form.values.inputs.length.toString()}`,
+                            type: "Textbox",
+                        })
+                    }
+                    variant="outline"
+                    fullWidth={true}
+                    mt="md"
+                >
+                    Mező hozzáadása
+                </Button>
+                <MultiSelect
+                    label="Értesítendő email címek"
+                    data={creatableNotifiedEmailsData}
+                    {...form.getInputProps("notifiedEmails")}
+                    withinPortal={true}
+                    searchable={true}
+                    clearable={true}
+                    creatable={true}
+                    getCreateLabel={(value) => `+ Email hozzáadása: ${value}`}
+                    onCreate={(query) => {
+                        setCreatableNotifiedEmailsData([
+                            ...creatableNotifiedEmailsData,
+                            { label: query, value: query },
+                        ]);
+                        return { label: query, value: query };
+                    }}
+                    mt="sm"
+                />
+                <TextInput required={true} label="Kép URL" {...form.getInputProps("thumbnailUrl")} mt="sm" />
+                <Button type="submit" fullWidth={true} mt="md">
+                    Létrehozás
+                </Button>
+            </form>
+        </Modal>
+    );
+};
 
 const DetailsModal = ({
     product,
@@ -112,7 +334,7 @@ const DetailsModal = ({
         }),
         validate: (values) => ({
             notifiedEmails: values.notifiedEmails.some((email) => !email.includes("@"))
-                ? "Található egy érvénytelen email"
+                ? "Legalább egy email érvénytelen"
                 : null,
         }),
     });
@@ -287,7 +509,7 @@ const DetailsModal = ({
                 Előnézet
             </Text>
             <Center>
-                <Box maw={350}>
+                <Box maw={400}>
                     <StoreProductCard storeProduct={form.values} openDetails={() => {}} />
                 </Box>
             </Center>
@@ -297,6 +519,11 @@ const DetailsModal = ({
                     <TextInput label="Név" required={true} {...form.getInputProps("name")} />
                     <TextInput label="Leírás" required={true} {...form.getInputProps("description")} mt="sm" />
                     <CustomRichTextEditor editor={rteEditor} mt="md" />
+                    {form.errors.richTextContent && (
+                        <Text color="red" size="sm">
+                            {form.errors.richTextContent}
+                        </Text>
+                    )}
                     <Group position="apart" spacing={0} mt="md">
                         <Text size="sm">Látható</Text>
                         <Switch {...form.getInputProps("visible", { type: "checkbox" })} />
@@ -414,6 +641,8 @@ const ProductsPage = (): JSX.Element => {
 
     const products = useGetApiProducts();
 
+    const [createProductModalOpened, { close: closeCreateProductModal, open: openCreateProductModal }] =
+        useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
     const [detailsModalProduct, setDetailsModalProduct] = useState<ShopIndexProductsResponse>();
 
@@ -435,11 +664,12 @@ const ProductsPage = (): JSX.Element => {
 
     return (
         <>
+            <CreateProductModal opened={createProductModalOpened} close={closeCreateProductModal} />
             <DetailsModal product={detailsModalProduct} opened={detailsModalOpened} close={closeDetailsModal} />
             <Group position="apart" align="baseline" mb="md" spacing={0}>
                 <Title>Termékek</Title>
                 <PermissionRequirement permissions={["Shop.CreateProduct"]}>
-                    <ActionIcon variant="transparent" color="dark">
+                    <ActionIcon variant="transparent" color="dark" onClick={() => openCreateProductModal()}>
                         <IconPlus />
                     </ActionIcon>
                 </PermissionRequirement>
