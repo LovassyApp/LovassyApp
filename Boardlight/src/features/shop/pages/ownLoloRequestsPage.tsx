@@ -282,7 +282,7 @@ const OwnLoloRequestsPage = (): JSX.Element => {
             </SimpleGrid>
             {loloRequests.data.length === 0 && (
                 <Text color="dimmed">
-                    Úgy néz ki még nincs egy kérvényed sem. Kattints a &quot;Kérvények&quot; felirat melleti plusz
+                    Úgy néz ki még nincs egy kérvényed sem... Kattints a &quot;Kérvények&quot; felirat melleti plusz
                     ikonra, hogy létrehozz egyet.
                 </Text>
             )}

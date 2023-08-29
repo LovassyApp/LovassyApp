@@ -370,6 +370,12 @@ const OwnOwnedItemsPage = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {ownedItems.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek megvásárolt termékeid a kincstérban... Kattints a navigációban
+                    &quot;Bazár&quot; opcióra, hogy termékeket vásárolhass.
+                </Text>
+            )}
         </>
     );
 };

@@ -308,6 +308,12 @@ const ImportKeysPage = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {importKeys.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek import kulcsok... Kattints az &quot;Import kulcsok&quot; felirat melleti
+                    plusz ikonra, hogy létrehozz egyet.
+                </Text>
+            )}
         </>
     );
 };

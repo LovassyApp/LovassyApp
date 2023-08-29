@@ -51,6 +51,11 @@ const CoinsPage = (): JSX.Element => {
                     <CoinCard key={coin.id} coin={coin} />
                 ))}
             </SimpleGrid>
+            {coins.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még senkinek nincsenek érméi... Amint valaki szerez egy loló érmét, itt látod majd őket.
+                </Text>
+            )}
         </>
     );
 };

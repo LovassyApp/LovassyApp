@@ -320,6 +320,12 @@ const LoloRequestsPage = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {loloRequests.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek kérvények... Amint egy felhasználó létrehoz egy kérvényt, itt látod majd a
+                    őket.
+                </Text>
+            )}
         </>
     );
 };

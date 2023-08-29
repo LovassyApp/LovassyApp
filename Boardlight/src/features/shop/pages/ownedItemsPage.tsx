@@ -457,6 +457,12 @@ const OwnedItemsPage = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {ownedItems.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek birtokolt termékek egy felhasználó kincstárában sem... Kattints az
+                    &quot;Egyesített kincstár&quot; felirat melleti plusz ikonra, hogy létrehozz egyet.
+                </Text>
+            )}
         </>
     );
 };

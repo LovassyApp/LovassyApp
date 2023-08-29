@@ -317,6 +317,11 @@ const ShopPage = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {storeProducts.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek termékek a bazárban... Amint lesznek, itt láthatod majd őket.
+                </Text>
+            )}
         </>
     );
 };

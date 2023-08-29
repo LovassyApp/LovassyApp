@@ -327,6 +327,12 @@ const QRCodesPage = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {qrCodes.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek QR kódok... Kattints a &quot;QR kódok&quot; felirat melleti plusz ikonra,
+                    hogy létrehozz egyet.
+                </Text>
+            )}
         </>
     );
 };

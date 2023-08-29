@@ -693,6 +693,12 @@ const ProductsPage = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {products.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek termékek... Kattints a &quot;Termékek&quot; felirat melleti plusz ikonra,
+                    hogy létrehozz egyet.
+                </Text>
+            )}
         </>
     );
 };
