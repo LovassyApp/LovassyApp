@@ -32,7 +32,9 @@ public class SendOwnedItemUsedNotificationJob : IJob
         var addresses = product!.NotifiedEmails.Select(e => new Address(e)).ToList();
         if (qrCodeEmail != null) addresses.Add(new Address(qrCodeEmail));
 
-        var email = _fluentEmail.BCC(addresses).Subject($"Termék felhasználva: {product.Name}").Body(
+        if (addresses.Count == 0) return;
+
+        var email = _fluentEmail.BCC(addresses.Distinct()).Subject($"Termék felhasználva: {product.Name}").Body(
             await _razorViewToStringRenderer.RenderViewToStringAsync(
                 "/Views/Emails/OwnedItemUsedNotification/OwnedItemUsedNotification.cshtml",
                 new OwnedItemUsedNotificationViewModel
