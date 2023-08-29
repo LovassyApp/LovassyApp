@@ -28,6 +28,7 @@ import { useGetApiUsers, useGetApiUsersId } from "../../../api/generated/feature
 
 import { DateInput } from "@mantine/dates";
 import { OwnedItemCard } from "../components/ownedItemCard";
+import { OwnedItemsStats } from "../components/ownedItemsStats";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { ShopIndexOwnedItemsResponse } from "../../../api/generated/models";
 import { notifications } from "@mantine/notifications";
@@ -420,7 +421,11 @@ const OwnedItemsPage = (): JSX.Element => {
             />
             <CreateOwnedItemModal opened={createOwnedItemModalOpened} close={closeCreateOwnedItemModal} />
             <DetailsModal ownedItem={detailsModalOwnedItem} opened={detailsModalOpened} close={closeDetailsModal} />
-            <Group position="apart" align="baseline" mb="md" spacing={0}>
+            <Title mb="md">Összevont statisztikák</Title>
+            <SimpleGrid cols={2} breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}>
+                <OwnedItemsStats data={ownedItems.data} />
+            </SimpleGrid>
+            <Group position="apart" align="baseline" my="md" spacing={0}>
                 <Title>Egyesített kincstár</Title>
                 <Group>
                     <PermissionRequirement permissions={["Shop.CreateOwnedItem"]}>

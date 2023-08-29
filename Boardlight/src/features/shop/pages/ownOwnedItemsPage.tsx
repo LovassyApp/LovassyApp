@@ -25,6 +25,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { OwnedItemCard } from "../components/ownedItemCard";
+import { OwnedItemsStats } from "../components/ownedItemsStats";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { QrCodeReader } from "../../../core/components/qrCodeReader";
 import { ValidationError } from "../../../helpers/apiHelpers";
@@ -340,7 +341,11 @@ const OwnOwnedItemsPage = (): JSX.Element => {
                 setParams={setParams}
             />
             <DetailsModal ownedItem={detailsModalOwnedItem} opened={detailsModalOpened} close={closeDetailsModal} />
-            <Group position="apart" align="baseline" mb="md" spacing={0}>
+            <Title mb="md">Statisztikák</Title>
+            <SimpleGrid cols={2} breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}>
+                <OwnedItemsStats data={ownedItems.data} />
+            </SimpleGrid>
+            <Group position="apart" align="baseline" my="md" spacing={0}>
                 <Title>Kincstár</Title>
                 <ActionIcon variant="transparent" color="dark" onClick={() => openFiltersDrawer()}>
                     <IconFilter />
