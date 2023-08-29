@@ -46,7 +46,6 @@
         "@tiptap/pm": "^2.1.7",
         "@tiptap/react": "^2.1.2",
         "@tiptap/starter-kit": "^2.1.2",
-        "axios": "^1.4.0",
         "dayjs": "^1.11.9",
         "html5-qrcode": "^2.3.8",
         "react": "^18.2.0",
