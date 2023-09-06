@@ -14,6 +14,7 @@ import { Icon123, IconLock, IconMail, IconUser } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 
+import { PrivacyPolicyModal } from "../../../core/components/privacyPolicyModal";
 import { UnavailableModal } from "../components/unavailableModal";
 import { useAuthStore } from "../../../core/stores/authStore";
 import { useDisclosure } from "@mantine/hooks";
@@ -57,6 +58,8 @@ const RegisterPage = (): JSX.Element => {
 
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const [unavaliableModalOpened, { open: openUnavailableModal }] = useDisclosure();
+    const [privacyPolicyModalOpened, { open: openPrivacyPolicyModal, close: closePrivacyPolicyModal }] =
+        useDisclosure();
 
     const navigate = useNavigate();
 
@@ -105,6 +108,7 @@ const RegisterPage = (): JSX.Element => {
     return (
         <>
             <UnavailableModal opened={unavaliableModalOpened} />
+            <PrivacyPolicyModal opened={privacyPolicyModalOpened} close={closePrivacyPolicyModal} />
             <Center className={classes.center}>
                 <Box pos="relative">
                     <LoadingOverlay radius="md" visible={status.isLoading} />
@@ -158,6 +162,13 @@ const RegisterPage = (): JSX.Element => {
                                 Regisztrálás
                             </Button>
                         </form>
+                        <Text align="center" size="sm">
+                            A regisztrációval elfogadod az{" "}
+                            <Anchor component="button" onClick={() => openPrivacyPolicyModal()}>
+                                adatvédelmi nyilatkozatot
+                            </Anchor>
+                            .
+                        </Text>
                         <Text align="center" size="sm">
                             Már van fiókod?{" "}
                             <Anchor component={Link} to="/auth/login">

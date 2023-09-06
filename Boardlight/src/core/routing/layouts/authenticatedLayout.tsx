@@ -41,6 +41,7 @@ import { useDeleteApiAuthLogout, useGetApiAuthControl } from "../../../api/gener
 
 import { FeatureRequirement } from "../../components/requirements/featuresRequirement";
 import { PermissionRequirement } from "../../components/requirements/permissionsRequirement";
+import { PrivacyPolicyModal } from "../../components/privacyPolicyModal";
 import { useAuthStore } from "../../stores/authStore";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiStatusVersion } from "../../../api/generated/features/status/status";
@@ -225,6 +226,8 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
 
 const SystemInformationModal = ({ opened, close }: { opened: boolean; close(): void }) => {
     const version = useGetApiStatusVersion({ SendOk: true, SendMOTD: true });
+    const [privacyPolicyModalOpened, { open: openPrivacyPolicyModal, close: closePrivacyPolicyModal }] =
+        useDisclosure();
 
     if (version.isLoading)
         return (
@@ -245,34 +248,51 @@ const SystemInformationModal = ({ opened, close }: { opened: boolean; close(): v
         );
 
     return (
-        <Modal opened={opened} onClose={close} title="Rendszer információk" size="lg">
-            <Group position="apart" spacing={0}>
-                <Text>Frontend verzió:</Text>
-                <Text weight="bold">Boardlight {import.meta.env.PACKAGE_VERSION}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text>Backend verzió:</Text>
-                <Text weight="bold">Blueboard {version.data.version}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text>.NET verzió:</Text>
-                <Text weight="bold">{version.data.dotNetVersion}</Text>
-            </Group>
-            <Divider my="md" />
-            <Group position="apart" spacing={0}>
-                <Text>Fejlesztők:</Text>
-                <Text weight="bold">Ocskó Nándor (Xeretis), Gyimesi Máté (minigyima)</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text>Forráskód:</Text>
-                <Anchor href={version.data.repository} weight="bold">
-                    Github
-                </Anchor>
-            </Group>
-            <Divider my="md" />
-            <Text>MOTD:</Text>
-            <Text weight="bold">{version.data.motd}</Text>
-        </Modal>
+        <>
+            <PrivacyPolicyModal opened={privacyPolicyModalOpened} close={closePrivacyPolicyModal} />
+            <Modal opened={opened} onClose={close} title="Rendszer információk" size="lg">
+                <Group position="apart" spacing={0}>
+                    <Text>Frontend verzió:</Text>
+                    <Text weight="bold">Boardlight {import.meta.env.PACKAGE_VERSION}</Text>
+                </Group>
+                <Group position="apart" spacing={0}>
+                    <Text>Backend verzió:</Text>
+                    <Text weight="bold">Blueboard {version.data.version}</Text>
+                </Group>
+                <Group position="apart" spacing={0}>
+                    <Text>.NET verzió:</Text>
+                    <Text weight="bold">{version.data.dotNetVersion}</Text>
+                </Group>
+                <Divider my="md" />
+                <Group position="apart" spacing={0}>
+                    <Text>Fejlesztők:</Text>
+                    <Text weight="bold">Ocskó Nándor (Xeretis), Gyimesi Máté (minigyima)</Text>
+                </Group>
+                <Group position="apart" spacing={0}>
+                    <Text>Forráskód:</Text>
+                    <Anchor href={version.data.repository} weight="bold">
+                        Github
+                    </Anchor>
+                </Group>
+                <Divider my="md" />
+                <Group position="apart" spacing={0}>
+                    <Text>Adatvédelmi tájékoztató:</Text>
+                    <Anchor
+                        weight="bold"
+                        component="button"
+                        onClick={() => {
+                            close();
+                            openPrivacyPolicyModal();
+                        }}
+                    >
+                        Megtekintés
+                    </Anchor>
+                </Group>
+                <Divider my="md" />
+                <Text>MOTD:</Text>
+                <Text weight="bold">{version.data.motd}</Text>
+            </Modal>
+        </>
     );
 };
 
