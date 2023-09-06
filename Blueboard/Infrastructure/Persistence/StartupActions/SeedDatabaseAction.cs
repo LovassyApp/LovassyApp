@@ -20,9 +20,10 @@ public class SeedDatabaseAction : IStartupAction
     {
         using var scope = _serviceProvider.CreateScope();
         await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var environment = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
 
         var permissionTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(x => typeof(IPermission).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+            .Where(x => typeof(IPermission).IsAssignableFrom(x) && x is { IsInterface: false, IsAbstract: false })
             .ToList();
 
         var permissionNames = permissionTypes.Select(x =>
@@ -42,8 +43,7 @@ public class SeedDatabaseAction : IStartupAction
             {
                 Id = AuthConstants.DefaultUserGroupID,
                 Name = "Default",
-                // TODO: Add a check for the environment and act accordingly
-                Permissions = permissionNames
+                Permissions = environment.IsDevelopment() ? permissionNames : new string[] { }
             };
 
             await context.UserGroups.AddAsync(group);
