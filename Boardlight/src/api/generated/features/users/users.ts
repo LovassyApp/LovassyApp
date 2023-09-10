@@ -34,7 +34,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.IndexUsers<br><b>Requires the following features to be enabled</b>: Users
+ * Requires verified email; Requires one of the following permissions: Users.IndexUsers; Requires the following features to be enabled: Users
  */
 export const getApiUsers = (
     params?: GetApiUsersParams,
@@ -84,7 +84,7 @@ export const useGetApiUsers = <TData = Awaited<ReturnType<typeof getApiUsers>>, 
 }
 
 /**
- * <b>Requires the following features to be enabled</b>: Users
+ * Requires the following features to be enabled: Users
  */
 export const postApiUsers = (
     usersCreateUserRequestBody: BodyType<UsersCreateUserRequestBody>,
@@ -135,7 +135,7 @@ export const getPostApiUsersMutationOptions = <TError = ErrorType<unknown>,
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.ViewUser<br><b>Requires the following features to be enabled</b>: Users
+ * Requires verified email; Requires one of the following permissions: Users.ViewUser; Requires the following features to be enabled: Users
  */
 export const getApiUsersId = (
     id: string,
@@ -184,7 +184,7 @@ export const useGetApiUsersId = <TData = Awaited<ReturnType<typeof getApiUsersId
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.UpdateUser<br><b>Requires the following features to be enabled</b>: Users
+ * Requires verified email; Requires one of the following permissions: Users.UpdateUser; Requires the following features to be enabled: Users
  */
 export const patchApiUsersId = (
     id: string,
@@ -234,7 +234,7 @@ export const getPatchApiUsersIdMutationOptions = <TError = ErrorType<ProblemDeta
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.DeleteUser<br><b>Requires the following features to be enabled</b>: Users
+ * Requires verified email; Requires one of the following permissions: Users.DeleteUser; Requires the following features to be enabled: Users
  */
 export const deleteApiUsersId = (
     id: string,
@@ -281,7 +281,7 @@ export const getDeleteApiUsersIdMutationOptions = <TError = ErrorType<ProblemDet
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.KickUser<br><b>Requires the following features to be enabled</b>: Users
+ * Requires verified email; Requires one of the following permissions: Users.KickUser; Requires the following features to be enabled: Users
  */
 export const postApiUsersKickId = (
     id: string,
@@ -328,7 +328,7 @@ export const getPostApiUsersKickIdMutationOptions = <TError = ErrorType<ProblemD
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.KickAllUsers<br><b>Requires the following features to be enabled</b>: Users
+ * Requires verified email; Requires one of the following permissions: Users.KickAllUsers; Requires the following features to be enabled: Users
  */
 export const postApiUsersKickAll = (
     

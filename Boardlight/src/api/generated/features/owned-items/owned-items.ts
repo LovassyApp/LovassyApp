@@ -37,7 +37,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnedItems<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.IndexOwnedItems; Requires the following features to be enabled: Shop
  */
 export const getApiOwnedItems = (
     params?: GetApiOwnedItemsParams,
@@ -87,7 +87,7 @@ export const useGetApiOwnedItems = <TData = Awaited<ReturnType<typeof getApiOwne
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.CreateOwnedItem; Requires the following features to be enabled: Shop
  */
 export const postApiOwnedItems = (
     shopCreateOwnedItemRequestBody: BodyType<ShopCreateOwnedItemRequestBody>,
@@ -136,7 +136,7 @@ export const getPostApiOwnedItemsMutationOptions = <TError = ErrorType<void>,
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnOwnedItems<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.IndexOwnOwnedItems; Requires the following features to be enabled: Shop
  */
 export const getApiOwnedItemsOwn = (
     params?: GetApiOwnedItemsOwnParams,
@@ -186,7 +186,7 @@ export const useGetApiOwnedItemsOwn = <TData = Awaited<ReturnType<typeof getApiO
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem; Requires the following features to be enabled: Shop
  */
 export const getApiOwnedItemsId = (
     id: number,
@@ -235,7 +235,7 @@ export const useGetApiOwnedItemsId = <TData = Awaited<ReturnType<typeof getApiOw
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.UpdateOwnedItem; Requires the following features to be enabled: Shop
  */
 export const patchApiOwnedItemsId = (
     id: number,
@@ -285,7 +285,7 @@ export const getPatchApiOwnedItemsIdMutationOptions = <TError = ErrorType<Proble
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem; Requires the following features to be enabled: Shop
  */
 export const deleteApiOwnedItemsId = (
     id: number,
@@ -332,7 +332,7 @@ export const getDeleteApiOwnedItemsIdMutationOptions = <TError = ErrorType<Probl
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UseOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.UseOwnOwnedItem; Requires the following features to be enabled: Shop
  */
 export const postApiOwnedItemsIdUse = (
     id: number,

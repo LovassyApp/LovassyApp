@@ -34,7 +34,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexProducts, Shop.IndexStoreProducts
+ * Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts
  */
 export const getApiProducts = (
     params?: GetApiProductsParams,
@@ -84,7 +84,7 @@ export const useGetApiProducts = <TData = Awaited<ReturnType<typeof getApiProduc
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateProduct
+ * Requires verified email; Requires one of the following permissions: Shop.CreateProduct
  */
 export const postApiProducts = (
     shopCreateProductRequestBody: BodyType<ShopCreateProductRequestBody>,
@@ -133,7 +133,7 @@ export const getPostApiProductsMutationOptions = <TError = ErrorType<void>,
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewProduct, Shop.ViewStoreProduct
+ * Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct
  */
 export const getApiProductsId = (
     id: number,
@@ -182,7 +182,7 @@ export const useGetApiProductsId = <TData = Awaited<ReturnType<typeof getApiProd
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateProduct
+ * Requires verified email; Requires one of the following permissions: Shop.UpdateProduct
  */
 export const patchApiProductsId = (
     id: number,
@@ -232,7 +232,7 @@ export const getPatchApiProductsIdMutationOptions = <TError = ErrorType<ProblemD
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteProduct
+ * Requires verified email; Requires one of the following permissions: Shop.DeleteProduct
  */
 export const deleteApiProductsId = (
     id: number,
@@ -279,7 +279,7 @@ export const getDeleteApiProductsIdMutationOptions = <TError = ErrorType<Problem
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.BuyProduct
+ * Requires verified email; Requires one of the following permissions: Shop.BuyProduct
  */
 export const postApiProductsBuyId = (
     id: number,

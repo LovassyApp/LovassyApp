@@ -37,7 +37,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.IndexLoloRequests; Requires the following features to be enabled: Shop
  */
 export const getApiLoloRequests = (
     params?: GetApiLoloRequestsParams,
@@ -87,7 +87,7 @@ export const useGetApiLoloRequests = <TData = Awaited<ReturnType<typeof getApiLo
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest; Requires the following features to be enabled: Shop
  */
 export const postApiLoloRequests = (
     shopCreateLoloRequestRequestBody: BodyType<ShopCreateLoloRequestRequestBody>,
@@ -136,7 +136,7 @@ export const getPostApiLoloRequestsMutationOptions = <TError = ErrorType<void>,
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.IndexOwnLoloRequests; Requires the following features to be enabled: Shop
  */
 export const getApiLoloRequestsOwn = (
     params?: GetApiLoloRequestsOwnParams,
@@ -186,7 +186,7 @@ export const useGetApiLoloRequestsOwn = <TData = Awaited<ReturnType<typeof getAp
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.ViewLoloRequest; Requires the following features to be enabled: Shop
  */
 export const getApiLoloRequestsId = (
     id: number,
@@ -235,7 +235,7 @@ export const useGetApiLoloRequestsId = <TData = Awaited<ReturnType<typeof getApi
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest; Requires the following features to be enabled: Shop
  */
 export const patchApiLoloRequestsId = (
     id: number,
@@ -285,7 +285,7 @@ export const getPatchApiLoloRequestsIdMutationOptions = <TError = ErrorType<Prob
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest; Requires the following features to be enabled: Shop
  */
 export const deleteApiLoloRequestsId = (
     id: number,
@@ -332,7 +332,7 @@ export const getDeleteApiLoloRequestsIdMutationOptions = <TError = ErrorType<Pro
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.OverruleLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.OverruleLoloRequest; Requires the following features to be enabled: Shop
  */
 export const postApiLoloRequestsOverruleId = (
     id: number,

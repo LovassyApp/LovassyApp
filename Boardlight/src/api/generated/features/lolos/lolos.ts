@@ -28,7 +28,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnLolos<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.IndexOwnLolos; Requires the following features to be enabled: Shop
  */
 export const getApiLolosOwn = (
     params?: GetApiLolosOwnParams,
@@ -78,7 +78,7 @@ export const useGetApiLolosOwn = <TData = Awaited<ReturnType<typeof getApiLolosO
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLolos<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.IndexLolos; Requires the following features to be enabled: Shop
  */
 export const getApiLolos = (
     params?: GetApiLolosParams,

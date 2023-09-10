@@ -34,7 +34,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.IndexUserGroups
+ * Requires verified email; Requires one of the following permissions: Auth.IndexUserGroups
  */
 export const getApiUserGroups = (
     params?: GetApiUserGroupsParams,
@@ -84,7 +84,7 @@ export const useGetApiUserGroups = <TData = Awaited<ReturnType<typeof getApiUser
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.CreateUserGroup
+ * Requires verified email; Requires one of the following permissions: Auth.CreateUserGroup
  */
 export const postApiUserGroups = (
     authCreateUserGroupRequestBody: BodyType<AuthCreateUserGroupRequestBody>,
@@ -133,7 +133,7 @@ export const getPostApiUserGroupsMutationOptions = <TError = ErrorType<void>,
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.ViewUserGroup
+ * Requires verified email; Requires one of the following permissions: Auth.ViewUserGroup
  */
 export const getApiUserGroupsId = (
     id: number,
@@ -182,7 +182,7 @@ export const useGetApiUserGroupsId = <TData = Awaited<ReturnType<typeof getApiUs
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.UpdateUserGroup
+ * Requires verified email; Requires one of the following permissions: Auth.UpdateUserGroup
  */
 export const patchApiUserGroupsId = (
     id: number,
@@ -232,7 +232,7 @@ export const getPatchApiUserGroupsIdMutationOptions = <TError = ErrorType<Proble
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.DeleteUserGroup
+ * Requires verified email; Requires one of the following permissions: Auth.DeleteUserGroup
  */
 export const deleteApiUserGroupsId = (
     id: number,

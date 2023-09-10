@@ -34,7 +34,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.IndexImportKeys<br><b>Requires the following features to be enabled</b>: Import
+ * Requires verified email; Requires one of the following permissions: Import.IndexImportKeys; Requires the following features to be enabled: Import
  */
 export const getApiImportKeys = (
     params?: GetApiImportKeysParams,
@@ -84,7 +84,7 @@ export const useGetApiImportKeys = <TData = Awaited<ReturnType<typeof getApiImpo
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.CreateImportKey<br><b>Requires the following features to be enabled</b>: Import
+ * Requires verified email; Requires one of the following permissions: Import.CreateImportKey; Requires the following features to be enabled: Import
  */
 export const postApiImportKeys = (
     importCreateImportKeyRequestBody: BodyType<ImportCreateImportKeyRequestBody>,
@@ -133,7 +133,7 @@ export const getPostApiImportKeysMutationOptions = <TError = ErrorType<ProblemDe
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.ViewImportKey<br><b>Requires the following features to be enabled</b>: Import
+ * Requires verified email; Requires one of the following permissions: Import.ViewImportKey; Requires the following features to be enabled: Import
  */
 export const getApiImportKeysId = (
     id: number,
@@ -182,7 +182,7 @@ export const useGetApiImportKeysId = <TData = Awaited<ReturnType<typeof getApiIm
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.UpdateImportKey<br><b>Requires the following features to be enabled</b>: Import
+ * Requires verified email; Requires one of the following permissions: Import.UpdateImportKey; Requires the following features to be enabled: Import
  */
 export const patchApiImportKeysId = (
     id: number,
@@ -232,7 +232,7 @@ export const getPatchApiImportKeysIdMutationOptions = <TError = ErrorType<Proble
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.DeleteImportKey<br><b>Requires the following features to be enabled</b>: Import
+ * Requires verified email; Requires one of the following permissions: Import.DeleteImportKey; Requires the following features to be enabled: Import
  */
 export const deleteApiImportKeysId = (
     id: number,

@@ -34,7 +34,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexQRCodes<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.IndexQRCodes; Requires the following features to be enabled: Shop
  */
 export const getApiQRCodes = (
     params?: GetApiQRCodesParams,
@@ -84,7 +84,7 @@ export const useGetApiQRCodes = <TData = Awaited<ReturnType<typeof getApiQRCodes
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateQRCode<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.CreateQRCode; Requires the following features to be enabled: Shop
  */
 export const postApiQRCodes = (
     shopCreateQRCodeRequestBody: BodyType<ShopCreateQRCodeRequestBody>,
@@ -133,7 +133,7 @@ export const getPostApiQRCodesMutationOptions = <TError = ErrorType<void>,
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewQRCode<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.ViewQRCode; Requires the following features to be enabled: Shop
  */
 export const getApiQRCodesId = (
     id: number,
@@ -182,7 +182,7 @@ export const useGetApiQRCodesId = <TData = Awaited<ReturnType<typeof getApiQRCod
 }
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateQRCode<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.UpdateQRCode; Requires the following features to be enabled: Shop
  */
 export const patchApiQRCodesId = (
     id: number,
@@ -232,7 +232,7 @@ export const getPatchApiQRCodesIdMutationOptions = <TError = ErrorType<ProblemDe
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteQRCode<br><b>Requires the following features to be enabled</b>: Shop
+ * Requires verified email; Requires one of the following permissions: Shop.DeleteQRCode; Requires the following features to be enabled: Shop
  */
 export const deleteApiQRCodesId = (
     id: number,
