@@ -38,6 +38,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexLoloRequests; Requires the following features to be enabled: Shop
+ * @summary Get a list of all lolo requests
  */
 export const getApiLoloRequests = (
     params?: GetApiLoloRequestsParams,
@@ -72,6 +73,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiLoloRequestsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLoloRequests>>>
 export type GetApiLoloRequestsQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all lolo requests
+ */
 export const useGetApiLoloRequests = <TData = Awaited<ReturnType<typeof getApiLoloRequests>>, TError = ErrorType<void>>(
  params?: GetApiLoloRequestsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiLoloRequests>>, TError, TData>, }
 
@@ -88,6 +92,7 @@ export const useGetApiLoloRequests = <TData = Awaited<ReturnType<typeof getApiLo
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest; Requires the following features to be enabled: Shop
+ * @summary Create a new lolo request
  */
 export const postApiLoloRequests = (
     shopCreateLoloRequestRequestBody: BodyType<ShopCreateLoloRequestRequestBody>,
@@ -126,7 +131,10 @@ export const getPostApiLoloRequestsMutationOptions = <TError = ErrorType<void>,
     export type PostApiLoloRequestsMutationBody = BodyType<ShopCreateLoloRequestRequestBody>
     export type PostApiLoloRequestsMutationError = ErrorType<void>
 
-    export const usePostApiLoloRequests = <TError = ErrorType<void>,
+    /**
+ * @summary Create a new lolo request
+ */
+export const usePostApiLoloRequests = <TError = ErrorType<void>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequests>>, TError,{data: BodyType<ShopCreateLoloRequestRequestBody>}, TContext>, }
 ) => {
@@ -137,6 +145,7 @@ export const getPostApiLoloRequestsMutationOptions = <TError = ErrorType<void>,
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexOwnLoloRequests; Requires the following features to be enabled: Shop
+ * @summary Get a list of the current user's lolo requests
  */
 export const getApiLoloRequestsOwn = (
     params?: GetApiLoloRequestsOwnParams,
@@ -171,6 +180,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiLoloRequestsOwnQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLoloRequestsOwn>>>
 export type GetApiLoloRequestsOwnQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of the current user's lolo requests
+ */
 export const useGetApiLoloRequestsOwn = <TData = Awaited<ReturnType<typeof getApiLoloRequestsOwn>>, TError = ErrorType<void>>(
  params?: GetApiLoloRequestsOwnParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiLoloRequestsOwn>>, TError, TData>, }
 
@@ -187,6 +199,7 @@ export const useGetApiLoloRequestsOwn = <TData = Awaited<ReturnType<typeof getAp
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.ViewLoloRequest; Requires the following features to be enabled: Shop
+ * @summary Get information about a lolo request
  */
 export const getApiLoloRequestsId = (
     id: number,
@@ -220,6 +233,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiLoloRequestsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLoloRequestsId>>>
 export type GetApiLoloRequestsIdQueryError = ErrorType<void | ProblemDetails>
 
+/**
+ * @summary Get information about a lolo request
+ */
 export const useGetApiLoloRequestsId = <TData = Awaited<ReturnType<typeof getApiLoloRequestsId>>, TError = ErrorType<void | ProblemDetails>>(
  id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiLoloRequestsId>>, TError, TData>, }
 
@@ -236,6 +252,7 @@ export const useGetApiLoloRequestsId = <TData = Awaited<ReturnType<typeof getApi
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest; Requires the following features to be enabled: Shop
+ * @summary Update a lolo request
  */
 export const patchApiLoloRequestsId = (
     id: number,
@@ -275,7 +292,10 @@ export const getPatchApiLoloRequestsIdMutationOptions = <TError = ErrorType<Prob
     export type PatchApiLoloRequestsIdMutationBody = BodyType<ShopUpdateLoloRequestRequestBody>
     export type PatchApiLoloRequestsIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePatchApiLoloRequestsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Update a lolo request
+ */
+export const usePatchApiLoloRequestsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiLoloRequestsId>>, TError,{id: number;data: BodyType<ShopUpdateLoloRequestRequestBody>}, TContext>, }
 ) => {
@@ -286,6 +306,7 @@ export const getPatchApiLoloRequestsIdMutationOptions = <TError = ErrorType<Prob
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest; Requires the following features to be enabled: Shop
+ * @summary Delete a lolo request
  */
 export const deleteApiLoloRequestsId = (
     id: number,
@@ -322,7 +343,10 @@ export const getDeleteApiLoloRequestsIdMutationOptions = <TError = ErrorType<Pro
     
     export type DeleteApiLoloRequestsIdMutationError = ErrorType<ProblemDetails>
 
-    export const useDeleteApiLoloRequestsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete a lolo request
+ */
+export const useDeleteApiLoloRequestsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiLoloRequestsId>>, TError,{id: number}, TContext>, }
 ) => {
@@ -333,6 +357,7 @@ export const getDeleteApiLoloRequestsIdMutationOptions = <TError = ErrorType<Pro
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.OverruleLoloRequest; Requires the following features to be enabled: Shop
+ * @summary Overrule a lolo request
  */
 export const postApiLoloRequestsOverruleId = (
     id: number,
@@ -372,7 +397,10 @@ export const getPostApiLoloRequestsOverruleIdMutationOptions = <TError = ErrorTy
     export type PostApiLoloRequestsOverruleIdMutationBody = BodyType<ShopOverruleLoloRequestRequestBody>
     export type PostApiLoloRequestsOverruleIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePostApiLoloRequestsOverruleId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Overrule a lolo request
+ */
+export const usePostApiLoloRequestsOverruleId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequestsOverruleId>>, TError,{id: number;data: BodyType<ShopOverruleLoloRequestRequestBody>}, TContext>, }
 ) => {

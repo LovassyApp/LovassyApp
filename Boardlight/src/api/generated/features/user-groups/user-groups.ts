@@ -35,6 +35,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Auth.IndexUserGroups
+ * @summary Get a list of all user groups
  */
 export const getApiUserGroups = (
     params?: GetApiUserGroupsParams,
@@ -69,6 +70,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiUserGroupsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUserGroups>>>
 export type GetApiUserGroupsQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all user groups
+ */
 export const useGetApiUserGroups = <TData = Awaited<ReturnType<typeof getApiUserGroups>>, TError = ErrorType<void>>(
  params?: GetApiUserGroupsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUserGroups>>, TError, TData>, }
 
@@ -85,6 +89,7 @@ export const useGetApiUserGroups = <TData = Awaited<ReturnType<typeof getApiUser
 
 /**
  * Requires verified email; Requires one of the following permissions: Auth.CreateUserGroup
+ * @summary Create a new user group
  */
 export const postApiUserGroups = (
     authCreateUserGroupRequestBody: BodyType<AuthCreateUserGroupRequestBody>,
@@ -123,7 +128,10 @@ export const getPostApiUserGroupsMutationOptions = <TError = ErrorType<void>,
     export type PostApiUserGroupsMutationBody = BodyType<AuthCreateUserGroupRequestBody>
     export type PostApiUserGroupsMutationError = ErrorType<void>
 
-    export const usePostApiUserGroups = <TError = ErrorType<void>,
+    /**
+ * @summary Create a new user group
+ */
+export const usePostApiUserGroups = <TError = ErrorType<void>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUserGroups>>, TError,{data: BodyType<AuthCreateUserGroupRequestBody>}, TContext>, }
 ) => {
@@ -134,6 +142,7 @@ export const getPostApiUserGroupsMutationOptions = <TError = ErrorType<void>,
     }
     /**
  * Requires verified email; Requires one of the following permissions: Auth.ViewUserGroup
+ * @summary Get information about a user group
  */
 export const getApiUserGroupsId = (
     id: number,
@@ -167,6 +176,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiUserGroupsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUserGroupsId>>>
 export type GetApiUserGroupsIdQueryError = ErrorType<void | ProblemDetails>
 
+/**
+ * @summary Get information about a user group
+ */
 export const useGetApiUserGroupsId = <TData = Awaited<ReturnType<typeof getApiUserGroupsId>>, TError = ErrorType<void | ProblemDetails>>(
  id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUserGroupsId>>, TError, TData>, }
 
@@ -183,6 +195,7 @@ export const useGetApiUserGroupsId = <TData = Awaited<ReturnType<typeof getApiUs
 
 /**
  * Requires verified email; Requires one of the following permissions: Auth.UpdateUserGroup
+ * @summary Update a user group
  */
 export const patchApiUserGroupsId = (
     id: number,
@@ -222,7 +235,10 @@ export const getPatchApiUserGroupsIdMutationOptions = <TError = ErrorType<Proble
     export type PatchApiUserGroupsIdMutationBody = BodyType<AuthUpdateUserGroupRequestBody>
     export type PatchApiUserGroupsIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePatchApiUserGroupsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Update a user group
+ */
+export const usePatchApiUserGroupsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiUserGroupsId>>, TError,{id: number;data: BodyType<AuthUpdateUserGroupRequestBody>}, TContext>, }
 ) => {
@@ -233,6 +249,7 @@ export const getPatchApiUserGroupsIdMutationOptions = <TError = ErrorType<Proble
     }
     /**
  * Requires verified email; Requires one of the following permissions: Auth.DeleteUserGroup
+ * @summary Delete a user group
  */
 export const deleteApiUserGroupsId = (
     id: number,
@@ -269,7 +286,10 @@ export const getDeleteApiUserGroupsIdMutationOptions = <TError = ErrorType<Probl
     
     export type DeleteApiUserGroupsIdMutationError = ErrorType<ProblemDetails>
 
-    export const useDeleteApiUserGroupsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete a user group
+ */
+export const useDeleteApiUserGroupsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUserGroupsId>>, TError,{id: number}, TContext>, }
 ) => {

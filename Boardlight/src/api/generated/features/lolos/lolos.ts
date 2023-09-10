@@ -29,6 +29,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexOwnLolos; Requires the following features to be enabled: Shop
+ * @summary Get a list of the user's lolo coins
  */
 export const getApiLolosOwn = (
     params?: GetApiLolosOwnParams,
@@ -63,6 +64,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiLolosOwnQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLolosOwn>>>
 export type GetApiLolosOwnQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of the user's lolo coins
+ */
 export const useGetApiLolosOwn = <TData = Awaited<ReturnType<typeof getApiLolosOwn>>, TError = ErrorType<void>>(
  params?: GetApiLolosOwnParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiLolosOwn>>, TError, TData>, }
 
@@ -79,6 +83,7 @@ export const useGetApiLolosOwn = <TData = Awaited<ReturnType<typeof getApiLolosO
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexLolos; Requires the following features to be enabled: Shop
+ * @summary Get a list of all lolo coins
  */
 export const getApiLolos = (
     params?: GetApiLolosParams,
@@ -113,6 +118,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiLolosQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLolos>>>
 export type GetApiLolosQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all lolo coins
+ */
 export const useGetApiLolos = <TData = Awaited<ReturnType<typeof getApiLolos>>, TError = ErrorType<void>>(
  params?: GetApiLolosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiLolos>>, TError, TData>, }
 

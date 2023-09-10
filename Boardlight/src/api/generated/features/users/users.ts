@@ -35,6 +35,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Users.IndexUsers; Requires the following features to be enabled: Users
+ * @summary Get a list of all users
  */
 export const getApiUsers = (
     params?: GetApiUsersParams,
@@ -69,6 +70,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiUsersQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUsers>>>
 export type GetApiUsersQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all users
+ */
 export const useGetApiUsers = <TData = Awaited<ReturnType<typeof getApiUsers>>, TError = ErrorType<void>>(
  params?: GetApiUsersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUsers>>, TError, TData>, }
 
@@ -85,6 +89,7 @@ export const useGetApiUsers = <TData = Awaited<ReturnType<typeof getApiUsers>>, 
 
 /**
  * Requires the following features to be enabled: Users
+ * @summary Create a new user
  */
 export const postApiUsers = (
     usersCreateUserRequestBody: BodyType<UsersCreateUserRequestBody>,
@@ -125,7 +130,10 @@ export const getPostApiUsersMutationOptions = <TError = ErrorType<unknown>,
     export type PostApiUsersMutationBody = BodyType<UsersCreateUserRequestBody>
     export type PostApiUsersMutationError = ErrorType<unknown>
 
-    export const usePostApiUsers = <TError = ErrorType<unknown>,
+    /**
+ * @summary Create a new user
+ */
+export const usePostApiUsers = <TError = ErrorType<unknown>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUsers>>, TError,{data: BodyType<UsersCreateUserRequestBody>;params?: PostApiUsersParams}, TContext>, }
 ) => {
@@ -136,6 +144,7 @@ export const getPostApiUsersMutationOptions = <TError = ErrorType<unknown>,
     }
     /**
  * Requires verified email; Requires one of the following permissions: Users.ViewUser; Requires the following features to be enabled: Users
+ * @summary Get information about a user
  */
 export const getApiUsersId = (
     id: string,
@@ -152,7 +161,7 @@ export const getGetApiUsersIdQueryKey = (id: string,) => [`/Api/Users/${id}`] as
   
 
     
-export const getGetApiUsersIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiUsersId>>, TError = ErrorType<void>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUsersId>>, TError, TData>, }
+export const getGetApiUsersIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiUsersId>>, TError = ErrorType<void | ProblemDetails>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUsersId>>, TError, TData>, }
 ): UseQueryOptions<Awaited<ReturnType<typeof getApiUsersId>>, TError, TData> & { queryKey: QueryKey } => {
 const {query: queryOptions} = options ?? {};
 
@@ -167,9 +176,12 @@ const {query: queryOptions} = options ?? {};
    return  { queryKey, queryFn, enabled: !!(id), ...queryOptions}}
 
 export type GetApiUsersIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUsersId>>>
-export type GetApiUsersIdQueryError = ErrorType<void>
+export type GetApiUsersIdQueryError = ErrorType<void | ProblemDetails>
 
-export const useGetApiUsersId = <TData = Awaited<ReturnType<typeof getApiUsersId>>, TError = ErrorType<void>>(
+/**
+ * @summary Get information about a user
+ */
+export const useGetApiUsersId = <TData = Awaited<ReturnType<typeof getApiUsersId>>, TError = ErrorType<void | ProblemDetails>>(
  id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiUsersId>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -185,6 +197,7 @@ export const useGetApiUsersId = <TData = Awaited<ReturnType<typeof getApiUsersId
 
 /**
  * Requires verified email; Requires one of the following permissions: Users.UpdateUser; Requires the following features to be enabled: Users
+ * @summary Update a user
  */
 export const patchApiUsersId = (
     id: string,
@@ -224,7 +237,10 @@ export const getPatchApiUsersIdMutationOptions = <TError = ErrorType<ProblemDeta
     export type PatchApiUsersIdMutationBody = BodyType<UsersUpdateUserRequestBody>
     export type PatchApiUsersIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePatchApiUsersId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Update a user
+ */
+export const usePatchApiUsersId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiUsersId>>, TError,{id: string;data: BodyType<UsersUpdateUserRequestBody>}, TContext>, }
 ) => {
@@ -235,6 +251,7 @@ export const getPatchApiUsersIdMutationOptions = <TError = ErrorType<ProblemDeta
     }
     /**
  * Requires verified email; Requires one of the following permissions: Users.DeleteUser; Requires the following features to be enabled: Users
+ * @summary Delete a user
  */
 export const deleteApiUsersId = (
     id: string,
@@ -271,7 +288,10 @@ export const getDeleteApiUsersIdMutationOptions = <TError = ErrorType<ProblemDet
     
     export type DeleteApiUsersIdMutationError = ErrorType<ProblemDetails>
 
-    export const useDeleteApiUsersId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete a user
+ */
+export const useDeleteApiUsersId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiUsersId>>, TError,{id: string}, TContext>, }
 ) => {
@@ -282,6 +302,7 @@ export const getDeleteApiUsersIdMutationOptions = <TError = ErrorType<ProblemDet
     }
     /**
  * Requires verified email; Requires one of the following permissions: Users.KickUser; Requires the following features to be enabled: Users
+ * @summary Delete all active sessions of a user
  */
 export const postApiUsersKickId = (
     id: string,
@@ -318,7 +339,10 @@ export const getPostApiUsersKickIdMutationOptions = <TError = ErrorType<ProblemD
     
     export type PostApiUsersKickIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePostApiUsersKickId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete all active sessions of a user
+ */
+export const usePostApiUsersKickId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUsersKickId>>, TError,{id: string}, TContext>, }
 ) => {
@@ -329,6 +353,7 @@ export const getPostApiUsersKickIdMutationOptions = <TError = ErrorType<ProblemD
     }
     /**
  * Requires verified email; Requires one of the following permissions: Users.KickAllUsers; Requires the following features to be enabled: Users
+ * @summary Delete all active sessions of all users
  */
 export const postApiUsersKickAll = (
     
@@ -365,7 +390,10 @@ export const getPostApiUsersKickAllMutationOptions = <TError = ErrorType<unknown
     
     export type PostApiUsersKickAllMutationError = ErrorType<unknown>
 
-    export const usePostApiUsersKickAll = <TError = ErrorType<unknown>,
+    /**
+ * @summary Delete all active sessions of all users
+ */
+export const usePostApiUsersKickAll = <TError = ErrorType<unknown>,
     TVariables = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiUsersKickAll>>, TError,TVariables, TContext>, }
 ) => {

@@ -27,6 +27,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Auth.IndexPermissions
+ * @summary Get a list of all permissions
  */
 export const getApiPermissions = (
     params?: GetApiPermissionsParams,
@@ -61,6 +62,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiPermissionsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPermissions>>>
 export type GetApiPermissionsQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all permissions
+ */
 export const useGetApiPermissions = <TData = Awaited<ReturnType<typeof getApiPermissions>>, TError = ErrorType<void>>(
  params?: GetApiPermissionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiPermissions>>, TError, TData>, }
 

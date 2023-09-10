@@ -35,6 +35,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts
+ * @summary Get a list of all products or only store products depending on permissions
  */
 export const getApiProducts = (
     params?: GetApiProductsParams,
@@ -69,6 +70,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiProductsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProducts>>>
 export type GetApiProductsQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all products or only store products depending on permissions
+ */
 export const useGetApiProducts = <TData = Awaited<ReturnType<typeof getApiProducts>>, TError = ErrorType<void>>(
  params?: GetApiProductsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProducts>>, TError, TData>, }
 
@@ -85,6 +89,7 @@ export const useGetApiProducts = <TData = Awaited<ReturnType<typeof getApiProduc
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.CreateProduct
+ * @summary Create a new product
  */
 export const postApiProducts = (
     shopCreateProductRequestBody: BodyType<ShopCreateProductRequestBody>,
@@ -123,7 +128,10 @@ export const getPostApiProductsMutationOptions = <TError = ErrorType<void>,
     export type PostApiProductsMutationBody = BodyType<ShopCreateProductRequestBody>
     export type PostApiProductsMutationError = ErrorType<void>
 
-    export const usePostApiProducts = <TError = ErrorType<void>,
+    /**
+ * @summary Create a new product
+ */
+export const usePostApiProducts = <TError = ErrorType<void>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiProducts>>, TError,{data: BodyType<ShopCreateProductRequestBody>}, TContext>, }
 ) => {
@@ -134,6 +142,7 @@ export const getPostApiProductsMutationOptions = <TError = ErrorType<void>,
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct
+ * @summary Get information about a product
  */
 export const getApiProductsId = (
     id: number,
@@ -167,6 +176,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiProductsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProductsId>>>
 export type GetApiProductsIdQueryError = ErrorType<void | ProblemDetails>
 
+/**
+ * @summary Get information about a product
+ */
 export const useGetApiProductsId = <TData = Awaited<ReturnType<typeof getApiProductsId>>, TError = ErrorType<void | ProblemDetails>>(
  id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiProductsId>>, TError, TData>, }
 
@@ -183,6 +195,7 @@ export const useGetApiProductsId = <TData = Awaited<ReturnType<typeof getApiProd
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.UpdateProduct
+ * @summary Update a product
  */
 export const patchApiProductsId = (
     id: number,
@@ -222,7 +235,10 @@ export const getPatchApiProductsIdMutationOptions = <TError = ErrorType<ProblemD
     export type PatchApiProductsIdMutationBody = BodyType<ShopUpdateProductRequestBody>
     export type PatchApiProductsIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePatchApiProductsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Update a product
+ */
+export const usePatchApiProductsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiProductsId>>, TError,{id: number;data: BodyType<ShopUpdateProductRequestBody>}, TContext>, }
 ) => {
@@ -233,6 +249,7 @@ export const getPatchApiProductsIdMutationOptions = <TError = ErrorType<ProblemD
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.DeleteProduct
+ * @summary Delete a product
  */
 export const deleteApiProductsId = (
     id: number,
@@ -269,7 +286,10 @@ export const getDeleteApiProductsIdMutationOptions = <TError = ErrorType<Problem
     
     export type DeleteApiProductsIdMutationError = ErrorType<ProblemDetails>
 
-    export const useDeleteApiProductsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete a product
+ */
+export const useDeleteApiProductsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiProductsId>>, TError,{id: number}, TContext>, }
 ) => {
@@ -280,6 +300,7 @@ export const getDeleteApiProductsIdMutationOptions = <TError = ErrorType<Problem
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.BuyProduct
+ * @summary Buy a product
  */
 export const postApiProductsBuyId = (
     id: number,
@@ -316,7 +337,10 @@ export const getPostApiProductsBuyIdMutationOptions = <TError = ErrorType<Proble
     
     export type PostApiProductsBuyIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePostApiProductsBuyId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Buy a product
+ */
+export const usePostApiProductsBuyId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiProductsBuyId>>, TError,{id: number}, TContext>, }
 ) => {

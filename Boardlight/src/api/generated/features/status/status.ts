@@ -31,6 +31,9 @@ type AwaitedInput<T> = PromiseLike<T> | T;
       type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 
 
+/**
+ * @summary Get information about the application version
+ */
 export const getApiStatusVersion = (
     params: GetApiStatusVersionParams,
  signal?: AbortSignal
@@ -64,6 +67,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiStatusVersionQueryResult = NonNullable<Awaited<ReturnType<typeof getApiStatusVersion>>>
 export type GetApiStatusVersionQueryError = ErrorType<ProblemDetails>
 
+/**
+ * @summary Get information about the application version
+ */
 export const useGetApiStatusVersion = <TData = Awaited<ReturnType<typeof getApiStatusVersion>>, TError = ErrorType<ProblemDetails>>(
  params: GetApiStatusVersionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiStatusVersion>>, TError, TData>, }
 
@@ -78,6 +84,9 @@ export const useGetApiStatusVersion = <TData = Awaited<ReturnType<typeof getApiS
   return query;
 }
 
+/**
+ * @summary Get information about the status of the application
+ */
 export const getApiStatusServiceStatus = (
     
  signal?: AbortSignal
@@ -110,6 +119,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiStatusServiceStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getApiStatusServiceStatus>>>
 export type GetApiStatusServiceStatusQueryError = ErrorType<unknown>
 
+/**
+ * @summary Get information about the status of the application
+ */
 export const useGetApiStatusServiceStatus = <TData = Awaited<ReturnType<typeof getApiStatusServiceStatus>>, TError = ErrorType<unknown>>(
   options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiStatusServiceStatus>>, TError, TData>, }
 
@@ -124,6 +136,9 @@ export const useGetApiStatusServiceStatus = <TData = Awaited<ReturnType<typeof g
   return query;
 }
 
+/**
+ * @summary Subscribe an email to when a password reset key has been set
+ */
 export const postApiStatusNotifyOnResetKeyPasswordSet = (
     statusNotifyOnResetKeyPasswordSetRequestBody: BodyType<StatusNotifyOnResetKeyPasswordSetRequestBody>,
  ) => {
@@ -161,7 +176,10 @@ export const getPostApiStatusNotifyOnResetKeyPasswordSetMutationOptions = <TErro
     export type PostApiStatusNotifyOnResetKeyPasswordSetMutationBody = BodyType<StatusNotifyOnResetKeyPasswordSetRequestBody>
     export type PostApiStatusNotifyOnResetKeyPasswordSetMutationError = ErrorType<unknown>
 
-    export const usePostApiStatusNotifyOnResetKeyPasswordSet = <TError = ErrorType<unknown>,
+    /**
+ * @summary Subscribe an email to when a password reset key has been set
+ */
+export const usePostApiStatusNotifyOnResetKeyPasswordSet = <TError = ErrorType<unknown>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiStatusNotifyOnResetKeyPasswordSet>>, TError,{data: BodyType<StatusNotifyOnResetKeyPasswordSetRequestBody>}, TContext>, }
 ) => {

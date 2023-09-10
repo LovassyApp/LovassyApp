@@ -38,6 +38,9 @@ type AwaitedInput<T> = PromiseLike<T> | T;
       type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 
 
+/**
+ * @summary Create a new session for a user
+ */
 export const postApiAuthLogin = (
     authLoginRequestBody: BodyType<AuthLoginRequestBody>,
  ) => {
@@ -75,7 +78,10 @@ export const getPostApiAuthLoginMutationOptions = <TError = ErrorType<unknown>,
     export type PostApiAuthLoginMutationBody = BodyType<AuthLoginRequestBody>
     export type PostApiAuthLoginMutationError = ErrorType<unknown>
 
-    export const usePostApiAuthLogin = <TError = ErrorType<unknown>,
+    /**
+ * @summary Create a new session for a user
+ */
+export const usePostApiAuthLogin = <TError = ErrorType<unknown>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAuthLogin>>, TError,{data: BodyType<AuthLoginRequestBody>}, TContext>, }
 ) => {
@@ -84,7 +90,10 @@ export const getPostApiAuthLoginMutationOptions = <TError = ErrorType<unknown>,
      
       return useMutation(mutationOptions);
     }
-    export const postApiAuthRefresh = (
+    /**
+ * @summary Refresh a user's session
+ */
+export const postApiAuthRefresh = (
     params?: PostApiAuthRefreshParams,
  ) => {
       return useCustomClient<AuthRefreshResponse>(
@@ -120,7 +129,10 @@ export const getPostApiAuthRefreshMutationOptions = <TError = ErrorType<unknown>
     
     export type PostApiAuthRefreshMutationError = ErrorType<unknown>
 
-    export const usePostApiAuthRefresh = <TError = ErrorType<unknown>,
+    /**
+ * @summary Refresh a user's session
+ */
+export const usePostApiAuthRefresh = <TError = ErrorType<unknown>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAuthRefresh>>, TError,{params?: PostApiAuthRefreshParams}, TContext>, }
 ) => {
@@ -131,6 +143,7 @@ export const getPostApiAuthRefreshMutationOptions = <TError = ErrorType<unknown>
     }
     /**
  * Requires one of the following permissions: Auth.Control
+ * @summary Get information about the current user
  */
 export const getApiAuthControl = (
     
@@ -164,6 +177,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiAuthControlQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAuthControl>>>
 export type GetApiAuthControlQueryError = ErrorType<void>
 
+/**
+ * @summary Get information about the current user
+ */
 export const useGetApiAuthControl = <TData = Awaited<ReturnType<typeof getApiAuthControl>>, TError = ErrorType<void>>(
   options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiAuthControl>>, TError, TData>, }
 
@@ -178,6 +194,9 @@ export const useGetApiAuthControl = <TData = Awaited<ReturnType<typeof getApiAut
   return query;
 }
 
+/**
+ * @summary Delete the current user's session and refresh cookie
+ */
 export const deleteApiAuthLogout = (
     
  ) => {
@@ -213,7 +232,10 @@ export const getDeleteApiAuthLogoutMutationOptions = <TError = ErrorType<unknown
     
     export type DeleteApiAuthLogoutMutationError = ErrorType<unknown>
 
-    export const useDeleteApiAuthLogout = <TError = ErrorType<unknown>,
+    /**
+ * @summary Delete the current user's session and refresh cookie
+ */
+export const useDeleteApiAuthLogout = <TError = ErrorType<unknown>,
     TVariables = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiAuthLogout>>, TError,TVariables, TContext>, }
 ) => {
@@ -222,7 +244,10 @@ export const getDeleteApiAuthLogoutMutationOptions = <TError = ErrorType<unknown
      
       return useMutation(mutationOptions);
     }
-    export const postApiAuthVerifyEmail = (
+    /**
+ * @summary Verify a user's email address
+ */
+export const postApiAuthVerifyEmail = (
     params?: PostApiAuthVerifyEmailParams,
  ) => {
       return useCustomClient<void>(
@@ -258,7 +283,10 @@ export const getPostApiAuthVerifyEmailMutationOptions = <TError = ErrorType<Prob
     
     export type PostApiAuthVerifyEmailMutationError = ErrorType<ProblemDetails>
 
-    export const usePostApiAuthVerifyEmail = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Verify a user's email address
+ */
+export const usePostApiAuthVerifyEmail = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAuthVerifyEmail>>, TError,{params?: PostApiAuthVerifyEmailParams}, TContext>, }
 ) => {
@@ -269,6 +297,7 @@ export const getPostApiAuthVerifyEmailMutationOptions = <TError = ErrorType<Prob
     }
     /**
  * Requires unverified email
+ * @summary Resend a user's email verification email
  */
 export const postApiAuthResendVerifyEmail = (
     params?: PostApiAuthResendVerifyEmailParams,
@@ -306,7 +335,10 @@ export const getPostApiAuthResendVerifyEmailMutationOptions = <TError = ErrorTyp
     
     export type PostApiAuthResendVerifyEmailMutationError = ErrorType<unknown>
 
-    export const usePostApiAuthResendVerifyEmail = <TError = ErrorType<unknown>,
+    /**
+ * @summary Resend a user's email verification email
+ */
+export const usePostApiAuthResendVerifyEmail = <TError = ErrorType<unknown>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAuthResendVerifyEmail>>, TError,{params?: PostApiAuthResendVerifyEmailParams}, TContext>, }
 ) => {
@@ -315,7 +347,10 @@ export const getPostApiAuthResendVerifyEmailMutationOptions = <TError = ErrorTyp
      
       return useMutation(mutationOptions);
     }
-    export const postApiAuthSendPasswordReset = (
+    /**
+ * @summary Send a password reset email to a user
+ */
+export const postApiAuthSendPasswordReset = (
     authSendPasswordResetRequestBody: BodyType<AuthSendPasswordResetRequestBody>,
     params?: PostApiAuthSendPasswordResetParams,
  ) => {
@@ -354,7 +389,10 @@ export const getPostApiAuthSendPasswordResetMutationOptions = <TError = ErrorTyp
     export type PostApiAuthSendPasswordResetMutationBody = BodyType<AuthSendPasswordResetRequestBody>
     export type PostApiAuthSendPasswordResetMutationError = ErrorType<unknown>
 
-    export const usePostApiAuthSendPasswordReset = <TError = ErrorType<unknown>,
+    /**
+ * @summary Send a password reset email to a user
+ */
+export const usePostApiAuthSendPasswordReset = <TError = ErrorType<unknown>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAuthSendPasswordReset>>, TError,{data: BodyType<AuthSendPasswordResetRequestBody>;params?: PostApiAuthSendPasswordResetParams}, TContext>, }
 ) => {
@@ -363,7 +401,10 @@ export const getPostApiAuthSendPasswordResetMutationOptions = <TError = ErrorTyp
      
       return useMutation(mutationOptions);
     }
-    export const postApiAuthResetPassword = (
+    /**
+ * @summary Reset a user's password
+ */
+export const postApiAuthResetPassword = (
     authResetPasswordRequestBody: BodyType<AuthResetPasswordRequestBody>,
     params?: PostApiAuthResetPasswordParams,
  ) => {
@@ -402,7 +443,10 @@ export const getPostApiAuthResetPasswordMutationOptions = <TError = ErrorType<Pr
     export type PostApiAuthResetPasswordMutationBody = BodyType<AuthResetPasswordRequestBody>
     export type PostApiAuthResetPasswordMutationError = ErrorType<ProblemDetails>
 
-    export const usePostApiAuthResetPassword = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Reset a user's password
+ */
+export const usePostApiAuthResetPassword = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiAuthResetPassword>>, TError,{data: BodyType<AuthResetPasswordRequestBody>;params?: PostApiAuthResetPasswordParams}, TContext>, }
 ) => {

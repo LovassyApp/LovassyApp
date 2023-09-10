@@ -27,6 +27,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: School.IndexGrades; Requires the following features to be enabled: School
+ * @summary Get a list of the current user's grades
  */
 export const getApiGrades = (
     params?: GetApiGradesParams,
@@ -61,6 +62,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiGradesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiGrades>>>
 export type GetApiGradesQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of the current user's grades
+ */
 export const useGetApiGrades = <TData = Awaited<ReturnType<typeof getApiGrades>>, TError = ErrorType<void>>(
  params?: GetApiGradesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiGrades>>, TError, TData>, }
 

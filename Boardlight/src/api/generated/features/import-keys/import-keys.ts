@@ -35,6 +35,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Import.IndexImportKeys; Requires the following features to be enabled: Import
+ * @summary Get a list of all import keys
  */
 export const getApiImportKeys = (
     params?: GetApiImportKeysParams,
@@ -69,6 +70,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiImportKeysQueryResult = NonNullable<Awaited<ReturnType<typeof getApiImportKeys>>>
 export type GetApiImportKeysQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all import keys
+ */
 export const useGetApiImportKeys = <TData = Awaited<ReturnType<typeof getApiImportKeys>>, TError = ErrorType<void>>(
  params?: GetApiImportKeysParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImportKeys>>, TError, TData>, }
 
@@ -85,6 +89,7 @@ export const useGetApiImportKeys = <TData = Awaited<ReturnType<typeof getApiImpo
 
 /**
  * Requires verified email; Requires one of the following permissions: Import.CreateImportKey; Requires the following features to be enabled: Import
+ * @summary Create a new import key
  */
 export const postApiImportKeys = (
     importCreateImportKeyRequestBody: BodyType<ImportCreateImportKeyRequestBody>,
@@ -123,7 +128,10 @@ export const getPostApiImportKeysMutationOptions = <TError = ErrorType<ProblemDe
     export type PostApiImportKeysMutationBody = BodyType<ImportCreateImportKeyRequestBody>
     export type PostApiImportKeysMutationError = ErrorType<ProblemDetails | void>
 
-    export const usePostApiImportKeys = <TError = ErrorType<ProblemDetails | void>,
+    /**
+ * @summary Create a new import key
+ */
+export const usePostApiImportKeys = <TError = ErrorType<ProblemDetails | void>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImportKeys>>, TError,{data: BodyType<ImportCreateImportKeyRequestBody>}, TContext>, }
 ) => {
@@ -134,6 +142,7 @@ export const getPostApiImportKeysMutationOptions = <TError = ErrorType<ProblemDe
     }
     /**
  * Requires verified email; Requires one of the following permissions: Import.ViewImportKey; Requires the following features to be enabled: Import
+ * @summary Get information about an import key
  */
 export const getApiImportKeysId = (
     id: number,
@@ -167,6 +176,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiImportKeysIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiImportKeysId>>>
 export type GetApiImportKeysIdQueryError = ErrorType<void | ProblemDetails>
 
+/**
+ * @summary Get information about an import key
+ */
 export const useGetApiImportKeysId = <TData = Awaited<ReturnType<typeof getApiImportKeysId>>, TError = ErrorType<void | ProblemDetails>>(
  id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImportKeysId>>, TError, TData>, }
 
@@ -183,6 +195,7 @@ export const useGetApiImportKeysId = <TData = Awaited<ReturnType<typeof getApiIm
 
 /**
  * Requires verified email; Requires one of the following permissions: Import.UpdateImportKey; Requires the following features to be enabled: Import
+ * @summary Update an import key
  */
 export const patchApiImportKeysId = (
     id: number,
@@ -222,7 +235,10 @@ export const getPatchApiImportKeysIdMutationOptions = <TError = ErrorType<Proble
     export type PatchApiImportKeysIdMutationBody = BodyType<ImportUpdateImportKeyRequestBody>
     export type PatchApiImportKeysIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePatchApiImportKeysId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Update an import key
+ */
+export const usePatchApiImportKeysId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiImportKeysId>>, TError,{id: number;data: BodyType<ImportUpdateImportKeyRequestBody>}, TContext>, }
 ) => {
@@ -233,6 +249,7 @@ export const getPatchApiImportKeysIdMutationOptions = <TError = ErrorType<Proble
     }
     /**
  * Requires verified email; Requires one of the following permissions: Import.DeleteImportKey; Requires the following features to be enabled: Import
+ * @summary Delete an import key
  */
 export const deleteApiImportKeysId = (
     id: number,
@@ -269,7 +286,10 @@ export const getDeleteApiImportKeysIdMutationOptions = <TError = ErrorType<Probl
     
     export type DeleteApiImportKeysIdMutationError = ErrorType<ProblemDetails>
 
-    export const useDeleteApiImportKeysId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete an import key
+ */
+export const useDeleteApiImportKeysId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiImportKeysId>>, TError,{id: number}, TContext>, }
 ) => {

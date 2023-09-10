@@ -35,6 +35,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexQRCodes; Requires the following features to be enabled: Shop
+ * @summary Get a list of all QR codes
  */
 export const getApiQRCodes = (
     params?: GetApiQRCodesParams,
@@ -69,6 +70,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiQRCodesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiQRCodes>>>
 export type GetApiQRCodesQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all QR codes
+ */
 export const useGetApiQRCodes = <TData = Awaited<ReturnType<typeof getApiQRCodes>>, TError = ErrorType<void>>(
  params?: GetApiQRCodesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiQRCodes>>, TError, TData>, }
 
@@ -85,6 +89,7 @@ export const useGetApiQRCodes = <TData = Awaited<ReturnType<typeof getApiQRCodes
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.CreateQRCode; Requires the following features to be enabled: Shop
+ * @summary Create a new QR code
  */
 export const postApiQRCodes = (
     shopCreateQRCodeRequestBody: BodyType<ShopCreateQRCodeRequestBody>,
@@ -123,7 +128,10 @@ export const getPostApiQRCodesMutationOptions = <TError = ErrorType<void>,
     export type PostApiQRCodesMutationBody = BodyType<ShopCreateQRCodeRequestBody>
     export type PostApiQRCodesMutationError = ErrorType<void>
 
-    export const usePostApiQRCodes = <TError = ErrorType<void>,
+    /**
+ * @summary Create a new QR code
+ */
+export const usePostApiQRCodes = <TError = ErrorType<void>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiQRCodes>>, TError,{data: BodyType<ShopCreateQRCodeRequestBody>}, TContext>, }
 ) => {
@@ -134,6 +142,7 @@ export const getPostApiQRCodesMutationOptions = <TError = ErrorType<void>,
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.ViewQRCode; Requires the following features to be enabled: Shop
+ * @summary Get information about a QR code
  */
 export const getApiQRCodesId = (
     id: number,
@@ -167,6 +176,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiQRCodesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiQRCodesId>>>
 export type GetApiQRCodesIdQueryError = ErrorType<void | ProblemDetails>
 
+/**
+ * @summary Get information about a QR code
+ */
 export const useGetApiQRCodesId = <TData = Awaited<ReturnType<typeof getApiQRCodesId>>, TError = ErrorType<void | ProblemDetails>>(
  id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiQRCodesId>>, TError, TData>, }
 
@@ -183,6 +195,7 @@ export const useGetApiQRCodesId = <TData = Awaited<ReturnType<typeof getApiQRCod
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.UpdateQRCode; Requires the following features to be enabled: Shop
+ * @summary Update a QR code
  */
 export const patchApiQRCodesId = (
     id: number,
@@ -222,7 +235,10 @@ export const getPatchApiQRCodesIdMutationOptions = <TError = ErrorType<ProblemDe
     export type PatchApiQRCodesIdMutationBody = BodyType<ShopUpdateQRCodeRequestBody>
     export type PatchApiQRCodesIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePatchApiQRCodesId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Update a QR code
+ */
+export const usePatchApiQRCodesId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiQRCodesId>>, TError,{id: number;data: BodyType<ShopUpdateQRCodeRequestBody>}, TContext>, }
 ) => {
@@ -233,6 +249,7 @@ export const getPatchApiQRCodesIdMutationOptions = <TError = ErrorType<ProblemDe
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.DeleteQRCode; Requires the following features to be enabled: Shop
+ * @summary Delete a QR code
  */
 export const deleteApiQRCodesId = (
     id: number,
@@ -269,7 +286,10 @@ export const getDeleteApiQRCodesIdMutationOptions = <TError = ErrorType<ProblemD
     
     export type DeleteApiQRCodesIdMutationError = ErrorType<ProblemDetails>
 
-    export const useDeleteApiQRCodesId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete a QR code
+ */
+export const useDeleteApiQRCodesId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiQRCodesId>>, TError,{id: number}, TContext>, }
 ) => {

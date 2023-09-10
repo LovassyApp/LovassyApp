@@ -33,6 +33,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires the following features to be enabled: Import
+ * @summary Get a list of all users for grade importing
  */
 export const getApiImportUsers = (
     params?: GetApiImportUsersParams,
@@ -67,6 +68,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiImportUsersQueryResult = NonNullable<Awaited<ReturnType<typeof getApiImportUsers>>>
 export type GetApiImportUsersQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all users for grade importing
+ */
 export const useGetApiImportUsers = <TData = Awaited<ReturnType<typeof getApiImportUsers>>, TError = ErrorType<void>>(
  params?: GetApiImportUsersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImportUsers>>, TError, TData>, }
 
@@ -83,6 +87,7 @@ export const useGetApiImportUsers = <TData = Awaited<ReturnType<typeof getApiImp
 
 /**
  * Requires the following features to be enabled: Import
+ * @summary Import grades for a user
  */
 export const postApiImportGradesUserId = (
     userId: string,
@@ -122,7 +127,10 @@ export const getPostApiImportGradesUserIdMutationOptions = <TError = ErrorType<P
     export type PostApiImportGradesUserIdMutationBody = BodyType<ImportImportGradesRequestBody>
     export type PostApiImportGradesUserIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePostApiImportGradesUserId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Import grades for a user
+ */
+export const usePostApiImportGradesUserId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImportGradesUserId>>, TError,{userId: string;data: BodyType<ImportImportGradesRequestBody>}, TContext>, }
 ) => {
@@ -133,6 +141,7 @@ export const getPostApiImportGradesUserIdMutationOptions = <TError = ErrorType<P
     }
     /**
  * Requires the following features to be enabled: Import
+ * @summary Set the reset key password
  */
 export const putApiImportResetKeyPassword = (
     importUpdateResetKeyPasswordRequestBody: BodyType<ImportUpdateResetKeyPasswordRequestBody>,
@@ -171,7 +180,10 @@ export const getPutApiImportResetKeyPasswordMutationOptions = <TError = ErrorTyp
     export type PutApiImportResetKeyPasswordMutationBody = BodyType<ImportUpdateResetKeyPasswordRequestBody>
     export type PutApiImportResetKeyPasswordMutationError = ErrorType<unknown>
 
-    export const usePutApiImportResetKeyPassword = <TError = ErrorType<unknown>,
+    /**
+ * @summary Set the reset key password
+ */
+export const usePutApiImportResetKeyPassword = <TError = ErrorType<unknown>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiImportResetKeyPassword>>, TError,{data: BodyType<ImportUpdateResetKeyPasswordRequestBody>}, TContext>, }
 ) => {

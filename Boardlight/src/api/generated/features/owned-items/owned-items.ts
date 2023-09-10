@@ -38,6 +38,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexOwnedItems; Requires the following features to be enabled: Shop
+ * @summary Get a list of all owned items
  */
 export const getApiOwnedItems = (
     params?: GetApiOwnedItemsParams,
@@ -72,6 +73,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiOwnedItemsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiOwnedItems>>>
 export type GetApiOwnedItemsQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of all owned items
+ */
 export const useGetApiOwnedItems = <TData = Awaited<ReturnType<typeof getApiOwnedItems>>, TError = ErrorType<void>>(
  params?: GetApiOwnedItemsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiOwnedItems>>, TError, TData>, }
 
@@ -88,6 +92,7 @@ export const useGetApiOwnedItems = <TData = Awaited<ReturnType<typeof getApiOwne
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.CreateOwnedItem; Requires the following features to be enabled: Shop
+ * @summary Create a new owned item
  */
 export const postApiOwnedItems = (
     shopCreateOwnedItemRequestBody: BodyType<ShopCreateOwnedItemRequestBody>,
@@ -126,7 +131,10 @@ export const getPostApiOwnedItemsMutationOptions = <TError = ErrorType<void>,
     export type PostApiOwnedItemsMutationBody = BodyType<ShopCreateOwnedItemRequestBody>
     export type PostApiOwnedItemsMutationError = ErrorType<void>
 
-    export const usePostApiOwnedItems = <TError = ErrorType<void>,
+    /**
+ * @summary Create a new owned item
+ */
+export const usePostApiOwnedItems = <TError = ErrorType<void>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiOwnedItems>>, TError,{data: BodyType<ShopCreateOwnedItemRequestBody>}, TContext>, }
 ) => {
@@ -137,6 +145,7 @@ export const getPostApiOwnedItemsMutationOptions = <TError = ErrorType<void>,
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.IndexOwnOwnedItems; Requires the following features to be enabled: Shop
+ * @summary Get a list of the current user's owned items
  */
 export const getApiOwnedItemsOwn = (
     params?: GetApiOwnedItemsOwnParams,
@@ -171,6 +180,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiOwnedItemsOwnQueryResult = NonNullable<Awaited<ReturnType<typeof getApiOwnedItemsOwn>>>
 export type GetApiOwnedItemsOwnQueryError = ErrorType<void>
 
+/**
+ * @summary Get a list of the current user's owned items
+ */
 export const useGetApiOwnedItemsOwn = <TData = Awaited<ReturnType<typeof getApiOwnedItemsOwn>>, TError = ErrorType<void>>(
  params?: GetApiOwnedItemsOwnParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiOwnedItemsOwn>>, TError, TData>, }
 
@@ -187,6 +199,7 @@ export const useGetApiOwnedItemsOwn = <TData = Awaited<ReturnType<typeof getApiO
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem; Requires the following features to be enabled: Shop
+ * @summary Get information about an owned item
  */
 export const getApiOwnedItemsId = (
     id: number,
@@ -220,6 +233,9 @@ const {query: queryOptions} = options ?? {};
 export type GetApiOwnedItemsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiOwnedItemsId>>>
 export type GetApiOwnedItemsIdQueryError = ErrorType<void | ProblemDetails>
 
+/**
+ * @summary Get information about an owned item
+ */
 export const useGetApiOwnedItemsId = <TData = Awaited<ReturnType<typeof getApiOwnedItemsId>>, TError = ErrorType<void | ProblemDetails>>(
  id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiOwnedItemsId>>, TError, TData>, }
 
@@ -236,6 +252,7 @@ export const useGetApiOwnedItemsId = <TData = Awaited<ReturnType<typeof getApiOw
 
 /**
  * Requires verified email; Requires one of the following permissions: Shop.UpdateOwnedItem; Requires the following features to be enabled: Shop
+ * @summary Update an owned item
  */
 export const patchApiOwnedItemsId = (
     id: number,
@@ -275,7 +292,10 @@ export const getPatchApiOwnedItemsIdMutationOptions = <TError = ErrorType<Proble
     export type PatchApiOwnedItemsIdMutationBody = BodyType<ShopUpdateOwnedItemRequestBody>
     export type PatchApiOwnedItemsIdMutationError = ErrorType<ProblemDetails>
 
-    export const usePatchApiOwnedItemsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Update an owned item
+ */
+export const usePatchApiOwnedItemsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiOwnedItemsId>>, TError,{id: number;data: BodyType<ShopUpdateOwnedItemRequestBody>}, TContext>, }
 ) => {
@@ -286,6 +306,7 @@ export const getPatchApiOwnedItemsIdMutationOptions = <TError = ErrorType<Proble
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem; Requires the following features to be enabled: Shop
+ * @summary Delete an owned item
  */
 export const deleteApiOwnedItemsId = (
     id: number,
@@ -322,7 +343,10 @@ export const getDeleteApiOwnedItemsIdMutationOptions = <TError = ErrorType<Probl
     
     export type DeleteApiOwnedItemsIdMutationError = ErrorType<ProblemDetails>
 
-    export const useDeleteApiOwnedItemsId = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Delete an owned item
+ */
+export const useDeleteApiOwnedItemsId = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiOwnedItemsId>>, TError,{id: number}, TContext>, }
 ) => {
@@ -333,6 +357,7 @@ export const getDeleteApiOwnedItemsIdMutationOptions = <TError = ErrorType<Probl
     }
     /**
  * Requires verified email; Requires one of the following permissions: Shop.UseOwnOwnedItem; Requires the following features to be enabled: Shop
+ * @summary Use an owned item
  */
 export const postApiOwnedItemsIdUse = (
     id: number,
@@ -372,7 +397,10 @@ export const getPostApiOwnedItemsIdUseMutationOptions = <TError = ErrorType<Prob
     export type PostApiOwnedItemsIdUseMutationBody = BodyType<ShopUseOwnedItemRequestBody>
     export type PostApiOwnedItemsIdUseMutationError = ErrorType<ProblemDetails>
 
-    export const usePostApiOwnedItemsIdUse = <TError = ErrorType<ProblemDetails>,
+    /**
+ * @summary Use an owned item
+ */
+export const usePostApiOwnedItemsIdUse = <TError = ErrorType<ProblemDetails>,
     
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiOwnedItemsIdUse>>, TError,{id: number;data: BodyType<ShopUseOwnedItemRequestBody>}, TContext>, }
 ) => {
