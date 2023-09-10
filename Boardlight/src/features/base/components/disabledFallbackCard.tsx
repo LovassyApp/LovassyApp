@@ -1,4 +1,4 @@
-import { Box, Center, Paper, Text, createStyles } from "@mantine/core";
+import { Center, Paper, Text, createStyles } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
     statsCard: {

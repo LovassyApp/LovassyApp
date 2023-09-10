@@ -1,4 +1,4 @@
-import { Box, Center, Loader, Paper, Progress, Stack, Text, Title, createStyles } from "@mantine/core";
+import { Center, Loader, Paper, Progress, Stack, Text, Title, createStyles } from "@mantine/core";
 
 import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 import { useMemo } from "react";
@@ -64,10 +64,10 @@ export const LoloStatsCard = (): JSX.Element => {
                 <Progress
                     size="xl"
                     sections={[
-                        { value: (coins.data?.balance / coins.data.coins.length) * 100, color: "green" },
+                        { value: (coins.data?.balance / coins.data.coins.length) * 100, color: "green.6" },
                         {
                             value: ((coins.data.coins.length - coins.data?.balance) / coins.data.coins.length) * 100,
-                            color: "red",
+                            color: "red.6",
                         },
                     ]}
                     my="sm"

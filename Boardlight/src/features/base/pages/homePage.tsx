@@ -1,4 +1,4 @@
-import { Box, Grid, SimpleGrid, Skeleton, Stack, Title, createStyles, px, rem, useMantineTheme } from "@mantine/core";
+import { Box, Grid, SimpleGrid, Title, createStyles, rem, useMantineTheme } from "@mantine/core";
 
 import { DisabledFallbackCard } from "../components/disabledFallbackCard";
 import { FeatureRequirement } from "../../../core/components/requirements/featuresRequirement";
@@ -8,7 +8,6 @@ import { GradesAverageCard } from "../components/gradesAverageCard";
 import { LoloStatsCard } from "../components/loloStatsCard";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { SubjectsAverageCard } from "../components/subjectsAverageCard";
-import { useViewportSize } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({}));
 

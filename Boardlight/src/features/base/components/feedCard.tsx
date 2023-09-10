@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Card, Center, Group, Loader, Paper, Stack, Text, Title, createStyles } from "@mantine/core";
+import { ActionIcon, Center, Group, Loader, Paper, Stack, Text, Title, createStyles } from "@mantine/core";
 
 import { IconExternalLink } from "@tabler/icons-react";
 import { useGetApiFeedItems } from "../../../api/generated/features/feed-items/feed-items";

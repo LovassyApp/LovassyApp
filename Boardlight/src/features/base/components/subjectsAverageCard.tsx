@@ -1,4 +1,4 @@
-import { Box, Center, Group, Loader, Paper, RingProgress, Stack, Text, Title, createStyles } from "@mantine/core";
+import { Center, Loader, Paper, RingProgress, Stack, Text, Title, createStyles } from "@mantine/core";
 
 import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 import { useMemo } from "react";
