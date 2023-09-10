@@ -23,15 +23,15 @@ public class EmailVerifiedOperationFilter : IOperationFilter
         if (emailVerified is { ShouldBeVerified: true })
         {
             if (!string.IsNullOrWhiteSpace(operation.Description))
-                operation.Description += "<br>";
-            operation.Description += "<b>Requires verified email</b>";
+                operation.Description += "; ";
+            operation.Description += "Requires verified email";
         }
 
         if (emailVerified is { ShouldBeVerified: false })
         {
             if (!string.IsNullOrWhiteSpace(operation.Description))
-                operation.Description += "<br>";
-            operation.Description += "<b>Requires unverified email</b>";
+                operation.Description += "; ";
+            operation.Description += "Requires unverified email";
         }
     }
 }

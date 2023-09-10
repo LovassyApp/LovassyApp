@@ -23,9 +23,9 @@ public class PermissionsOperationFilter : IOperationFilter
         if (permissions != null)
         {
             if (!string.IsNullOrWhiteSpace(operation.Description))
-                operation.Description += "<br>";
+                operation.Description += "; ";
             operation.Description +=
-                $"<b>Requires one of the following permissions</b>: {string.Join(", ", permissions.Permissions.Split(","))}";
+                $"Requires one of the following permissions: {string.Join(", ", permissions.Permissions.Split(","))}";
         }
     }
 }

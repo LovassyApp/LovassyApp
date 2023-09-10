@@ -16,9 +16,9 @@ public class FeatureGateOperationFilter : IOperationFilter
         if (methodFeatureGate != null)
         {
             if (!string.IsNullOrWhiteSpace(operation.Description))
-                operation.Description += "<br>";
+                operation.Description += "; ";
             operation.Description +=
-                $"<b>Requires the following features to be enabled</b>: {string.Join(", ", methodFeatureGate.Features)}";
+                $"Requires the following features to be enabled: {string.Join(", ", methodFeatureGate.Features)}";
         }
 
         var classFeatureGate = context.MethodInfo.DeclaringType!
@@ -28,9 +28,9 @@ public class FeatureGateOperationFilter : IOperationFilter
         if (classFeatureGate != null)
         {
             if (!string.IsNullOrWhiteSpace(operation.Description))
-                operation.Description += "<br>";
+                operation.Description += "; ";
             operation.Description +=
-                $"<b>Requires the following features to be enabled</b>: {string.Join(", ", classFeatureGate.Features)}";
+                $"Requires the following features to be enabled: {string.Join(", ", classFeatureGate.Features)}";
         }
     }
 }
