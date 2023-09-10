@@ -32,7 +32,7 @@ public class UsersController : ApiControllerBase
 
     [HttpGet("{id}")]
     [Permissions(typeof(UsersPermissions.ViewUser))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [EndpointSummary("Get information about a user")]
     public async Task<ActionResult<ViewUser.Response>> View([FromRoute] Guid id)
