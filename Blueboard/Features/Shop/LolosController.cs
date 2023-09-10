@@ -17,6 +17,7 @@ public class LolosController : ApiControllerBase
 {
     [HttpGet("Own")]
     [Permissions(typeof(ShopPermissions.IndexOwnLolos))]
+    [EndpointSummary("Get a list of the user's lolo coins")]
     public async Task<ActionResult<IndexOwnLolos.Response>> IndexOwn([FromQuery] SieveModel sieveModel)
     {
         var response = await Mediator.Send(new IndexOwnLolos.Query { SieveModel = sieveModel });
@@ -25,6 +26,7 @@ public class LolosController : ApiControllerBase
 
     [HttpGet]
     [Permissions(typeof(ShopPermissions.IndexLolos))]
+    [EndpointSummary("Get a list of all lolo coins")]
     public async Task<ActionResult<IEnumerable<IndexLolos.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var response = await Mediator.Send(new IndexLolos.Query { SieveModel = sieveModel });

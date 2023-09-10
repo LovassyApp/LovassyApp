@@ -15,6 +15,7 @@ public class AuthController : ApiControllerBase
 {
     [HttpPost("Login")]
     [EnableRateLimiting("Strict")]
+    [EndpointSummary("Create a new session for a user")]
     public async Task<ActionResult<Login.Response>> Login([FromBody] Login.RequestBody body)
     {
         var response = await Mediator.Send(new Login.Command { Body = body });
@@ -29,6 +30,7 @@ public class AuthController : ApiControllerBase
     }
 
     [HttpPost("Refresh")]
+    [EndpointSummary("Refresh a user's session")]
     public async Task<ActionResult<Refresh.Response>> Refresh([FromQuery] string? token)
     {
         var response = await Mediator.Send(new Refresh.Command
@@ -43,8 +45,9 @@ public class AuthController : ApiControllerBase
     }
 
     [Authorize]
-    [Permissions(typeof(AuthPermissions.ViewControl))]
     [HttpGet("Control")]
+    [Permissions(typeof(AuthPermissions.ViewControl))]
+    [EndpointSummary("Get information about the current user")]
     public async Task<ActionResult<ViewControl.Response>> ViewControl()
     {
         var response = await Mediator.Send(new ViewControl.Query());
@@ -55,6 +58,7 @@ public class AuthController : ApiControllerBase
     [Authorize]
     [HttpDelete("Logout")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete the current user's session and refresh cookie")]
     public async Task<ActionResult> Logout()
     {
         await Mediator.Send(new Logout.Command());
@@ -69,6 +73,7 @@ public class AuthController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [EndpointSummary("Verify a user's email address")]
     public async Task<ActionResult> VerifyEmail([FromQuery] string verifyToken)
     {
         await Mediator.Send(new VerifyEmail.Command { VerifyToken = verifyToken });
@@ -81,6 +86,7 @@ public class AuthController : ApiControllerBase
     [Authorize]
     [EmailVerified(false)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Resend a user's email verification email")]
     public async Task<ActionResult> ResendVerifyEmail([FromQuery] string verifyUrl,
         [FromQuery] string verifyTokenQueryKey)
 
@@ -97,6 +103,7 @@ public class AuthController : ApiControllerBase
     [HttpPost("SendPasswordReset")]
     [EnableRateLimiting("Strict")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Send a password reset email to a user")]
     public async Task<ActionResult> SendPasswordReset([FromQuery] string passwordResetUrl,
         [FromQuery] string passwordResetTokenQueryKey, [FromBody] SendPasswordReset.RequestBody body)
     {
@@ -116,6 +123,7 @@ public class AuthController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+    [EndpointSummary("Reset a user's password")]
     public async Task<ActionResult> ResetPassword([FromQuery] string passwordResetToken,
         [FromBody] ResetPassword.RequestBody body)
     {

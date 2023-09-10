@@ -15,6 +15,7 @@ namespace Blueboard.Features.Import;
 public class ImportController : ApiControllerBase
 {
     [HttpGet("Users")]
+    [EndpointSummary("Get a list of all users for grade importing")]
     public async Task<ActionResult<IEnumerable<IndexUsers.Response>>> IndexUsers([FromQuery] SieveModel sieveModel)
     {
         var users = await Mediator.Send(new IndexUsers.Query
@@ -29,6 +30,7 @@ public class ImportController : ApiControllerBase
     [HttpPost("Grades/{userId}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [EndpointSummary("Import grades for a user")]
     public async Task<ActionResult> ImportGrades([FromRoute] Guid userId, [FromBody] ImportGrades.RequestBody body)
     {
         await Mediator.Send(new ImportGrades.Command
@@ -42,6 +44,7 @@ public class ImportController : ApiControllerBase
 
     [HttpPut("ResetKeyPassword")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Set the reset key password")]
     public async Task<ActionResult> UpdateResetKeyPassword([FromBody] UpdateResetKeyPassword.RequestBody body)
     {
         await Mediator.Send(new UpdateResetKeyPassword.Command

@@ -16,6 +16,7 @@ public class ProductsController : ApiControllerBase
 {
     [HttpGet]
     [Permissions(typeof(ShopPermissions.IndexProducts), typeof(ShopPermissions.IndexStoreProducts))]
+    [EndpointSummary("Get a list of all products or only store products depending on permissions")]
     public async Task<ActionResult<IEnumerable<IndexProducts.Response>>> Index([FromQuery] SieveModel sieveModel,
         [FromQuery] string? Search)
     {
@@ -32,6 +33,7 @@ public class ProductsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.ViewProduct), typeof(ShopPermissions.ViewStoreProduct))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [EndpointSummary("Get information about a product")]
     public async Task<ActionResult<ViewProduct.Response>> View([FromRoute] int id)
     {
         var response = await Mediator.Send(new ViewProduct.Query
@@ -45,6 +47,7 @@ public class ProductsController : ApiControllerBase
     [HttpPost]
     [Permissions(typeof(ShopPermissions.CreateProduct))]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [EndpointSummary("Create a new product")]
     public async Task<ActionResult<CreateProduct.Response>> Create([FromBody] CreateProduct.RequestBody body)
     {
         var response = await Mediator.Send(new CreateProduct.Command
@@ -59,6 +62,7 @@ public class ProductsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.UpdateProduct))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Update a product")]
     public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateProduct.RequestBody body)
     {
         await Mediator.Send(new UpdateProduct.Command
@@ -74,6 +78,7 @@ public class ProductsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.DeleteProduct))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete a product")]
     public async Task<ActionResult> Delete([FromRoute] int id)
     {
         await Mediator.Send(new DeleteProduct.Command
@@ -88,6 +93,7 @@ public class ProductsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.BuyProduct))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Buy a product")]
     public async Task<ActionResult> Buy([FromRoute] int id)
     {
         await Mediator.Send(new BuyProduct.Command

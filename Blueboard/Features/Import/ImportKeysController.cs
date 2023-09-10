@@ -18,6 +18,7 @@ public class ImportKeysController : ApiControllerBase
 {
     [HttpGet]
     [Permissions(typeof(ImportPermissions.IndexImportKeys))]
+    [EndpointSummary("Get a list of all import keys")]
     public async Task<ActionResult<IEnumerable<IndexImportKeys.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var importKeys = await Mediator.Send(new IndexImportKeys.Query
@@ -32,6 +33,7 @@ public class ImportKeysController : ApiControllerBase
     [Permissions(typeof(ImportPermissions.ViewImportKey))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [EndpointSummary("Get information about an import key")]
     public async Task<ActionResult<ViewImportKey.Response>> View([FromRoute] int id)
     {
         var response = await Mediator.Send(new ViewImportKey.Query { Id = id });
@@ -43,6 +45,7 @@ public class ImportKeysController : ApiControllerBase
     [Permissions(typeof(ImportPermissions.CreateImportKey))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [EndpointSummary("Create a new import key")]
     public async Task<ActionResult<CreateImportKey.Response>> Create([FromBody] CreateImportKey.RequestBody body)
     {
         var response = await Mediator.Send(new CreateImportKey.Command
@@ -57,6 +60,7 @@ public class ImportKeysController : ApiControllerBase
     [Permissions(typeof(ImportPermissions.UpdateImportKey))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Update an import key")]
     public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateImportKey.RequestBody request)
     {
         await Mediator.Send(new UpdateImportKey.Command
@@ -72,6 +76,7 @@ public class ImportKeysController : ApiControllerBase
     [Permissions(typeof(ImportPermissions.DeleteImportKey))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete an import key")]
     public async Task<ActionResult> Delete([FromRoute] int id)
     {
         await Mediator.Send(new DeleteImportKey.Command

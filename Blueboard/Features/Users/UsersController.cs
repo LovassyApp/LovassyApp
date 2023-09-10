@@ -19,6 +19,7 @@ public class UsersController : ApiControllerBase
 {
     [HttpGet]
     [Permissions(typeof(UsersPermissions.IndexUsers))]
+    [EndpointSummary("Get a list of all users")]
     public async Task<ActionResult<IEnumerable<IndexUsers.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var users = await Mediator.Send(new IndexUsers.Query
@@ -31,6 +32,9 @@ public class UsersController : ApiControllerBase
 
     [HttpGet("{id}")]
     [Permissions(typeof(UsersPermissions.ViewUser))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointSummary("Get information about a user")]
     public async Task<ActionResult<ViewUser.Response>> View([FromRoute] Guid id)
     {
         var user = await Mediator.Send(new ViewUser.Query { Id = id });
@@ -38,10 +42,11 @@ public class UsersController : ApiControllerBase
         return Ok(user);
     }
 
+    [AllowAnonymous]
     [HttpPost]
     [EnableRateLimiting("Strict")]
-    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [EndpointSummary("Create a new user")]
     public async Task<ActionResult> CreateUser([FromBody] CreateUser.RequestBody body, [FromQuery] string verifyUrl,
         [FromQuery] string verifyTokenQueryKey)
     {
@@ -55,6 +60,7 @@ public class UsersController : ApiControllerBase
     [Permissions(typeof(UsersPermissions.UpdateUser))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Update a user")]
     public async Task<ActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UpdateUser.RequestBody body)
     {
         await Mediator.Send(new UpdateUser.Command { Id = id, Body = body });
@@ -66,6 +72,7 @@ public class UsersController : ApiControllerBase
     [Permissions(typeof(UsersPermissions.DeleteUser))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete a user")]
     public async Task<ActionResult> DeleteUser([FromRoute] Guid id)
     {
         await Mediator.Send(new DeleteUser.Command { Id = id });
@@ -77,6 +84,7 @@ public class UsersController : ApiControllerBase
     [Permissions(typeof(UsersPermissions.KickUser))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete all active sessions of a user")]
     public async Task<ActionResult> KickUser([FromRoute] Guid id)
     {
         await Mediator.Send(new KickUser.Command { Id = id });
@@ -87,6 +95,7 @@ public class UsersController : ApiControllerBase
     [HttpPost("Kick/All")]
     [Permissions(typeof(UsersPermissions.KickAllUsers))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete all active sessions of all users")]
     public async Task<ActionResult> KickAllUsers()
     {
         await Mediator.Send(new KickAllUsers.Command());

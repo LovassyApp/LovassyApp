@@ -10,6 +10,7 @@ public class StatusController : ApiControllerBase
     [HttpGet("Version")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status418ImATeapot)]
+    [EndpointSummary("Get information about the application version")]
     public async Task<ActionResult<ViewVersion.Response>> ViewVersion([FromQuery] ViewVersion.RequestBody body)
     {
         var response = await Mediator.Send(new ViewVersion.Query { Body = body });
@@ -21,6 +22,7 @@ public class StatusController : ApiControllerBase
     }
 
     [HttpGet("ServiceStatus")]
+    [EndpointSummary("Get information about the status of the application")]
     public async Task<ActionResult<ViewServiceStatus.Response>> ViewServiceStatus()
     {
         var response = await Mediator.Send(new ViewServiceStatus.Query());
@@ -30,6 +32,7 @@ public class StatusController : ApiControllerBase
 
     [HttpPost("NotifyOnResetKeyPasswordSet")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Subscribe an email to when a password reset key has been set")]
     public async Task<ActionResult> NotifyOnResetKeyPasswordSet([FromBody] NotifyOnResetKeyPasswordSet.RequestBody body)
     {
         await Mediator.Send(new NotifyOnResetKeyPasswordSet.Command

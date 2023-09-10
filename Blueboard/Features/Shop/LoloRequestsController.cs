@@ -18,6 +18,7 @@ public class LoloRequestsController : ApiControllerBase
 {
     [HttpGet]
     [Permissions(typeof(ShopPermissions.IndexLoloRequests))]
+    [EndpointSummary("Get a list of all lolo requests")]
     public async Task<ActionResult<IEnumerable<IndexLoloRequests.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var loloRequests = await Mediator.Send(new IndexLoloRequests.Query
@@ -30,6 +31,7 @@ public class LoloRequestsController : ApiControllerBase
 
     [HttpGet("Own")]
     [Permissions(typeof(ShopPermissions.IndexOwnLoloRequests))]
+    [EndpointSummary("Get a list of the current user's lolo requests")]
     public async Task<ActionResult<IEnumerable<IndexOwnLoloRequests.Response>>> IndexOwn(
         [FromQuery] SieveModel sieveModel)
     {
@@ -45,6 +47,7 @@ public class LoloRequestsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.ViewLoloRequest))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [EndpointSummary("Get information about a lolo request")]
     public async Task<ActionResult<ViewLoloRequest.Response>> View([FromRoute] int id)
     {
         var response = await Mediator.Send(new ViewLoloRequest.Query { Id = id });
@@ -55,6 +58,7 @@ public class LoloRequestsController : ApiControllerBase
     [HttpPost]
     [Permissions(typeof(ShopPermissions.CreateLoloRequest))]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [EndpointSummary("Create a new lolo request")]
     public async Task<ActionResult<CreateLoloRequest.Response>> Create([FromBody] CreateLoloRequest.RequestBody body)
     {
         var response = await Mediator.Send(new CreateLoloRequest.Command
@@ -69,6 +73,7 @@ public class LoloRequestsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.OverruleLoloRequest))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointSummary("Overrule a lolo request")]
     public async Task<ActionResult> Overrule([FromRoute] int id, [FromBody] OverruleLoloRequest.RequestBody body)
     {
         await Mediator.Send(new OverruleLoloRequest.Command { Id = id, Body = body });
@@ -80,6 +85,7 @@ public class LoloRequestsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.UpdateOwnLoloRequest), typeof(ShopPermissions.UpdateLoloRequest))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointSummary("Update a lolo request")]
     public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateLoloRequest.RequestBody body)
     {
         await Mediator.Send(new UpdateLoloRequest.Command { Id = id, Body = body });
@@ -91,6 +97,7 @@ public class LoloRequestsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.DeleteOwnLoloRequest), typeof(ShopPermissions.DeleteLoloRequest))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointSummary("Delete a lolo request")]
     public async Task<ActionResult> Delete([FromRoute] int id)
     {
         await Mediator.Send(new DeleteLoloRequest.Command { Id = id });

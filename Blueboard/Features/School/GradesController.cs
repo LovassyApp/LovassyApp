@@ -17,6 +17,7 @@ public class GradesController : ApiControllerBase
 {
     [HttpGet]
     [Permissions(typeof(SchoolPermissions.IndexGrades))]
+    [EndpointSummary("Get a list of the current user's grades")]
     public async Task<ActionResult<IEnumerable<IndexGrades.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var response = await Mediator.Send(new IndexGrades.Query

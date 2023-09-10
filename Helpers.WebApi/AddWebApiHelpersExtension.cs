@@ -119,6 +119,7 @@ public static class AddWebApiHelpersExtension
             });
 
         options.OperationFilter<FeatureGateOperationFilter>();
+        options.OperationFilter<SummaryOperationFilter>();
     }
 }
 

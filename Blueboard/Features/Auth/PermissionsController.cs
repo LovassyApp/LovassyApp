@@ -17,6 +17,7 @@ public class PermissionsController : ApiControllerBase
     [Permissions(typeof(AuthPermissions.IndexPermissions))]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [EndpointSummary("Get a list of all permissions")]
     public async Task<ActionResult<IEnumerable<IndexPermissions.Response>>> Index([FromQuery] SieveModel sieveModel)
     {
         var response = await Mediator.Send(new IndexPermissions.Query { SieveModel = sieveModel });
