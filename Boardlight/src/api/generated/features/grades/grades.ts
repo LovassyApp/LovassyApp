@@ -26,7 +26,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: School.IndexGrades<br><b>Requires the following features to be enabled</b>: School
+ * Requires verified email; Requires one of the following permissions: School.IndexGrades; Requires the following features to be enabled: School
  */
 export const getApiGrades = (
     params?: GetApiGradesParams,

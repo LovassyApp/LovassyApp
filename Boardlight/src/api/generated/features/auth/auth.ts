@@ -130,7 +130,7 @@ export const getPostApiAuthRefreshMutationOptions = <TError = ErrorType<unknown>
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires one of the following permissions</b>: Auth.Control
+ * Requires one of the following permissions: Auth.Control
  */
 export const getApiAuthControl = (
     
@@ -268,7 +268,7 @@ export const getPostApiAuthVerifyEmailMutationOptions = <TError = ErrorType<Prob
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires unverified email</b>
+ * Requires unverified email
  */
 export const postApiAuthResendVerifyEmail = (
     params?: PostApiAuthResendVerifyEmailParams,

@@ -32,7 +32,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires the following features to be enabled</b>: Import
+ * Requires the following features to be enabled: Import
  */
 export const getApiImportUsers = (
     params?: GetApiImportUsersParams,
@@ -82,7 +82,7 @@ export const useGetApiImportUsers = <TData = Awaited<ReturnType<typeof getApiImp
 }
 
 /**
- * <b>Requires the following features to be enabled</b>: Import
+ * Requires the following features to be enabled: Import
  */
 export const postApiImportGradesUserId = (
     userId: string,
@@ -132,7 +132,7 @@ export const getPostApiImportGradesUserIdMutationOptions = <TError = ErrorType<P
       return useMutation(mutationOptions);
     }
     /**
- * <b>Requires the following features to be enabled</b>: Import
+ * Requires the following features to be enabled: Import
  */
 export const putApiImportResetKeyPassword = (
     importUpdateResetKeyPasswordRequestBody: BodyType<ImportUpdateResetKeyPasswordRequestBody>,

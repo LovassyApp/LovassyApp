@@ -26,7 +26,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.IndexPermissions
+ * Requires verified email; Requires one of the following permissions: Auth.IndexPermissions
  */
 export const getApiPermissions = (
     params?: GetApiPermissionsParams,
