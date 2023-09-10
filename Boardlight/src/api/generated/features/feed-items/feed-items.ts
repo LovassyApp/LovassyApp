@@ -26,7 +26,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * Requires verified email; Requires one of the following permissions: Feed.IndexFeedItems
+ * Requires verified email; Requires one of the following permissions: Feed.IndexFeedItems; Requires the following features to be enabled: Feed
  * @summary Get a list of all feed items
  */
 export const getApiFeedItems = (
