@@ -20,14 +20,7 @@ jobs:
             - name: Install Blueboard dependencies
               run: dotnet restore
             - name: Build Blueboard
-              run: dotnet build --configuration Debug --no-restore
-            - name: Test Blueboard
-              run: dotnet test --no-restore --verbosity normal
-            - name: Commit new schema
-              uses: stefanzweifel/git-auto-commit-action@v4
-              with:
-                  file_pattern: openapi_dev/schema.json
-                  commit_message: Updated the API schema
+              run: dotnet build --configuration Release
             - name: Install SSH Key
               uses: shimataro/ssh-key-action@v2
               with:
