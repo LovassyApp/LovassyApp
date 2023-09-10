@@ -1,6 +1,6 @@
 using Blueboard.Infrastructure.Persistence.Entities;
 
-namespace Blueboard.Features.Auth.Models;
+namespace Blueboard.Features.Auth.Interfaces;
 
 /// <summary>
 ///     The interface for all token contents, which belong to a <see cref="User" />.

@@ -12,4 +12,5 @@ public interface INotificationsClient
     Task RefreshUserGroups();
     Task RefreshOwnOwnedItems();
     Task RefreshOwnedItems();
+    Task RefreshFeedItems();
 }

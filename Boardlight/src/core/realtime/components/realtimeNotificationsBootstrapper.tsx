@@ -11,6 +11,7 @@ import {
 } from "../../../api/generated/features/owned-items/owned-items";
 
 import { FullScreenLoading } from "../../components/fullScreenLoading";
+import { getGetApiFeedItemsQueryKey } from "../../../api/generated/features/feed-items/feed-items";
 import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
 import { getGetApiProductsQueryKey } from "../../../api/generated/features/products/products";
 import { getGetApiQRCodesQueryKey } from "../../../api/generated/features/qrcodes/qrcodes";
@@ -33,6 +34,7 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const userGroupsQueryKey = getGetApiUserGroupsQueryKey();
     const ownOwnedItemsQueryKey = getGetApiOwnedItemsOwnQueryKey();
     const ownedItemsQueryKey = getGetApiOwnedItemsQueryKey();
+    const feedItemsQueryKey = getGetApiFeedItemsQueryKey();
 
     const [loading, setLoading] = useState(false);
 
@@ -98,6 +100,11 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                 hubConnection.on("RefreshOwnedItems", async () => {
                     console.log("RefreshOwnedItems notification received");
                     await queryClient.invalidateQueries({ queryKey: [ownedItemsQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshFeedItems", async () => {
+                    console.log("RefreshFeedItems notification received");
+                    await queryClient.invalidateQueries({ queryKey: [feedItemsQueryKey[0]] });
                 });
 
                 try {

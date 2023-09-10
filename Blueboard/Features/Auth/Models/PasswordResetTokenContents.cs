@@ -1,3 +1,5 @@
+using Blueboard.Features.Auth.Interfaces;
+
 namespace Blueboard.Features.Auth.Models;
 
 public class PasswordResetTokenContents : IUserTokenContents

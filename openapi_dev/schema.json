@@ -331,6 +331,81 @@
         }
       }
     },
+    "/Api/FeedItems": {
+      "get": {
+        "tags": [
+          "FeedItems"
+        ],
+        "summary": "Get a list of all feed items",
+        "description": "Requires verified email; Requires one of the following permissions: Feed.IndexFeedItems; Requires the following features to be enabled: Feed",
+        "parameters": [
+          {
+            "name": "Filters",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Sorts",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeedIndexFeedItemsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/Grades": {
       "get": {
         "tags": [
@@ -3737,6 +3812,28 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeedIndexFeedItemsResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "link": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

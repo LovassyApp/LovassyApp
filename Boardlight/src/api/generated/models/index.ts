@@ -21,6 +21,8 @@ export * from './authViewControlResponse';
 export * from './authViewControlResponseSession';
 export * from './authViewControlResponseUser';
 export * from './authViewUserGroupResponse';
+export * from './feedIndexFeedItemsResponse';
+export * from './getApiFeedItemsParams';
 export * from './getApiGradesParams';
 export * from './getApiImportKeysParams';
 export * from './getApiImportUsersParams';

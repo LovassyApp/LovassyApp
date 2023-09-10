@@ -1,5 +1,7 @@
 using Blueboard.Features.Auth.Services;
 using Blueboard.Features.Auth.Services.Options;
+using Blueboard.Features.Feed.Services;
+using Blueboard.Features.Feed.Services.Options;
 using Blueboard.Features.Status.Services.Options;
 
 namespace Blueboard.Features;
@@ -24,5 +26,9 @@ public static class AddFeaturesExtension
         services.AddSingleton<RefreshService>();
         services.AddSingleton<VerifyEmailService>();
         services.AddSingleton<PasswordResetService>();
+
+        //Feed
+        services.Configure<FeedOptions>(configuration.GetSection("Feed"));
+        services.AddSingleton<FeedService>();
     }
 }

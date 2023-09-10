@@ -5,6 +5,9 @@ using Microsoft.Extensions.Options;
 
 namespace Blueboard.Features.Auth.Services;
 
+/// <summary>
+///     The singleton service responsible for generating and decrypting password reset tokens.
+/// </summary>
 public class PasswordResetService
 {
     private readonly EncryptionService _encryptionService;

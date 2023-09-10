@@ -79,7 +79,7 @@ public static class IndexOwnLolos
         {
             await _loloManager.LoadAsync();
 
-            var filteredLolos = _sieveProcessor.Apply(request.SieveModel, _loloManager.Coins!.AsQueryable());
+            var filteredLolos = _sieveProcessor.Apply(request.SieveModel, _loloManager.Coins!.AsQueryable()).ToList();
 
             return new Response
             {

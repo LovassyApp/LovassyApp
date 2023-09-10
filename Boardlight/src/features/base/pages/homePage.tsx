@@ -12,7 +12,7 @@ import { useViewportSize } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({}));
 
-const PRIMARY_COL_HEIGHT = rem(600);
+const PRIMARY_COL_HEIGHT = rem(606);
 
 const HomePage = (): JSX.Element => {
     const { classes } = useStyles();
@@ -25,7 +25,14 @@ const HomePage = (): JSX.Element => {
             <Title mb="md">Kezdőlap</Title>
             <SimpleGrid cols={2} spacing="md" breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
                 <Box h={PRIMARY_COL_HEIGHT}>
-                    <FeedCard />
+                    <FeatureRequirement features={["Feed"]} fallback={<DisabledFallbackCard />}>
+                        <PermissionRequirement
+                            permissions={["Feed.IndexFeedItems"]}
+                            fallback={<ForbiddenFallbackCard />}
+                        >
+                            <FeedCard />
+                        </PermissionRequirement>
+                    </FeatureRequirement>
                 </Box>
                 <Grid gutter="md">
                     <Grid.Col>
