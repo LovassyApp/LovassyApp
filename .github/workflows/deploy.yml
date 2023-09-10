@@ -1,0 +1,42 @@
+name: Deploy LovassyApp to production server
+run-name: ${{ github.actor }} is deploying the stack to the production server 🚀
+on: 'workflow_dispatch'
+jobs:
+    deploy-backend:
+        runs-on: ubuntu-latest
+        name: Build and deploy Blueboard
+        env:
+            ASPNETCORE_ENVIRONMENT: development
+        strategy:
+            matrix:
+                dotnet-version: ['7.0']
+        steps:
+            - name: Checkout master
+              uses: actions/checkout@v3
+            - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+              uses: actions/setup-dotnet@v3
+              with:
+                  dotnet-version: ${{ matrix.dotnet-version }}
+            - name: Install Blueboard dependencies
+              run: dotnet restore
+            - name: Build Blueboard
+              run: dotnet build --configuration Debug --no-restore
+            - name: Test Blueboard
+              run: dotnet test --no-restore --verbosity normal
+            - name: Commit new schema
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  file_pattern: openapi_dev/schema.json
+                  commit_message: Updated the API schema
+            - name: Install SSH Key
+              uses: shimataro/ssh-key-action@v2
+              with:
+                  key: ${{ secrets.DEPLOY_SSH_KEY }}
+                  known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+            - name: Adding Known Hosts
+              run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+            - name: Deploy with rsync
+              run: rsync -avz --ignore-errors ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/lovassyapp
+            - name: Run deploy script on server
+              if: success() || failure()
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "bash /data/app/deploy.sh"
