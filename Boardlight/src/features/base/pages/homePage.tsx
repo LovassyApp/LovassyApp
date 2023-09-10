@@ -1,31 +1,72 @@
-import { Box, Center, Stack, Text, Title, createStyles, rem } from "@mantine/core";
+import { Box, Grid, SimpleGrid, Skeleton, Stack, Title, createStyles, px, rem, useMantineTheme } from "@mantine/core";
 
-import { IconBarrierBlock } from "@tabler/icons-react";
-import { useGetApiProducts } from "../../../api/generated/features/products/products";
+import { DisabledFallbackCard } from "../components/disabledFallbackCard";
+import { FeatureRequirement } from "../../../core/components/requirements/featuresRequirement";
+import { FeedCard } from "../components/feedCard";
+import { ForbiddenFallbackCard } from "../components/forbiddenFallbackCard";
+import { GradesAverageCard } from "../components/gradesAverageCard";
+import { LoloStatsCard } from "../components/loloStatsCard";
+import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
+import { SubjectsAverageCard } from "../components/subjectsAverageCard";
+import { useViewportSize } from "@mantine/hooks";
 
-const useStyles = createStyles((theme) => ({
-    center: {
-        height: "100%",
-    },
-}));
+const useStyles = createStyles((theme) => ({}));
+
+const PRIMARY_COL_HEIGHT = rem(600);
 
 const HomePage = (): JSX.Element => {
     const { classes } = useStyles();
+    const theme = useMantineTheme();
+
+    const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - ${theme.spacing.md} / 2)`;
 
     return (
-        <Center className={classes.center}>
-            <Stack spacing={0}>
-                <Center>
-                    <IconBarrierBlock size={rem(124)} />
-                </Center>
-                <Title align="center" px="sm">
-                    Kezdőlap építés alatt
-                </Title>
-                <Text color="dimmed" align="center" px="sm">
-                    Ez az oldal jelenleg még építés alatt áll... Amíg vársz nézd meg addig mi mindent tud a többi oldal!
-                </Text>
-            </Stack>
-        </Center>
+        <>
+            <Title mb="md">Kezdőlap</Title>
+            <SimpleGrid cols={2} spacing="md" breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
+                <Box h={PRIMARY_COL_HEIGHT}>
+                    <FeedCard />
+                </Box>
+                <Grid gutter="md">
+                    <Grid.Col>
+                        <Box h={SECONDARY_COL_HEIGHT}>
+                            <FeatureRequirement features={["Shop"]} fallback={<DisabledFallbackCard />}>
+                                <PermissionRequirement
+                                    permissions={["Shop.IndexOwnLolos"]}
+                                    fallback={<ForbiddenFallbackCard />}
+                                >
+                                    <LoloStatsCard />
+                                </PermissionRequirement>
+                            </FeatureRequirement>
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Box h={SECONDARY_COL_HEIGHT}>
+                            <FeatureRequirement features={["School"]} fallback={<DisabledFallbackCard />}>
+                                <PermissionRequirement
+                                    permissions={["School.IndexGrades"]}
+                                    fallback={<ForbiddenFallbackCard />}
+                                >
+                                    <SubjectsAverageCard />
+                                </PermissionRequirement>
+                            </FeatureRequirement>
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <Box h={SECONDARY_COL_HEIGHT}>
+                            <FeatureRequirement features={["School"]} fallback={<DisabledFallbackCard />}>
+                                <PermissionRequirement
+                                    permissions={["School.IndexGrades"]}
+                                    fallback={<ForbiddenFallbackCard />}
+                                >
+                                    <GradesAverageCard />
+                                </PermissionRequirement>
+                            </FeatureRequirement>
+                        </Box>
+                    </Grid.Col>
+                </Grid>
+            </SimpleGrid>
+        </>
     );
 };
 
