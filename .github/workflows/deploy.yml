@@ -6,7 +6,7 @@ jobs:
         runs-on: ubuntu-latest
         name: Build and deploy Blueboard
         env:
-            ASPNETCORE_ENVIRONMENT: development
+            ASPNETCORE_ENVIRONMENT: release
         strategy:
             matrix:
                 dotnet-version: ['7.0']
