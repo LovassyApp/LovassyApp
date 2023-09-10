@@ -1,0 +1,18 @@
+name: API Docs Deploy
+run-name: ${{ github.actor }} is deploying the api documentation to bump.sh 📝
+on:
+  workflow_dispatch:
+    
+jobs:
+  deploy:
+    name: Deploy API documentation on Bump
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Deploy API documentation
+        uses: bump-sh/github-action@v1
+        with:
+          doc: 8725565e-31e5-4cfe-a106-cb2a5e404a7e
+          token: ${{secrets.BUMP_TOKEN}}
+          file: openapi_dev/schema.json

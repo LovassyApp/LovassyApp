@@ -34,6 +34,8 @@ A LovassyApp fejlesztését eredetileg [Gyimesi Máté](https://github.com/minig
 
 *Minden kontribúciónak örülünk, amennyiben nem tudod hogy miben tudsz segíteni, de szeretnél, csak keress meg minket Messengeren (Ocskó Nándor vagy Gyimesi Máté).*
 
+A publikus API dokumentáció az aktuális vezrióhoz elérhető [itt](https://bump.sh/xeretis/doc/lovassyapp).
+
 ### A LovassyApp részei
 
 - **Blueboard**: A LovassyApp backend-je, [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0) keretrendszerben íródott.
