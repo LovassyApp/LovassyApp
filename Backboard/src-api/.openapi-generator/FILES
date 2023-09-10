@@ -19,6 +19,8 @@ docs/AuthViewControlResponse.md
 docs/AuthViewControlResponseSession.md
 docs/AuthViewControlResponseUser.md
 docs/AuthViewUserGroupResponse.md
+docs/FeedIndexFeedItemsResponse.md
+docs/FeedItemsApi.md
 docs/GradesApi.md
 docs/ImportApi.md
 docs/ImportCreateImportKeyRequestBody.md
@@ -92,9 +94,12 @@ docs/UsersCreateUserRequestBody.md
 docs/UsersIndexUsersResponse.md
 docs/UsersIndexUsersResponseUserGroup.md
 docs/UsersUpdateUserRequestBody.md
+docs/UsersViewUserResponse.md
+docs/UsersViewUserResponseUserGroup.md
 git_push.sh
 src/apis/auth_api.rs
 src/apis/configuration.rs
+src/apis/feed_items_api.rs
 src/apis/grades_api.rs
 src/apis/import_api.rs
 src/apis/import_keys_api.rs
@@ -125,6 +130,7 @@ src/models/auth_view_control_response.rs
 src/models/auth_view_control_response_session.rs
 src/models/auth_view_control_response_user.rs
 src/models/auth_view_user_group_response.rs
+src/models/feed_index_feed_items_response.rs
 src/models/import_create_import_key_request_body.rs
 src/models/import_create_import_key_response.rs
 src/models/import_import_grades_request_body.rs
@@ -187,3 +193,5 @@ src/models/users_create_user_request_body.rs
 src/models/users_index_users_response.rs
 src/models/users_index_users_response_user_group.rs
 src/models/users_update_user_request_body.rs
+src/models/users_view_user_response.rs
+src/models/users_view_user_response_user_group.rs

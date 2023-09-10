@@ -156,7 +156,7 @@ pub async fn api_users_id_delete(configuration: &configuration::Configuration, i
 }
 
 /// Requires verified email; Requires one of the following permissions: Users.ViewUser; Requires the following features to be enabled: Users
-pub async fn api_users_id_get(configuration: &configuration::Configuration, id: &str) -> Result<(), Error<ApiUsersIdGetError>> {
+pub async fn api_users_id_get(configuration: &configuration::Configuration, id: &str) -> Result<crate::models::UsersViewUserResponse, Error<ApiUsersIdGetError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -178,7 +178,7 @@ pub async fn api_users_id_get(configuration: &configuration::Configuration, id: 
     let local_var_content = local_var_resp.text().await?;
 
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        Ok(())
+        serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<ApiUsersIdGetError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };

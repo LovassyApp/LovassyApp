@@ -33,6 +33,7 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**api_auth_reset_password_post**](docs/AuthApi.md#api_auth_reset_password_post) | **POST** /Api/Auth/ResetPassword | Reset a user's password
 *AuthApi* | [**api_auth_send_password_reset_post**](docs/AuthApi.md#api_auth_send_password_reset_post) | **POST** /Api/Auth/SendPasswordReset | Send a password reset email to a user
 *AuthApi* | [**api_auth_verify_email_post**](docs/AuthApi.md#api_auth_verify_email_post) | **POST** /Api/Auth/VerifyEmail | Verify a user's email address
+*FeedItemsApi* | [**api_feed_items_get**](docs/FeedItemsApi.md#api_feed_items_get) | **GET** /Api/FeedItems | Get a list of all feed items
 *GradesApi* | [**api_grades_get**](docs/GradesApi.md#api_grades_get) | **GET** /Api/Grades | Get a list of the current user's grades
 *ImportApi* | [**api_import_grades_user_id_post**](docs/ImportApi.md#api_import_grades_user_id_post) | **POST** /Api/Import/Grades/{userId} | Import grades for a user
 *ImportApi* | [**api_import_reset_key_password_put**](docs/ImportApi.md#api_import_reset_key_password_put) | **PUT** /Api/Import/ResetKeyPassword | Set the reset key password
@@ -105,6 +106,7 @@ Class | Method | HTTP request | Description
  - [AuthViewControlResponseSession](docs/AuthViewControlResponseSession.md)
  - [AuthViewControlResponseUser](docs/AuthViewControlResponseUser.md)
  - [AuthViewUserGroupResponse](docs/AuthViewUserGroupResponse.md)
+ - [FeedIndexFeedItemsResponse](docs/FeedIndexFeedItemsResponse.md)
  - [ImportCreateImportKeyRequestBody](docs/ImportCreateImportKeyRequestBody.md)
  - [ImportCreateImportKeyResponse](docs/ImportCreateImportKeyResponse.md)
  - [ImportImportGradesRequestBody](docs/ImportImportGradesRequestBody.md)
@@ -166,6 +168,8 @@ Class | Method | HTTP request | Description
  - [UsersIndexUsersResponse](docs/UsersIndexUsersResponse.md)
  - [UsersIndexUsersResponseUserGroup](docs/UsersIndexUsersResponseUserGroup.md)
  - [UsersUpdateUserRequestBody](docs/UsersUpdateUserRequestBody.md)
+ - [UsersViewUserResponse](docs/UsersViewUserResponse.md)
+ - [UsersViewUserResponseUserGroup](docs/UsersViewUserResponseUserGroup.md)
 
 
 To get access to the crate's generated documentation, use:

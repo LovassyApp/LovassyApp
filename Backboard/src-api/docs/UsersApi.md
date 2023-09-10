@@ -79,7 +79,7 @@ Name | Type | Description  | Required | Notes
 
 ## api_users_id_get
 
-> api_users_id_get(id)
+> crate::models::UsersViewUserResponse api_users_id_get(id)
 Get information about a user
 
 Requires verified email; Requires one of the following permissions: Users.ViewUser; Requires the following features to be enabled: Users
@@ -93,7 +93,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
- (empty response body)
+[**crate::models::UsersViewUserResponse**](UsersViewUserResponse.md)
 
 ### Authorization
 
