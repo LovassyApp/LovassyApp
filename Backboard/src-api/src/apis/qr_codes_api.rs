@@ -64,7 +64,7 @@ pub enum ApiQrCodesPostError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexQRCodes<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.IndexQRCodes; Requires the following features to be enabled: Shop
 pub async fn api_qr_codes_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ShopIndexQrCodesResponse>, Error<ApiQrCodesGetError>> {
     let local_var_configuration = configuration;
 
@@ -107,7 +107,7 @@ pub async fn api_qr_codes_get(configuration: &configuration::Configuration, filt
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteQRCode<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.DeleteQRCode; Requires the following features to be enabled: Shop
 pub async fn api_qr_codes_id_delete(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiQrCodesIdDeleteError>> {
     let local_var_configuration = configuration;
 
@@ -138,7 +138,7 @@ pub async fn api_qr_codes_id_delete(configuration: &configuration::Configuration
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewQRCode<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.ViewQRCode; Requires the following features to be enabled: Shop
 pub async fn api_qr_codes_id_get(configuration: &configuration::Configuration, id: i32) -> Result<crate::models::ShopViewQrCodeResponse, Error<ApiQrCodesIdGetError>> {
     let local_var_configuration = configuration;
 
@@ -169,7 +169,7 @@ pub async fn api_qr_codes_id_get(configuration: &configuration::Configuration, i
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateQRCode<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.UpdateQRCode; Requires the following features to be enabled: Shop
 pub async fn api_qr_codes_id_patch(configuration: &configuration::Configuration, id: i32, shop_update_qr_code_request_body: Option<crate::models::ShopUpdateQrCodeRequestBody>) -> Result<(), Error<ApiQrCodesIdPatchError>> {
     let local_var_configuration = configuration;
 
@@ -201,7 +201,7 @@ pub async fn api_qr_codes_id_patch(configuration: &configuration::Configuration,
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateQRCode<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.CreateQRCode; Requires the following features to be enabled: Shop
 pub async fn api_qr_codes_post(configuration: &configuration::Configuration, shop_create_qr_code_request_body: Option<crate::models::ShopCreateQrCodeRequestBody>) -> Result<crate::models::ShopCreateQrCodeResponse, Error<ApiQrCodesPostError>> {
     let local_var_configuration = configuration;
 

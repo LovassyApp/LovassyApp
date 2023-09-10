@@ -4,18 +4,18 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_import_grades_user_id_post**](ImportApi.md#api_import_grades_user_id_post) | **POST** /Api/Import/Grades/{userId} | 
-[**api_import_reset_key_password_put**](ImportApi.md#api_import_reset_key_password_put) | **PUT** /Api/Import/ResetKeyPassword | 
-[**api_import_users_get**](ImportApi.md#api_import_users_get) | **GET** /Api/Import/Users | 
+[**api_import_grades_user_id_post**](ImportApi.md#api_import_grades_user_id_post) | **POST** /Api/Import/Grades/{userId} | Import grades for a user
+[**api_import_reset_key_password_put**](ImportApi.md#api_import_reset_key_password_put) | **PUT** /Api/Import/ResetKeyPassword | Set the reset key password
+[**api_import_users_get**](ImportApi.md#api_import_users_get) | **GET** /Api/Import/Users | Get a list of all users for grade importing
 
 
 
 ## api_import_grades_user_id_post
 
 > api_import_grades_user_id_post(user_id, import_import_grades_request_body)
+Import grades for a user
 
-
-<b>Requires the following features to be enabled</b>: Import
+Requires the following features to be enabled: Import
 
 ### Parameters
 
@@ -44,9 +44,9 @@ Name | Type | Description  | Required | Notes
 ## api_import_reset_key_password_put
 
 > api_import_reset_key_password_put(import_update_reset_key_password_request_body)
+Set the reset key password
 
-
-<b>Requires the following features to be enabled</b>: Import
+Requires the following features to be enabled: Import
 
 ### Parameters
 
@@ -74,9 +74,9 @@ Name | Type | Description  | Required | Notes
 ## api_import_users_get
 
 > Vec<crate::models::ImportIndexUsersResponse> api_import_users_get(filters, sorts, page, page_size)
+Get a list of all users for grade importing
 
-
-<b>Requires the following features to be enabled</b>: Import
+Requires the following features to be enabled: Import
 
 ### Parameters
 

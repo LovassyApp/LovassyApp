@@ -44,7 +44,7 @@ pub enum ApiImportUsersGetError {
 }
 
 
-/// <b>Requires the following features to be enabled</b>: Import
+/// Requires the following features to be enabled: Import
 pub async fn api_import_grades_user_id_post(configuration: &configuration::Configuration, user_id: &str, import_import_grades_request_body: Option<crate::models::ImportImportGradesRequestBody>) -> Result<(), Error<ApiImportGradesUserIdPostError>> {
     let local_var_configuration = configuration;
 
@@ -81,7 +81,7 @@ pub async fn api_import_grades_user_id_post(configuration: &configuration::Confi
     }
 }
 
-/// <b>Requires the following features to be enabled</b>: Import
+/// Requires the following features to be enabled: Import
 pub async fn api_import_reset_key_password_put(configuration: &configuration::Configuration, import_update_reset_key_password_request_body: Option<crate::models::ImportUpdateResetKeyPasswordRequestBody>) -> Result<(), Error<ApiImportResetKeyPasswordPutError>> {
     let local_var_configuration = configuration;
 
@@ -118,7 +118,7 @@ pub async fn api_import_reset_key_password_put(configuration: &configuration::Co
     }
 }
 
-/// <b>Requires the following features to be enabled</b>: Import
+/// Requires the following features to be enabled: Import
 pub async fn api_import_users_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ImportIndexUsersResponse>, Error<ApiImportUsersGetError>> {
     let local_var_configuration = configuration;
 

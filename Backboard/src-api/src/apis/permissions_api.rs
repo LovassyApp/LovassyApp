@@ -26,7 +26,7 @@ pub enum ApiPermissionsGetError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.IndexPermissions
+/// Requires verified email; Requires one of the following permissions: Auth.IndexPermissions
 pub async fn api_permissions_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::AuthIndexPermissionsResponse>, Error<ApiPermissionsGetError>> {
     let local_var_configuration = configuration;
 

@@ -74,7 +74,7 @@ pub enum ApiProductsPostError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.BuyProduct
+/// Requires verified email; Requires one of the following permissions: Shop.BuyProduct
 pub async fn api_products_buy_id_post(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiProductsBuyIdPostError>> {
     let local_var_configuration = configuration;
 
@@ -105,7 +105,7 @@ pub async fn api_products_buy_id_post(configuration: &configuration::Configurati
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexProducts, Shop.IndexStoreProducts
+/// Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts
 pub async fn api_products_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>, search: Option<&str>) -> Result<Vec<crate::models::ShopIndexProductsResponse>, Error<ApiProductsGetError>> {
     let local_var_configuration = configuration;
 
@@ -151,7 +151,7 @@ pub async fn api_products_get(configuration: &configuration::Configuration, filt
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteProduct
+/// Requires verified email; Requires one of the following permissions: Shop.DeleteProduct
 pub async fn api_products_id_delete(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiProductsIdDeleteError>> {
     let local_var_configuration = configuration;
 
@@ -182,7 +182,7 @@ pub async fn api_products_id_delete(configuration: &configuration::Configuration
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewProduct, Shop.ViewStoreProduct
+/// Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct
 pub async fn api_products_id_get(configuration: &configuration::Configuration, id: i32) -> Result<crate::models::ShopViewProductResponse, Error<ApiProductsIdGetError>> {
     let local_var_configuration = configuration;
 
@@ -213,7 +213,7 @@ pub async fn api_products_id_get(configuration: &configuration::Configuration, i
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateProduct
+/// Requires verified email; Requires one of the following permissions: Shop.UpdateProduct
 pub async fn api_products_id_patch(configuration: &configuration::Configuration, id: i32, shop_update_product_request_body: Option<crate::models::ShopUpdateProductRequestBody>) -> Result<(), Error<ApiProductsIdPatchError>> {
     let local_var_configuration = configuration;
 
@@ -245,7 +245,7 @@ pub async fn api_products_id_patch(configuration: &configuration::Configuration,
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateProduct
+/// Requires verified email; Requires one of the following permissions: Shop.CreateProduct
 pub async fn api_products_post(configuration: &configuration::Configuration, shop_create_product_request_body: Option<crate::models::ShopCreateProductRequestBody>) -> Result<crate::models::ShopCreateProductResponse, Error<ApiProductsPostError>> {
     let local_var_configuration = configuration;
 

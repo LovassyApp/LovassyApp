@@ -64,7 +64,7 @@ pub enum ApiUserGroupsPostError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.IndexUserGroups
+/// Requires verified email; Requires one of the following permissions: Auth.IndexUserGroups
 pub async fn api_user_groups_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::AuthIndexUserGroupsResponse>, Error<ApiUserGroupsGetError>> {
     let local_var_configuration = configuration;
 
@@ -107,7 +107,7 @@ pub async fn api_user_groups_get(configuration: &configuration::Configuration, f
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.DeleteUserGroup
+/// Requires verified email; Requires one of the following permissions: Auth.DeleteUserGroup
 pub async fn api_user_groups_id_delete(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiUserGroupsIdDeleteError>> {
     let local_var_configuration = configuration;
 
@@ -138,7 +138,7 @@ pub async fn api_user_groups_id_delete(configuration: &configuration::Configurat
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.ViewUserGroup
+/// Requires verified email; Requires one of the following permissions: Auth.ViewUserGroup
 pub async fn api_user_groups_id_get(configuration: &configuration::Configuration, id: i32) -> Result<crate::models::AuthViewUserGroupResponse, Error<ApiUserGroupsIdGetError>> {
     let local_var_configuration = configuration;
 
@@ -169,7 +169,7 @@ pub async fn api_user_groups_id_get(configuration: &configuration::Configuration
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.UpdateUserGroup
+/// Requires verified email; Requires one of the following permissions: Auth.UpdateUserGroup
 pub async fn api_user_groups_id_patch(configuration: &configuration::Configuration, id: i32, auth_update_user_group_request_body: Option<crate::models::AuthUpdateUserGroupRequestBody>) -> Result<(), Error<ApiUserGroupsIdPatchError>> {
     let local_var_configuration = configuration;
 
@@ -201,7 +201,7 @@ pub async fn api_user_groups_id_patch(configuration: &configuration::Configurati
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.CreateUserGroup
+/// Requires verified email; Requires one of the following permissions: Auth.CreateUserGroup
 pub async fn api_user_groups_post(configuration: &configuration::Configuration, auth_create_user_group_request_body: Option<crate::models::AuthCreateUserGroupRequestBody>) -> Result<crate::models::AuthCreateUserGroupResponse, Error<ApiUserGroupsPostError>> {
     let local_var_configuration = configuration;
 

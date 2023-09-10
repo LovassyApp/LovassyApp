@@ -4,16 +4,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_grades_get**](GradesApi.md#api_grades_get) | **GET** /Api/Grades | 
+[**api_grades_get**](GradesApi.md#api_grades_get) | **GET** /Api/Grades | Get a list of the current user's grades
 
 
 
 ## api_grades_get
 
 > Vec<crate::models::SchoolIndexGradesResponse> api_grades_get(filters, sorts, page, page_size)
+Get a list of the current user's grades
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: School.IndexGrades<br><b>Requires the following features to be enabled</b>: School
+Requires verified email; Requires one of the following permissions: School.IndexGrades; Requires the following features to be enabled: School
 
 ### Parameters
 

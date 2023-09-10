@@ -83,7 +83,7 @@ pub enum ApiAuthVerifyEmailPostError {
 }
 
 
-/// <b>Requires one of the following permissions</b>: Auth.Control
+/// Requires one of the following permissions: Auth.Control
 pub async fn api_auth_control_get(configuration: &configuration::Configuration, ) -> Result<crate::models::AuthViewControlResponse, Error<ApiAuthControlGetError>> {
     let local_var_configuration = configuration;
 
@@ -202,7 +202,7 @@ pub async fn api_auth_refresh_post(configuration: &configuration::Configuration,
     }
 }
 
-/// <b>Requires unverified email</b>
+/// Requires unverified email
 pub async fn api_auth_resend_verify_email_post(configuration: &configuration::Configuration, verify_url: Option<&str>, verify_token_query_key: Option<&str>) -> Result<(), Error<ApiAuthResendVerifyEmailPostError>> {
     let local_var_configuration = configuration;
 

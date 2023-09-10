@@ -4,21 +4,21 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_products_buy_id_post**](ProductsApi.md#api_products_buy_id_post) | **POST** /Api/Products/Buy/{id} | 
-[**api_products_get**](ProductsApi.md#api_products_get) | **GET** /Api/Products | 
-[**api_products_id_delete**](ProductsApi.md#api_products_id_delete) | **DELETE** /Api/Products/{id} | 
-[**api_products_id_get**](ProductsApi.md#api_products_id_get) | **GET** /Api/Products/{id} | 
-[**api_products_id_patch**](ProductsApi.md#api_products_id_patch) | **PATCH** /Api/Products/{id} | 
-[**api_products_post**](ProductsApi.md#api_products_post) | **POST** /Api/Products | 
+[**api_products_buy_id_post**](ProductsApi.md#api_products_buy_id_post) | **POST** /Api/Products/Buy/{id} | Buy a product
+[**api_products_get**](ProductsApi.md#api_products_get) | **GET** /Api/Products | Get a list of all products or only store products depending on permissions
+[**api_products_id_delete**](ProductsApi.md#api_products_id_delete) | **DELETE** /Api/Products/{id} | Delete a product
+[**api_products_id_get**](ProductsApi.md#api_products_id_get) | **GET** /Api/Products/{id} | Get information about a product
+[**api_products_id_patch**](ProductsApi.md#api_products_id_patch) | **PATCH** /Api/Products/{id} | Update a product
+[**api_products_post**](ProductsApi.md#api_products_post) | **POST** /Api/Products | Create a new product
 
 
 
 ## api_products_buy_id_post
 
 > api_products_buy_id_post(id)
+Buy a product
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.BuyProduct
+Requires verified email; Requires one of the following permissions: Shop.BuyProduct
 
 ### Parameters
 
@@ -46,9 +46,9 @@ Name | Type | Description  | Required | Notes
 ## api_products_get
 
 > Vec<crate::models::ShopIndexProductsResponse> api_products_get(filters, sorts, page, page_size, search)
+Get a list of all products or only store products depending on permissions
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexProducts, Shop.IndexStoreProducts
+Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts
 
 ### Parameters
 
@@ -80,9 +80,9 @@ Name | Type | Description  | Required | Notes
 ## api_products_id_delete
 
 > api_products_id_delete(id)
+Delete a product
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteProduct
+Requires verified email; Requires one of the following permissions: Shop.DeleteProduct
 
 ### Parameters
 
@@ -110,9 +110,9 @@ Name | Type | Description  | Required | Notes
 ## api_products_id_get
 
 > crate::models::ShopViewProductResponse api_products_id_get(id)
+Get information about a product
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewProduct, Shop.ViewStoreProduct
+Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct
 
 ### Parameters
 
@@ -140,9 +140,9 @@ Name | Type | Description  | Required | Notes
 ## api_products_id_patch
 
 > api_products_id_patch(id, shop_update_product_request_body)
+Update a product
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateProduct
+Requires verified email; Requires one of the following permissions: Shop.UpdateProduct
 
 ### Parameters
 
@@ -171,9 +171,9 @@ Name | Type | Description  | Required | Notes
 ## api_products_post
 
 > crate::models::ShopCreateProductResponse api_products_post(shop_create_product_request_body)
+Create a new product
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateProduct
+Requires verified email; Requires one of the following permissions: Shop.CreateProduct
 
 ### Parameters
 

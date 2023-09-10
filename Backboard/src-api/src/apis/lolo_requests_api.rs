@@ -83,7 +83,7 @@ pub enum ApiLoloRequestsPostError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.IndexLoloRequests; Requires the following features to be enabled: Shop
 pub async fn api_lolo_requests_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ShopIndexLoloRequestsResponse>, Error<ApiLoloRequestsGetError>> {
     let local_var_configuration = configuration;
 
@@ -126,7 +126,7 @@ pub async fn api_lolo_requests_get(configuration: &configuration::Configuration,
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest; Requires the following features to be enabled: Shop
 pub async fn api_lolo_requests_id_delete(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiLoloRequestsIdDeleteError>> {
     let local_var_configuration = configuration;
 
@@ -157,7 +157,7 @@ pub async fn api_lolo_requests_id_delete(configuration: &configuration::Configur
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.ViewLoloRequest; Requires the following features to be enabled: Shop
 pub async fn api_lolo_requests_id_get(configuration: &configuration::Configuration, id: i32) -> Result<crate::models::ShopViewLoloRequestResponse, Error<ApiLoloRequestsIdGetError>> {
     let local_var_configuration = configuration;
 
@@ -188,7 +188,7 @@ pub async fn api_lolo_requests_id_get(configuration: &configuration::Configurati
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest; Requires the following features to be enabled: Shop
 pub async fn api_lolo_requests_id_patch(configuration: &configuration::Configuration, id: i32, shop_update_lolo_request_request_body: Option<crate::models::ShopUpdateLoloRequestRequestBody>) -> Result<(), Error<ApiLoloRequestsIdPatchError>> {
     let local_var_configuration = configuration;
 
@@ -220,7 +220,7 @@ pub async fn api_lolo_requests_id_patch(configuration: &configuration::Configura
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.OverruleLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.OverruleLoloRequest; Requires the following features to be enabled: Shop
 pub async fn api_lolo_requests_overrule_id_post(configuration: &configuration::Configuration, id: i32, shop_overrule_lolo_request_request_body: Option<crate::models::ShopOverruleLoloRequestRequestBody>) -> Result<(), Error<ApiLoloRequestsOverruleIdPostError>> {
     let local_var_configuration = configuration;
 
@@ -252,7 +252,7 @@ pub async fn api_lolo_requests_overrule_id_post(configuration: &configuration::C
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.IndexOwnLoloRequests; Requires the following features to be enabled: Shop
 pub async fn api_lolo_requests_own_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ShopIndexOwnLoloRequestsResponse>, Error<ApiLoloRequestsOwnGetError>> {
     let local_var_configuration = configuration;
 
@@ -295,7 +295,7 @@ pub async fn api_lolo_requests_own_get(configuration: &configuration::Configurat
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest; Requires the following features to be enabled: Shop
 pub async fn api_lolo_requests_post(configuration: &configuration::Configuration, shop_create_lolo_request_request_body: Option<crate::models::ShopCreateLoloRequestRequestBody>) -> Result<crate::models::ShopCreateLoloRequestResponse, Error<ApiLoloRequestsPostError>> {
     let local_var_configuration = configuration;
 

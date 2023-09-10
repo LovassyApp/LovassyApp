@@ -38,6 +38,7 @@ pub enum ApiUsersIdDeleteError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ApiUsersIdGetError {
+    Status404(crate::models::ProblemDetails),
     Status401(),
     Status403(),
     UnknownValue(serde_json::Value),
@@ -80,7 +81,7 @@ pub enum ApiUsersPostError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.IndexUsers<br><b>Requires the following features to be enabled</b>: Users
+/// Requires verified email; Requires one of the following permissions: Users.IndexUsers; Requires the following features to be enabled: Users
 pub async fn api_users_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::UsersIndexUsersResponse>, Error<ApiUsersGetError>> {
     let local_var_configuration = configuration;
 
@@ -123,7 +124,7 @@ pub async fn api_users_get(configuration: &configuration::Configuration, filters
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.DeleteUser<br><b>Requires the following features to be enabled</b>: Users
+/// Requires verified email; Requires one of the following permissions: Users.DeleteUser; Requires the following features to be enabled: Users
 pub async fn api_users_id_delete(configuration: &configuration::Configuration, id: &str) -> Result<(), Error<ApiUsersIdDeleteError>> {
     let local_var_configuration = configuration;
 
@@ -154,8 +155,8 @@ pub async fn api_users_id_delete(configuration: &configuration::Configuration, i
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.ViewUser<br><b>Requires the following features to be enabled</b>: Users
-pub async fn api_users_id_get(configuration: &configuration::Configuration, id: &str) -> Result<crate::models::UsersViewUserResponse, Error<ApiUsersIdGetError>> {
+/// Requires verified email; Requires one of the following permissions: Users.ViewUser; Requires the following features to be enabled: Users
+pub async fn api_users_id_get(configuration: &configuration::Configuration, id: &str) -> Result<(), Error<ApiUsersIdGetError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -177,7 +178,7 @@ pub async fn api_users_id_get(configuration: &configuration::Configuration, id: 
     let local_var_content = local_var_resp.text().await?;
 
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+        Ok(())
     } else {
         let local_var_entity: Option<ApiUsersIdGetError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
@@ -185,7 +186,7 @@ pub async fn api_users_id_get(configuration: &configuration::Configuration, id: 
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.UpdateUser<br><b>Requires the following features to be enabled</b>: Users
+/// Requires verified email; Requires one of the following permissions: Users.UpdateUser; Requires the following features to be enabled: Users
 pub async fn api_users_id_patch(configuration: &configuration::Configuration, id: &str, users_update_user_request_body: Option<crate::models::UsersUpdateUserRequestBody>) -> Result<(), Error<ApiUsersIdPatchError>> {
     let local_var_configuration = configuration;
 
@@ -217,7 +218,7 @@ pub async fn api_users_id_patch(configuration: &configuration::Configuration, id
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.KickAllUsers<br><b>Requires the following features to be enabled</b>: Users
+/// Requires verified email; Requires one of the following permissions: Users.KickAllUsers; Requires the following features to be enabled: Users
 pub async fn api_users_kick_all_post(configuration: &configuration::Configuration, ) -> Result<(), Error<ApiUsersKickAllPostError>> {
     let local_var_configuration = configuration;
 
@@ -248,7 +249,7 @@ pub async fn api_users_kick_all_post(configuration: &configuration::Configuratio
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.KickUser<br><b>Requires the following features to be enabled</b>: Users
+/// Requires verified email; Requires one of the following permissions: Users.KickUser; Requires the following features to be enabled: Users
 pub async fn api_users_kick_id_post(configuration: &configuration::Configuration, id: &str) -> Result<(), Error<ApiUsersKickIdPostError>> {
     let local_var_configuration = configuration;
 
@@ -279,7 +280,7 @@ pub async fn api_users_kick_id_post(configuration: &configuration::Configuration
     }
 }
 
-/// <b>Requires the following features to be enabled</b>: Users
+/// Requires the following features to be enabled: Users
 pub async fn api_users_post(configuration: &configuration::Configuration, verify_url: Option<&str>, verify_token_query_key: Option<&str>, users_create_user_request_body: Option<crate::models::UsersCreateUserRequestBody>) -> Result<(), Error<ApiUsersPostError>> {
     let local_var_configuration = configuration;
 

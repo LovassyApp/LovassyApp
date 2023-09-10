@@ -4,22 +4,22 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_owned_items_get**](OwnedItemsApi.md#api_owned_items_get) | **GET** /Api/OwnedItems | 
-[**api_owned_items_id_delete**](OwnedItemsApi.md#api_owned_items_id_delete) | **DELETE** /Api/OwnedItems/{id} | 
-[**api_owned_items_id_get**](OwnedItemsApi.md#api_owned_items_id_get) | **GET** /Api/OwnedItems/{id} | 
-[**api_owned_items_id_patch**](OwnedItemsApi.md#api_owned_items_id_patch) | **PATCH** /Api/OwnedItems/{id} | 
-[**api_owned_items_id_use_post**](OwnedItemsApi.md#api_owned_items_id_use_post) | **POST** /Api/OwnedItems/{id}/Use | 
-[**api_owned_items_own_get**](OwnedItemsApi.md#api_owned_items_own_get) | **GET** /Api/OwnedItems/Own | 
-[**api_owned_items_post**](OwnedItemsApi.md#api_owned_items_post) | **POST** /Api/OwnedItems | 
+[**api_owned_items_get**](OwnedItemsApi.md#api_owned_items_get) | **GET** /Api/OwnedItems | Get a list of all owned items
+[**api_owned_items_id_delete**](OwnedItemsApi.md#api_owned_items_id_delete) | **DELETE** /Api/OwnedItems/{id} | Delete an owned item
+[**api_owned_items_id_get**](OwnedItemsApi.md#api_owned_items_id_get) | **GET** /Api/OwnedItems/{id} | Get information about an owned item
+[**api_owned_items_id_patch**](OwnedItemsApi.md#api_owned_items_id_patch) | **PATCH** /Api/OwnedItems/{id} | Update an owned item
+[**api_owned_items_id_use_post**](OwnedItemsApi.md#api_owned_items_id_use_post) | **POST** /Api/OwnedItems/{id}/Use | Use an owned item
+[**api_owned_items_own_get**](OwnedItemsApi.md#api_owned_items_own_get) | **GET** /Api/OwnedItems/Own | Get a list of the current user's owned items
+[**api_owned_items_post**](OwnedItemsApi.md#api_owned_items_post) | **POST** /Api/OwnedItems | Create a new owned item
 
 
 
 ## api_owned_items_get
 
 > Vec<crate::models::ShopIndexOwnedItemsResponse> api_owned_items_get(filters, sorts, page, page_size, search)
+Get a list of all owned items
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnedItems<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.IndexOwnedItems; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -51,9 +51,9 @@ Name | Type | Description  | Required | Notes
 ## api_owned_items_id_delete
 
 > api_owned_items_id_delete(id)
+Delete an owned item
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -81,9 +81,9 @@ Name | Type | Description  | Required | Notes
 ## api_owned_items_id_get
 
 > crate::models::ShopViewOwnedItemResponse api_owned_items_id_get(id)
+Get information about an owned item
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -111,9 +111,9 @@ Name | Type | Description  | Required | Notes
 ## api_owned_items_id_patch
 
 > api_owned_items_id_patch(id, shop_update_owned_item_request_body)
+Update an owned item
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.UpdateOwnedItem; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -142,9 +142,9 @@ Name | Type | Description  | Required | Notes
 ## api_owned_items_id_use_post
 
 > api_owned_items_id_use_post(id, shop_use_owned_item_request_body)
+Use an owned item
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UseOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.UseOwnOwnedItem; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -173,9 +173,9 @@ Name | Type | Description  | Required | Notes
 ## api_owned_items_own_get
 
 > Vec<crate::models::ShopIndexOwnOwnedItemsResponse> api_owned_items_own_get(filters, sorts, page, page_size, search)
+Get a list of the current user's owned items
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnOwnedItems<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.IndexOwnOwnedItems; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -207,9 +207,9 @@ Name | Type | Description  | Required | Notes
 ## api_owned_items_post
 
 > crate::models::ShopCreateOwnedItemResponse api_owned_items_post(shop_create_owned_item_request_body)
+Create a new owned item
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.CreateOwnedItem; Requires the following features to be enabled: Shop
 
 ### Parameters
 

@@ -65,7 +65,7 @@ pub enum ApiImportKeysPostError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.IndexImportKeys<br><b>Requires the following features to be enabled</b>: Import
+/// Requires verified email; Requires one of the following permissions: Import.IndexImportKeys; Requires the following features to be enabled: Import
 pub async fn api_import_keys_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ImportIndexImportKeysResponse>, Error<ApiImportKeysGetError>> {
     let local_var_configuration = configuration;
 
@@ -108,7 +108,7 @@ pub async fn api_import_keys_get(configuration: &configuration::Configuration, f
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.DeleteImportKey<br><b>Requires the following features to be enabled</b>: Import
+/// Requires verified email; Requires one of the following permissions: Import.DeleteImportKey; Requires the following features to be enabled: Import
 pub async fn api_import_keys_id_delete(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiImportKeysIdDeleteError>> {
     let local_var_configuration = configuration;
 
@@ -139,7 +139,7 @@ pub async fn api_import_keys_id_delete(configuration: &configuration::Configurat
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.ViewImportKey<br><b>Requires the following features to be enabled</b>: Import
+/// Requires verified email; Requires one of the following permissions: Import.ViewImportKey; Requires the following features to be enabled: Import
 pub async fn api_import_keys_id_get(configuration: &configuration::Configuration, id: i32) -> Result<crate::models::ImportViewImportKeyResponse, Error<ApiImportKeysIdGetError>> {
     let local_var_configuration = configuration;
 
@@ -170,7 +170,7 @@ pub async fn api_import_keys_id_get(configuration: &configuration::Configuration
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.UpdateImportKey<br><b>Requires the following features to be enabled</b>: Import
+/// Requires verified email; Requires one of the following permissions: Import.UpdateImportKey; Requires the following features to be enabled: Import
 pub async fn api_import_keys_id_patch(configuration: &configuration::Configuration, id: i32, import_update_import_key_request_body: Option<crate::models::ImportUpdateImportKeyRequestBody>) -> Result<(), Error<ApiImportKeysIdPatchError>> {
     let local_var_configuration = configuration;
 
@@ -202,7 +202,7 @@ pub async fn api_import_keys_id_patch(configuration: &configuration::Configurati
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Import.CreateImportKey<br><b>Requires the following features to be enabled</b>: Import
+/// Requires verified email; Requires one of the following permissions: Import.CreateImportKey; Requires the following features to be enabled: Import
 pub async fn api_import_keys_post(configuration: &configuration::Configuration, import_create_import_key_request_body: Option<crate::models::ImportCreateImportKeyRequestBody>) -> Result<crate::models::ImportCreateImportKeyResponse, Error<ApiImportKeysPostError>> {
     let local_var_configuration = configuration;
 

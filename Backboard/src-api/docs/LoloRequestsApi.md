@@ -4,22 +4,22 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_lolo_requests_get**](LoloRequestsApi.md#api_lolo_requests_get) | **GET** /Api/LoloRequests | 
-[**api_lolo_requests_id_delete**](LoloRequestsApi.md#api_lolo_requests_id_delete) | **DELETE** /Api/LoloRequests/{id} | 
-[**api_lolo_requests_id_get**](LoloRequestsApi.md#api_lolo_requests_id_get) | **GET** /Api/LoloRequests/{id} | 
-[**api_lolo_requests_id_patch**](LoloRequestsApi.md#api_lolo_requests_id_patch) | **PATCH** /Api/LoloRequests/{id} | 
-[**api_lolo_requests_overrule_id_post**](LoloRequestsApi.md#api_lolo_requests_overrule_id_post) | **POST** /Api/LoloRequests/Overrule/{id} | 
-[**api_lolo_requests_own_get**](LoloRequestsApi.md#api_lolo_requests_own_get) | **GET** /Api/LoloRequests/Own | 
-[**api_lolo_requests_post**](LoloRequestsApi.md#api_lolo_requests_post) | **POST** /Api/LoloRequests | 
+[**api_lolo_requests_get**](LoloRequestsApi.md#api_lolo_requests_get) | **GET** /Api/LoloRequests | Get a list of all lolo requests
+[**api_lolo_requests_id_delete**](LoloRequestsApi.md#api_lolo_requests_id_delete) | **DELETE** /Api/LoloRequests/{id} | Delete a lolo request
+[**api_lolo_requests_id_get**](LoloRequestsApi.md#api_lolo_requests_id_get) | **GET** /Api/LoloRequests/{id} | Get information about a lolo request
+[**api_lolo_requests_id_patch**](LoloRequestsApi.md#api_lolo_requests_id_patch) | **PATCH** /Api/LoloRequests/{id} | Update a lolo request
+[**api_lolo_requests_overrule_id_post**](LoloRequestsApi.md#api_lolo_requests_overrule_id_post) | **POST** /Api/LoloRequests/Overrule/{id} | Overrule a lolo request
+[**api_lolo_requests_own_get**](LoloRequestsApi.md#api_lolo_requests_own_get) | **GET** /Api/LoloRequests/Own | Get a list of the current user's lolo requests
+[**api_lolo_requests_post**](LoloRequestsApi.md#api_lolo_requests_post) | **POST** /Api/LoloRequests | Create a new lolo request
 
 
 
 ## api_lolo_requests_get
 
 > Vec<crate::models::ShopIndexLoloRequestsResponse> api_lolo_requests_get(filters, sorts, page, page_size)
+Get a list of all lolo requests
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.IndexLoloRequests; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -50,9 +50,9 @@ Name | Type | Description  | Required | Notes
 ## api_lolo_requests_id_delete
 
 > api_lolo_requests_id_delete(id)
+Delete a lolo request
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -80,9 +80,9 @@ Name | Type | Description  | Required | Notes
 ## api_lolo_requests_id_get
 
 > crate::models::ShopViewLoloRequestResponse api_lolo_requests_id_get(id)
+Get information about a lolo request
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.ViewLoloRequest; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -110,9 +110,9 @@ Name | Type | Description  | Required | Notes
 ## api_lolo_requests_id_patch
 
 > api_lolo_requests_id_patch(id, shop_update_lolo_request_request_body)
+Update a lolo request
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -141,9 +141,9 @@ Name | Type | Description  | Required | Notes
 ## api_lolo_requests_overrule_id_post
 
 > api_lolo_requests_overrule_id_post(id, shop_overrule_lolo_request_request_body)
+Overrule a lolo request
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.OverruleLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.OverruleLoloRequest; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -172,9 +172,9 @@ Name | Type | Description  | Required | Notes
 ## api_lolo_requests_own_get
 
 > Vec<crate::models::ShopIndexOwnLoloRequestsResponse> api_lolo_requests_own_get(filters, sorts, page, page_size)
+Get a list of the current user's lolo requests
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnLoloRequests<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.IndexOwnLoloRequests; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -205,9 +205,9 @@ Name | Type | Description  | Required | Notes
 ## api_lolo_requests_post
 
 > crate::models::ShopCreateLoloRequestResponse api_lolo_requests_post(shop_create_lolo_request_request_body)
+Create a new lolo request
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest; Requires the following features to be enabled: Shop
 
 ### Parameters
 

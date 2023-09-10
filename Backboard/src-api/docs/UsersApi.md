@@ -4,22 +4,22 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_users_get**](UsersApi.md#api_users_get) | **GET** /Api/Users | 
-[**api_users_id_delete**](UsersApi.md#api_users_id_delete) | **DELETE** /Api/Users/{id} | 
-[**api_users_id_get**](UsersApi.md#api_users_id_get) | **GET** /Api/Users/{id} | 
-[**api_users_id_patch**](UsersApi.md#api_users_id_patch) | **PATCH** /Api/Users/{id} | 
-[**api_users_kick_all_post**](UsersApi.md#api_users_kick_all_post) | **POST** /Api/Users/Kick/All | 
-[**api_users_kick_id_post**](UsersApi.md#api_users_kick_id_post) | **POST** /Api/Users/Kick/{id} | 
-[**api_users_post**](UsersApi.md#api_users_post) | **POST** /Api/Users | 
+[**api_users_get**](UsersApi.md#api_users_get) | **GET** /Api/Users | Get a list of all users
+[**api_users_id_delete**](UsersApi.md#api_users_id_delete) | **DELETE** /Api/Users/{id} | Delete a user
+[**api_users_id_get**](UsersApi.md#api_users_id_get) | **GET** /Api/Users/{id} | Get information about a user
+[**api_users_id_patch**](UsersApi.md#api_users_id_patch) | **PATCH** /Api/Users/{id} | Update a user
+[**api_users_kick_all_post**](UsersApi.md#api_users_kick_all_post) | **POST** /Api/Users/Kick/All | Delete all active sessions of all users
+[**api_users_kick_id_post**](UsersApi.md#api_users_kick_id_post) | **POST** /Api/Users/Kick/{id} | Delete all active sessions of a user
+[**api_users_post**](UsersApi.md#api_users_post) | **POST** /Api/Users | Create a new user
 
 
 
 ## api_users_get
 
 > Vec<crate::models::UsersIndexUsersResponse> api_users_get(filters, sorts, page, page_size)
+Get a list of all users
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.IndexUsers<br><b>Requires the following features to be enabled</b>: Users
+Requires verified email; Requires one of the following permissions: Users.IndexUsers; Requires the following features to be enabled: Users
 
 ### Parameters
 
@@ -50,9 +50,9 @@ Name | Type | Description  | Required | Notes
 ## api_users_id_delete
 
 > api_users_id_delete(id)
+Delete a user
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.DeleteUser<br><b>Requires the following features to be enabled</b>: Users
+Requires verified email; Requires one of the following permissions: Users.DeleteUser; Requires the following features to be enabled: Users
 
 ### Parameters
 
@@ -79,10 +79,10 @@ Name | Type | Description  | Required | Notes
 
 ## api_users_id_get
 
-> crate::models::UsersViewUserResponse api_users_id_get(id)
+> api_users_id_get(id)
+Get information about a user
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.ViewUser<br><b>Requires the following features to be enabled</b>: Users
+Requires verified email; Requires one of the following permissions: Users.ViewUser; Requires the following features to be enabled: Users
 
 ### Parameters
 
@@ -93,7 +93,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::UsersViewUserResponse**](UsersViewUserResponse.md)
+ (empty response body)
 
 ### Authorization
 
@@ -110,9 +110,9 @@ Name | Type | Description  | Required | Notes
 ## api_users_id_patch
 
 > api_users_id_patch(id, users_update_user_request_body)
+Update a user
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.UpdateUser<br><b>Requires the following features to be enabled</b>: Users
+Requires verified email; Requires one of the following permissions: Users.UpdateUser; Requires the following features to be enabled: Users
 
 ### Parameters
 
@@ -141,9 +141,9 @@ Name | Type | Description  | Required | Notes
 ## api_users_kick_all_post
 
 > api_users_kick_all_post()
+Delete all active sessions of all users
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.KickAllUsers<br><b>Requires the following features to be enabled</b>: Users
+Requires verified email; Requires one of the following permissions: Users.KickAllUsers; Requires the following features to be enabled: Users
 
 ### Parameters
 
@@ -168,9 +168,9 @@ This endpoint does not need any parameter.
 ## api_users_kick_id_post
 
 > api_users_kick_id_post(id)
+Delete all active sessions of a user
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Users.KickUser<br><b>Requires the following features to be enabled</b>: Users
+Requires verified email; Requires one of the following permissions: Users.KickUser; Requires the following features to be enabled: Users
 
 ### Parameters
 
@@ -198,9 +198,9 @@ Name | Type | Description  | Required | Notes
 ## api_users_post
 
 > api_users_post(verify_url, verify_token_query_key, users_create_user_request_body)
+Create a new user
 
-
-<b>Requires the following features to be enabled</b>: Users
+Requires the following features to be enabled: Users
 
 ### Parameters
 

@@ -83,7 +83,7 @@ pub enum ApiOwnedItemsPostError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnedItems<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.IndexOwnedItems; Requires the following features to be enabled: Shop
 pub async fn api_owned_items_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>, search: Option<&str>) -> Result<Vec<crate::models::ShopIndexOwnedItemsResponse>, Error<ApiOwnedItemsGetError>> {
     let local_var_configuration = configuration;
 
@@ -129,7 +129,7 @@ pub async fn api_owned_items_get(configuration: &configuration::Configuration, f
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem; Requires the following features to be enabled: Shop
 pub async fn api_owned_items_id_delete(configuration: &configuration::Configuration, id: i32) -> Result<(), Error<ApiOwnedItemsIdDeleteError>> {
     let local_var_configuration = configuration;
 
@@ -160,7 +160,7 @@ pub async fn api_owned_items_id_delete(configuration: &configuration::Configurat
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem; Requires the following features to be enabled: Shop
 pub async fn api_owned_items_id_get(configuration: &configuration::Configuration, id: i32) -> Result<crate::models::ShopViewOwnedItemResponse, Error<ApiOwnedItemsIdGetError>> {
     let local_var_configuration = configuration;
 
@@ -191,7 +191,7 @@ pub async fn api_owned_items_id_get(configuration: &configuration::Configuration
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.UpdateOwnedItem; Requires the following features to be enabled: Shop
 pub async fn api_owned_items_id_patch(configuration: &configuration::Configuration, id: i32, shop_update_owned_item_request_body: Option<crate::models::ShopUpdateOwnedItemRequestBody>) -> Result<(), Error<ApiOwnedItemsIdPatchError>> {
     let local_var_configuration = configuration;
 
@@ -223,7 +223,7 @@ pub async fn api_owned_items_id_patch(configuration: &configuration::Configurati
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UseOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.UseOwnOwnedItem; Requires the following features to be enabled: Shop
 pub async fn api_owned_items_id_use_post(configuration: &configuration::Configuration, id: i32, shop_use_owned_item_request_body: Option<crate::models::ShopUseOwnedItemRequestBody>) -> Result<(), Error<ApiOwnedItemsIdUsePostError>> {
     let local_var_configuration = configuration;
 
@@ -255,7 +255,7 @@ pub async fn api_owned_items_id_use_post(configuration: &configuration::Configur
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnOwnedItems<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.IndexOwnOwnedItems; Requires the following features to be enabled: Shop
 pub async fn api_owned_items_own_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>, search: Option<&str>) -> Result<Vec<crate::models::ShopIndexOwnOwnedItemsResponse>, Error<ApiOwnedItemsOwnGetError>> {
     let local_var_configuration = configuration;
 
@@ -301,7 +301,7 @@ pub async fn api_owned_items_own_get(configuration: &configuration::Configuratio
     }
 }
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop
+/// Requires verified email; Requires one of the following permissions: Shop.CreateOwnedItem; Requires the following features to be enabled: Shop
 pub async fn api_owned_items_post(configuration: &configuration::Configuration, shop_create_owned_item_request_body: Option<crate::models::ShopCreateOwnedItemRequestBody>) -> Result<crate::models::ShopCreateOwnedItemResponse, Error<ApiOwnedItemsPostError>> {
     let local_var_configuration = configuration;
 

@@ -4,17 +4,17 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_lolos_get**](LolosApi.md#api_lolos_get) | **GET** /Api/Lolos | 
-[**api_lolos_own_get**](LolosApi.md#api_lolos_own_get) | **GET** /Api/Lolos/Own | 
+[**api_lolos_get**](LolosApi.md#api_lolos_get) | **GET** /Api/Lolos | Get a list of all lolo coins
+[**api_lolos_own_get**](LolosApi.md#api_lolos_own_get) | **GET** /Api/Lolos/Own | Get a list of the user's lolo coins
 
 
 
 ## api_lolos_get
 
 > Vec<crate::models::ShopIndexLolosResponse> api_lolos_get(filters, sorts, page, page_size)
+Get a list of all lolo coins
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexLolos<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.IndexLolos; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -45,9 +45,9 @@ Name | Type | Description  | Required | Notes
 ## api_lolos_own_get
 
 > crate::models::ShopIndexOwnLolosResponse api_lolos_own_get(filters, sorts, page, page_size)
+Get a list of the user's lolo coins
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexOwnLolos<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.IndexOwnLolos; Requires the following features to be enabled: Shop
 
 ### Parameters
 

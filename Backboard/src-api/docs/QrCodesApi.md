@@ -4,20 +4,20 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_qr_codes_get**](QrCodesApi.md#api_qr_codes_get) | **GET** /Api/QRCodes | 
-[**api_qr_codes_id_delete**](QrCodesApi.md#api_qr_codes_id_delete) | **DELETE** /Api/QRCodes/{id} | 
-[**api_qr_codes_id_get**](QrCodesApi.md#api_qr_codes_id_get) | **GET** /Api/QRCodes/{id} | 
-[**api_qr_codes_id_patch**](QrCodesApi.md#api_qr_codes_id_patch) | **PATCH** /Api/QRCodes/{id} | 
-[**api_qr_codes_post**](QrCodesApi.md#api_qr_codes_post) | **POST** /Api/QRCodes | 
+[**api_qr_codes_get**](QrCodesApi.md#api_qr_codes_get) | **GET** /Api/QRCodes | Get a list of all QR codes
+[**api_qr_codes_id_delete**](QrCodesApi.md#api_qr_codes_id_delete) | **DELETE** /Api/QRCodes/{id} | Delete a QR code
+[**api_qr_codes_id_get**](QrCodesApi.md#api_qr_codes_id_get) | **GET** /Api/QRCodes/{id} | Get information about a QR code
+[**api_qr_codes_id_patch**](QrCodesApi.md#api_qr_codes_id_patch) | **PATCH** /Api/QRCodes/{id} | Update a QR code
+[**api_qr_codes_post**](QrCodesApi.md#api_qr_codes_post) | **POST** /Api/QRCodes | Create a new QR code
 
 
 
 ## api_qr_codes_get
 
 > Vec<crate::models::ShopIndexQrCodesResponse> api_qr_codes_get(filters, sorts, page, page_size)
+Get a list of all QR codes
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.IndexQRCodes<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.IndexQRCodes; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -48,9 +48,9 @@ Name | Type | Description  | Required | Notes
 ## api_qr_codes_id_delete
 
 > api_qr_codes_id_delete(id)
+Delete a QR code
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.DeleteQRCode<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.DeleteQRCode; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -78,9 +78,9 @@ Name | Type | Description  | Required | Notes
 ## api_qr_codes_id_get
 
 > crate::models::ShopViewQrCodeResponse api_qr_codes_id_get(id)
+Get information about a QR code
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.ViewQRCode<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.ViewQRCode; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -108,9 +108,9 @@ Name | Type | Description  | Required | Notes
 ## api_qr_codes_id_patch
 
 > api_qr_codes_id_patch(id, shop_update_qr_code_request_body)
+Update a QR code
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.UpdateQRCode<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.UpdateQRCode; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -139,9 +139,9 @@ Name | Type | Description  | Required | Notes
 ## api_qr_codes_post
 
 > crate::models::ShopCreateQrCodeResponse api_qr_codes_post(shop_create_qr_code_request_body)
+Create a new QR code
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Shop.CreateQRCode<br><b>Requires the following features to be enabled</b>: Shop
+Requires verified email; Requires one of the following permissions: Shop.CreateQRCode; Requires the following features to be enabled: Shop
 
 ### Parameters
 

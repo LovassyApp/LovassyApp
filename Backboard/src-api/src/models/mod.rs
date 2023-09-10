@@ -152,7 +152,3 @@ pub mod users_index_users_response_user_group;
 pub use self::users_index_users_response_user_group::UsersIndexUsersResponseUserGroup;
 pub mod users_update_user_request_body;
 pub use self::users_update_user_request_body::UsersUpdateUserRequestBody;
-pub mod users_view_user_response;
-pub use self::users_view_user_response::UsersViewUserResponse;
-pub mod users_view_user_response_user_group;
-pub use self::users_view_user_response_user_group::UsersViewUserResponseUserGroup;

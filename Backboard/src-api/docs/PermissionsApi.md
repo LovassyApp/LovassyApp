@@ -4,16 +4,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_permissions_get**](PermissionsApi.md#api_permissions_get) | **GET** /Api/Permissions | 
+[**api_permissions_get**](PermissionsApi.md#api_permissions_get) | **GET** /Api/Permissions | Get a list of all permissions
 
 
 
 ## api_permissions_get
 
 > Vec<crate::models::AuthIndexPermissionsResponse> api_permissions_get(filters, sorts, page, page_size)
+Get a list of all permissions
 
-
-<b>Requires verified email</b><br><b>Requires one of the following permissions</b>: Auth.IndexPermissions
+Requires verified email; Requires one of the following permissions: Auth.IndexPermissions
 
 ### Parameters
 

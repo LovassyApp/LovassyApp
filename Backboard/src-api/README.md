@@ -25,66 +25,66 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AuthApi* | [**api_auth_control_get**](docs/AuthApi.md#api_auth_control_get) | **GET** /Api/Auth/Control | 
-*AuthApi* | [**api_auth_login_post**](docs/AuthApi.md#api_auth_login_post) | **POST** /Api/Auth/Login | 
-*AuthApi* | [**api_auth_logout_delete**](docs/AuthApi.md#api_auth_logout_delete) | **DELETE** /Api/Auth/Logout | 
-*AuthApi* | [**api_auth_refresh_post**](docs/AuthApi.md#api_auth_refresh_post) | **POST** /Api/Auth/Refresh | 
-*AuthApi* | [**api_auth_resend_verify_email_post**](docs/AuthApi.md#api_auth_resend_verify_email_post) | **POST** /Api/Auth/ResendVerifyEmail | 
-*AuthApi* | [**api_auth_reset_password_post**](docs/AuthApi.md#api_auth_reset_password_post) | **POST** /Api/Auth/ResetPassword | 
-*AuthApi* | [**api_auth_send_password_reset_post**](docs/AuthApi.md#api_auth_send_password_reset_post) | **POST** /Api/Auth/SendPasswordReset | 
-*AuthApi* | [**api_auth_verify_email_post**](docs/AuthApi.md#api_auth_verify_email_post) | **POST** /Api/Auth/VerifyEmail | 
-*GradesApi* | [**api_grades_get**](docs/GradesApi.md#api_grades_get) | **GET** /Api/Grades | 
-*ImportApi* | [**api_import_grades_user_id_post**](docs/ImportApi.md#api_import_grades_user_id_post) | **POST** /Api/Import/Grades/{userId} | 
-*ImportApi* | [**api_import_reset_key_password_put**](docs/ImportApi.md#api_import_reset_key_password_put) | **PUT** /Api/Import/ResetKeyPassword | 
-*ImportApi* | [**api_import_users_get**](docs/ImportApi.md#api_import_users_get) | **GET** /Api/Import/Users | 
-*ImportKeysApi* | [**api_import_keys_get**](docs/ImportKeysApi.md#api_import_keys_get) | **GET** /Api/ImportKeys | 
-*ImportKeysApi* | [**api_import_keys_id_delete**](docs/ImportKeysApi.md#api_import_keys_id_delete) | **DELETE** /Api/ImportKeys/{id} | 
-*ImportKeysApi* | [**api_import_keys_id_get**](docs/ImportKeysApi.md#api_import_keys_id_get) | **GET** /Api/ImportKeys/{id} | 
-*ImportKeysApi* | [**api_import_keys_id_patch**](docs/ImportKeysApi.md#api_import_keys_id_patch) | **PATCH** /Api/ImportKeys/{id} | 
-*ImportKeysApi* | [**api_import_keys_post**](docs/ImportKeysApi.md#api_import_keys_post) | **POST** /Api/ImportKeys | 
-*LoloRequestsApi* | [**api_lolo_requests_get**](docs/LoloRequestsApi.md#api_lolo_requests_get) | **GET** /Api/LoloRequests | 
-*LoloRequestsApi* | [**api_lolo_requests_id_delete**](docs/LoloRequestsApi.md#api_lolo_requests_id_delete) | **DELETE** /Api/LoloRequests/{id} | 
-*LoloRequestsApi* | [**api_lolo_requests_id_get**](docs/LoloRequestsApi.md#api_lolo_requests_id_get) | **GET** /Api/LoloRequests/{id} | 
-*LoloRequestsApi* | [**api_lolo_requests_id_patch**](docs/LoloRequestsApi.md#api_lolo_requests_id_patch) | **PATCH** /Api/LoloRequests/{id} | 
-*LoloRequestsApi* | [**api_lolo_requests_overrule_id_post**](docs/LoloRequestsApi.md#api_lolo_requests_overrule_id_post) | **POST** /Api/LoloRequests/Overrule/{id} | 
-*LoloRequestsApi* | [**api_lolo_requests_own_get**](docs/LoloRequestsApi.md#api_lolo_requests_own_get) | **GET** /Api/LoloRequests/Own | 
-*LoloRequestsApi* | [**api_lolo_requests_post**](docs/LoloRequestsApi.md#api_lolo_requests_post) | **POST** /Api/LoloRequests | 
-*LolosApi* | [**api_lolos_get**](docs/LolosApi.md#api_lolos_get) | **GET** /Api/Lolos | 
-*LolosApi* | [**api_lolos_own_get**](docs/LolosApi.md#api_lolos_own_get) | **GET** /Api/Lolos/Own | 
-*OwnedItemsApi* | [**api_owned_items_get**](docs/OwnedItemsApi.md#api_owned_items_get) | **GET** /Api/OwnedItems | 
-*OwnedItemsApi* | [**api_owned_items_id_delete**](docs/OwnedItemsApi.md#api_owned_items_id_delete) | **DELETE** /Api/OwnedItems/{id} | 
-*OwnedItemsApi* | [**api_owned_items_id_get**](docs/OwnedItemsApi.md#api_owned_items_id_get) | **GET** /Api/OwnedItems/{id} | 
-*OwnedItemsApi* | [**api_owned_items_id_patch**](docs/OwnedItemsApi.md#api_owned_items_id_patch) | **PATCH** /Api/OwnedItems/{id} | 
-*OwnedItemsApi* | [**api_owned_items_id_use_post**](docs/OwnedItemsApi.md#api_owned_items_id_use_post) | **POST** /Api/OwnedItems/{id}/Use | 
-*OwnedItemsApi* | [**api_owned_items_own_get**](docs/OwnedItemsApi.md#api_owned_items_own_get) | **GET** /Api/OwnedItems/Own | 
-*OwnedItemsApi* | [**api_owned_items_post**](docs/OwnedItemsApi.md#api_owned_items_post) | **POST** /Api/OwnedItems | 
-*PermissionsApi* | [**api_permissions_get**](docs/PermissionsApi.md#api_permissions_get) | **GET** /Api/Permissions | 
-*ProductsApi* | [**api_products_buy_id_post**](docs/ProductsApi.md#api_products_buy_id_post) | **POST** /Api/Products/Buy/{id} | 
-*ProductsApi* | [**api_products_get**](docs/ProductsApi.md#api_products_get) | **GET** /Api/Products | 
-*ProductsApi* | [**api_products_id_delete**](docs/ProductsApi.md#api_products_id_delete) | **DELETE** /Api/Products/{id} | 
-*ProductsApi* | [**api_products_id_get**](docs/ProductsApi.md#api_products_id_get) | **GET** /Api/Products/{id} | 
-*ProductsApi* | [**api_products_id_patch**](docs/ProductsApi.md#api_products_id_patch) | **PATCH** /Api/Products/{id} | 
-*ProductsApi* | [**api_products_post**](docs/ProductsApi.md#api_products_post) | **POST** /Api/Products | 
-*QrCodesApi* | [**api_qr_codes_get**](docs/QrCodesApi.md#api_qr_codes_get) | **GET** /Api/QRCodes | 
-*QrCodesApi* | [**api_qr_codes_id_delete**](docs/QrCodesApi.md#api_qr_codes_id_delete) | **DELETE** /Api/QRCodes/{id} | 
-*QrCodesApi* | [**api_qr_codes_id_get**](docs/QrCodesApi.md#api_qr_codes_id_get) | **GET** /Api/QRCodes/{id} | 
-*QrCodesApi* | [**api_qr_codes_id_patch**](docs/QrCodesApi.md#api_qr_codes_id_patch) | **PATCH** /Api/QRCodes/{id} | 
-*QrCodesApi* | [**api_qr_codes_post**](docs/QrCodesApi.md#api_qr_codes_post) | **POST** /Api/QRCodes | 
-*StatusApi* | [**api_status_notify_on_reset_key_password_set_post**](docs/StatusApi.md#api_status_notify_on_reset_key_password_set_post) | **POST** /Api/Status/NotifyOnResetKeyPasswordSet | 
-*StatusApi* | [**api_status_service_status_get**](docs/StatusApi.md#api_status_service_status_get) | **GET** /Api/Status/ServiceStatus | 
-*StatusApi* | [**api_status_version_get**](docs/StatusApi.md#api_status_version_get) | **GET** /Api/Status/Version | 
-*UserGroupsApi* | [**api_user_groups_get**](docs/UserGroupsApi.md#api_user_groups_get) | **GET** /Api/UserGroups | 
-*UserGroupsApi* | [**api_user_groups_id_delete**](docs/UserGroupsApi.md#api_user_groups_id_delete) | **DELETE** /Api/UserGroups/{id} | 
-*UserGroupsApi* | [**api_user_groups_id_get**](docs/UserGroupsApi.md#api_user_groups_id_get) | **GET** /Api/UserGroups/{id} | 
-*UserGroupsApi* | [**api_user_groups_id_patch**](docs/UserGroupsApi.md#api_user_groups_id_patch) | **PATCH** /Api/UserGroups/{id} | 
-*UserGroupsApi* | [**api_user_groups_post**](docs/UserGroupsApi.md#api_user_groups_post) | **POST** /Api/UserGroups | 
-*UsersApi* | [**api_users_get**](docs/UsersApi.md#api_users_get) | **GET** /Api/Users | 
-*UsersApi* | [**api_users_id_delete**](docs/UsersApi.md#api_users_id_delete) | **DELETE** /Api/Users/{id} | 
-*UsersApi* | [**api_users_id_get**](docs/UsersApi.md#api_users_id_get) | **GET** /Api/Users/{id} | 
-*UsersApi* | [**api_users_id_patch**](docs/UsersApi.md#api_users_id_patch) | **PATCH** /Api/Users/{id} | 
-*UsersApi* | [**api_users_kick_all_post**](docs/UsersApi.md#api_users_kick_all_post) | **POST** /Api/Users/Kick/All | 
-*UsersApi* | [**api_users_kick_id_post**](docs/UsersApi.md#api_users_kick_id_post) | **POST** /Api/Users/Kick/{id} | 
-*UsersApi* | [**api_users_post**](docs/UsersApi.md#api_users_post) | **POST** /Api/Users | 
+*AuthApi* | [**api_auth_control_get**](docs/AuthApi.md#api_auth_control_get) | **GET** /Api/Auth/Control | Get information about the current user
+*AuthApi* | [**api_auth_login_post**](docs/AuthApi.md#api_auth_login_post) | **POST** /Api/Auth/Login | Create a new session for a user
+*AuthApi* | [**api_auth_logout_delete**](docs/AuthApi.md#api_auth_logout_delete) | **DELETE** /Api/Auth/Logout | Delete the current user's session and refresh cookie
+*AuthApi* | [**api_auth_refresh_post**](docs/AuthApi.md#api_auth_refresh_post) | **POST** /Api/Auth/Refresh | Refresh a user's session
+*AuthApi* | [**api_auth_resend_verify_email_post**](docs/AuthApi.md#api_auth_resend_verify_email_post) | **POST** /Api/Auth/ResendVerifyEmail | Resend a user's email verification email
+*AuthApi* | [**api_auth_reset_password_post**](docs/AuthApi.md#api_auth_reset_password_post) | **POST** /Api/Auth/ResetPassword | Reset a user's password
+*AuthApi* | [**api_auth_send_password_reset_post**](docs/AuthApi.md#api_auth_send_password_reset_post) | **POST** /Api/Auth/SendPasswordReset | Send a password reset email to a user
+*AuthApi* | [**api_auth_verify_email_post**](docs/AuthApi.md#api_auth_verify_email_post) | **POST** /Api/Auth/VerifyEmail | Verify a user's email address
+*GradesApi* | [**api_grades_get**](docs/GradesApi.md#api_grades_get) | **GET** /Api/Grades | Get a list of the current user's grades
+*ImportApi* | [**api_import_grades_user_id_post**](docs/ImportApi.md#api_import_grades_user_id_post) | **POST** /Api/Import/Grades/{userId} | Import grades for a user
+*ImportApi* | [**api_import_reset_key_password_put**](docs/ImportApi.md#api_import_reset_key_password_put) | **PUT** /Api/Import/ResetKeyPassword | Set the reset key password
+*ImportApi* | [**api_import_users_get**](docs/ImportApi.md#api_import_users_get) | **GET** /Api/Import/Users | Get a list of all users for grade importing
+*ImportKeysApi* | [**api_import_keys_get**](docs/ImportKeysApi.md#api_import_keys_get) | **GET** /Api/ImportKeys | Get a list of all import keys
+*ImportKeysApi* | [**api_import_keys_id_delete**](docs/ImportKeysApi.md#api_import_keys_id_delete) | **DELETE** /Api/ImportKeys/{id} | Delete an import key
+*ImportKeysApi* | [**api_import_keys_id_get**](docs/ImportKeysApi.md#api_import_keys_id_get) | **GET** /Api/ImportKeys/{id} | Get information about an import key
+*ImportKeysApi* | [**api_import_keys_id_patch**](docs/ImportKeysApi.md#api_import_keys_id_patch) | **PATCH** /Api/ImportKeys/{id} | Update an import key
+*ImportKeysApi* | [**api_import_keys_post**](docs/ImportKeysApi.md#api_import_keys_post) | **POST** /Api/ImportKeys | Create a new import key
+*LoloRequestsApi* | [**api_lolo_requests_get**](docs/LoloRequestsApi.md#api_lolo_requests_get) | **GET** /Api/LoloRequests | Get a list of all lolo requests
+*LoloRequestsApi* | [**api_lolo_requests_id_delete**](docs/LoloRequestsApi.md#api_lolo_requests_id_delete) | **DELETE** /Api/LoloRequests/{id} | Delete a lolo request
+*LoloRequestsApi* | [**api_lolo_requests_id_get**](docs/LoloRequestsApi.md#api_lolo_requests_id_get) | **GET** /Api/LoloRequests/{id} | Get information about a lolo request
+*LoloRequestsApi* | [**api_lolo_requests_id_patch**](docs/LoloRequestsApi.md#api_lolo_requests_id_patch) | **PATCH** /Api/LoloRequests/{id} | Update a lolo request
+*LoloRequestsApi* | [**api_lolo_requests_overrule_id_post**](docs/LoloRequestsApi.md#api_lolo_requests_overrule_id_post) | **POST** /Api/LoloRequests/Overrule/{id} | Overrule a lolo request
+*LoloRequestsApi* | [**api_lolo_requests_own_get**](docs/LoloRequestsApi.md#api_lolo_requests_own_get) | **GET** /Api/LoloRequests/Own | Get a list of the current user's lolo requests
+*LoloRequestsApi* | [**api_lolo_requests_post**](docs/LoloRequestsApi.md#api_lolo_requests_post) | **POST** /Api/LoloRequests | Create a new lolo request
+*LolosApi* | [**api_lolos_get**](docs/LolosApi.md#api_lolos_get) | **GET** /Api/Lolos | Get a list of all lolo coins
+*LolosApi* | [**api_lolos_own_get**](docs/LolosApi.md#api_lolos_own_get) | **GET** /Api/Lolos/Own | Get a list of the user's lolo coins
+*OwnedItemsApi* | [**api_owned_items_get**](docs/OwnedItemsApi.md#api_owned_items_get) | **GET** /Api/OwnedItems | Get a list of all owned items
+*OwnedItemsApi* | [**api_owned_items_id_delete**](docs/OwnedItemsApi.md#api_owned_items_id_delete) | **DELETE** /Api/OwnedItems/{id} | Delete an owned item
+*OwnedItemsApi* | [**api_owned_items_id_get**](docs/OwnedItemsApi.md#api_owned_items_id_get) | **GET** /Api/OwnedItems/{id} | Get information about an owned item
+*OwnedItemsApi* | [**api_owned_items_id_patch**](docs/OwnedItemsApi.md#api_owned_items_id_patch) | **PATCH** /Api/OwnedItems/{id} | Update an owned item
+*OwnedItemsApi* | [**api_owned_items_id_use_post**](docs/OwnedItemsApi.md#api_owned_items_id_use_post) | **POST** /Api/OwnedItems/{id}/Use | Use an owned item
+*OwnedItemsApi* | [**api_owned_items_own_get**](docs/OwnedItemsApi.md#api_owned_items_own_get) | **GET** /Api/OwnedItems/Own | Get a list of the current user's owned items
+*OwnedItemsApi* | [**api_owned_items_post**](docs/OwnedItemsApi.md#api_owned_items_post) | **POST** /Api/OwnedItems | Create a new owned item
+*PermissionsApi* | [**api_permissions_get**](docs/PermissionsApi.md#api_permissions_get) | **GET** /Api/Permissions | Get a list of all permissions
+*ProductsApi* | [**api_products_buy_id_post**](docs/ProductsApi.md#api_products_buy_id_post) | **POST** /Api/Products/Buy/{id} | Buy a product
+*ProductsApi* | [**api_products_get**](docs/ProductsApi.md#api_products_get) | **GET** /Api/Products | Get a list of all products or only store products depending on permissions
+*ProductsApi* | [**api_products_id_delete**](docs/ProductsApi.md#api_products_id_delete) | **DELETE** /Api/Products/{id} | Delete a product
+*ProductsApi* | [**api_products_id_get**](docs/ProductsApi.md#api_products_id_get) | **GET** /Api/Products/{id} | Get information about a product
+*ProductsApi* | [**api_products_id_patch**](docs/ProductsApi.md#api_products_id_patch) | **PATCH** /Api/Products/{id} | Update a product
+*ProductsApi* | [**api_products_post**](docs/ProductsApi.md#api_products_post) | **POST** /Api/Products | Create a new product
+*QrCodesApi* | [**api_qr_codes_get**](docs/QrCodesApi.md#api_qr_codes_get) | **GET** /Api/QRCodes | Get a list of all QR codes
+*QrCodesApi* | [**api_qr_codes_id_delete**](docs/QrCodesApi.md#api_qr_codes_id_delete) | **DELETE** /Api/QRCodes/{id} | Delete a QR code
+*QrCodesApi* | [**api_qr_codes_id_get**](docs/QrCodesApi.md#api_qr_codes_id_get) | **GET** /Api/QRCodes/{id} | Get information about a QR code
+*QrCodesApi* | [**api_qr_codes_id_patch**](docs/QrCodesApi.md#api_qr_codes_id_patch) | **PATCH** /Api/QRCodes/{id} | Update a QR code
+*QrCodesApi* | [**api_qr_codes_post**](docs/QrCodesApi.md#api_qr_codes_post) | **POST** /Api/QRCodes | Create a new QR code
+*StatusApi* | [**api_status_notify_on_reset_key_password_set_post**](docs/StatusApi.md#api_status_notify_on_reset_key_password_set_post) | **POST** /Api/Status/NotifyOnResetKeyPasswordSet | Subscribe an email to when a password reset key has been set
+*StatusApi* | [**api_status_service_status_get**](docs/StatusApi.md#api_status_service_status_get) | **GET** /Api/Status/ServiceStatus | Get information about the status of the application
+*StatusApi* | [**api_status_version_get**](docs/StatusApi.md#api_status_version_get) | **GET** /Api/Status/Version | Get information about the application version
+*UserGroupsApi* | [**api_user_groups_get**](docs/UserGroupsApi.md#api_user_groups_get) | **GET** /Api/UserGroups | Get a list of all user groups
+*UserGroupsApi* | [**api_user_groups_id_delete**](docs/UserGroupsApi.md#api_user_groups_id_delete) | **DELETE** /Api/UserGroups/{id} | Delete a user group
+*UserGroupsApi* | [**api_user_groups_id_get**](docs/UserGroupsApi.md#api_user_groups_id_get) | **GET** /Api/UserGroups/{id} | Get information about a user group
+*UserGroupsApi* | [**api_user_groups_id_patch**](docs/UserGroupsApi.md#api_user_groups_id_patch) | **PATCH** /Api/UserGroups/{id} | Update a user group
+*UserGroupsApi* | [**api_user_groups_post**](docs/UserGroupsApi.md#api_user_groups_post) | **POST** /Api/UserGroups | Create a new user group
+*UsersApi* | [**api_users_get**](docs/UsersApi.md#api_users_get) | **GET** /Api/Users | Get a list of all users
+*UsersApi* | [**api_users_id_delete**](docs/UsersApi.md#api_users_id_delete) | **DELETE** /Api/Users/{id} | Delete a user
+*UsersApi* | [**api_users_id_get**](docs/UsersApi.md#api_users_id_get) | **GET** /Api/Users/{id} | Get information about a user
+*UsersApi* | [**api_users_id_patch**](docs/UsersApi.md#api_users_id_patch) | **PATCH** /Api/Users/{id} | Update a user
+*UsersApi* | [**api_users_kick_all_post**](docs/UsersApi.md#api_users_kick_all_post) | **POST** /Api/Users/Kick/All | Delete all active sessions of all users
+*UsersApi* | [**api_users_kick_id_post**](docs/UsersApi.md#api_users_kick_id_post) | **POST** /Api/Users/Kick/{id} | Delete all active sessions of a user
+*UsersApi* | [**api_users_post**](docs/UsersApi.md#api_users_post) | **POST** /Api/Users | Create a new user
 
 
 ## Documentation For Models
@@ -166,8 +166,6 @@ Class | Method | HTTP request | Description
  - [UsersIndexUsersResponse](docs/UsersIndexUsersResponse.md)
  - [UsersIndexUsersResponseUserGroup](docs/UsersIndexUsersResponseUserGroup.md)
  - [UsersUpdateUserRequestBody](docs/UsersUpdateUserRequestBody.md)
- - [UsersViewUserResponse](docs/UsersViewUserResponse.md)
- - [UsersViewUserResponseUserGroup](docs/UsersViewUserResponseUserGroup.md)
 
 
 To get access to the crate's generated documentation, use:

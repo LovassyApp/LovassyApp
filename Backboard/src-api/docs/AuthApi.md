@@ -4,23 +4,23 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_auth_control_get**](AuthApi.md#api_auth_control_get) | **GET** /Api/Auth/Control | 
-[**api_auth_login_post**](AuthApi.md#api_auth_login_post) | **POST** /Api/Auth/Login | 
-[**api_auth_logout_delete**](AuthApi.md#api_auth_logout_delete) | **DELETE** /Api/Auth/Logout | 
-[**api_auth_refresh_post**](AuthApi.md#api_auth_refresh_post) | **POST** /Api/Auth/Refresh | 
-[**api_auth_resend_verify_email_post**](AuthApi.md#api_auth_resend_verify_email_post) | **POST** /Api/Auth/ResendVerifyEmail | 
-[**api_auth_reset_password_post**](AuthApi.md#api_auth_reset_password_post) | **POST** /Api/Auth/ResetPassword | 
-[**api_auth_send_password_reset_post**](AuthApi.md#api_auth_send_password_reset_post) | **POST** /Api/Auth/SendPasswordReset | 
-[**api_auth_verify_email_post**](AuthApi.md#api_auth_verify_email_post) | **POST** /Api/Auth/VerifyEmail | 
+[**api_auth_control_get**](AuthApi.md#api_auth_control_get) | **GET** /Api/Auth/Control | Get information about the current user
+[**api_auth_login_post**](AuthApi.md#api_auth_login_post) | **POST** /Api/Auth/Login | Create a new session for a user
+[**api_auth_logout_delete**](AuthApi.md#api_auth_logout_delete) | **DELETE** /Api/Auth/Logout | Delete the current user's session and refresh cookie
+[**api_auth_refresh_post**](AuthApi.md#api_auth_refresh_post) | **POST** /Api/Auth/Refresh | Refresh a user's session
+[**api_auth_resend_verify_email_post**](AuthApi.md#api_auth_resend_verify_email_post) | **POST** /Api/Auth/ResendVerifyEmail | Resend a user's email verification email
+[**api_auth_reset_password_post**](AuthApi.md#api_auth_reset_password_post) | **POST** /Api/Auth/ResetPassword | Reset a user's password
+[**api_auth_send_password_reset_post**](AuthApi.md#api_auth_send_password_reset_post) | **POST** /Api/Auth/SendPasswordReset | Send a password reset email to a user
+[**api_auth_verify_email_post**](AuthApi.md#api_auth_verify_email_post) | **POST** /Api/Auth/VerifyEmail | Verify a user's email address
 
 
 
 ## api_auth_control_get
 
 > crate::models::AuthViewControlResponse api_auth_control_get()
+Get information about the current user
 
-
-<b>Requires one of the following permissions</b>: Auth.Control
+Requires one of the following permissions: Auth.Control
 
 ### Parameters
 
@@ -45,7 +45,7 @@ This endpoint does not need any parameter.
 ## api_auth_login_post
 
 > crate::models::AuthLoginResponse api_auth_login_post(auth_login_request_body)
-
+Create a new session for a user
 
 ### Parameters
 
@@ -73,7 +73,7 @@ No authorization required
 ## api_auth_logout_delete
 
 > api_auth_logout_delete()
-
+Delete the current user's session and refresh cookie
 
 ### Parameters
 
@@ -98,7 +98,7 @@ This endpoint does not need any parameter.
 ## api_auth_refresh_post
 
 > crate::models::AuthRefreshResponse api_auth_refresh_post(token)
-
+Refresh a user's session
 
 ### Parameters
 
@@ -126,9 +126,9 @@ No authorization required
 ## api_auth_resend_verify_email_post
 
 > api_auth_resend_verify_email_post(verify_url, verify_token_query_key)
+Resend a user's email verification email
 
-
-<b>Requires unverified email</b>
+Requires unverified email
 
 ### Parameters
 
@@ -157,7 +157,7 @@ Name | Type | Description  | Required | Notes
 ## api_auth_reset_password_post
 
 > api_auth_reset_password_post(password_reset_token, auth_reset_password_request_body)
-
+Reset a user's password
 
 ### Parameters
 
@@ -186,7 +186,7 @@ No authorization required
 ## api_auth_send_password_reset_post
 
 > api_auth_send_password_reset_post(password_reset_url, password_reset_token_query_key, auth_send_password_reset_request_body)
-
+Send a password reset email to a user
 
 ### Parameters
 
@@ -216,7 +216,7 @@ No authorization required
 ## api_auth_verify_email_post
 
 > api_auth_verify_email_post(verify_token)
-
+Verify a user's email address
 
 ### Parameters
 

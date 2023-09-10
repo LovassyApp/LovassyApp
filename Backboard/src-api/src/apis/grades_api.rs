@@ -25,7 +25,7 @@ pub enum ApiGradesGetError {
 }
 
 
-/// <b>Requires verified email</b><br><b>Requires one of the following permissions</b>: School.IndexGrades<br><b>Requires the following features to be enabled</b>: School
+/// Requires verified email; Requires one of the following permissions: School.IndexGrades; Requires the following features to be enabled: School
 pub async fn api_grades_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::SchoolIndexGradesResponse>, Error<ApiGradesGetError>> {
     let local_var_configuration = configuration;
 

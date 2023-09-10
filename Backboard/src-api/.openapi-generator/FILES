@@ -92,8 +92,6 @@ docs/UsersCreateUserRequestBody.md
 docs/UsersIndexUsersResponse.md
 docs/UsersIndexUsersResponseUserGroup.md
 docs/UsersUpdateUserRequestBody.md
-docs/UsersViewUserResponse.md
-docs/UsersViewUserResponseUserGroup.md
 git_push.sh
 src/apis/auth_api.rs
 src/apis/configuration.rs
@@ -189,5 +187,3 @@ src/models/users_create_user_request_body.rs
 src/models/users_index_users_response.rs
 src/models/users_index_users_response_user_group.rs
 src/models/users_update_user_request_body.rs
-src/models/users_view_user_response.rs
-src/models/users_view_user_response_user_group.rs

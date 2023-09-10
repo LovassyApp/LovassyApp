@@ -4,16 +4,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_status_notify_on_reset_key_password_set_post**](StatusApi.md#api_status_notify_on_reset_key_password_set_post) | **POST** /Api/Status/NotifyOnResetKeyPasswordSet | 
-[**api_status_service_status_get**](StatusApi.md#api_status_service_status_get) | **GET** /Api/Status/ServiceStatus | 
-[**api_status_version_get**](StatusApi.md#api_status_version_get) | **GET** /Api/Status/Version | 
+[**api_status_notify_on_reset_key_password_set_post**](StatusApi.md#api_status_notify_on_reset_key_password_set_post) | **POST** /Api/Status/NotifyOnResetKeyPasswordSet | Subscribe an email to when a password reset key has been set
+[**api_status_service_status_get**](StatusApi.md#api_status_service_status_get) | **GET** /Api/Status/ServiceStatus | Get information about the status of the application
+[**api_status_version_get**](StatusApi.md#api_status_version_get) | **GET** /Api/Status/Version | Get information about the application version
 
 
 
 ## api_status_notify_on_reset_key_password_set_post
 
 > api_status_notify_on_reset_key_password_set_post(status_notify_on_reset_key_password_set_request_body)
-
+Subscribe an email to when a password reset key has been set
 
 ### Parameters
 
@@ -41,7 +41,7 @@ No authorization required
 ## api_status_service_status_get
 
 > crate::models::StatusViewServiceStatusResponse api_status_service_status_get()
-
+Get information about the status of the application
 
 ### Parameters
 
@@ -66,7 +66,7 @@ No authorization required
 ## api_status_version_get
 
 > crate::models::StatusViewVersionResponse api_status_version_get(send_ok, send_motd)
-
+Get information about the application version
 
 ### Parameters
 
