@@ -328,7 +328,7 @@
         "tags": [
           "Grades"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: School.IndexGrades<br><b>Requires the following features to be enabled</b>: School",
+        "description": "Requires verified email; Requires one of the following permissions: School.IndexGrades; Requires the following features to be enabled: School",
         "parameters": [
           {
             "name": "Filters",
@@ -402,7 +402,7 @@
         "tags": [
           "Import"
         ],
-        "description": "<b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires the following features to be enabled: Import",
         "parameters": [
           {
             "name": "Filters",
@@ -476,7 +476,7 @@
         "tags": [
           "Import"
         ],
-        "description": "<b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires the following features to be enabled: Import",
         "parameters": [
           {
             "name": "userId",
@@ -541,7 +541,7 @@
         "tags": [
           "Import"
         ],
-        "description": "<b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires the following features to be enabled: Import",
         "requestBody": {
           "content": {
             "application/json": {
@@ -584,7 +584,7 @@
         "tags": [
           "ImportKeys"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Import.IndexImportKeys<br><b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires verified email; Requires one of the following permissions: Import.IndexImportKeys; Requires the following features to be enabled: Import",
         "parameters": [
           {
             "name": "Filters",
@@ -656,7 +656,7 @@
         "tags": [
           "ImportKeys"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Import.CreateImportKey<br><b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires verified email; Requires one of the following permissions: Import.CreateImportKey; Requires the following features to be enabled: Import",
         "requestBody": {
           "content": {
             "application/json": {
@@ -716,7 +716,7 @@
         "tags": [
           "ImportKeys"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Import.ViewImportKey<br><b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires verified email; Requires one of the following permissions: Import.ViewImportKey; Requires the following features to be enabled: Import",
         "parameters": [
           {
             "name": "id",
@@ -767,7 +767,7 @@
         "tags": [
           "ImportKeys"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Import.UpdateImportKey<br><b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires verified email; Requires one of the following permissions: Import.UpdateImportKey; Requires the following features to be enabled: Import",
         "parameters": [
           {
             "name": "id",
@@ -830,7 +830,7 @@
         "tags": [
           "ImportKeys"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Import.DeleteImportKey<br><b>Requires the following features to be enabled</b>: Import",
+        "description": "Requires verified email; Requires one of the following permissions: Import.DeleteImportKey; Requires the following features to be enabled: Import",
         "parameters": [
           {
             "name": "id",
@@ -876,7 +876,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexLoloRequests<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexLoloRequests; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -948,7 +948,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest; Requires the following features to be enabled: Shop",
         "requestBody": {
           "content": {
             "application/json": {
@@ -998,7 +998,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnLoloRequests<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnLoloRequests; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -1072,7 +1072,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewLoloRequest<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewLoloRequest; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -1123,7 +1123,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateOwnLoloRequest, Shop.UpdateLoloRequest; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -1186,7 +1186,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteOwnLoloRequest, Shop.DeleteLoloRequest; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -1232,7 +1232,7 @@
         "tags": [
           "LoloRequests"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.OverruleLoloRequest<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.OverruleLoloRequest; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -1297,7 +1297,7 @@
         "tags": [
           "Lolos"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnLolos<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnLolos; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -1368,7 +1368,7 @@
         "tags": [
           "Lolos"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexLolos<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexLolos; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -1442,7 +1442,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnedItems<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnedItems; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -1522,7 +1522,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateOwnedItem; Requires the following features to be enabled: Shop",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1572,7 +1572,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnOwnedItems<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexOwnOwnedItems; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -1654,7 +1654,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewOwnedItem, Shop.ViewOwnOwnedItem; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -1705,7 +1705,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateOwnedItem<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateOwnedItem; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -1768,7 +1768,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteOwnedItem, Shop.DeleteOwnOwnedItem; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -1814,7 +1814,7 @@
         "tags": [
           "OwnedItems"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.UseOwnOwnedItem<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.UseOwnOwnedItem; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -2292,7 +2292,7 @@
         "tags": [
           "QRCodes"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexQRCodes<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexQRCodes; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -2364,7 +2364,7 @@
         "tags": [
           "QRCodes"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateQRCode<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateQRCode; Requires the following features to be enabled: Shop",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2414,7 +2414,7 @@
         "tags": [
           "QRCodes"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewQRCode<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewQRCode; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -2465,7 +2465,7 @@
         "tags": [
           "QRCodes"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateQRCode<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateQRCode; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -2528,7 +2528,7 @@
         "tags": [
           "QRCodes"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteQRCode<br><b>Requires the following features to be enabled</b>: Shop",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteQRCode; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -2955,7 +2955,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Users.IndexUsers<br><b>Requires the following features to be enabled</b>: Users",
+        "description": "Requires verified email; Requires one of the following permissions: Users.IndexUsers; Requires the following features to be enabled: Users",
         "parameters": [
           {
             "name": "Filters",
@@ -3027,7 +3027,7 @@
         "tags": [
           "Users"
         ],
-        "description": "<b>Requires the following features to be enabled</b>: Users",
+        "description": "Requires the following features to be enabled: Users",
         "parameters": [
           {
             "name": "verifyUrl",
@@ -3077,7 +3077,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Users.ViewUser<br><b>Requires the following features to be enabled</b>: Users",
+        "description": "Requires verified email; Requires one of the following permissions: Users.ViewUser; Requires the following features to be enabled: Users",
         "parameters": [
           {
             "name": "id",
@@ -3118,7 +3118,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Users.UpdateUser<br><b>Requires the following features to be enabled</b>: Users",
+        "description": "Requires verified email; Requires one of the following permissions: Users.UpdateUser; Requires the following features to be enabled: Users",
         "parameters": [
           {
             "name": "id",
@@ -3181,7 +3181,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Users.DeleteUser<br><b>Requires the following features to be enabled</b>: Users",
+        "description": "Requires verified email; Requires one of the following permissions: Users.DeleteUser; Requires the following features to be enabled: Users",
         "parameters": [
           {
             "name": "id",
@@ -3227,7 +3227,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Users.KickUser<br><b>Requires the following features to be enabled</b>: Users",
+        "description": "Requires verified email; Requires one of the following permissions: Users.KickUser; Requires the following features to be enabled: Users",
         "parameters": [
           {
             "name": "id",
@@ -3273,7 +3273,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Requires verified email; Requires one of the following permissions: Users.KickAllUsers<br><b>Requires the following features to be enabled</b>: Users",
+        "description": "Requires verified email; Requires one of the following permissions: Users.KickAllUsers; Requires the following features to be enabled: Users",
         "responses": {
           "204": {
             "description": "No Content"
