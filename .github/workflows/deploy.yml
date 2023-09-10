@@ -34,4 +34,4 @@ jobs:
               run: rsync -avz --ignore-errors ./Blueboard/bin/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/data/app/Blueboard
             - name: Run Blueboard deploy script on server
               if: success()
-              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "bash /data/app/post-deploy.sh"
+              run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "bash /data/app/Blueboard/post-deploy.sh"
