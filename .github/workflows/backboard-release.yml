@@ -3,36 +3,6 @@ run-name: ${{ github.actor }} is releasing a new version of Backboard 📣
 on:
   workflow_dispatch: 
 jobs:
-  create-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-20.04
-    outputs:
-      release_id: ${{ steps.create-release.outputs.result }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: Get version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-      - name: Create release
-        id: create-release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `backboard-v${process.env.PACKAGE_VERSION}`,
-              name: `Backboard v${process.env.PACKAGE_VERSION}`,
-              body: 'Nézd meg a mellékelt fájlokat a letöltéshez és telepítéshez.',
-              draft: true,
-              prerelease: false
-            })
-            return data.id
-            
   build-backboard:
     name: Build Backboard binary
     runs-on: windows-latest
@@ -76,28 +46,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          releaseId: ${{ needs.create-release.outputs.release_id }}
+          tagName: backboard-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'Backboard v__VERSION__'
+          releaseBody: 'Nézd meg a mellékelt fájlokat a letöltéshez és telepítéshez.'
+          releaseDraft: true
+          prerelease: false
           projectPath: ./Backboard
-          
-  publish-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-20.04
-    needs: [ create-release, build-backboard ]
-    
-    steps:
-      - name: publish release
-        id: publish-release
-        uses: actions/github-script@v6
-        env:
-          release_id: ${{ needs.create-release.outputs.release_id }}
-        with:
-          script: |
-            github.rest.repos.updateRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: process.env.release_id,
-              draft: false,
-              prerelease: false
-            })
       
