@@ -67,6 +67,10 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: 'Backboard/src-tauri -> target'
+      - name: Install Backboard dependencies
+        run: |
+          cd Backboard
+          pnpm install --no-frozen-lockfile
       - name: Build Backboard
         uses: tauri-apps/tauri-action@v0
         env:
