@@ -1,0 +1,12 @@
+--- Blueboard.csproj	2023-09-10 22:38:00
++++ Blueboard_prod.csproj	2023-09-11 11:35:38
+@@ -41,9 +41,4 @@
+         <_ContentIncludedByDefault Remove="Features\Auth\Emails\VerifyEmail.cshtml"/>
+     </ItemGroup>
+ 
+-    <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+-        <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)"/>
+-        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)"/>
+-    </Target>
+-
+ </Project>
