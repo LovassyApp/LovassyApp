@@ -21,6 +21,8 @@ jobs:
               run: dotnet restore -r linux-x64
             - name: Install tools
               run: cd Blueboard && dotnet tool restore
+            - name: Patch csproj
+              run: cd Blueboard && patch < patch-csproj-prod.patch
             - name: Build Blueboard
               run: dotnet build --configuration Release
             - name: Bundle migrations
