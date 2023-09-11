@@ -15,6 +15,7 @@ restart)
     ;;
 
 *)
-    STATEMENTS
+    echo "Invalid action '$1'"
+    exit 1
     ;;
 esac
