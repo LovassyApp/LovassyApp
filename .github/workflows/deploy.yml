@@ -18,13 +18,13 @@ jobs:
               with:
                   dotnet-version: ${{ matrix.dotnet-version }}
             - name: Install Blueboard dependencies
-              run: dotnet restore
+              run: dotnet restore -r linux-x64
             - name: Install tools
               run: cd Blueboard && dotnet tool restore
             - name: Build Blueboard
               run: dotnet build --configuration Release
             - name: Bundle migrations
-              run: cd Blueboard && dotnet tool run dotnet-ef migrations bundle --output /bin/Release/${{ matrix.dotnet-version }}/ef-core-migrate
+              run: cd Blueboard && dotnet tool run dotnet-ef migrations bundle --output ef-core-migrate && cp ef-core-migrate /bin/Release/${{ matrix.dotnet-version }}/ef-core-migrate
             - name: Install SSH Key
               uses: shimataro/ssh-key-action@v2
               with:
