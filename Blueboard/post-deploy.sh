@@ -3,7 +3,8 @@
 cd /data/app/Blueboard
 
 echo "Applying migrations"
-exec "$(pwd)/ef-core-migrate"
+"$(pwd)/ef-core-migrate"
 
 echo "Restarting backend"
-sudo "$(which blueboard-ctl) restart"
+sudo blueboard-ctl restart
+echo "Done. Backend restart successfully."
