@@ -7,6 +7,7 @@ jobs:
         name: Build and deploy Blueboard
         env:
             ASPNETCORE_ENVIRONMENT: release
+            PROD_PATCH_CONNSTR: ${{ secrets.APPSETTINGS_PROD_PATCH }}
         strategy:
             matrix:
                 dotnet-version: ['7.0']
@@ -23,6 +24,10 @@ jobs:
               run: cd Blueboard && dotnet tool restore
             - name: Patch csproj
               run: cd Blueboard && patch < patch-csproj-prod.patch
+            - name: Write appsettings patch
+              run: echo $PROD_PATCH_CONNSTR >> Blueboard/appsettings.patch
+            - name: Patch appsettings.Production.json
+              run: cd Blueboard && patch < appsettings.patch
             - name: Build Blueboard
               run: dotnet build --configuration Release
             - name: Bundle migrations
