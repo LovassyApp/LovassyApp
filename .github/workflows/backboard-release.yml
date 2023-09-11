@@ -74,6 +74,7 @@ jobs:
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
           tauriScript: pnpm tauri
+          projectPath: ./Backboard
           
   publish-release:
     permissions:
