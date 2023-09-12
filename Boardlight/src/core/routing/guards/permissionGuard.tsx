@@ -11,7 +11,9 @@ export const PermissionGuard = ({ permissions }: { permissions: string[] }) => {
 
     if (control.isLoading) return <FullScreenLoading />;
 
-    return control.isSuccess && control.data.permissions.some((permission) => permissions.includes(permission)) ? (
+    return control.isSuccess &&
+        (control.data.permissions.some((permission) => permissions.includes(permission)) ||
+            control.data.isSuperUser) ? (
         <Outlet />
     ) : (
         <Suspense fallback={<FullScreenLoading />}>
