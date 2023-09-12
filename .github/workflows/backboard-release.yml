@@ -1,0 +1,55 @@
+name: Backboard Release
+run-name: ${{ github.actor }} is releasing a new version of Backboard 📣
+on:
+  workflow_dispatch: 
+jobs:
+  build-backboard:
+    name: Build Backboard binary
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: latest
+          run_install: false
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Setup rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Setup rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: 'Backboard/src-tauri -> target'
+      - name: Install Backboard dependencies
+        run: |
+          cd Backboard
+          pnpm install --no-frozen-lockfile
+      - name: Build Backboard
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: backboard-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'Backboard v__VERSION__'
+          releaseBody: 'Nézd meg a mellékelt fájlokat a letöltéshez és telepítéshez.'
+          releaseDraft: true
+          prerelease: false
+          projectPath: ./Backboard
+      

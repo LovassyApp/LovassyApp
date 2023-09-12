@@ -9,6 +9,7 @@ import {
     Group,
     Loader,
     Modal,
+    MultiSelect,
     Select,
     SimpleGrid,
     Text,
@@ -175,7 +176,7 @@ const DetailsModal = ({
         initialValues: {
             name: user?.name,
             email: user?.email,
-            userGroups: user?.userGroups,
+            userGroups: user?.userGroups.map((group) => group.id.toString()),
         },
     });
 
@@ -183,14 +184,14 @@ const DetailsModal = ({
         form.setValues({
             name: user?.name,
             email: user?.email,
-            userGroups: user?.userGroups,
+            userGroups: user?.userGroups.map((group) => group.id.toString()),
         });
     }, [user, opened]);
 
     const submit = form.onSubmit(async (values) => {
         try {
             await updateUser.mutateAsync({
-                data: { ...values, userGroups: values.userGroups.map((group) => group.id) },
+                data: { ...values, userGroups: values.userGroups.map((id) => +id) },
                 id: user.id,
             });
             await queryClient.invalidateQueries({ queryKey: [usersQueryKey[0]] });
@@ -240,28 +241,9 @@ const DetailsModal = ({
 
     const displayedUserGroups = useMemo(() => {
         if (groupsData) {
-            return form.values.userGroups?.map((group, index) => (
-                <Group key={group.id} spacing="sm" mb="xs">
-                    <Select
-                        data={groupsData}
-                        value={form.values.userGroups[index].id.toString()}
-                        onChange={(value) =>
-                            form.setFieldValue(`userGroups.${index}`, {
-                                id: +value,
-                                name: groupsData.find((group) => group.value === value).label,
-                            })
-                        }
-                        sx={{ flex: 1 }}
-                    />
-                    <ActionIcon
-                        variant="transparent"
-                        color="red"
-                        onClick={() => form.removeListItem("userGroups", index)}
-                    >
-                        <IconTrash stroke={1.5} />
-                    </ActionIcon>
-                </Group>
-            ));
+            return (
+                <MultiSelect label="Felhasználói csoportok" data={groupsData} {...form.getInputProps("userGroups")} />
+            );
         }
     }, [form, groupsData]);
 
@@ -343,20 +325,13 @@ const DetailsModal = ({
                     <TextInput required={true} label="Név" {...form.getInputProps("name")} />
                     <TextInput required={true} label="Email" {...form.getInputProps("email")} mt="sm" />
                     <PermissionRequirement permissions={["Auth.IndexUserGroups"]}>
-                        <Text size="sm" mt="sm" weight={500}>
-                            Csoportok
-                        </Text>
-                        {displayedUserGroups}
+                        <Divider my="sm" />
                         {groupsData && (
-                            <Button
-                                onClick={() => form.insertListItem("userGroups", groups.data[0])}
-                                disabled={groups.data.length < 1}
-                                variant="outline"
-                                fullWidth={true}
-                                mt="md"
-                            >
-                                Csoport hozzáadása
-                            </Button>
+                            <MultiSelect
+                                label="Felhasználói csoportok"
+                                data={groupsData}
+                                {...form.getInputProps("userGroups")}
+                            />
                         )}
                     </PermissionRequirement>
 

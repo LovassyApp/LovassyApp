@@ -1,5 +1,5 @@
 name: Application Stack Deploy
-run-name: ${{ github.actor }} is deploying the stack to the production server 🚀
+run-name: ${{ github.actor }} is deploying the stack to the production server 🛸
 on: 'workflow_dispatch'
 jobs:
     deploy-backend:

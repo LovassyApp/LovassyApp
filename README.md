@@ -2,6 +2,8 @@
 
 A Lovassy László Gimnázium diákjainak életét megkönnyíteni hivatott alkalmazás.
 
+![LovassyAppProductImage.png](.github/LovassyAppProductImage.png)
+
 *Megjegyzés: Ez a repo a jelenlegi legújabb, fejlesztés alatti verziót tartalmazza. Blueboard v4 előtti verziók megtekinthetők itt: https://github.com/LovassyApp/LovassyAppLegacy. Ezt a verziót a 2023/2024-es tanév elején tervezzük bevezetni.*
 
 ## Funkciók
@@ -13,10 +15,11 @@ A Lovassy László Gimnázium diákjainak életét megkönnyíteni hivatott alka
   - [x] Vásárolt termékek felhasználása
 - [X] Jegyek megtekintése
 - [X] Hírek megtekintése a [Lovassy weboldaláról](http://web.lovassy.hu)
-- [ ] Szavazó rendszer (farsangi jelmezversenyhez, stb.)
 - [ ] Párt rendszer (párthéthez)
   - [ ] Pártok létrehozása, regisztálása
   - [ ] Pártprogramok megtekintése
+  - [ ] Szavazás
+- [ ] Szavazó rendszer (farsangi jelmezversenyhez, stb.)
 - [ ] Éjszakai röpi rendszer
   - [ ] Röpi csapatok létrehozása, regisztálása
   - [ ] Értesítések meccsek előtt
