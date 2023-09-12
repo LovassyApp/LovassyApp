@@ -52,7 +52,7 @@ export const UnavailableModal = ({ opened }: { opened: boolean }): JSX.Element =
                 Miért van ez?
             </Text>
             <Text mb="sm">
-                A felhasználóink adatainak védelme érdekében miben személyes adatot titkosítunk a felhasználó
+                A felhasználóink adatainak védelme érdekében minden személyes adatot titkosítunk a felhasználó
                 jelszavával és az iskolavezőség által megadott visszaállítási jelszóval. A biztonság érdekében a
                 visszaállítási jelszót nem tárolhatjuk a LovassyApp szerverein, ezért azt minden újraindítás után újra
                 be kell állítani, és ez a legutóbbi óta még nem történt meg.
