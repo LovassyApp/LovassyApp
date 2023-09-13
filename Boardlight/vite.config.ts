@@ -23,6 +23,9 @@ export default defineConfig(({ mode }) => {
                         { src: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
                     ],
                 },
+                workbox: {
+                    sourcemap: true,
+                },
             }),
         ],
         define: {

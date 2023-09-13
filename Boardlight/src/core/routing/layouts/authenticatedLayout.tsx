@@ -349,7 +349,7 @@ const HeaderAvatar = () => {
                         Téma megváltoztatása
                     </Menu.Item>
                     <Menu.Item icon={<IconInfoSquareRounded size={14} />} onClick={() => openSystemInformationModal()}>
-                        Rendszer információk
+                        Rendszerinformációk
                     </Menu.Item>
                 </Menu.Dropdown>
             </Menu>
