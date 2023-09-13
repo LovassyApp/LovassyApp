@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **qr_code_activated** | Option<**bool**> |  | [optional]
 **price** | Option<**i32**> |  | [optional]
 **quantity** | Option<**i32**> |  | [optional]
+**user_limited** | Option<**bool**> |  | [optional]
+**user_limit** | Option<**i32**> |  | [optional]
 **thumbnail_url** | Option<**String**> |  | [optional]
 **created_at** | Option<**String**> |  | [optional]
 **updated_at** | Option<**String**> |  | [optional]

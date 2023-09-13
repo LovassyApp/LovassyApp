@@ -27,6 +27,10 @@ pub struct ShopIndexProductsResponse {
     pub price: Option<i32>,
     #[serde(rename = "quantity", skip_serializing_if = "Option::is_none")]
     pub quantity: Option<i32>,
+    #[serde(rename = "userLimited", skip_serializing_if = "Option::is_none")]
+    pub user_limited: Option<bool>,
+    #[serde(rename = "userLimit", skip_serializing_if = "Option::is_none")]
+    pub user_limit: Option<i32>,
     #[serde(rename = "thumbnailUrl", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub thumbnail_url: Option<Option<String>>,
     #[serde(rename = "createdAt", skip_serializing_if = "Option::is_none")]
@@ -45,6 +49,8 @@ impl ShopIndexProductsResponse {
             qr_code_activated: None,
             price: None,
             quantity: None,
+            user_limited: None,
+            user_limit: None,
             thumbnail_url: None,
             created_at: None,
             updated_at: None,

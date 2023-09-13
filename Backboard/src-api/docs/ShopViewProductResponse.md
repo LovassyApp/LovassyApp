@@ -13,6 +13,8 @@ Name | Type | Description | Notes
 **qr_codes** | Option<[**Vec<crate::models::ShopViewProductResponseQrCode>**](ShopViewProductResponseQRCode.md)> |  | [optional]
 **price** | Option<**i32**> |  | [optional]
 **quantity** | Option<**i32**> |  | [optional]
+**user_limited** | Option<**bool**> |  | [optional]
+**user_limit** | Option<**i32**> |  | [optional]
 **inputs** | Option<[**Vec<crate::models::ShopViewProductResponseInput>**](ShopViewProductResponseInput.md)> |  | [optional]
 **notified_emails** | Option<**Vec<String>**> |  | [optional]
 **thumbnail_url** | Option<**String**> |  | [optional]
