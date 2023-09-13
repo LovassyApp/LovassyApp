@@ -22,23 +22,18 @@ public class SeedDatabaseAction : IStartupAction
         await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var environment = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
 
-        var permissionTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(x => typeof(IPermission).IsAssignableFrom(x) && x is { IsInterface: false, IsAbstract: false })
-            .ToList();
+        var defaultGroup = await context.UserGroups.FindAsync(AuthConstants.DefaultUserGroupID);
 
-        var permissionNames = permissionTypes.Select(x =>
-            ((IPermission)Activator.CreateInstance(x)!).Name
-        ).ToArray(); // We can't use PermissionUtils just yet as it is also initialized in a startup action
-
-        var currentDefaultGroup = await context.UserGroups.FindAsync(AuthConstants.DefaultUserGroupID);
-
-        if (currentDefaultGroup != null && !currentDefaultGroup.Permissions.SequenceEqual(permissionNames))
+        if (defaultGroup == null)
         {
-            currentDefaultGroup.Permissions = permissionNames;
-            await context.SaveChangesAsync();
-        }
-        else if (currentDefaultGroup == null)
-        {
+            var permissionTypes = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(x => typeof(IPermission).IsAssignableFrom(x) && x is { IsInterface: false, IsAbstract: false })
+                .ToList();
+
+            var permissionNames = permissionTypes.Select(x =>
+                ((IPermission)Activator.CreateInstance(x)!).Name
+            ).ToArray(); // We can't use PermissionUtils just yet as it is also initialized in a startup action
+
             var group = new UserGroup
             {
                 Id = AuthConstants.DefaultUserGroupID,
