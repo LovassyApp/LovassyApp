@@ -29,6 +29,10 @@ pub struct ShopUpdateProductRequestBody {
     pub price: i32,
     #[serde(rename = "quantity")]
     pub quantity: i32,
+    #[serde(rename = "userLimited")]
+    pub user_limited: bool,
+    #[serde(rename = "userLimit")]
+    pub user_limit: i32,
     #[serde(rename = "inputs")]
     pub inputs: Vec<crate::models::ShopUpdateProductRequestBodyInput>,
     #[serde(rename = "notifiedEmails")]
@@ -38,7 +42,7 @@ pub struct ShopUpdateProductRequestBody {
 }
 
 impl ShopUpdateProductRequestBody {
-    pub fn new(name: String, description: String, rich_text_content: String, visible: bool, qr_code_activated: bool, qr_codes: Vec<i32>, price: i32, quantity: i32, inputs: Vec<crate::models::ShopUpdateProductRequestBodyInput>, notified_emails: Vec<String>, thumbnail_url: String) -> ShopUpdateProductRequestBody {
+    pub fn new(name: String, description: String, rich_text_content: String, visible: bool, qr_code_activated: bool, qr_codes: Vec<i32>, price: i32, quantity: i32, user_limited: bool, user_limit: i32, inputs: Vec<crate::models::ShopUpdateProductRequestBodyInput>, notified_emails: Vec<String>, thumbnail_url: String) -> ShopUpdateProductRequestBody {
         ShopUpdateProductRequestBody {
             name,
             description,
@@ -48,6 +52,8 @@ impl ShopUpdateProductRequestBody {
             qr_codes,
             price,
             quantity,
+            user_limited,
+            user_limit,
             inputs,
             notified_emails,
             thumbnail_url,

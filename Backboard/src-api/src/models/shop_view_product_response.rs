@@ -31,6 +31,10 @@ pub struct ShopViewProductResponse {
     pub price: Option<i32>,
     #[serde(rename = "quantity", skip_serializing_if = "Option::is_none")]
     pub quantity: Option<i32>,
+    #[serde(rename = "userLimited", skip_serializing_if = "Option::is_none")]
+    pub user_limited: Option<bool>,
+    #[serde(rename = "userLimit", skip_serializing_if = "Option::is_none")]
+    pub user_limit: Option<i32>,
     #[serde(rename = "inputs", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub inputs: Option<Option<Vec<crate::models::ShopViewProductResponseInput>>>,
     #[serde(rename = "notifiedEmails", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
@@ -55,6 +59,8 @@ impl ShopViewProductResponse {
             qr_codes: None,
             price: None,
             quantity: None,
+            user_limited: None,
+            user_limit: None,
             inputs: None,
             notified_emails: None,
             thumbnail_url: None,
