@@ -26,6 +26,11 @@ const App = () => {
     useHotkeys([["mod+J", () => settings.toggleColorScheme()]]);
 
     useEffect(() => {
+        // "Boardlight" figlet
+        console.log(
+            " ____                      _ _ _       _     _   \r\n| __ )  ___   __ _ _ __ __| | (_) __ _| |__ | |_ \r\n|  _ \\ / _ \\ / _` | '__/ _` | | |/ _` | '_ \\| __|\r\n| |_) | (_) | (_| | | | (_| | | | (_| | | | | |_ \r\n|____/ \\___/ \\__,_|_|  \\__,_|_|_|\\__, |_| |_|\\__|\r\n                                 |___/           "
+        );
+
         document.addEventListener("resetQueryClient", () => queryClient.clear());
 
         return () => document.removeEventListener("resetQueryClient", () => queryClient.clear());
