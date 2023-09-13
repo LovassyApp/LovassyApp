@@ -58,7 +58,7 @@ public static class CreateUser
                 .WithMessage("Az email cím '@lovassy.edu.hu'-ra kell hogy végződjön.")
                 .MustAsync(BeUniqueEmailAsync).WithMessage("Az email cím már használatban van.");
             RuleFor(x => x.Password).NotEmpty()
-                .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$").WithMessage(
+                .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$").WithMessage(
                     "A jelszónak legalább 8 karakter hosszúnak kell lennie, és tartalmaznia kell legalább egy kisbetűt, egy nagybetűt és egy számot.");
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.OmCode).NotEmpty()

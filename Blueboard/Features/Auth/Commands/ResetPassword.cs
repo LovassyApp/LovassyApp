@@ -29,7 +29,7 @@ public static class ResetPassword
         public RequestBodyValidator()
         {
             RuleFor(x => x.NewPassword).NotEmpty()
-                .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$").WithMessage(
+                .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$").WithMessage(
                     "A jelszónak legalább 8 karakter hosszúnak kell lennie, tartalmaznia kell legalább egy kisbetűt, egy nagybetűt és egy számot.");
         }
     }
