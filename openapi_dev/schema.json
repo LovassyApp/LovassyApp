@@ -3670,7 +3670,7 @@
         "properties": {
           "newPassword": {
             "minLength": 1,
-            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$",
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d\\w\\W]{8,}$",
             "type": "string"
           }
         },
@@ -5529,7 +5529,7 @@
           },
           "password": {
             "minLength": 1,
-            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$",
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d\\w\\W]{8,}$",
             "type": "string"
           },
           "name": {
