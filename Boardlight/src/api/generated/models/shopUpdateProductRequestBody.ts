@@ -15,6 +15,8 @@ export interface ShopUpdateProductRequestBody {
   qrCodes: number[];
   price: number;
   quantity: number;
+  userLimited: boolean;
+  userLimit: number;
   inputs: ShopUpdateProductRequestBodyInput[];
   notifiedEmails: string[];
   thumbnailUrl: string;

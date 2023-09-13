@@ -17,6 +17,8 @@ export interface ShopViewProductResponse {
   qrCodes?: ShopViewProductResponseQRCode[] | null;
   price?: number;
   quantity?: number;
+  userLimited?: boolean;
+  userLimit?: number;
   inputs?: ShopViewProductResponseInput[] | null;
   notifiedEmails?: string[] | null;
   thumbnailUrl?: string | null;

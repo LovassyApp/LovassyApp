@@ -16,6 +16,8 @@ export interface ShopCreateProductResponse {
   qrCodes?: number[] | null;
   price?: number;
   quantity?: number;
+  userLimited?: boolean;
+  userLimit?: number;
   inputs?: ShopCreateProductResponseInput[] | null;
   notifiedEmails?: string[] | null;
   thumbnailUrl?: string | null;

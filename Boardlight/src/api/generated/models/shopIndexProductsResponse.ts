@@ -13,6 +13,8 @@ export interface ShopIndexProductsResponse {
   qrCodeActivated?: boolean;
   price?: number;
   quantity?: number;
+  userLimited?: boolean;
+  userLimit?: number;
   thumbnailUrl?: string | null;
   createdAt?: string;
   updatedAt?: string;

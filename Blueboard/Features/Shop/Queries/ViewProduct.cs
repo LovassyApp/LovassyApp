@@ -31,6 +31,9 @@ public static class ViewProduct
         public int Price { get; set; }
         public int Quantity { get; set; }
 
+        public bool UserLimited { get; set; }
+        public int UserLimit { get; set; }
+
         public List<ResponseInput> Inputs { get; set; }
 
         public string[]? NotifiedEmails { get; set; }

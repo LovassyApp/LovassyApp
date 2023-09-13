@@ -48,6 +48,14 @@ public class Product : TimestampedEntity
     public int Quantity { get; set; }
 
     [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public bool UserLimited { get; set; }
+
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public int UserLimit { get; set; }
+
+    [Required]
     [Column(TypeName = "jsonb")]
     public List<ProductInput> Inputs { get; set; }
 
@@ -68,5 +76,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         {
             p.Name, p.Description, p.RichTextContent
         }).HasIndex(p => p.SearchVector).HasMethod("GIN");
+        builder.Property(p => p.UserLimited).HasDefaultValue(false);
+        builder.Property(p => p.UserLimit).HasDefaultValue(0);
     }
 }

@@ -4291,6 +4291,8 @@
           "quantity",
           "richTextContent",
           "thumbnailUrl",
+          "userLimit",
+          "userLimited",
           "visible"
         ],
         "type": "object",
@@ -4329,6 +4331,15 @@
           },
           "quantity": {
             "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "userLimited": {
+            "type": "boolean"
+          },
+          "userLimit": {
+            "minimum": 0,
+            "exclusiveMinimum": true,
             "type": "integer",
             "format": "int32"
           },
@@ -4414,6 +4425,13 @@
             "format": "int32"
           },
           "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userLimited": {
+            "type": "boolean"
+          },
+          "userLimit": {
             "type": "integer",
             "format": "int32"
           },
@@ -4936,6 +4954,13 @@
             "type": "integer",
             "format": "int32"
           },
+          "userLimited": {
+            "type": "boolean"
+          },
+          "userLimit": {
+            "type": "integer",
+            "format": "int32"
+          },
           "thumbnailUrl": {
             "type": "string",
             "nullable": true
@@ -5036,6 +5061,8 @@
           "quantity",
           "richTextContent",
           "thumbnailUrl",
+          "userLimit",
+          "userLimited",
           "visible"
         ],
         "type": "object",
@@ -5073,6 +5100,14 @@
             "format": "int32"
           },
           "quantity": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "userLimited": {
+            "type": "boolean"
+          },
+          "userLimit": {
             "minimum": 0,
             "type": "integer",
             "format": "int32"
@@ -5328,6 +5363,13 @@
             "format": "int32"
           },
           "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userLimited": {
+            "type": "boolean"
+          },
+          "userLimit": {
             "type": "integer",
             "format": "int32"
           },

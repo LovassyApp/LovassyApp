@@ -33,6 +33,9 @@ public static class CreateProduct
         public int Price { get; set; }
         public int Quantity { get; set; }
 
+        public bool UserLimited { get; set; }
+        public int UserLimit { get; set; }
+
         public List<ResponseInput> Inputs { get; set; }
 
         public string[] NotifiedEmails { get; set; }
@@ -60,6 +63,9 @@ public static class CreateProduct
 
         public int Price { get; set; }
         public int Quantity { get; set; }
+
+        public bool UserLimited { get; set; }
+        public int UserLimit { get; set; }
 
         public List<RequestBodyInput> Inputs { get; set; }
 
@@ -92,6 +98,8 @@ public static class CreateProduct
                 .WithMessage("A megadott QR kódok közül legalább egy nem létezik.");
             RuleFor(x => x.Price).NotNull().GreaterThanOrEqualTo(0);
             RuleFor(x => x.Quantity).NotNull().GreaterThanOrEqualTo(0);
+            RuleFor(x => x.UserLimited).NotNull();
+            RuleFor(x => x.UserLimit).NotNull().GreaterThan(0);
             RuleFor(x => x.Inputs).NotNull().Must(i => i.DistinctBy(e => e.Key).Count() == i.Count)
                 .WithMessage("A megadott inputok között van két azonos kulcsú elem.");
             RuleForEach(x => x.Inputs).ChildRules(v =>

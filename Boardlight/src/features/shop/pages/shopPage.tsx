@@ -171,6 +171,12 @@ const DetailsModal = ({
                 <Text>Mennyiség:</Text>
                 <Text weight="bold">{storeProduct?.quantity} db</Text>
             </Group>
+            {storeProduct?.userLimited && (
+                <Group position="apart" spacing={0}>
+                    <Text>Felhasználói limit:</Text>
+                    <Text weight="bold">{storeProduct?.userLimit}</Text>
+                </Group>
+            )}
             <Divider my="sm" />
             <Group position="apart" spacing={0}>
                 <Text>QR kód aktivált:</Text>

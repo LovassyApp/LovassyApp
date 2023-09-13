@@ -15,6 +15,8 @@ export interface ShopCreateProductRequestBody {
   qrCodes: number[];
   price: number;
   quantity: number;
+  userLimited: boolean;
+  userLimit: number;
   inputs: ShopCreateProductRequestBodyInput[];
   notifiedEmails: string[];
   thumbnailUrl: string;

@@ -6,6 +6,7 @@ using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using Helpers.WebApi.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Features.Shop.Commands;
 
@@ -44,6 +45,16 @@ public static class BuyProduct
 
             if (_loloManager.Balance < product.Price)
                 throw new BadRequestException("Nincs elég lolód a termék megvásárlásához.");
+
+            if (product.UserLimited)
+            {
+                var storeHistories = await _context.StoreHistories
+                    .Where(h => h.ProductId == product.Id && h.UserId == _userAccessor.User.Id)
+                    .ToListAsync(cancellationToken);
+
+                if (storeHistories.Count >= product.UserLimit)
+                    throw new BadRequestException("Ebből a termékből te nem vehetsz többet.");
+            }
 
             var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 

@@ -73,6 +73,8 @@ const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void 
             qrCodes: [],
             price: 0,
             quantity: 0,
+            userLimited: false,
+            userLimit: 0,
             inputs: [],
             notifiedEmails: [],
             thumbnailUrl: "",
@@ -227,6 +229,17 @@ const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void 
                 )}
                 <NumberInput label="Ár" required={true} min={0} {...form.getInputProps("price")} mt="sm" />
                 <NumberInput label="Mennyiség" required={true} min={0} {...form.getInputProps("quantity")} mt="sm" />
+                <Group position="apart" spacing={0} mt="md">
+                    <Text size="sm">Felhasználónként limitált</Text>
+                    <Switch {...form.getInputProps("userLimited", { type: "checkbox" })} />
+                </Group>
+                <NumberInput
+                    label="Felhasználói limit"
+                    required={true}
+                    min={1}
+                    {...form.getInputProps("userLimit")}
+                    mt="sm"
+                />
                 <Text size="sm" mt="sm" weight={500}>
                     Beviteli mezők
                 </Text>
@@ -324,6 +337,8 @@ const DetailsModal = ({
             qrCodes: productDetailed.data?.qrCodes.map((qrCode) => qrCode.id.toString()) ?? [],
             price: product?.price,
             quantity: product?.quantity,
+            userLimited: product?.userLimited,
+            userLimit: product?.userLimit,
             inputs: productDetailed.data?.inputs ?? [],
             notifiedEmails: productDetailed.data?.notifiedEmails ?? [],
             thumbnailUrl: product?.thumbnailUrl,
@@ -349,6 +364,8 @@ const DetailsModal = ({
             qrCodes: productDetailed.data?.qrCodes.map((qrCode) => qrCode.id.toString()) ?? [],
             price: product?.price,
             quantity: product?.quantity,
+            userLimited: product?.userLimited,
+            userLimit: product?.userLimit,
             inputs: productDetailed.data?.inputs ?? [],
             notifiedEmails: productDetailed.data?.notifiedEmails ?? [],
             thumbnailUrl: product?.thumbnailUrl,
@@ -571,6 +588,17 @@ const DetailsModal = ({
                         required={true}
                         min={0}
                         {...form.getInputProps("quantity")}
+                        mt="sm"
+                    />
+                    <Group position="apart" spacing={0} mt="md">
+                        <Text size="sm">Felhasználónként limitált</Text>
+                        <Switch {...form.getInputProps("userLimited", { type: "checkbox" })} />
+                    </Group>
+                    <NumberInput
+                        label="Felhasználói limit"
+                        required={true}
+                        min={1}
+                        {...form.getInputProps("userLimit")}
                         mt="sm"
                     />
                     <Text size="sm" mt="sm" weight={500}>
