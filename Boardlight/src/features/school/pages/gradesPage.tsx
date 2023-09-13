@@ -1,4 +1,15 @@
-import { Box, Center, Loader, Select, SimpleGrid, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
+import {
+    Box,
+    Center,
+    Loader,
+    MediaQuery,
+    Select,
+    SimpleGrid,
+    Text,
+    Title,
+    createStyles,
+    useMantineTheme,
+} from "@mantine/core";
 import { useMemo, useState } from "react";
 
 import { GradeCard } from "../components/gradeCard";
@@ -74,7 +85,7 @@ const GradesPage = (): JSX.Element => {
 
     return (
         <>
-            <Box className={classes.subjectsContainer}>
+            <Box className={classes.subjectsContainer} mb="md">
                 <Title mb="md">Tantárgyak</Title>
                 <SimpleGrid
                     cols={4}
@@ -86,14 +97,22 @@ const GradesPage = (): JSX.Element => {
                 >
                     {subjectCards}
                 </SimpleGrid>
+                {subjectCards.length === 0 && (
+                    <Text color="dimmed">
+                        Úgy néz ki még nem lettek importálva a jegyeid... Amint importálva lesznek, itt látod majd a
+                        tantárgyaid.
+                    </Text>
+                )}
             </Box>
+            <Title mb="md">Jegyek</Title>
             {subjectCards.length === 0 && (
-                <Text color="dimmed">
-                    Úgy néz ki még nem lettek importálva a jegyeid... Amint importálva lesznek, itt látod majd a
-                    tantárgyaid.
-                </Text>
+                <MediaQuery largerThan="xs" styles={{ display: "none" }}>
+                    <Text color="dimmed" mb="sm">
+                        Úgy néz ki még nem lettek importálva a jegyeid... Amint importálva lesznek, itt látod majd a
+                        tantárgyaid.
+                    </Text>
+                </MediaQuery>
             )}
-            <Title my="md">Jegyek</Title>
             <Select
                 label="Tantárgy"
                 data={subjectValues}
