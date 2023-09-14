@@ -6,12 +6,14 @@ using Blueboard.Features.Shop.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement.Mvc;
 using Sieve.Models;
 
 namespace Blueboard.Features.Shop;
 
 [Authorize]
 [EmailVerified]
+[FeatureGate("Shop")]
 public class ProductsController : ApiControllerBase
 {
     [HttpGet]
