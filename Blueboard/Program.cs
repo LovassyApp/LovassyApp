@@ -28,6 +28,10 @@ builder.Services.AddWebApiHelpers(builder.Configuration, Assembly.GetExecutingAs
         SchemaIdResolver = type => type.ToString().Replace("Blueboard.Features.", string.Empty)
             .Replace("Microsoft.AspNetCore.Mvc", string.Empty).Replace("+", string.Empty)
             .Replace(".", string.Empty).Replace("Commands", string.Empty).Replace("Queries", string.Empty),
+        Servers =
+        {
+            new OpenApiServer { Url = "https://app.lovassy.hu" }, new OpenApiServer { Url = "http://127.0.0.1:5279" }
+        },
         SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>
         {
             [AuthConstants.TokenScheme] = new()
@@ -156,7 +160,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 app.UseRateLimiter();
-app.UseHttpMetrics();
+// app.UseHttpMetrics();
 
 app.UseAuthentication();
 app.UseAuthorization();

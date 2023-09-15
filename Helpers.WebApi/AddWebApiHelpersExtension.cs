@@ -64,6 +64,8 @@ public static class AddWebApiHelpersExtension
                     Title = frameworkHelpersConfiguration.ApiName, Version = frameworkHelpersConfiguration.ApiVersion
                 });
 
+            foreach (var server in frameworkHelpersConfiguration.Servers) c.AddServer(server);
+
             c.AddOperationFilters(assembly);
 
             c.CustomSchemaIds(frameworkHelpersConfiguration.SchemaIdResolver);
@@ -129,6 +131,7 @@ public class FrameworkHelpersConfiguration
     public string ApiVersion { get; set; } = "v1";
     public Func<Type, string> SchemaIdResolver { get; set; } = type => type.ToString();
     public Dictionary<string, OpenApiSecurityScheme> SecuritySchemes { get; set; } = new();
+    public List<OpenApiServer> Servers { get; set; } = new();
 
     public string FeatureUserClaim { get; set; } = ClaimTypes.Email;
     public string FeatureGroupClaim { get; set; } = "UserGroup";

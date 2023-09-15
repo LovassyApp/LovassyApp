@@ -4,6 +4,14 @@
     "title": "Blueboard",
     "version": "v4.0.0"
   },
+  "servers": [
+    {
+      "url": "https://app.lovassy.hu"
+    },
+    {
+      "url": "http://127.0.0.1:5279"
+    }
+  ],
   "paths": {
     "/Api/Auth/Login": {
       "post": {
@@ -2066,7 +2074,7 @@
           "Products"
         ],
         "summary": "Get a list of all products or only store products depending on permissions",
-        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "Filters",
@@ -2147,7 +2155,7 @@
           "Products"
         ],
         "summary": "Create a new product",
-        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateProduct",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.CreateProduct; Requires the following features to be enabled: Shop",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2198,7 +2206,7 @@
           "Products"
         ],
         "summary": "Get information about a product",
-        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -2250,7 +2258,7 @@
           "Products"
         ],
         "summary": "Update a product",
-        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateProduct",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.UpdateProduct; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -2314,7 +2322,7 @@
           "Products"
         ],
         "summary": "Delete a product",
-        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteProduct",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.DeleteProduct; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
@@ -2361,7 +2369,7 @@
           "Products"
         ],
         "summary": "Buy a product",
-        "description": "Requires verified email; Requires one of the following permissions: Shop.BuyProduct",
+        "description": "Requires verified email; Requires one of the following permissions: Shop.BuyProduct; Requires the following features to be enabled: Shop",
         "parameters": [
           {
             "name": "id",
