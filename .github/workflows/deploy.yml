@@ -27,6 +27,13 @@ jobs:
               run: dotnet build --configuration Release
             - name: Bundle migrations
               run: cd Blueboard && dotnet tool run dotnet-ef migrations bundle -o ef-core-migrate && cp ef-core-migrate ./bin/Release/net${{ matrix.dotnet-version }}/
+            - name: Fix / replace environment file
+              shell: bash
+              run: |
+                  cd Blueboard
+                  rm appsettings.Development.json appsettings.json
+                  mv appsettings.Production.json appsettings.json
+                  sed -i 's/SENDGRID_SECRET_REPLACE_ME/${{ secrets.SENDGRID_SECRET }}/g' appsettings.json
             - name: Install SSH Key
               uses: shimataro/ssh-key-action@v2
               with:
