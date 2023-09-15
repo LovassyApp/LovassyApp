@@ -34,7 +34,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
- * Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts
+ * Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts; Requires the following features to be enabled: Shop
  * @summary Get a list of all products or only store products depending on permissions
  */
 export const getApiProducts = (
@@ -88,7 +88,7 @@ export const useGetApiProducts = <TData = Awaited<ReturnType<typeof getApiProduc
 }
 
 /**
- * Requires verified email; Requires one of the following permissions: Shop.CreateProduct
+ * Requires verified email; Requires one of the following permissions: Shop.CreateProduct; Requires the following features to be enabled: Shop
  * @summary Create a new product
  */
 export const postApiProducts = (
@@ -141,7 +141,7 @@ export const usePostApiProducts = <TError = ErrorType<void>,
       return useMutation(mutationOptions);
     }
     /**
- * Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct
+ * Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct; Requires the following features to be enabled: Shop
  * @summary Get information about a product
  */
 export const getApiProductsId = (
@@ -194,7 +194,7 @@ export const useGetApiProductsId = <TData = Awaited<ReturnType<typeof getApiProd
 }
 
 /**
- * Requires verified email; Requires one of the following permissions: Shop.UpdateProduct
+ * Requires verified email; Requires one of the following permissions: Shop.UpdateProduct; Requires the following features to be enabled: Shop
  * @summary Update a product
  */
 export const patchApiProductsId = (
@@ -248,7 +248,7 @@ export const usePatchApiProductsId = <TError = ErrorType<ProblemDetails>,
       return useMutation(mutationOptions);
     }
     /**
- * Requires verified email; Requires one of the following permissions: Shop.DeleteProduct
+ * Requires verified email; Requires one of the following permissions: Shop.DeleteProduct; Requires the following features to be enabled: Shop
  * @summary Delete a product
  */
 export const deleteApiProductsId = (
@@ -299,7 +299,7 @@ export const useDeleteApiProductsId = <TError = ErrorType<ProblemDetails>,
       return useMutation(mutationOptions);
     }
     /**
- * Requires verified email; Requires one of the following permissions: Shop.BuyProduct
+ * Requires verified email; Requires one of the following permissions: Shop.BuyProduct; Requires the following features to be enabled: Shop
  * @summary Buy a product
  */
 export const postApiProductsBuyId = (
