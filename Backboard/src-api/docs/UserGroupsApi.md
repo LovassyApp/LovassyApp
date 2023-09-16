@@ -1,6 +1,6 @@
 # \UserGroupsApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://app.lovassy.hu*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

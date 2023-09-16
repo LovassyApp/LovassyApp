@@ -21,7 +21,7 @@ api = { path = "./api" }
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://app.lovassy.hu*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

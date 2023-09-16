@@ -1,6 +1,6 @@
 # \ProductsApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://app.lovassy.hu*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -18,7 +18,7 @@ Method | HTTP request | Description
 > api_products_buy_id_post(id)
 Buy a product
 
-Requires verified email; Requires one of the following permissions: Shop.BuyProduct
+Requires verified email; Requires one of the following permissions: Shop.BuyProduct; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -48,7 +48,7 @@ Name | Type | Description  | Required | Notes
 > Vec<crate::models::ShopIndexProductsResponse> api_products_get(filters, sorts, page, page_size, search)
 Get a list of all products or only store products depending on permissions
 
-Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts
+Requires verified email; Requires one of the following permissions: Shop.IndexProducts, Shop.IndexStoreProducts; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -82,7 +82,7 @@ Name | Type | Description  | Required | Notes
 > api_products_id_delete(id)
 Delete a product
 
-Requires verified email; Requires one of the following permissions: Shop.DeleteProduct
+Requires verified email; Requires one of the following permissions: Shop.DeleteProduct; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Required | Notes
 > crate::models::ShopViewProductResponse api_products_id_get(id)
 Get information about a product
 
-Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct
+Requires verified email; Requires one of the following permissions: Shop.ViewProduct, Shop.ViewStoreProduct; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -142,7 +142,7 @@ Name | Type | Description  | Required | Notes
 > api_products_id_patch(id, shop_update_product_request_body)
 Update a product
 
-Requires verified email; Requires one of the following permissions: Shop.UpdateProduct
+Requires verified email; Requires one of the following permissions: Shop.UpdateProduct; Requires the following features to be enabled: Shop
 
 ### Parameters
 
@@ -173,7 +173,7 @@ Name | Type | Description  | Required | Notes
 > crate::models::ShopCreateProductResponse api_products_post(shop_create_product_request_body)
 Create a new product
 
-Requires verified email; Requires one of the following permissions: Shop.CreateProduct
+Requires verified email; Requires one of the following permissions: Shop.CreateProduct; Requires the following features to be enabled: Shop
 
 ### Parameters
 
