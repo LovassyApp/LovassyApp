@@ -60,6 +60,14 @@ public static class StudentPartiesPermissions
         public bool Dangerous => false;
     }
 
+    public class ApproveStudentParty : IPermission
+    {
+        public string Name => "StudentParties.ApproveStudentParty";
+        public string DisplayName => "Diák párt elfogadása";
+        public string Description => "Egy adott (bármelyik) diák párt elfogadása id alapján";
+        public bool Dangerous => true;
+    }
+
     public class DeleteStudentParty : IPermission
     {
         public string Name => "StudentParties.DeleteStudentParty";

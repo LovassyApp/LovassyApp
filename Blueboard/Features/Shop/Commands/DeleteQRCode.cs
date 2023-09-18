@@ -34,7 +34,7 @@ public static class DeleteQRCode
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new QRCodeUpdatedEvent(), cancellationToken);
+            await _publisher.Publish(new QRCodesUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

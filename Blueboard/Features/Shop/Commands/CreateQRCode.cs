@@ -61,7 +61,7 @@ public static class CreateQRCode
             await _context.QRCodes.AddAsync(qrCode, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new QRCodeUpdatedEvent(), cancellationToken);
+            await _publisher.Publish(new QRCodesUpdatedEvent(), cancellationToken);
 
             return qrCode.Adapt<Response>();
         }

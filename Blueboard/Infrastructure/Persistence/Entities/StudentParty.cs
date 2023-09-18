@@ -45,9 +45,8 @@ public class StudentParty : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public string PosterUrl { get; set; }
 
-    [Required]
     [Sieve(CanFilter = true, CanSort = true)]
-    public DateTime ApprovedAt { get; set; }
+    public DateTime? ApprovedAt { get; set; }
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]

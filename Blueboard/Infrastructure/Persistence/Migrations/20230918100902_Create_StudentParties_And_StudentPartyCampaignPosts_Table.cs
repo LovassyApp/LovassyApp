@@ -10,7 +10,7 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_StudentParties_And_StudentPartyCampaingPosts_Table : Migration
+    public partial class Create_StudentParties_And_StudentPartyCampaignPosts_Table : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     ProgramPlanUrl = table.Column<string>(type: "text", nullable: false),
                     VideoUrl = table.Column<string>(type: "text", nullable: false),
                     PosterUrl = table.Column<string>(type: "text", nullable: false),
-                    ApprovedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ApprovedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

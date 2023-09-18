@@ -15,8 +15,8 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230918093016_Create_StudentParties_And_StudentPartyCampaingPosts_Table")]
-    partial class Create_StudentParties_And_StudentPartyCampaingPosts_Table
+    [Migration("20230918100902_Create_StudentParties_And_StudentPartyCampaignPosts_Table")]
+    partial class Create_StudentParties_And_StudentPartyCampaignPosts_Table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -529,7 +529,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ApprovedAt")
+                    b.Property<DateTime?>("ApprovedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedAt")
