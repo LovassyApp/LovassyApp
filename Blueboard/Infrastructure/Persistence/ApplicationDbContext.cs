@@ -28,6 +28,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<OwnedItem> OwnedItems { get; set; }
     public DbSet<OwnedItemUse> OwnedItemUses { get; set; }
     public DbSet<ResetKeyPasswordSetNotifier> ResetKeyPasswordSetNotifiers { get; set; }
+    public DbSet<StudentParty> StudentParties { get; set; }
+    public DbSet<StudentPartyCampaignPost> StudentPartyCampaignPosts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
