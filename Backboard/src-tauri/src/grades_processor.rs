@@ -65,7 +65,17 @@ pub struct BackboardGrade {
     pub school_class: Option<String>,
 }
 
-pub fn process_excel_file(file_path: String) -> Result<Vec<BackboardGrade>, CalamineError> {
+#[derive(Debug, Clone, Deserialize)]
+pub struct BackboardStudent {
+    #[serde(rename(deserialize = "Név"))]
+    pub name: String,
+    #[serde(rename(deserialize = "Oktatási azonosító"))]
+    pub om_code: String,
+    #[serde(rename(deserialize = "Osztály"))]
+    pub class: String,
+}
+
+pub fn process_grades_excel_file(file_path: String) -> Result<Vec<BackboardGrade>, CalamineError> {
     let mut workbook: Xlsx<_> = open_workbook(file_path)?;
     let range = workbook
         .worksheet_range("Évközi jegyek")
@@ -81,6 +91,26 @@ pub fn process_excel_file(file_path: String) -> Result<Vec<BackboardGrade>, Cala
     }
 
     Ok(grades)
+}
+
+pub fn process_students_excel_file(
+    students_file_path: String,
+) -> Result<Vec<BackboardStudent>, CalamineError> {
+    let mut workbook: Xlsx<_> = open_workbook(students_file_path)?;
+    let range = workbook
+        .worksheet_range("Munka1")
+        .ok_or(CalamineError::Msg("Cannot find sheet: 'Munka1'"))??;
+
+    let mut iter = RangeDeserializerBuilder::new()
+        .from_range::<_, BackboardStudent>(&range)?
+        .enumerate();
+
+    let mut students = Vec::new();
+    while let Some((_, Ok(student))) = iter.next() {
+        students.push(student);
+    }
+
+    Ok(students)
 }
 
 #[derive(Debug, Clone, Serialize)]

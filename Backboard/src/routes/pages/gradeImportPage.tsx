@@ -6,6 +6,7 @@ import { IconCheck } from "@tabler/icons-react";
 import { invoke } from "@tauri-apps/api";
 import { notifications } from "@mantine/notifications";
 import { open } from "@tauri-apps/api/dialog";
+import { preferencesStore } from "../../preferencesStore";
 import { useSecurityStore } from "../../stores/securityStore";
 import { useSettingStore } from "../../stores/settingsStore";
 
@@ -13,9 +14,13 @@ const GradeImportPage = (): JSX.Element => {
     const security = useSecurityStore();
     const settings = useSettingStore();
 
-    const [fileValue, setFileValue] = useState<File | null>(null);
-    const [filePath, setFilePath] = useState<string | null>(null);
-    const [fileError, setFileError] = useState<string | null>(null);
+    const [gradesFileValue, setGradesFileValue] = useState<File | null>(null);
+    const [gradesFilePath, setGradesFilePath] = useState<string | null>(null);
+    const [gradesFileError, setGradesFileError] = useState<string | null>(null);
+
+    const [studentsFileValue, setStudentsFileValue] = useState<File | null>(null);
+    const [studentsFilePath, setStudentsFilePath] = useState<string | null>(null);
+
     const [fileLoading, setFileLoading] = useState<boolean>(false);
     const [fileDisabled, setFileDisabled] = useState<boolean>(false);
 
@@ -45,17 +50,18 @@ const GradeImportPage = (): JSX.Element => {
     }, []);
 
     const importGrades = async () => {
-        if (filePath === null) {
-            setFileError("Nincs kiválasztva fájl");
+        if (gradesFilePath === null) {
+            setGradesFileError("Nincs kiválasztva fájl");
             return;
         }
-        setFileError(null);
+        setGradesFileError(null);
         setFileLoading(true);
         setFileDisabled(true);
         setError(null);
         try {
             await invoke("import_grades", {
-                filePath,
+                gradesFilePath,
+                studentsFilePath,
                 blueboardUrl: settings.blueboardUrl,
                 importKey: settings.importKey,
                 resetKeyPassword: security.resetKeyPassword,
@@ -103,15 +109,15 @@ const GradeImportPage = (): JSX.Element => {
                     });
                     setFileDisabled(false);
                     if (path) {
-                        setFilePath(path as string);
-                        setFileValue(new File([], (path as string).split("/").pop() as string));
+                        setGradesFilePath(path as string);
+                        setGradesFileValue(new File([], (path as string).split("/").pop() as string));
                     }
                 }}
-                value={fileValue}
+                value={gradesFileValue}
                 onChange={(value) => {
                     if (value === null) {
-                        setFilePath(null);
-                        setFileValue(null);
+                        setGradesFilePath(null);
+                        setGradesFileValue(null);
                     }
                 }}
                 label="Jegyek"
@@ -120,7 +126,38 @@ const GradeImportPage = (): JSX.Element => {
                 withAsterisk={true}
                 clearable={true}
                 disabled={fileDisabled}
-                error={fileError}
+                error={gradesFileError}
+            />
+            <FileInput
+                onClick={async (event) => {
+                    event.preventDefault();
+                    setFileDisabled(true);
+                    const path = await open({
+                        multiple: false,
+                        filters: [
+                            {
+                                name: "Excel táblázat",
+                                extensions: ["xlsx"],
+                            },
+                        ],
+                    });
+                    setFileDisabled(false);
+                    if (path) {
+                        setStudentsFilePath(path as string);
+                        setStudentsFileValue(new File([], (path as string).split("/").pop() as string));
+                    }
+                }}
+                value={studentsFileValue}
+                onChange={(value) => {
+                    if (value === null) {
+                        setStudentsFilePath(null);
+                        setStudentsFileValue(null);
+                    }
+                }}
+                label="Tanulók"
+                description="A tanulók adatait (OM azonosító, név, osztály) tartalmazó Excel táblázat"
+                clearable={true}
+                disabled={fileDisabled}
             />
             {fileLoading && <Progress value={progress} label={`${progress}%`} size="xl" radius="xl" mt="xs" />}
             <Button

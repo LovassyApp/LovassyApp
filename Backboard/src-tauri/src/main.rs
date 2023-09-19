@@ -16,11 +16,12 @@ use api::models::{
     ImportImportGradesRequestBody, ImportUpdateResetKeyPasswordRequestBody,
     StatusViewServiceStatusResponse,
 };
+use grades_processor::{process_students_excel_file, BackboardStudent};
 use tauri::http::status::StatusCode;
 use tauri::Window;
 use tauri_plugin_autostart::MacosLauncher;
 
-use crate::grades_processor::process_excel_file;
+use crate::grades_processor::process_grades_excel_file;
 use crate::grades_processor::BackboardGrade;
 use crate::grades_processor::GradeCollection;
 
@@ -62,7 +63,8 @@ async fn upload_reset_key_password(
 #[tauri::command]
 async fn import_grades(
     window: Window,
-    file_path: String,
+    grades_file_path: String,
+    students_file_path: Option<String>,
     blueboard_url: String,
     reset_key_password: String,
     import_key: String,
@@ -99,7 +101,17 @@ async fn import_grades(
 
     window.emit("import-users", &users.len()).unwrap();
 
-    let grades = process_excel_file(file_path).map_err(|err: calamine::Error| err.to_string())?;
+    let grades = process_grades_excel_file(grades_file_path)
+        .map_err(|err: calamine::Error| err.to_string())?;
+
+    let students = if students_file_path.is_some() {
+        Some(
+            process_students_excel_file(students_file_path.unwrap())
+                .map_err(|err: calamine::Error| err.to_string())?,
+        )
+    } else {
+        None
+    };
 
     let mut grade_map: HashMap<String, Vec<BackboardGrade>> = HashMap::new();
 
@@ -108,6 +120,22 @@ async fn import_grades(
             .entry(hash(grade.clone().om_code))
             .or_insert(Vec::new())
             .push(grade);
+    }
+
+    let mut students_map: Option<HashMap<String, BackboardStudent>> = if students.clone().is_some()
+    {
+        Some(HashMap::new())
+    } else {
+        None
+    };
+
+    if students_map.clone().is_some() {
+        for student in students.unwrap() {
+            students_map
+                .as_mut()
+                .unwrap()
+                .insert(hash(student.clone().om_code), student);
+        }
     }
 
     let mut count = 0;
@@ -119,13 +147,37 @@ async fn import_grades(
             Some(_) => {
                 let public_key = user.public_key.clone().unwrap().unwrap();
 
-                let school_class: Option<String> = user_grades
-                    .unwrap()
-                    .iter()
-                    .find(|grade| grade.school_class.is_some())
-                    .map(|grade| grade.school_class.clone().unwrap());
+                let school_class: Option<String> = if students_map.as_mut().is_some() {
+                    Some(
+                        students_map
+                            .as_mut()
+                            .unwrap()
+                            .get(&user.clone().om_code_hashed.unwrap().unwrap())
+                            .clone()
+                            .unwrap()
+                            .class
+                            .clone(),
+                    )
+                } else {
+                    user_grades
+                        .unwrap()
+                        .iter()
+                        .find(|grade| grade.school_class.is_some())
+                        .map(|grade| grade.school_class.clone().unwrap())
+                };
 
-                let student_name = user_grades.unwrap()[0].student_name.clone();
+                let student_name = if students_map.as_mut().is_some() {
+                    students_map
+                        .as_mut()
+                        .unwrap()
+                        .get(&user.clone().om_code_hashed.unwrap().unwrap())
+                        .clone()
+                        .unwrap()
+                        .name
+                        .clone()
+                } else {
+                    user_grades.unwrap()[0].student_name.clone()
+                };
 
                 let grade_collection = GradeCollection {
                     grades: user_grades.unwrap().clone(),
