@@ -61,6 +61,12 @@ public class User : TimestampedEntity
     [JsonIgnore] public List<OwnedItem> OwnedItems { get; set; }
 
     [JsonIgnore] public List<PersonalAccessToken> PersonalAccessTokens { get; set; }
+
+    [JsonIgnore] public List<ImageVotingEntry> ImageVotingEntries { get; set; }
+
+    [JsonIgnore] public List<ImageVotingEntryRating> ImageVotingEntryRatings { get; set; }
+
+    [JsonIgnore] public List<ImageVotingChoice> ImageVotingChoices { get; set; }
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>

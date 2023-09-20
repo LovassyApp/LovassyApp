@@ -17,4 +17,6 @@ public class UserGroup : TimestampedEntity
     [Required] public string[] Permissions { get; set; }
 
     [JsonIgnore] public List<User> Users { get; set; }
+
+    [JsonIgnore] public List<ImageVoting> ImageVotings { get; set; }
 }

@@ -28,6 +28,10 @@ public class ApplicationDbContext : DbContext
     public DbSet<OwnedItem> OwnedItems { get; set; }
     public DbSet<OwnedItemUse> OwnedItemUses { get; set; }
     public DbSet<ResetKeyPasswordSetNotifier> ResetKeyPasswordSetNotifiers { get; set; }
+    public DbSet<ImageVoting> ImageVotings { get; set; }
+    public DbSet<ImageVotingEntry> ImageVotingEntries { get; set; }
+    public DbSet<ImageVotingEntryRating> ImageVotingEntryRatings { get; set; }
+    public DbSet<ImageVotingChoice> ImageVotingChoices { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,6 +39,7 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.HasPostgresEnum<GradeType>();
         modelBuilder.HasPostgresEnum<LoloType>();
+        modelBuilder.HasPostgresEnum<ImageVotingType>();
     }
 
     public override int SaveChanges()
