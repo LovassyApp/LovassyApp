@@ -843,7 +843,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "BannedUserGroup")
                         .WithMany("BannedImageVotings")
                         .HasForeignKey("BannedUserGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "UploaderUserGroup")
                         .WithMany("UploadableImageVotings")

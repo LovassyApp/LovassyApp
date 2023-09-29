@@ -73,6 +73,6 @@ public class ImageVotingConfiguration : IEntityTypeConfiguration<ImageVoting>
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(v => v.BannedUserGroup).WithMany(g => g.BannedImageVotings)
             .HasForeignKey(v => v.BannedUserGroupId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

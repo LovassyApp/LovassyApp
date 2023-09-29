@@ -1,7 +1,9 @@
 using Blueboard.Features.ImageVoting.Events;
 using Blueboard.Infrastructure.Persistence;
+using Blueboard.Infrastructure.Persistence.Entities;
 using Blueboard.Infrastructure.Persistence.Entities.Owned;
 using FluentValidation;
+using Helpers.WebApi.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -128,6 +130,10 @@ public static class CreateImageVoting
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var imageVoting = request.Body.Adapt<Infrastructure.Persistence.Entities.ImageVoting>();
+
+            //TODO: Remove this when increment voting is available
+            if (imageVoting.Type == ImageVotingType.Increment)
+                throw new UnavailableException("Az inkrementáló típusú szavazás még nem elérhető.");
 
             await _context.ImageVotings.AddAsync(imageVoting, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

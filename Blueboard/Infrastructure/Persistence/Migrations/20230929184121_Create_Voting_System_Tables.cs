@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_ImageVoting_Tables : Migration
+    public partial class Create_Voting_System_Tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,7 +47,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         column: x => x.BannedUserGroupId,
                         principalTable: "UserGroups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_ImageVotings_UserGroups_UploaderUserGroupId",
                         column: x => x.UploaderUserGroupId,

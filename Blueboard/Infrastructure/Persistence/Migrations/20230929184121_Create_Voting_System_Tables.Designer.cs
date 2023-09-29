@@ -15,8 +15,8 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230929163453_Create_ImageVoting_Tables")]
-    partial class Create_ImageVoting_Tables
+    [Migration("20230929184121_Create_Voting_System_Tables")]
+    partial class Create_Voting_System_Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -846,7 +846,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "BannedUserGroup")
                         .WithMany("BannedImageVotings")
                         .HasForeignKey("BannedUserGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "UploaderUserGroup")
                         .WithMany("UploadableImageVotings")
