@@ -6,6 +6,7 @@ using Blueboard.Features.ImageVotings.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 
 namespace Blueboard.Features.ImageVotings;
 
@@ -13,6 +14,20 @@ namespace Blueboard.Features.ImageVotings;
 [EmailVerified]
 public class ImageVotingController : ApiControllerBase
 {
+    [HttpGet]
+    [Permissions(typeof(ImageVotingsPermissions.IndexImageVotings),
+        typeof(ImageVotingsPermissions.IndexActiveImageVotings))]
+    [EndpointSummary("Get a list of image votings")]
+    public async Task<ActionResult<IEnumerable<IndexImageVotings.Response>>> Index([FromQuery] SieveModel sieveModel)
+    {
+        var response = await Mediator.Send(new IndexImageVotings.Query
+        {
+            SieveModel = sieveModel
+        });
+
+        return Ok(response);
+    }
+
     [HttpGet("{id}")]
     [Permissions(typeof(ImageVotingsPermissions.ViewImageVoting),
         typeof(ImageVotingsPermissions.ViewActiveImageVoting))]

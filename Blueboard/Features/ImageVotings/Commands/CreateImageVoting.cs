@@ -59,6 +59,9 @@ public static class CreateImageVoting
         public int? BannedUserGroupId { get; set; }
 
         public int MaxUploadsPerUser { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class RequestImageVotingAspect

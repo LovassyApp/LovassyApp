@@ -37,6 +37,9 @@ public static class ViewImageVoting
 
         public bool CanUpload { get; set; }
         public bool? CanChoose { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class ResponseImageVotingAspect
@@ -89,11 +92,11 @@ public static class ViewImageVoting
                 }
 
 
-            var inUploadableUserGroup =
+            var inUploaderUserGroup =
                 _userAccessor.User.UserGroups.Any(g => g.Id == imageVoting.UploaderUserGroupId) &&
                 _userAccessor.User.UserGroups.All(g => g.Id != imageVoting.BannedUserGroupId);
 
-            response.CanUpload = imageVoting.Active && inUploadableUserGroup &&
+            response.CanUpload = imageVoting.Active && inUploaderUserGroup &&
                                  imageVoting.Entries.Count < imageVoting.MaxUploadsPerUser;
 
             return response;
