@@ -6,7 +6,7 @@ using Sieve.Attributes;
 
 namespace Blueboard.Infrastructure.Persistence.Entities;
 
-public class ImageVotingEntryRating : TimestampedEntity
+public class ImageVotingEntryIncrement : TimestampedEntity
 {
     [Key] public int Id { get; set; }
 
@@ -15,7 +15,7 @@ public class ImageVotingEntryRating : TimestampedEntity
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
-    public int Rating { get; set; }
+    public int Increment { get; set; }
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
@@ -30,13 +30,13 @@ public class ImageVotingEntryRating : TimestampedEntity
     [JsonIgnore] public User User { get; set; }
 }
 
-public class ImageVotingEntryRatingConfiguration : IEntityTypeConfiguration<ImageVotingEntryRating>
+public class ImageVotingEntryRatingConfiguration : IEntityTypeConfiguration<ImageVotingEntryIncrement>
 {
-    public void Configure(EntityTypeBuilder<ImageVotingEntryRating> builder)
+    public void Configure(EntityTypeBuilder<ImageVotingEntryIncrement> builder)
     {
-        builder.HasOne(i => i.ImageVotingEntry).WithMany(e => e.Ratings).HasForeignKey(i => i.ImageVotingEntryId)
+        builder.HasOne(i => i.ImageVotingEntry).WithMany(e => e.Increments).HasForeignKey(i => i.ImageVotingEntryId)
             .OnDelete(DeleteBehavior.Cascade);
-        builder.HasOne(i => i.User).WithMany(u => u.ImageVotingEntryRatings).HasForeignKey(i => i.UserId)
+        builder.HasOne(i => i.User).WithMany(u => u.ImageVotingEntryIncrements).HasForeignKey(i => i.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

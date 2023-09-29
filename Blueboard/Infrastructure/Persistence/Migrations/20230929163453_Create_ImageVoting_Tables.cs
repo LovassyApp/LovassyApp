@@ -16,7 +16,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
         {
             migrationBuilder.AlterDatabase()
                 .Annotation("Npgsql:Enum:grade_type", "regular_grade,behaviour_grade,diligence_grade")
-                .Annotation("Npgsql:Enum:image_voting_type", "single_choice,rating")
+                .Annotation("Npgsql:Enum:image_voting_type", "single_choice,increment")
                 .Annotation("Npgsql:Enum:lolo_type", "from_grades,from_request")
                 .OldAnnotation("Npgsql:Enum:grade_type", "regular_grade,behaviour_grade,diligence_grade")
                 .OldAnnotation("Npgsql:Enum:lolo_type", "from_grades,from_request");
@@ -34,6 +34,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     ShowUploaderInfo = table.Column<bool>(type: "boolean", nullable: false),
                     UploaderUserGroupId = table.Column<int>(type: "integer", nullable: false),
+                    BannedUserGroupId = table.Column<int>(type: "integer", nullable: true),
                     MaxUploadsPerUser = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -41,6 +42,12 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ImageVotings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImageVotings_UserGroups_BannedUserGroupId",
+                        column: x => x.BannedUserGroupId,
+                        principalTable: "UserGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ImageVotings_UserGroups_UploaderUserGroupId",
                         column: x => x.UploaderUserGroupId,
@@ -115,13 +122,13 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ImageVotingEntryRatings",
+                name: "ImageVotingEntryIncrements",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     AspectKey = table.Column<string>(type: "text", nullable: true),
-                    Rating = table.Column<int>(type: "integer", nullable: false),
+                    Increment = table.Column<int>(type: "integer", nullable: false),
                     ImageVotingEntryId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -129,15 +136,15 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ImageVotingEntryRatings", x => x.Id);
+                    table.PrimaryKey("PK_ImageVotingEntryIncrements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ImageVotingEntryRatings_ImageVotingEntries_ImageVotingEntry~",
+                        name: "FK_ImageVotingEntryIncrements_ImageVotingEntries_ImageVotingEn~",
                         column: x => x.ImageVotingEntryId,
                         principalTable: "ImageVotingEntries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ImageVotingEntryRatings_Users_UserId",
+                        name: "FK_ImageVotingEntryIncrements_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -170,14 +177,19 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImageVotingEntryRatings_ImageVotingEntryId",
-                table: "ImageVotingEntryRatings",
+                name: "IX_ImageVotingEntryIncrements_ImageVotingEntryId",
+                table: "ImageVotingEntryIncrements",
                 column: "ImageVotingEntryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImageVotingEntryRatings_UserId",
-                table: "ImageVotingEntryRatings",
+                name: "IX_ImageVotingEntryIncrements_UserId",
+                table: "ImageVotingEntryIncrements",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageVotings_BannedUserGroupId",
+                table: "ImageVotings",
+                column: "BannedUserGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ImageVotings_UploaderUserGroupId",
@@ -192,7 +204,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 name: "ImageVotingChoices");
 
             migrationBuilder.DropTable(
-                name: "ImageVotingEntryRatings");
+                name: "ImageVotingEntryIncrements");
 
             migrationBuilder.DropTable(
                 name: "ImageVotingEntries");
@@ -204,7 +216,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 .Annotation("Npgsql:Enum:grade_type", "regular_grade,behaviour_grade,diligence_grade")
                 .Annotation("Npgsql:Enum:lolo_type", "from_grades,from_request")
                 .OldAnnotation("Npgsql:Enum:grade_type", "regular_grade,behaviour_grade,diligence_grade")
-                .OldAnnotation("Npgsql:Enum:image_voting_type", "single_choice,rating")
+                .OldAnnotation("Npgsql:Enum:image_voting_type", "single_choice,increment")
                 .OldAnnotation("Npgsql:Enum:lolo_type", "from_grades,from_request");
         }
     }

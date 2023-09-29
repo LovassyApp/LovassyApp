@@ -32,7 +32,7 @@ public class ImageVotingEntry : TimestampedEntity
 
     [JsonIgnore] public ImageVoting ImageVoting { get; set; }
 
-    [JsonIgnore] public List<ImageVotingEntryRating> Ratings { get; set; }
+    [JsonIgnore] public List<ImageVotingEntryIncrement> Increments { get; set; }
 
     [JsonIgnore] public List<ImageVotingChoice> Choices { get; set; }
 }

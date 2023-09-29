@@ -30,7 +30,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ResetKeyPasswordSetNotifier> ResetKeyPasswordSetNotifiers { get; set; }
     public DbSet<ImageVoting> ImageVotings { get; set; }
     public DbSet<ImageVotingEntry> ImageVotingEntries { get; set; }
-    public DbSet<ImageVotingEntryRating> ImageVotingEntryRatings { get; set; }
+    public DbSet<ImageVotingEntryIncrement> ImageVotingEntryIncrements { get; set; }
     public DbSet<ImageVotingChoice> ImageVotingChoices { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

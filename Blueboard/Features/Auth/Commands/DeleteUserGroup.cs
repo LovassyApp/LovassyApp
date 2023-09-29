@@ -28,7 +28,7 @@ public static class DeleteUserGroup
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var userGroup = await _context.UserGroups.Include(g => g.ImageVotings)
+            var userGroup = await _context.UserGroups.Include(g => g.UploadableImageVotings)
                 .FirstOrDefaultAsync(g => g.Id == request.Id, cancellationToken);
 
             if (userGroup == null)
@@ -37,7 +37,7 @@ public static class DeleteUserGroup
             if (userGroup.Id == AuthConstants.DefaultUserGroupID)
                 throw new BadRequestException("Nem törölheted az alapértelmezett csoportot.");
 
-            if (userGroup.ImageVotings.Count > 0)
+            if (userGroup.UploadableImageVotings.Count > 0)
                 throw new BadRequestException("Nem törölheted a csoportot, mert szavazás van hozzárendelve.");
 
             _context.UserGroups.Remove(userGroup);

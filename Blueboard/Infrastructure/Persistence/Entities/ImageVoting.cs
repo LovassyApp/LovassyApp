@@ -44,6 +44,11 @@ public class ImageVoting : TimestampedEntity
 
     [JsonIgnore] public UserGroup UploaderUserGroup { get; set; }
 
+    [Sieve(CanFilter = true, CanSort = true)]
+    public int? BannedUserGroupId { get; set; }
+
+    [JsonIgnore] public UserGroup? BannedUserGroup { get; set; }
+
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
     public int MaxUploadsPerUser { get; set; }
@@ -56,14 +61,18 @@ public class ImageVoting : TimestampedEntity
 public enum ImageVotingType
 {
     SingleChoice,
-    Rating
+    Increment
 }
 
 public class ImageVotingConfiguration : IEntityTypeConfiguration<ImageVoting>
 {
     public void Configure(EntityTypeBuilder<ImageVoting> builder)
     {
-        builder.HasOne(v => v.UploaderUserGroup).WithMany(g => g.ImageVotings).HasForeignKey(v => v.UploaderUserGroupId)
+        builder.HasOne(v => v.UploaderUserGroup).WithMany(g => g.UploadableImageVotings)
+            .HasForeignKey(v => v.UploaderUserGroupId)
+            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(v => v.BannedUserGroup).WithMany(g => g.BannedImageVotings)
+            .HasForeignKey(v => v.BannedUserGroupId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

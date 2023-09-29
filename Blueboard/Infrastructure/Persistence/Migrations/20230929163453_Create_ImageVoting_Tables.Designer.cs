@@ -15,7 +15,7 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230920121821_Create_ImageVoting_Tables")]
+    [Migration("20230929163453_Create_ImageVoting_Tables")]
     partial class Create_ImageVoting_Tables
     {
         /// <inheritdoc />
@@ -27,7 +27,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "grade_type", new[] { "regular_grade", "behaviour_grade", "diligence_grade" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "image_voting_type", new[] { "single_choice", "rating" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "image_voting_type", new[] { "single_choice", "increment" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "lolo_type", new[] { "from_grades", "from_request" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
@@ -154,6 +154,9 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("jsonb");
 
+                    b.Property<int?>("BannedUserGroupId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -181,6 +184,8 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BannedUserGroupId");
 
                     b.HasIndex("UploaderUserGroupId");
 
@@ -258,7 +263,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.ToTable("ImageVotingEntries");
                 });
 
-            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntryRating", b =>
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntryIncrement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,7 +280,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<int>("ImageVotingEntryId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Rating")
+                    b.Property<int>("Increment")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -290,7 +295,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ImageVotingEntryRatings");
+                    b.ToTable("ImageVotingEntryIncrements");
                 });
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImportKey", b =>
@@ -838,11 +843,18 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVoting", b =>
                 {
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "BannedUserGroup")
+                        .WithMany("BannedImageVotings")
+                        .HasForeignKey("BannedUserGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "UploaderUserGroup")
-                        .WithMany("ImageVotings")
+                        .WithMany("UploadableImageVotings")
                         .HasForeignKey("UploaderUserGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("BannedUserGroup");
 
                     b.Navigation("UploaderUserGroup");
                 });
@@ -893,16 +905,16 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntryRating", b =>
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntryIncrement", b =>
                 {
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntry", "ImageVotingEntry")
-                        .WithMany("Ratings")
+                        .WithMany("Increments")
                         .HasForeignKey("ImageVotingEntryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
-                        .WithMany("ImageVotingEntryRatings")
+                        .WithMany("ImageVotingEntryIncrements")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1041,7 +1053,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 {
                     b.Navigation("Choices");
 
-                    b.Navigation("Ratings");
+                    b.Navigation("Increments");
                 });
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.OwnedItem", b =>
@@ -1067,7 +1079,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
                     b.Navigation("ImageVotingEntries");
 
-                    b.Navigation("ImageVotingEntryRatings");
+                    b.Navigation("ImageVotingEntryIncrements");
 
                     b.Navigation("LoloRequests");
 
@@ -1082,7 +1094,9 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.UserGroup", b =>
                 {
-                    b.Navigation("ImageVotings");
+                    b.Navigation("BannedImageVotings");
+
+                    b.Navigation("UploadableImageVotings");
                 });
 #pragma warning restore 612, 618
         }
