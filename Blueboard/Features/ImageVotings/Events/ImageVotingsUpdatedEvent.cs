@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Blueboard.Features.ImageVoting.Events;
+namespace Blueboard.Features.ImageVotings.Events;
 
 public class ImageVotingsUpdatedEvent : INotification
 {

@@ -1,14 +1,13 @@
-using Blueboard.Features.ImageVoting.Events;
+using Blueboard.Features.ImageVotings.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
-using Blueboard.Infrastructure.Persistence.Entities.Owned;
 using FluentValidation;
 using Helpers.WebApi.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blueboard.Features.ImageVoting.Commands;
+namespace Blueboard.Features.ImageVotings.Commands;
 
 public static class CreateImageVoting
 {
@@ -80,7 +79,7 @@ public static class CreateImageVoting
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.Description).NotEmpty().MaximumLength(255);
 
-            RuleFor(x => x.Type).NotEmpty().IsEnumName(typeof(ImageVotingAspect));
+            RuleFor(x => x.Type).NotEmpty().IsEnumName(typeof(ImageVotingType));
 
             RuleFor(x => x.Aspects).NotNull().Must(a => a.DistinctBy(e => e.Key).Count() == a.Count);
             RuleForEach(x => x.Aspects).ChildRules(v =>
@@ -129,7 +128,7 @@ public static class CreateImageVoting
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
-            var imageVoting = request.Body.Adapt<Infrastructure.Persistence.Entities.ImageVoting>();
+            var imageVoting = request.Body.Adapt<ImageVoting>();
 
             //TODO: Remove this when increment voting is available
             if (imageVoting.Type == ImageVotingType.Increment)

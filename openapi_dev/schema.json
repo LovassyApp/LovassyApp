@@ -489,6 +489,114 @@
         ]
       }
     },
+    "/Api/ImageVoting/{id}": {
+      "get": {
+        "tags": [
+          "ImageVoting"
+        ],
+        "summary": "Get information about an image voting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVoting.ViewImageVoting, ImageVoting.ViewActiveImageVoting",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageVotingsViewImageVotingResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
+    "/Api/ImageVoting": {
+      "post": {
+        "tags": [
+          "ImageVoting"
+        ],
+        "summary": "Create a new image voting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVoting.CreateImageVoting",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageVotingsCreateImageVotingResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Server Error"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/Import/Users": {
       "get": {
         "tags": [
@@ -3842,6 +3950,230 @@
           "link": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsCreateImageVotingRequestBody": {
+        "required": [
+          "active",
+          "aspects",
+          "description",
+          "maxUploadsPerUser",
+          "name",
+          "showUploaderInfo",
+          "type",
+          "uploaderUserGroupId"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageVotingsCreateImageVotingRequestImageVotingAspect"
+            }
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "showUploaderInfo": {
+            "type": "boolean"
+          },
+          "uploaderUserGroupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bannedUserGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxUploadsPerUser": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsCreateImageVotingRequestImageVotingAspect": {
+        "required": [
+          "description",
+          "key",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsCreateImageVotingResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageVotingsCreateImageVotingResponseImageVotingAspect"
+            },
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "showUploaderInfo": {
+            "type": "boolean"
+          },
+          "uploaderUserGroupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bannedUserGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxUploadsPerUser": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsCreateImageVotingResponseImageVotingAspect": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsViewImageVotingResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageVotingsViewImageVotingResponseImageVotingAspect"
+            },
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "showUploaderInfo": {
+            "type": "boolean"
+          },
+          "uploaderUserGroupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bannedUserGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxUploadsPerUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "canUpload": {
+            "type": "boolean"
+          },
+          "canChoose": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsViewImageVotingResponseImageVotingAspect": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "canChoose": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

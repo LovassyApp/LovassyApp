@@ -24,8 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Features\ImageVoting\EventHandlers\"/>
-        <Folder Include="Features\ImageVoting\Queries\"/>
         <Folder Include="Features\Status\Services\"/>
         <Folder Include="Infrastructure\Persistence\Migrations\"/>
         <Folder Include="Resources\"/>

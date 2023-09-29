@@ -2,7 +2,7 @@ using Blueboard.Core.Auth.Interfaces;
 
 namespace Blueboard.Core.Auth.Permissions;
 
-public class ShopPermissions
+public static class ShopPermissions
 {
     public class IndexOwnLolos : IPermission
     {

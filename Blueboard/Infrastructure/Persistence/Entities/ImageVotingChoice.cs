@@ -10,6 +10,9 @@ public class ImageVotingChoice : TimestampedEntity
 {
     [Key] public int Id { get; set; }
 
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string? AspectKey { get; set; }
+
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
     public int ImageVotingId { get; set; }

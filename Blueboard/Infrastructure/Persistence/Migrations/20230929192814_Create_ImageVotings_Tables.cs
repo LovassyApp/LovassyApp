@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_Voting_System_Tables : Migration
+    public partial class Create_ImageVotings_Tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -92,6 +92,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AspectKey = table.Column<string>(type: "text", nullable: true),
                     ImageVotingId = table.Column<int>(type: "integer", nullable: false),
                     ImageVotingEntryId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
