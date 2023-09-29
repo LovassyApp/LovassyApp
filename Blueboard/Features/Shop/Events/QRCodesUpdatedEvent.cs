@@ -2,6 +2,6 @@ using MediatR;
 
 namespace Blueboard.Features.Shop.Events;
 
-public class QRCodeUpdatedEvent : INotification
+public class QRCodesUpdatedEvent : INotification
 {
 }
