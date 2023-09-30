@@ -23,11 +23,12 @@ public class FilesService
     /// </summary>
     /// <param name="file">The <see cref="IFormFile" /> to upload.</param>
     /// <param name="userId">The id of the <see cref="User" /> that uploaded the file.</param>
+    /// <param name="purpose">The purpose of the file, used to limit the amount of files uploadable by a <see cref="User" />.</param>
     /// <returns>
     ///     The <see cref="FileUploadResult" /> containing the <see cref="FileUpload" /> (tracked) entity. If the
     ///     <see cref="HttpContext" /> is available it also contains an URL to the file.
     /// </returns>
-    public async Task<FileUploadResult> UploadFileAsync(IFormFile file, Guid userId)
+    public async Task<FileUploadResult> UploadFileAsync(IFormFile file, Guid userId, string purpose)
     {
         var uniqueFileName = GetUniqueFileName(file.FileName);
         var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "FileUploads");
@@ -41,6 +42,7 @@ public class FilesService
             OriginalFilename = file.FileName,
             Path = filePath,
             MimeType = file.ContentType,
+            Purpose = purpose,
             UserId = userId
         };
 

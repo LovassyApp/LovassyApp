@@ -30,6 +30,10 @@ public class FileUpload : TimestampedEntity
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
+    public string Purpose { get; set; }
+
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
     public Guid UserId { get; set; }
 
     [JsonIgnore] public User User { get; set; }
