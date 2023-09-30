@@ -71,6 +71,7 @@ public static class ViewImageVoting
                 .Include(v => v.Choices.Where(e => e.UserId == _userAccessor.User.Id))
                 .Include(x => x.UploaderUserGroup)
                 .Include(x => x.BannedUserGroup)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (imageVoting == null || (!imageVoting.Active &&

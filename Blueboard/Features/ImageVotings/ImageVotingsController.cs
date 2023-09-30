@@ -12,7 +12,7 @@ namespace Blueboard.Features.ImageVotings;
 
 [Authorize]
 [EmailVerified]
-public class ImageVotingController : ApiControllerBase
+public class ImageVotingsController : ApiControllerBase
 {
     [HttpGet]
     [Permissions(typeof(ImageVotingsPermissions.IndexImageVotings),
@@ -58,5 +58,39 @@ public class ImageVotingController : ApiControllerBase
         });
 
         return CreatedAtAction(nameof(View), new { id = response.Id }, response);
+    }
+
+    [HttpPatch("{id}")]
+    [Permissions(typeof(ImageVotingsPermissions.UpdateImageVoting))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes
+        .Status503ServiceUnavailable)] //TODO: Remove this when the incremental feature is implemented
+    [EndpointSummary("Update an image voting")]
+    public async Task<ActionResult> Update([FromRoute] int id,
+        [FromBody] UpdateImageVoting.RequestBody body)
+    {
+        var response = await Mediator.Send(new UpdateImageVoting.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [Permissions(typeof(ImageVotingsPermissions.DeleteImageVoting))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [EndpointSummary("Delete an image voting")]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        await Mediator.Send(new DeleteImageVoting.Command
+        {
+            Id = id
+        });
+
+        return NoContent();
     }
 }

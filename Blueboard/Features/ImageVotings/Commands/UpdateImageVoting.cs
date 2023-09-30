@@ -9,41 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Features.ImageVotings.Commands;
 
-public static class CreateImageVoting
+public static class UpdateImageVoting
 {
-    public class Command : IRequest<Response>
-    {
-        public RequestBody Body { get; set; }
-    }
-
-    public class Response
+    public class Command : IRequest
     {
         public int Id { get; set; }
-
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        public string Type { get; set; }
-
-        public List<ResponseImageVotingAspect> Aspects { get; set; }
-
-        public bool Active { get; set; }
-        public bool ShowUploaderInfo { get; set; }
-
-        public int UploaderUserGroupId { get; set; }
-        public int? BannedUserGroupId { get; set; }
-
-        public int MaxUploadsPerUser { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-    }
-
-    public class ResponseImageVotingAspect
-    {
-        public string Key { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public RequestBody Body { get; set; }
     }
 
     public class RequestBody
@@ -118,7 +89,7 @@ public static class CreateImageVoting
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler : IRequestHandler<Command>
     {
         private readonly ApplicationDbContext _context;
         private readonly IPublisher _publisher;
@@ -129,20 +100,54 @@ public static class CreateImageVoting
             _publisher = publisher;
         }
 
-        public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var imageVoting = request.Body.Adapt<ImageVoting>();
+            var imageVoting = await _context.ImageVotings.Include(v => v.Choices).Include(v => v.Entries)
+                .ThenInclude(e => e.Increments).FirstOrDefaultAsync(v => v.Id == request.Id, cancellationToken);
+
+            if (imageVoting == null)
+                throw new NotFoundException(nameof(ImageVoting), request.Id);
+
+            var originalImageVoting = imageVoting;
+
+            request.Body.Adapt(imageVoting);
 
             //TODO: Remove this when increment voting is available
             if (imageVoting.Type == ImageVotingType.Increment)
                 throw new UnavailableException("Az inkrementáló típusú szavazás még nem elérhető.");
 
-            await _context.ImageVotings.AddAsync(imageVoting, cancellationToken);
+            var didDeleteChoices = false;
+            var didDeleteIncrements = false;
+
+            //Iterate through the deleted aspects and delete the choices and increments related to them
+            foreach (var aspect in
+                     originalImageVoting.Aspects.Where(a => imageVoting.Aspects.All(a2 => a2.Key != a.Key)))
+            {
+                foreach (var choice in originalImageVoting.Choices.Where(c => c.AspectKey == aspect.Key))
+                {
+                    _context.ImageVotingChoices.Remove(choice);
+                    didDeleteChoices = true;
+                }
+
+                foreach (var entry in originalImageVoting.Entries)
+                foreach (var increment in entry.Increments.Where(i => i.AspectKey == aspect.Key))
+                {
+                    _context.ImageVotingEntryIncrements.Remove(increment);
+                    didDeleteIncrements = true;
+                }
+            }
+
+            if (didDeleteChoices)
+                await _publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
+
+            if (didDeleteIncrements)
+                await _publisher.Publish(new ImageVotingEntryIncrementsUpdatedEvent(), cancellationToken);
+
             await _context.SaveChangesAsync(cancellationToken);
 
             await _publisher.Publish(new ImageVotingsUpdatedEvent(), cancellationToken);
 
-            return imageVoting.Adapt<Response>();
+            return Unit.Value;
         }
     }
 }

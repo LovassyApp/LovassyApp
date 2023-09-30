@@ -14,4 +14,7 @@ public interface INotificationsClient
     Task RefreshOwnedItems();
     Task RefreshFeedItems();
     Task RefreshImageVotings();
+    Task RefreshImageVotingEntries();
+    Task RefreshImageVotingChoices();
+    Task RefreshImageVotingEntryIncrements();
 }

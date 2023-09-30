@@ -489,10 +489,10 @@
         ]
       }
     },
-    "/Api/ImageVoting": {
+    "/Api/ImageVotings": {
       "get": {
         "tags": [
-          "ImageVoting"
+          "ImageVotings"
         ],
         "summary": "Get a list of image votings",
         "description": "Requires verified email; Requires one of the following permissions: ImageVoting.IndexImageVotings, ImageVoting.IndexActiveImageVotings",
@@ -565,7 +565,7 @@
       },
       "post": {
         "tags": [
-          "ImageVoting"
+          "ImageVotings"
         ],
         "summary": "Create a new image voting",
         "description": "Requires verified email; Requires one of the following permissions: ImageVoting.CreateImageVoting",
@@ -616,10 +616,10 @@
         ]
       }
     },
-    "/Api/ImageVoting/{id}": {
+    "/Api/ImageVotings/{id}": {
       "get": {
         "tags": [
-          "ImageVoting"
+          "ImageVotings"
         ],
         "summary": "Get information about an image voting",
         "description": "Requires verified email; Requires one of the following permissions: ImageVoting.ViewImageVoting, ImageVoting.ViewActiveImageVoting",
@@ -652,6 +652,118 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImageVotingsViewImageVotingResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "ImageVotings"
+        ],
+        "summary": "Update an image voting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVoting.UpdateImageVoting",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUpdateImageVotingRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUpdateImageVotingRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUpdateImageVotingRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Server Error"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "ImageVotings"
+        ],
+        "summary": "Delete an image voting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVoting.DeleteImageVoting",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -4057,7 +4169,7 @@
           "aspects": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ImageVotingsCreateImageVotingRequestImageVotingAspect"
+              "$ref": "#/components/schemas/ImageVotingsCreateImageVotingRequestBodyImageVotingAspect"
             }
           },
           "active": {
@@ -4079,19 +4191,11 @@
             "minimum": 1,
             "type": "integer",
             "format": "int32"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "additionalProperties": false
       },
-      "ImageVotingsCreateImageVotingRequestImageVotingAspect": {
+      "ImageVotingsCreateImageVotingRequestBodyImageVotingAspect": {
         "required": [
           "description",
           "key",
@@ -4161,6 +4265,14 @@
           "maxUploadsPerUser": {
             "type": "integer",
             "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -4228,6 +4340,88 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsUpdateImageVotingRequestBody": {
+        "required": [
+          "active",
+          "aspects",
+          "description",
+          "maxUploadsPerUser",
+          "name",
+          "showUploaderInfo",
+          "type",
+          "uploaderUserGroupId"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageVotingsUpdateImageVotingRequestBodyImageVotingAspect"
+            }
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "showUploaderInfo": {
+            "type": "boolean"
+          },
+          "uploaderUserGroupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bannedUserGroupId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "maxUploadsPerUser": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsUpdateImageVotingRequestBodyImageVotingAspect": {
+        "required": [
+          "description",
+          "key",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
