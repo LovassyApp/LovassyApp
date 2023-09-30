@@ -32,6 +32,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ImageVotingEntry> ImageVotingEntries { get; set; }
     public DbSet<ImageVotingEntryIncrement> ImageVotingEntryIncrements { get; set; }
     public DbSet<ImageVotingChoice> ImageVotingChoices { get; set; }
+    public DbSet<FileUpload> FileUploads { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

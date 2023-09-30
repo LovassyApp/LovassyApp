@@ -15,8 +15,8 @@ using NpgsqlTypes;
 namespace Blueboard.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230929192814_Create_ImageVotings_Tables")]
-    partial class Create_ImageVotings_Tables
+    [Migration("20230930162056_Create_ImageVotings_And_FileUploads_Tables")]
+    partial class Create_ImageVotings_And_FileUploads_Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,46 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "image_voting_type", new[] { "single_choice", "increment" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "lolo_type", new[] { "from_grades", "from_request" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.FileUpload", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Filename")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OriginalFilename")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FileUploads");
+                });
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.Grade", b =>
                 {
@@ -833,6 +873,17 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.ToTable("UserUserGroup");
                 });
 
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.FileUpload", b =>
+                {
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany("FileUploads")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.GradeImport", b =>
                 {
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
@@ -1076,6 +1127,8 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.User", b =>
                 {
+                    b.Navigation("FileUploads");
+
                     b.Navigation("GradeImports");
 
                     b.Navigation("ImageVotingChoices");

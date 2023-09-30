@@ -1,0 +1,75 @@
+using Blueboard.Infrastructure.Files.Models;
+using Blueboard.Infrastructure.Persistence;
+using Blueboard.Infrastructure.Persistence.Entities;
+
+namespace Blueboard.Infrastructure.Files.Services;
+
+/// <summary>
+///     The scoped service responsible for handling file <see cref="FileUpload">FileUploads</see>.
+/// </summary>
+public class FilesService
+{
+    private readonly ApplicationDbContext _context;
+    private readonly IServiceProvider _serviceProvider;
+
+    public FilesService(ApplicationDbContext context, IServiceProvider serviceProvider)
+    {
+        _context = context;
+        _serviceProvider = serviceProvider;
+    }
+
+    /// <summary>
+    ///     Uploads the file to the server and saves a new <see cref="FileUpload" /> entity in the database.
+    /// </summary>
+    /// <param name="file">The <see cref="IFormFile" /> to upload.</param>
+    /// <param name="userId">The id of the <see cref="User" /> that uploaded the file.</param>
+    /// <returns>
+    ///     The <see cref="FileUploadResult" /> containing the <see cref="FileUpload" /> (tracked) entity. If the
+    ///     <see cref="HttpContext" /> is available it also contains an URL to the file.
+    /// </returns>
+    public async Task<FileUploadResult> UploadFileAsync(IFormFile file, Guid userId)
+    {
+        var uniqueFileName = GetUniqueFileName(file.FileName);
+        var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "FileUploads");
+        var filePath = Path.Combine(uploadsPath, uniqueFileName);
+
+        await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+        var fileUpload = new FileUpload
+        {
+            Filename = uniqueFileName,
+            OriginalFilename = file.FileName,
+            Path = filePath,
+            MimeType = file.ContentType,
+            UserId = userId
+        };
+
+        _context.FileUploads.Add(fileUpload);
+        await _context.SaveChangesAsync();
+
+        var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
+
+        if (httpContextAccessor == null || httpContextAccessor.HttpContext == null)
+            return new FileUploadResult
+            {
+                FileUpload = fileUpload
+            };
+
+        var request = httpContextAccessor.HttpContext.Request;
+
+        return new FileUploadResult
+        {
+            FileUpload = fileUpload,
+            Url = $"{request.Scheme}://{request.Host}{request.PathBase}/Files/{fileUpload.Filename}"
+        };
+    }
+
+    private string GetUniqueFileName(string fileName)
+    {
+        fileName = Path.GetFileName(fileName);
+        return string.Concat(Path.GetFileNameWithoutExtension(fileName)
+            , "_"
+            , Guid.NewGuid().ToString().AsSpan(0, 8)
+            , Path.GetExtension(fileName));
+    }
+}

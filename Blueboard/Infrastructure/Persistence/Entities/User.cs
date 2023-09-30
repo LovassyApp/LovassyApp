@@ -67,6 +67,8 @@ public class User : TimestampedEntity
     [JsonIgnore] public List<ImageVotingEntryIncrement> ImageVotingEntryIncrements { get; set; }
 
     [JsonIgnore] public List<ImageVotingChoice> ImageVotingChoices { get; set; }
+
+    [JsonIgnore] public List<FileUpload> FileUploads { get; set; }
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
