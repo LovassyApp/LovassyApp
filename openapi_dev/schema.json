@@ -494,6 +494,7 @@
         "tags": [
           "ImageVotingEntries"
         ],
+        "summary": "List all images of an image voting",
         "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexOwnImageVotingEntryImages, ImageVotings.IndexImageVotingEntryImages",
         "parameters": [
           {
@@ -581,13 +582,12 @@
             "Token": [ ]
           }
         ]
-      }
-    },
-    "/Api/ImageVotingEntries/{imageVotingId}/Upload": {
+      },
       "post": {
         "tags": [
           "ImageVotingEntries"
         ],
+        "summary": "Upload an image to be used in an image voting entry",
         "description": "Requires verified email",
         "parameters": [
           {
@@ -661,6 +661,7 @@
         "tags": [
           "ImageVotingEntries"
         ],
+        "summary": "Delete an image meant for an image voting entry",
         "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteOwnImageVotingEntryImage, ImageVotings.DeleteImageVotingEntryImage",
         "parameters": [
           {

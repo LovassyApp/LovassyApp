@@ -19,7 +19,7 @@ public class ImageVotingEntriesController : ApiControllerBase
         typeof(ImageVotingsPermissions.IndexImageVotingEntryImages))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [EndpointDescription("Lists all images of an image voting.")]
+    [EndpointSummary("List all images of an image voting")]
     public async Task<IEnumerable<IndexImageVotingEntryImages.Response>> IndexImageVotingEntryImages(
         [FromRoute] int imageVotingId,
         [FromQuery] SieveModel sieveModel)
@@ -32,10 +32,10 @@ public class ImageVotingEntriesController : ApiControllerBase
     }
 
 
-    [HttpPost("{imageVotingId}/Upload")]
+    [HttpPost("{imageVotingId}/Images")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [EndpointDescription("Uploads an image to be used in an image voting entry.")]
+    [EndpointSummary("Upload an image to be used in an image voting entry")]
     public async Task<UploadImageVotingEntryImage.Response> UploadImageVotingEntryImage(
         [FromRoute] int imageVotingId,
         [FromForm] UploadImageVotingEntryImage.RequestBody body)
@@ -52,7 +52,7 @@ public class ImageVotingEntriesController : ApiControllerBase
         typeof(ImageVotingsPermissions.DeleteImageVotingEntryImage))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [EndpointDescription("Deletes an image meant for an image voting entry.")]
+    [EndpointSummary("Delete an image meant for an image voting entry")]
     public async Task<IActionResult> DeleteImageVotingEntryImage(
         [FromRoute] int id)
     {
