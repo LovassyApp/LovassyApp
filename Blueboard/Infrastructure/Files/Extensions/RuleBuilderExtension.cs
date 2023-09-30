@@ -14,8 +14,8 @@ public static class RuleBuilderExtension
     /// <typeparam name="T">The type of the object that is being validated.</typeparam>
     /// <typeparam name="TProp">The type of the property that is to be validated.</typeparam>
     /// <returns>An instance of <see cref="IRuleBuilderOptions{T,TProperty}" />.</returns>
-    public static IRuleBuilderOptions<T, TProp> InMimeType<T, TProp>(this IRuleBuilder<T, TProp> ruleBuilder,
-        string[] mimeTypes) where TProp : IFormFile, IEnumerable<IFormFile>
+    public static IRuleBuilderOptions<T, TProp> AllowedMimeTypes<T, TProp>(this IRuleBuilder<T, TProp> ruleBuilder,
+        string[] mimeTypes) where TProp : IFormFile
     {
         return ruleBuilder.SetValidator(new AllowedMimeTypesValidator<T, TProp>(mimeTypes));
     }
@@ -30,7 +30,7 @@ public static class RuleBuilderExtension
     /// <typeparam name="TProp">The type of the property that is to be validated.</typeparam>
     /// <returns>An instance of <see cref="IRuleBuilderOptions{T,TProperty}" />.</returns>
     public static IRuleBuilderOptions<T, TProp> MaxFileSize<T, TProp>(this IRuleBuilder<T, TProp> ruleBuilder,
-        int maxFileSize) where TProp : IFormFile, IEnumerable<IFormFile>
+        int maxFileSize) where TProp : IFormFile
     {
         return ruleBuilder.SetValidator(new MaxFileSizeValidator<T, TProp>(maxFileSize));
     }
