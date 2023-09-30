@@ -19,7 +19,8 @@ public class FilesService
     }
 
     /// <summary>
-    ///     Uploads the file to the server and saves a new <see cref="FileUpload" /> entity in the database.
+    ///     Uploads the file to the server and creates a new <see cref="FileUpload" /> entity. It does not save the changes to
+    ///     the database.
     /// </summary>
     /// <param name="file">The <see cref="IFormFile" /> to upload.</param>
     /// <param name="userId">The id of the <see cref="User" /> that uploaded the file.</param>
@@ -47,7 +48,6 @@ public class FilesService
         };
 
         _context.FileUploads.Add(fileUpload);
-        await _context.SaveChangesAsync();
 
         var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
 
@@ -64,6 +64,18 @@ public class FilesService
             FileUpload = fileUpload,
             Url = $"{request.Scheme}://{request.Host}{request.PathBase}/Files/{fileUpload.Filename}"
         };
+    }
+
+    /// <summary>
+    ///     Deletes the file from the server and removes the <see cref="FileUpload" /> entity from the database. It does not
+    ///     save the changes to the database.
+    /// </summary>
+    /// <param name="fileUpload">The <see cref="FileUpload" /> entity to delete.</param>
+    public void DeleteFile(FileUpload fileUpload)
+    {
+        File.Delete(fileUpload.Path);
+
+        _context.FileUploads.Remove(fileUpload);
     }
 
     private string GetUniqueFileName(string fileName)

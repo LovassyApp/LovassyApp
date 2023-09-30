@@ -6,7 +6,7 @@ public static class ImageVotingsPermissions
 {
     public class IndexImageVotings : IPermission
     {
-        public string Name => "ImageVoting.IndexImageVotings";
+        public string Name => "ImageVotings.IndexImageVotings";
         public string DisplayName => "Kép szavazások lekérése";
         public string Description => "Az összes kép szavazás lekérése és listázása";
         public bool Dangerous => false;
@@ -14,7 +14,7 @@ public static class ImageVotingsPermissions
 
     public class IndexActiveImageVotings : IPermission
     {
-        public string Name => "ImageVoting.IndexActiveImageVotings";
+        public string Name => "ImageVotings.IndexActiveImageVotings";
         public string DisplayName => "Aktív kép szavazások lekérése";
         public string Description => "Az aktív kép szavazás lekérése és listázása";
         public bool Dangerous => false;
@@ -22,7 +22,7 @@ public static class ImageVotingsPermissions
 
     public class ViewImageVoting : IPermission
     {
-        public string Name => "ImageVoting.ViewImageVoting";
+        public string Name => "ImageVotings.ViewImageVoting";
         public string DisplayName => "Kép szavazás megtekintése";
         public string Description => "Egy adott (bármilyen) kép szavazás lekérése és megtekintése id alapján";
         public bool Dangerous => false;
@@ -30,7 +30,7 @@ public static class ImageVotingsPermissions
 
     public class ViewActiveImageVoting : IPermission
     {
-        public string Name => "ImageVoting.ViewActiveImageVoting";
+        public string Name => "ImageVotings.ViewActiveImageVoting";
         public string DisplayName => "Aktív kép szavazás megtekintése";
         public string Description => "Egy adott aktív kép szavazás lekérése és megtekintése id alapján";
         public bool Dangerous => false;
@@ -38,7 +38,7 @@ public static class ImageVotingsPermissions
 
     public class CreateImageVoting : IPermission
     {
-        public string Name => "ImageVoting.CreateImageVoting";
+        public string Name => "ImageVotings.CreateImageVoting";
         public string DisplayName => "Kép szavazás létrehozása";
         public string Description => "Új kép szavazás létrehozása";
         public bool Dangerous => true;
@@ -46,7 +46,7 @@ public static class ImageVotingsPermissions
 
     public class UpdateImageVoting : IPermission
     {
-        public string Name => "ImageVoting.UpdateImageVoting";
+        public string Name => "ImageVotings.UpdateImageVoting";
         public string DisplayName => "Kép szavazás módosítása";
         public string Description => "Egy adott kép szavazás módosítása id alapján";
         public bool Dangerous => true;
@@ -54,7 +54,7 @@ public static class ImageVotingsPermissions
 
     public class DeleteImageVoting : IPermission
     {
-        public string Name => "ImageVoting.DeleteImageVoting";
+        public string Name => "ImageVotings.DeleteImageVoting";
         public string DisplayName => "Kép szavazás törlése";
         public string Description => "Egy adott kép szavazás törlése id alapján";
         public bool Dangerous => true;
@@ -62,7 +62,7 @@ public static class ImageVotingsPermissions
 
     public class IndexImageVotingEntries : IPermission
     {
-        public string Name => "ImageVoting.IndexImageVotingEntries";
+        public string Name => "ImageVotings.IndexImageVotingEntries";
         public string DisplayName => "Kép szavazás képeinek lekérése";
         public string Description => "Egy adott (bármelyik) kép szavazás összes képének lekérése és listázása";
         public bool Dangerous => false;
@@ -70,7 +70,7 @@ public static class ImageVotingsPermissions
 
     public class IndexActiveImageVotingEntries : IPermission
     {
-        public string Name => "ImageVoting.IndexActiveImageVotingEntries";
+        public string Name => "ImageVotings.IndexActiveImageVotingEntries";
         public string DisplayName => "Aktív kép szavazás képeinek lekérése";
         public string Description => "Egy adott aktív kép szavazás összes képének lekérése és listázása";
         public bool Dangerous => false;
@@ -78,7 +78,7 @@ public static class ImageVotingsPermissions
 
     public class ViewImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.ViewImageVotingEntry";
+        public string Name => "ImageVotings.ViewImageVotingEntry";
         public string DisplayName => "Kép szavazás képének megtekintése";
 
         public string Description =>
@@ -89,7 +89,7 @@ public static class ImageVotingsPermissions
 
     public class ViewActiveImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.ViewActiveImageVotingEntry";
+        public string Name => "ImageVotings.ViewActiveImageVotingEntry";
         public string DisplayName => "Aktív kép szavazás képének megtekintése";
         public string Description => "Egy adott aktív kép szavazás egy képének lekérése és megtekintése id alapján";
         public bool Dangerous => false;
@@ -97,7 +97,7 @@ public static class ImageVotingsPermissions
 
     public class CreateImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.CreateImageVotingEntry";
+        public string Name => "ImageVotings.CreateImageVotingEntry";
         public string DisplayName => "Kép szavazáshoz kép létrehozása";
         public string Description => "Új kép léterhozása egy kép szavazáshoz";
         public bool Dangerous => true;
@@ -105,7 +105,7 @@ public static class ImageVotingsPermissions
 
     public class CreateActiveImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.CreateActiveImageVotingEntry";
+        public string Name => "ImageVotings.CreateActiveImageVotingEntry";
         public string DisplayName => "Aktív kép szavazáshoz kép létrehozása";
         public string Description => "Új kép léterhozása egy aktív kép szavazáshoz";
         public bool Dangerous => false;
@@ -113,7 +113,7 @@ public static class ImageVotingsPermissions
 
     public class UpdateImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.UpdateImageVotingEntry";
+        public string Name => "ImageVotings.UpdateImageVotingEntry";
         public string DisplayName => "Kép szavazás képének módosítása";
         public string Description => "Egy adott (bármelyik) kép (kép szavazásban) módosítása id alapján";
         public bool Dangerous => true;
@@ -121,7 +121,7 @@ public static class ImageVotingsPermissions
 
     public class UpdateOwnImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.UpdateOwnImageVotingEntry";
+        public string Name => "ImageVotings.UpdateOwnImageVotingEntry";
         public string DisplayName => "Kép szavazás saját képének módosítása";
         public string Description => "Egy adott saját kép (kép szavazásban) módosítása id alapján";
         public bool Dangerous => false;
@@ -129,7 +129,7 @@ public static class ImageVotingsPermissions
 
     public class DeleteImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.DeleteImageVotingEntry";
+        public string Name => "ImageVotings.DeleteImageVotingEntry";
         public string DisplayName => "Kép szavazás képének törlése";
         public string Description => "Egy adott (bármelyik) kép (kép szavazásban) törlése id alapján";
         public bool Dangerous => true;
@@ -137,7 +137,7 @@ public static class ImageVotingsPermissions
 
     public class DeleteOwnImageVotingEntry : IPermission
     {
-        public string Name => "ImageVoting.DeleteOwnImageVotingEntry";
+        public string Name => "ImageVotings.DeleteOwnImageVotingEntry";
         public string DisplayName => "Kép szavazás saját képének törlése";
         public string Description => "Egy adott saját kép (kép szavazásban) törlése id alapján";
         public bool Dangerous => false;
@@ -145,7 +145,7 @@ public static class ImageVotingsPermissions
 
     public class IndexImageVotingChoices : IPermission
     {
-        public string Name => "ImageVoting.IndexImageVotingChoices";
+        public string Name => "ImageVotings.IndexImageVotingChoices";
         public string DisplayName => "Kép szavazás választásainak lekérése";
         public string Description => "Egy adott (bármelyik) kép szavazás összes válastászának lekérése és listázása";
         public bool Dangerous => false;
@@ -153,7 +153,7 @@ public static class ImageVotingsPermissions
 
     public class IndexActiveImageVotingChoices : IPermission
     {
-        public string Name => "ImageVoting.IndexActiveImageVotingChoices";
+        public string Name => "ImageVotings.IndexActiveImageVotingChoices";
         public string DisplayName => "Aktív kép szavazás választásainak lekérése";
         public string Description => "Egy adott aktív kép szavazás összes választásának lekérése és listázása";
         public bool Dangerous => false;
@@ -161,7 +161,7 @@ public static class ImageVotingsPermissions
 
     public class ViewImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.ViewImageVotingChoice";
+        public string Name => "ImageVotings.ViewImageVotingChoice";
         public string DisplayName => "Kép szavazás választásának megtekintése";
 
         public string Description =>
@@ -172,7 +172,7 @@ public static class ImageVotingsPermissions
 
     public class ViewActiveImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.ViewActiveImageVotingChoice";
+        public string Name => "ImageVotings.ViewActiveImageVotingChoice";
         public string DisplayName => "Aktív kép szavazás választásának megtekintése";
 
         public string Description =>
@@ -183,7 +183,7 @@ public static class ImageVotingsPermissions
 
     public class CreateImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.CreateImageVotingChoice";
+        public string Name => "ImageVotings.CreateImageVotingChoice";
         public string DisplayName => "Kép szavazáshoz választás létrehozása";
         public string Description => "Új választás léterhozása egy kép szavazáshoz";
         public bool Dangerous => true;
@@ -191,7 +191,7 @@ public static class ImageVotingsPermissions
 
     public class CreateActiveImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.CreateActiveImageVotingChoice";
+        public string Name => "ImageVotings.CreateActiveImageVotingChoice";
         public string DisplayName => "Aktív kép szavazáshoz választás létrehozása";
         public string Description => "Új választás léterhozása egy aktív kép szavazáshoz";
         public bool Dangerous => false;
@@ -199,7 +199,7 @@ public static class ImageVotingsPermissions
 
     public class UpdateImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.UpdateImageVotingChoice";
+        public string Name => "ImageVotings.UpdateImageVotingChoice";
         public string DisplayName => "Kép szavazás választásának módosítása";
         public string Description => "Egy adott (bármelyik) választás (kép szavazásban) módosítása id alapján";
         public bool Dangerous => true;
@@ -207,7 +207,7 @@ public static class ImageVotingsPermissions
 
     public class UpdateOwnImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.UpdateOwnImageVotingChoice";
+        public string Name => "ImageVotings.UpdateOwnImageVotingChoice";
         public string DisplayName => "Kép szavazás saját választásának módosítása";
         public string Description => "Egy adott saját választás (kép szavazásban) módosítása id alapján";
         public bool Dangerous => false;
@@ -215,7 +215,7 @@ public static class ImageVotingsPermissions
 
     public class DeleteImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.DeleteImageVotingChoice";
+        public string Name => "ImageVotings.DeleteImageVotingChoice";
         public string DisplayName => "Kép szavazás választásának törlése";
         public string Description => "Egy adott (bármelyik) választás (kép szavazásban) törlése id alapján";
         public bool Dangerous => true;
@@ -223,7 +223,7 @@ public static class ImageVotingsPermissions
 
     public class DeleteOwnImageVotingChoice : IPermission
     {
-        public string Name => "ImageVoting.DeleteOwnImageVotingChoice";
+        public string Name => "ImageVotings.DeleteOwnImageVotingChoice";
         public string DisplayName => "Kép szavazás saját választásának törlése";
         public string Description => "Egy adott saját választás (kép szavazásban) törlése id alapján";
         public bool Dangerous => false;
@@ -231,7 +231,7 @@ public static class ImageVotingsPermissions
 
     public class IndexImageVotingEntryIncrements : IPermission
     {
-        public string Name => "ImageVoting.IndexImageVotingEntryIncrements";
+        public string Name => "ImageVotings.IndexImageVotingEntryIncrements";
         public string DisplayName => "Kép szavazás képének szavazatainak lekérése";
 
         public string Description =>
@@ -242,7 +242,7 @@ public static class ImageVotingsPermissions
 
     public class IndexActiveImageVotingEntryIncrements : IPermission
     {
-        public string Name => "ImageVoting.IndexActiveImageVotingEntryIncrements";
+        public string Name => "ImageVotings.IndexActiveImageVotingEntryIncrements";
         public string DisplayName => "Aktív kép szavazás képének szavazatainak lekérése";
         public string Description => "Egy adott aktív kép (kép szavazásban) összes szavazatának lekérése és listázása";
         public bool Dangerous => false;
@@ -250,7 +250,7 @@ public static class ImageVotingsPermissions
 
     public class ViewImageVotingEntryIncrement : IPermission
     {
-        public string Name => "ImageVoting.ViewImageVotingEntryIncrement";
+        public string Name => "ImageVotings.ViewImageVotingEntryIncrement";
         public string DisplayName => "Kép szavazás képének szavazatának megtekintése";
 
         public string Description =>
@@ -261,7 +261,7 @@ public static class ImageVotingsPermissions
 
     public class ViewActiveImageVotingEntryIncrement : IPermission
     {
-        public string Name => "ImageVoting.ViewActiveImageVotingEntryIncrement";
+        public string Name => "ImageVotings.ViewActiveImageVotingEntryIncrement";
         public string DisplayName => "Aktív kép szavazás képének szavazatának megtekintése";
 
         public string Description =>
@@ -272,7 +272,7 @@ public static class ImageVotingsPermissions
 
     public class CreateImageVotingEntryIncrement : IPermission
     {
-        public string Name => "ImageVoting.CreateImageVotingEntryIncrement";
+        public string Name => "ImageVotings.CreateImageVotingEntryIncrement";
         public string DisplayName => "Kép szavazás képéhez szavazat létrehozása";
         public string Description => "Új szavazat léterhozása egy kép szavazás képéhez";
         public bool Dangerous => true;
@@ -280,7 +280,7 @@ public static class ImageVotingsPermissions
 
     public class CreateActiveImageVotingEntryIncrement : IPermission
     {
-        public string Name => "ImageVoting.CreateActiveImageVotingEntryIncrement";
+        public string Name => "ImageVotings.CreateActiveImageVotingEntryIncrement";
         public string DisplayName => "Aktív kép szavazás képéhez szavazat létrehozása";
         public string Description => "Új szavazat léterhozása egy aktív kép szavazás képéhez";
         public bool Dangerous => false;
@@ -290,7 +290,7 @@ public static class ImageVotingsPermissions
 
     public class DeleteImageVotingEntryIncrement : IPermission
     {
-        public string Name => "ImageVoting.DeleteImageVotingEntryIncrement";
+        public string Name => "ImageVotings.DeleteImageVotingEntryIncrement";
         public string DisplayName => "Kép szavazás képének szavazatának törlése";
         public string Description => "Egy adott (bármelyik) szavazat (kép szavazásban) törlése id alapján";
         public bool Dangerous => true;
@@ -298,9 +298,44 @@ public static class ImageVotingsPermissions
 
     public class DeleteOwnImageVotingEntryIncrement : IPermission
     {
-        public string Name => "ImageVoting.DeleteOwnImageVotingEntryIncrement";
+        public string Name => "ImageVotings.DeleteOwnImageVotingEntryIncrement";
         public string DisplayName => "Kép szavazás saját képének szavazatának törlése";
         public string Description => "Egy adott saját szavazat (kép szavazásban) törlése id alapján";
+        public bool Dangerous => false;
+    }
+
+    public class IndexImageVotingEntryImages : IPermission
+    {
+        public string Name => "ImageVotings.IndexImageVotingEntryImages";
+        public string DisplayName => "Kép szavazás be nem küldött kép fájlajainak lekérése";
+
+        public string Description =>
+            "Egy adott képszavazás (összes) be nem küldött kép fájljainak lekérése és listázása";
+
+        public bool Dangerous => false;
+    }
+
+    public class IndexOwnImageVotingEntryImages : IPermission
+    {
+        public string Name => "ImageVotings.IndexOwnImageVotingEntryImages";
+        public string DisplayName => "Kép szavazás saját be nem küldött kép fájljainak lekérése";
+        public string Description => "Egy adott képszavazás saját be nem küldött kép fájljainak lekérése és listázása";
+        public bool Dangerous => false;
+    }
+
+    public class DeleteImageVotingEntryImage : IPermission
+    {
+        public string Name => "ImageVotings.DeleteImageVotingEntryImage";
+        public string DisplayName => "Kép szavazás be nem küldött kép fájljának törlése";
+        public string Description => "Egy adott képszavazás (bármelyik) be nem küldött kép fájljának törlése";
+        public bool Dangerous => true;
+    }
+
+    public class DeleteOwnImageVotingEntryImage : IPermission
+    {
+        public string Name => "ImageVotings.DeleteOwnImageVotingEntryImage";
+        public string DisplayName => "Kép szavazás saját be nem küldött kép fájljának törlése";
+        public string Description => "Egy adott képszavazás saját be nem küldött kép fájljának törlése";
         public bool Dangerous => false;
     }
 }

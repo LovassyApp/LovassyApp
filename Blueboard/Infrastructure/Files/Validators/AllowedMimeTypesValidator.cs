@@ -17,7 +17,7 @@ public class AllowedMimeTypesValidator<T, TProp> : PropertyValidator<T, TProp>
 
     public override bool IsValid(ValidationContext<T> context, TProp value)
     {
-        var mimeType = value.ContentType;
+        var mimeType = value?.ContentType;
 
         if (!_mimeTypes.Contains(mimeType)) return false;
 

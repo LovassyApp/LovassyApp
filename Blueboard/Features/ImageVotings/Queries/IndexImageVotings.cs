@@ -52,7 +52,7 @@ public static class IndexImageVotings
 
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var onlyActive = _permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotings));
+            var onlyActive = !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotings));
             var imageVotings = _context.ImageVotings
                 .Where(x => !onlyActive || x.Active)
                 .AsNoTracking();

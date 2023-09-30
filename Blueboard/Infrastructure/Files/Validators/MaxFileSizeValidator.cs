@@ -19,7 +19,7 @@ public class MaxFileSizeValidator<T, TProp> : PropertyValidator<T, TProp>
     {
         context.MessageFormatter.AppendArgument("MaxFileSize", _maxFileSize);
 
-        return value.Length <= _maxFileSize;
+        return value?.Length <= _maxFileSize;
     }
 
     protected override string GetDefaultMessageTemplate(string errorCode)
