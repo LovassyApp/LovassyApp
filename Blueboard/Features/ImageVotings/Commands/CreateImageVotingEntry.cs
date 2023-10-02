@@ -15,7 +15,6 @@ public static class CreateImageVotingEntry
 {
     public class Command : IRequest<Response>
     {
-        public int ImageVotingId { get; set; }
         public RequestBody Body { get; set; }
     }
 
@@ -36,6 +35,7 @@ public static class CreateImageVotingEntry
 
     public class RequestBody
     {
+        public int ImageVotingId { get; set; }
         public string Title { get; set; }
         public string ImageUrl { get; set; }
     }
@@ -69,10 +69,10 @@ public static class CreateImageVotingEntry
         {
             var imageVoting = await _context.ImageVotings
                 .Include(v => v.Entries.Where(e => e.UserId == _userAccessor.User.Id)).AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.ImageVotingId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.Body.ImageVotingId, cancellationToken);
 
             if (imageVoting == null)
-                throw new NotFoundException(nameof(ImageVoting), request.ImageVotingId);
+                throw new NotFoundException(nameof(ImageVoting), request.Body.ImageVotingId);
 
             if (!imageVoting.Active &&
                 !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateImageVotingEntry)))
@@ -87,7 +87,6 @@ public static class CreateImageVotingEntry
 
             var imageVotingEntry = request.Body.Adapt<ImageVotingEntry>();
 
-            imageVotingEntry.ImageVotingId = request.ImageVotingId;
             imageVotingEntry.UserId = _userAccessor.User.Id;
 
             await _context.ImageVotingEntries.AddAsync(imageVotingEntry, cancellationToken);

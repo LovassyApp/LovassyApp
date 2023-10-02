@@ -46,19 +46,17 @@ public class ImageVotingEntriesController : ApiControllerBase
     }
 
 
-    [HttpPost("{imageVotingId}")]
+    [HttpPost]
     [Permissions(typeof(ImageVotingsPermissions.CreateImageVotingEntry),
         typeof(ImageVotingsPermissions.CreateActiveImageVotingEntry))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [EndpointSummary("Create an image voting entry")]
     public async Task<ActionResult<CreateImageVotingEntry.Response>> CreateImageVotingEntry(
-        [FromRoute] int imageVotingId,
         [FromBody] CreateImageVotingEntry.RequestBody body)
     {
         var response = await Mediator.Send(new CreateImageVotingEntry.Command
         {
-            ImageVotingId = imageVotingId,
             Body = body
         });
 
