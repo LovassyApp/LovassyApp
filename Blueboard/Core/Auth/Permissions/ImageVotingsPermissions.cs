@@ -323,6 +323,22 @@ public static class ImageVotingsPermissions
         public bool Dangerous => false;
     }
 
+    public class UploadImageVotingEntryImage : IPermission
+    {
+        public string Name => "ImageVotings.UploadImageVotingEntryImage";
+        public string DisplayName => "Kép szavazáshoz kép fájl feltöltése";
+        public string Description => "Új kép fájl feltöltése egy (bármelyik) kép szavazáshoz";
+        public bool Dangerous => true;
+    }
+
+    public class UploadActiveImageVotingEntryImage : IPermission
+    {
+        public string Name => "ImageVotings.UploadActiveImageVotingEntryImage";
+        public string DisplayName => "Aktív kép szavazáshoz kép fájl feltöltése";
+        public string Description => "Új kép fájl feltöltése egy aktív kép szavazáshoz";
+        public bool Dangerous => false;
+    }
+
     public class DeleteImageVotingEntryImage : IPermission
     {
         public string Name => "ImageVotings.DeleteImageVotingEntryImage";

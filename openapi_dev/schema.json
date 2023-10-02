@@ -489,6 +489,133 @@
         ]
       }
     },
+    "/Api/ImageVotingEntries/{id}": {
+      "get": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Get information about an image voting entry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVotingEntry, ImageVotings.ViewActiveImageVotingEntry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageVotingsViewImageVotingEntryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
+    "/Api/ImageVotingEntries/{imageVotingId}": {
+      "post": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Create an image voting entry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVotingEntry, ImageVotings.CreateActiveImageVotingEntry",
+        "parameters": [
+          {
+            "name": "imageVotingId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingEntryRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingEntryRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingEntryRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageVotingsCreateImageVotingEntryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/ImageVotingEntries/{imageVotingId}/Images": {
       "get": {
         "tags": [
@@ -588,7 +715,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Upload an image to be used in an image voting entry",
-        "description": "Requires verified email",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UploadActiveImageVotingEntryImage, ImageVotings.UploadImageVotingEntryImage",
         "parameters": [
           {
             "name": "imageVotingId",
@@ -4353,6 +4480,60 @@
         },
         "additionalProperties": false
       },
+      "ImageVotingsCreateImageVotingEntryRequestBody": {
+        "required": [
+          "imageUrl",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "imageUrl": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsCreateImageVotingEntryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "imageVotingId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
       "ImageVotingsCreateImageVotingRequestBody": {
         "required": [
           "active",
@@ -4702,6 +4883,61 @@
             "format": "uuid"
           },
           "url": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsViewImageVotingEntryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/ImageVotingsViewImageVotingEntryResponseUser"
+          },
+          "imageVotingId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsViewImageVotingEntryResponseUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "realName": {
+            "type": "string",
+            "nullable": true
+          },
+          "class": {
             "type": "string",
             "nullable": true
           }

@@ -1,3 +1,4 @@
+using Blueboard.Core.Auth.Permissions;
 using Blueboard.Core.Auth.Services;
 using Blueboard.Infrastructure.Files.Extensions;
 using Blueboard.Infrastructure.Files.Services;
@@ -54,13 +55,16 @@ public static class UploadImageVotingEntryImage
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly FilesService _filesService;
+        private readonly PermissionManager _permissionManager;
         private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext dbContext, UserAccessor userAccessor, FilesService filesService)
+        public Handler(ApplicationDbContext dbContext, UserAccessor userAccessor, FilesService filesService,
+            PermissionManager permissionManager)
         {
             _dbContext = dbContext;
             _userAccessor = userAccessor;
             _filesService = filesService;
+            _permissionManager = permissionManager;
         }
 
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -71,7 +75,9 @@ public static class UploadImageVotingEntryImage
 
             if (imageVoting == null) throw new NotFoundException(nameof(ImageVoting), request.ImageVotingId);
 
-            if (!imageVoting.Active) throw new BadRequestException("A megadott szavazás nem aktív");
+            if (!imageVoting.Active &&
+                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UploadImageVotingEntryImage)))
+                throw new BadRequestException("A megadott szavazás nem aktív");
 
             if (_userAccessor.User.UserGroups.Any(x => x.Id == imageVoting.BannedUserGroupId) ||
                 _userAccessor.User.UserGroups.All(x => x.Id != imageVoting.UploaderUserGroupId))

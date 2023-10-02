@@ -47,7 +47,7 @@ public class FilesService
             UserId = userId
         };
 
-        _context.FileUploads.Add(fileUpload);
+        await _context.FileUploads.AddAsync(fileUpload);
 
         var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
 
