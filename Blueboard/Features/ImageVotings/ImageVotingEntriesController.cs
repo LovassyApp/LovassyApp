@@ -30,6 +30,22 @@ public class ImageVotingEntriesController : ApiControllerBase
         return Ok(response);
     }
 
+    [HttpGet]
+    [Permissions(typeof(ImageVotingsPermissions.IndexImageVotingEntries),
+        typeof(ImageVotingsPermissions.IndexActiveImageVotingEntries))]
+    [EndpointSummary("Get a list of all image voting entries")]
+    public async Task<ActionResult<IEnumerable<IndexImageVotingEntries.Response>>> Index(
+        [FromQuery] SieveModel sieveModel)
+    {
+        var response = await Mediator.Send(new IndexImageVotingEntries.Query
+        {
+            SieveModel = sieveModel
+        });
+
+        return Ok(response);
+    }
+
+
     [HttpPost("{imageVotingId}")]
     [Permissions(typeof(ImageVotingsPermissions.CreateImageVotingEntry),
         typeof(ImageVotingsPermissions.CreateActiveImageVotingEntry))]
