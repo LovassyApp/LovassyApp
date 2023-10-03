@@ -124,7 +124,7 @@ public static class ImageVotingsPermissions
         public string Name => "ImageVotings.UpdateOwnImageVotingEntry";
         public string DisplayName => "Kép szavazás saját képének módosítása";
         public string Description => "Egy adott saját kép (kép szavazásban) módosítása id alapján";
-        public bool Dangerous => false;
+        public bool Dangerous => true; //Because the votes remain on update
     }
 
     public class DeleteImageVotingEntry : IPermission

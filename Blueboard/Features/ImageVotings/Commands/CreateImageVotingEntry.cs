@@ -72,7 +72,7 @@ public static class CreateImageVotingEntry
                 .FirstOrDefaultAsync(x => x.Id == request.Body.ImageVotingId, cancellationToken);
 
             if (imageVoting == null)
-                throw new NotFoundException(nameof(ImageVoting), request.Body.ImageVotingId);
+                throw new BadRequestException("A megadott szavazás nem létezik");
 
             if (!imageVoting.Active &&
                 !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateImageVotingEntry)))

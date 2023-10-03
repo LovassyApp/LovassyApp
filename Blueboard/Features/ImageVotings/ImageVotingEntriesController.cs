@@ -63,6 +63,59 @@ public class ImageVotingEntriesController : ApiControllerBase
         return CreatedAtAction(nameof(View), new { id = response.Id }, response);
     }
 
+    [HttpPatch("{id}")]
+    [Permissions(typeof(ImageVotingsPermissions.UpdateImageVotingEntry),
+        typeof(ImageVotingsPermissions.UpdateOwnImageVotingEntry))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Update an image voting entry")]
+    public async Task<ActionResult> UpdateImageVotingEntry([FromRoute] int id,
+        [FromBody] UpdateImageVotingEntry.RequestBody body)
+    {
+        await Mediator.Send(new UpdateImageVotingEntry.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+
+    [HttpDelete("{id}")]
+    [Permissions(typeof(ImageVotingsPermissions.DeleteImageVotingEntry),
+        typeof(ImageVotingsPermissions.DeleteOwnImageVotingEntry))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete an image voting entry")]
+    public async Task<ActionResult> DeleteImageVotingEntry([FromRoute] int id)
+    {
+        await Mediator.Send(new DeleteImageVotingEntry.Command
+        {
+            Id = id
+        });
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id}/Choose")]
+    [Permissions(typeof(ImageVotingsPermissions.CreateActiveImageVotingChoice),
+        typeof(ImageVotingsPermissions.CreateImageVotingChoice))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Choose an image voting entry (single choice image votings only)")]
+    public async Task<ActionResult> ChooseImageVotingEntry([FromRoute] int id,
+        [FromBody] ChooseImageVotingEntry.RequestBody body)
+    {
+        await Mediator.Send(new ChooseImageVotingEntry.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
     [HttpGet("{imageVotingId}/Images")]
     [Permissions(typeof(ImageVotingsPermissions.IndexOwnImageVotingEntryImages),
         typeof(ImageVotingsPermissions.IndexImageVotingEntryImages))]
@@ -81,7 +134,6 @@ public class ImageVotingEntriesController : ApiControllerBase
 
         return Ok(response);
     }
-
 
     [HttpPost("{imageVotingId}/Images")]
     [Permissions(typeof(ImageVotingsPermissions.UploadActiveImageVotingEntryImage),

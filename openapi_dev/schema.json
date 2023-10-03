@@ -541,6 +541,115 @@
             "Token": [ ]
           }
         ]
+      },
+      "patch": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Update an image voting entry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UpdateImageVotingEntry, ImageVotings.UpdateOwnImageVotingEntry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUpdateImageVotingEntryRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUpdateImageVotingEntryRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUpdateImageVotingEntryRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Delete an image voting entry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVotingEntry, ImageVotings.DeleteOwnImageVotingEntry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
       }
     },
     "/Api/ImageVotingEntries": {
@@ -548,7 +657,7 @@
         "tags": [
           "ImageVotingEntries"
         ],
-        "summary": "Get a list of image voting entries",
+        "summary": "Get a list of all image voting entries",
         "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexImageVotingEntries, ImageVotings.IndexActiveImageVotingEntries",
         "parameters": [
           {
@@ -616,27 +725,13 @@
             "Token": [ ]
           }
         ]
-      }
-    },
-    "/Api/ImageVotingEntries/{imageVotingId}": {
+      },
       "post": {
         "tags": [
           "ImageVotingEntries"
         ],
         "summary": "Create an image voting entry",
         "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVotingEntry, ImageVotings.CreateActiveImageVotingEntry",
-        "parameters": [
-          {
-            "name": "imageVotingId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -676,6 +771,72 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
+    "/Api/ImageVotingEntries/{id}/Choose": {
+      "patch": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Choose an image voting entry (single choice image votings only)",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateActiveImageVotingChoice, ImageVotings.CreateImageVotingChoice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsChooseImageVotingEntryRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsChooseImageVotingEntryRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsChooseImageVotingEntryRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
           },
           "401": {
             "description": "Unauthorized"
@@ -4555,6 +4716,16 @@
         },
         "additionalProperties": false
       },
+      "ImageVotingsChooseImageVotingEntryRequestBody": {
+        "type": "object",
+        "properties": {
+          "aspectKey": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ImageVotingsCreateImageVotingEntryRequestBody": {
         "required": [
           "imageUrl",
@@ -4562,6 +4733,10 @@
         ],
         "type": "object",
         "properties": {
+          "imageVotingId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "title": {
             "maxLength": 255,
             "minLength": 1,
@@ -4900,6 +5075,26 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsUpdateImageVotingEntryRequestBody": {
+        "required": [
+          "imageUrl",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "imageUrl": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
