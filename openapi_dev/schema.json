@@ -495,7 +495,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Get information about an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVotingEntry, ImageVotings.ViewActiveImageVotingEntry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVotingEntry, ImageVotings.ViewActiveImageVotingEntry; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -547,7 +547,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Update an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UpdateImageVotingEntry, ImageVotings.UpdateOwnImageVotingEntry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UpdateImageVotingEntry, ImageVotings.UpdateOwnImageVotingEntry; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -611,7 +611,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Delete an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVotingEntry, ImageVotings.DeleteOwnImageVotingEntry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVotingEntry, ImageVotings.DeleteOwnImageVotingEntry; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -658,7 +658,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Get a list of all image voting entries",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexImageVotingEntries, ImageVotings.IndexActiveImageVotingEntries",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexImageVotingEntries, ImageVotings.IndexActiveImageVotingEntries; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "Filters",
@@ -731,7 +731,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Create an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVotingEntry, ImageVotings.CreateActiveImageVotingEntry",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ChooseImageVotingEntry, ImageVotings.CreateActiveImageVotingEntry; Requires the following features to be enabled: ImageVotings",
         "requestBody": {
           "content": {
             "application/json": {
@@ -787,12 +787,12 @@
       }
     },
     "/Api/ImageVotingEntries/{id}/Choose": {
-      "patch": {
+      "post": {
         "tags": [
           "ImageVotingEntries"
         ],
         "summary": "Choose an image voting entry (single choice image votings only)",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateActiveImageVotingChoice, ImageVotings.CreateImageVotingChoice",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ChooseActiveImageVotingEntry, ImageVotings.ChooseImageVotingEntry; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -852,13 +852,79 @@
         ]
       }
     },
+    "/Api/ImageVotingEntries/{id}/Unchoose": {
+      "post": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Unchoose an image voting entry (single choice image votings only)",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UnchooseActiveImageVotingEntry, ImageVotings.UnchooseImageVotingEntry; Requires the following features to be enabled: ImageVotings",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUnchooseImageVotingEntryRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUnchooseImageVotingEntryRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsUnchooseImageVotingEntryRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/ImageVotingEntries/{imageVotingId}/Images": {
       "get": {
         "tags": [
           "ImageVotingEntries"
         ],
         "summary": "List all images of an image voting",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexOwnImageVotingEntryImages, ImageVotings.IndexImageVotingEntryImages",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexOwnImageVotingEntryImages, ImageVotings.IndexImageVotingEntryImages; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "imageVotingId",
@@ -951,7 +1017,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Upload an image to be used in an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UploadActiveImageVotingEntryImage, ImageVotings.UploadImageVotingEntryImage",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UploadActiveImageVotingEntryImage, ImageVotings.UploadImageVotingEntryImage; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "imageVotingId",
@@ -1025,7 +1091,7 @@
           "ImageVotingEntries"
         ],
         "summary": "Delete an image meant for an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteOwnImageVotingEntryImage, ImageVotings.DeleteImageVotingEntryImage",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteOwnImageVotingEntryImage, ImageVotings.DeleteImageVotingEntryImage; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -1072,7 +1138,7 @@
           "ImageVotings"
         ],
         "summary": "Get a list of image votings",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexImageVotings, ImageVotings.IndexActiveImageVotings",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexImageVotings, ImageVotings.IndexActiveImageVotings; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "Filters",
@@ -1145,7 +1211,7 @@
           "ImageVotings"
         ],
         "summary": "Create a new image voting",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVoting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVoting; Requires the following features to be enabled: ImageVotings",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1199,7 +1265,7 @@
           "ImageVotings"
         ],
         "summary": "Get information about an image voting",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVoting, ImageVotings.ViewActiveImageVoting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVoting, ImageVotings.ViewActiveImageVoting; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -1251,7 +1317,7 @@
           "ImageVotings"
         ],
         "summary": "Update an image voting",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UpdateImageVoting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UpdateImageVoting; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -1318,7 +1384,7 @@
           "ImageVotings"
         ],
         "summary": "Delete an image voting",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVoting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVoting; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
             "name": "id",
@@ -4967,6 +5033,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "canChoose": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "chosen": {
+            "type": "boolean",
+            "nullable": true
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5075,6 +5149,16 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsUnchooseImageVotingEntryRequestBody": {
+        "type": "object",
+        "properties": {
+          "aspectKey": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -5242,6 +5326,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "canChoose": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "chosen": {
+            "type": "boolean",
+            "nullable": true
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5319,10 +5411,6 @@
           "canUpload": {
             "type": "boolean"
           },
-          "canChoose": {
-            "type": "boolean",
-            "nullable": true
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5350,7 +5438,13 @@
             "nullable": true
           },
           "canChoose": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
+          },
+          "chosenEntryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false

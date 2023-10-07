@@ -30,6 +30,9 @@ public static class IndexImageVotingEntries
 
         public int ImageVotingId { get; set; }
 
+        public bool? CanChoose { get; set; }
+        public bool? Chosen { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -46,37 +49,50 @@ public static class IndexImageVotingEntries
         private readonly ApplicationDbContext _context;
         private readonly PermissionManager _permissionManager;
         private readonly SieveProcessor _sieveProcessor;
+        private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager, SieveProcessor sieveProcessor)
+        public Handler(ApplicationDbContext context, PermissionManager permissionManager, SieveProcessor sieveProcessor,
+            UserAccessor userAccessor)
         {
             _context = context;
             _permissionManager = permissionManager;
             _sieveProcessor = sieveProcessor;
+            _userAccessor = userAccessor;
         }
 
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var entries = _context.ImageVotingEntries.Include(e => e.ImageVoting).Include(e => e.User)
+            var entries = _context.ImageVotingEntries.Include(e => e.ImageVoting)
+                .ThenInclude(v => v.Choices.Where(c => c.UserId == _userAccessor.User.Id)).Include(e => e.User)
                 .AsNoTracking();
 
             if (!_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingEntries)))
                 entries = entries.Where(e => e.ImageVoting.Active);
 
             var response = (await _sieveProcessor.Apply(request.SieveModel, entries).ToListAsync(cancellationToken))
-                .Select(entry => CreateResponse(entry, entry.ImageVoting.ShowUploaderInfo));
+                .Select(entry => CreateResponse(entry));
 
             return response;
         }
 
-        private Response CreateResponse(ImageVotingEntry entry, bool includeUser = true)
+        private Response CreateResponse(ImageVotingEntry entry)
         {
             var response = entry.Adapt<Response>();
 
-            if (includeUser)
+            if (entry.ImageVoting.ShowUploaderInfo)
             {
                 response.User = entry.User.Adapt<ResponseUser>();
                 response.UserId = entry.UserId;
             }
+
+            if (entry.ImageVoting.Type == ImageVotingType.SingleChoice && !entry.ImageVoting.Aspects.Any())
+            {
+                response.CanChoose = true;
+                response.Chosen = entry.ImageVoting.Choices.Any(c => c.ImageVotingEntryId == entry.Id);
+            }
+
+            if (entry.UserId == _userAccessor.User.Id)
+                response.CanChoose = false;
 
             return response;
         }

@@ -6,12 +6,14 @@ using Blueboard.Features.ImageVotings.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement.Mvc;
 using Sieve.Models;
 
 namespace Blueboard.Features.ImageVotings;
 
 [Authorize]
 [EmailVerified]
+[FeatureGate("ImageVotings")]
 public class ImageVotingsController : ApiControllerBase
 {
     [HttpGet]

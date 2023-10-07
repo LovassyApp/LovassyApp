@@ -75,7 +75,7 @@ public static class CreateImageVotingEntry
                 throw new BadRequestException("A megadott szavazás nem létezik");
 
             if (!imageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateImageVotingEntry)))
+                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ChooseImageVotingEntry)))
                 throw new BadRequestException("A megadott szavazás nem aktív");
 
             if (_userAccessor.User.UserGroups.Any(g => g.Id == imageVoting.BannedUserGroupId) ||

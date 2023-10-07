@@ -36,7 +36,6 @@ public static class ViewImageVoting
         public int MaxUploadsPerUser { get; set; }
 
         public bool CanUpload { get; set; }
-        public bool? CanChoose { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
@@ -48,7 +47,8 @@ public static class ViewImageVoting
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public bool CanChoose { get; set; }
+        public bool? CanChoose { get; set; }
+        public int? ChosenEntryId { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, Response>
@@ -81,16 +81,15 @@ public static class ViewImageVoting
 
             var response = imageVoting.Adapt<Response>();
 
-            if (imageVoting.Aspects.Count == 0)
-                response.CanChoose = imageVoting.Choices.Count == 0 && imageVoting.Active &&
-                                     imageVoting is { Type: ImageVotingType.SingleChoice };
-            else
-                foreach (var aspect in response.Aspects)
-                {
-                    var choice = imageVoting.Choices.FirstOrDefault(c => c.AspectKey == aspect.Key);
-                    aspect.CanChoose = choice == null && imageVoting is
-                        { Active: true, Type: ImageVotingType.SingleChoice };
-                }
+            foreach (var aspect in response.Aspects)
+            {
+                var choice = imageVoting.Choices.FirstOrDefault(c => c.AspectKey == aspect.Key);
+                aspect.CanChoose = imageVoting.Type == ImageVotingType.SingleChoice &&
+                                   (imageVoting.Active ||
+                                    _permissionManager.CheckPermission(
+                                        typeof(ImageVotingsPermissions.ChooseImageVotingEntry)));
+                aspect.ChosenEntryId = choice?.ImageVotingEntryId;
+            }
 
 
             var inUploaderUserGroup =

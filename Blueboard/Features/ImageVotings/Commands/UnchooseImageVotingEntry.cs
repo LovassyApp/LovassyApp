@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Features.ImageVotings.Commands;
 
-public static class ChooseImageVotingEntry
+public class UnchooseImageVotingEntry
 {
     public class Command : IRequest
     {
@@ -30,13 +30,13 @@ public static class ChooseImageVotingEntry
         private readonly IPublisher _publisher;
         private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, IPublisher publisher,
-            PermissionManager permissionManager)
+        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager,
+            IPublisher publisher)
         {
             _context = context;
             _userAccessor = userAccessor;
-            _publisher = publisher;
             _permissionManager = permissionManager;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -52,11 +52,8 @@ public static class ChooseImageVotingEntry
                 throw new BadRequestException("A megadott szavazás nem egy választásos szavazás");
 
             if (!entry.ImageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ChooseImageVotingEntry)))
+                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UnchooseImageVotingEntry)))
                 throw new BadRequestException("A megadott szavazás nem aktív");
-
-            if (entry.UserId == _userAccessor.User.Id)
-                throw new BadRequestException("Nem szavazhatsz a saját képedre");
 
             if (entry.ImageVoting.Aspects.Any())
             {
@@ -70,28 +67,22 @@ public static class ChooseImageVotingEntry
                     throw new ValidationException(new[]
                         { new ValidationFailure(nameof(RequestBody.AspectKey), "A megadott szempont nem létezik.") });
 
-                var choice = entry.ImageVoting.Choices.FirstOrDefault(a => a.AspectKey == request.Body.AspectKey);
+                var choice = entry.ImageVoting.Choices.FirstOrDefault(c =>
+                    c.AspectKey == request.Body.AspectKey && c.ImageVotingEntryId == entry.Id);
 
                 if (choice == null)
-                    entry.ImageVoting.Choices.Add(new ImageVotingChoice
-                    {
-                        AspectKey = request.Body.AspectKey, UserId = _userAccessor.User.Id,
-                        ImageVotingId = entry.ImageVotingId, ImageVotingEntryId = entry.Id
-                    });
-                else
-                    choice.ImageVotingEntryId = entry.Id;
+                    throw new BadRequestException("A megadott szempontban nem a megadott képet választottad");
+
+                _context.ImageVotingChoices.Remove(choice);
             }
             else
             {
-                var choice = entry.ImageVoting.Choices.FirstOrDefault();
+                var choice = entry.ImageVoting.Choices.FirstOrDefault(c => c.ImageVotingEntryId == entry.Id);
+
                 if (choice == null)
-                    entry.ImageVoting.Choices.Add(new ImageVotingChoice
-                    {
-                        UserId = _userAccessor.User.Id, ImageVotingId = entry.ImageVotingId,
-                        ImageVotingEntryId = entry.Id
-                    });
-                else
-                    choice.ImageVotingEntryId = entry.Id;
+                    throw new BadRequestException("Nem a megadott képet választottad");
+
+                _context.ImageVotingChoices.Remove(choice);
             }
 
             await _context.SaveChangesAsync(cancellationToken);

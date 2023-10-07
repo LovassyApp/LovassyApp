@@ -6,12 +6,14 @@ using Blueboard.Features.ImageVotings.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.FeatureManagement.Mvc;
 using Sieve.Models;
 
 namespace Blueboard.Features.ImageVotings;
 
 [Authorize]
 [EmailVerified]
+[FeatureGate("ImageVotings")]
 public class ImageVotingEntriesController : ApiControllerBase
 {
     [HttpGet("{id}")]
@@ -47,7 +49,7 @@ public class ImageVotingEntriesController : ApiControllerBase
 
 
     [HttpPost]
-    [Permissions(typeof(ImageVotingsPermissions.CreateImageVotingEntry),
+    [Permissions(typeof(ImageVotingsPermissions.ChooseImageVotingEntry),
         typeof(ImageVotingsPermissions.CreateActiveImageVotingEntry))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -98,9 +100,9 @@ public class ImageVotingEntriesController : ApiControllerBase
         return NoContent();
     }
 
-    [HttpPatch("{id}/Choose")]
-    [Permissions(typeof(ImageVotingsPermissions.CreateActiveImageVotingChoice),
-        typeof(ImageVotingsPermissions.CreateImageVotingChoice))]
+    [HttpPost("{id}/Choose")]
+    [Permissions(typeof(ImageVotingsPermissions.ChooseActiveImageVotingEntry),
+        typeof(ImageVotingsPermissions.ChooseImageVotingEntry))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [EndpointSummary("Choose an image voting entry (single choice image votings only)")]
@@ -108,6 +110,24 @@ public class ImageVotingEntriesController : ApiControllerBase
         [FromBody] ChooseImageVotingEntry.RequestBody body)
     {
         await Mediator.Send(new ChooseImageVotingEntry.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+    [HttpPost("{id}/Unchoose")]
+    [Permissions(typeof(ImageVotingsPermissions.UnchooseActiveImageVotingEntry),
+        typeof(ImageVotingsPermissions.UnchooseImageVotingEntry))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Unchoose an image voting entry (single choice image votings only)")]
+    public async Task<ActionResult> UnchooseImageVotingEntry([FromRoute] int id,
+        [FromBody] UnchooseImageVotingEntry.RequestBody body)
+    {
+        await Mediator.Send(new UnchooseImageVotingEntry.Command
         {
             Id = id,
             Body = body

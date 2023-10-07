@@ -181,51 +181,35 @@ public static class ImageVotingsPermissions
         public bool Dangerous => false;
     }
 
-    public class CreateImageVotingChoice : IPermission
+    public class ChooseImageVotingEntry : IPermission
     {
-        public string Name => "ImageVotings.CreateImageVotingChoice";
-        public string DisplayName => "Kép szavazáshoz választás létrehozása";
-        public string Description => "Új választás léterhozása egy kép szavazáshoz";
+        public string Name => "ImageVotings.ChooseImageVotingEntry";
+        public string DisplayName => "Kép szavazásban kép választása";
+        public string Description => "(Bármelyik) kép szavazásban egy feltöltött kép választása";
         public bool Dangerous => true;
     }
 
-    public class CreateActiveImageVotingChoice : IPermission
+    public class ChooseActiveImageVotingEntry : IPermission
     {
-        public string Name => "ImageVotings.CreateActiveImageVotingChoice";
-        public string DisplayName => "Aktív kép szavazáshoz választás létrehozása";
-        public string Description => "Új választás léterhozása egy aktív kép szavazáshoz";
+        public string Name => "ImageVotings.ChooseActiveImageVotingEntry";
+        public string DisplayName => "Aktív kép szavazásban kép választása";
+        public string Description => "Aktív kép szavazásban egy feltöltött kép választása";
         public bool Dangerous => false;
     }
 
-    public class UpdateImageVotingChoice : IPermission
+    public class UnchooseImageVotingEntry : IPermission
     {
-        public string Name => "ImageVotings.UpdateImageVotingChoice";
-        public string DisplayName => "Kép szavazás választásának módosítása";
-        public string Description => "Egy adott (bármelyik) választás (kép szavazásban) módosítása id alapján";
+        public string Name => "ImageVotings.UnchooseImageVotingEntry";
+        public string DisplayName => "Kép szavazásban kép választásának visszavonása";
+        public string Description => "(Bármelyik) kép szavazásban egy választott kép visszavonása";
         public bool Dangerous => true;
     }
 
-    public class UpdateOwnImageVotingChoice : IPermission
+    public class UnchooseActiveImageVotingEntry : IPermission
     {
-        public string Name => "ImageVotings.UpdateOwnImageVotingChoice";
-        public string DisplayName => "Kép szavazás saját választásának módosítása";
-        public string Description => "Egy adott saját választás (kép szavazásban) módosítása id alapján";
-        public bool Dangerous => false;
-    }
-
-    public class DeleteImageVotingChoice : IPermission
-    {
-        public string Name => "ImageVotings.DeleteImageVotingChoice";
-        public string DisplayName => "Kép szavazás választásának törlése";
-        public string Description => "Egy adott (bármelyik) választás (kép szavazásban) törlése id alapján";
-        public bool Dangerous => true;
-    }
-
-    public class DeleteOwnImageVotingChoice : IPermission
-    {
-        public string Name => "ImageVotings.DeleteOwnImageVotingChoice";
-        public string DisplayName => "Kép szavazás saját választásának törlése";
-        public string Description => "Egy adott saját választás (kép szavazásban) törlése id alapján";
+        public string Name => "ImageVotings.UnchooseActiveImageVotingEntry";
+        public string DisplayName => "Aktív kép szavazásban kép választásának visszavonása";
+        public string Description => "Aktív kép szavazásban egy választott kép visszavonása";
         public bool Dangerous => false;
     }
 

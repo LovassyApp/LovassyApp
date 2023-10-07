@@ -29,6 +29,9 @@ public static class ViewImageVotingEntry
 
         public int ImageVotingId { get; set; }
 
+        public bool? CanChoose { get; set; }
+        public bool? Chosen { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -44,11 +47,13 @@ public static class ViewImageVotingEntry
     {
         private readonly ApplicationDbContext _context;
         private readonly PermissionManager _permissionManager;
+        private readonly UserAccessor _userAccessor;
 
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager)
+        public Handler(ApplicationDbContext context, PermissionManager permissionManager, UserAccessor userAccessor)
         {
             _context = context;
             _permissionManager = permissionManager;
+            _userAccessor = userAccessor;
         }
 
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
@@ -56,6 +61,7 @@ public static class ViewImageVotingEntry
             var entry = await _context.ImageVotingEntries
                 .Include(e => e.User)
                 .Include(e => e.ImageVoting)
+                .ThenInclude(i => i.Choices)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
@@ -73,6 +79,16 @@ public static class ViewImageVotingEntry
                 response.User = entry.User.Adapt<ResponseUser>();
                 response.UserId = entry.User.Id;
             }
+
+            if (entry.ImageVoting.Type == ImageVotingType.SingleChoice && !entry.ImageVoting.Aspects.Any())
+            {
+                response.CanChoose = !entry.ImageVoting.Choices.Any();
+
+                response.Chosen = entry.ImageVoting.Choices.Any(c => c.ImageVotingEntryId == entry.Id);
+            }
+
+            if (entry.UserId == _userAccessor.User.Id)
+                response.CanChoose = false;
 
             return response;
         }

@@ -643,7 +643,7 @@ const DetailsModal = ({
                         mt="sm"
                     />
                     <TextInput required={true} label="Kép URL" {...form.getInputProps("thumbnailUrl")} mt="sm" />
-                    <Button type="submit" fullWidth={true} mt="md">
+                    <Button type="submit" fullWidth={true} loading={updateProduct.isLoading} mt="md">
                         Mentés
                     </Button>
                 </form>
