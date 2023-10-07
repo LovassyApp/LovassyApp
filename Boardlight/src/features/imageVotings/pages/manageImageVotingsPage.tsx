@@ -653,6 +653,12 @@ const ManageImageVotings = (): JSX.Element => {
                     />
                 ))}
             </SimpleGrid>
+            {imageVotings.data.length === 0 && (
+                <Text color="dimmed">
+                    Úgy néz ki még nincsenek szavazások... Kattints a &quot;Szavazások kezelése&quot; felirat melleti
+                    plusz ikonra, hogy létrehozz egyet.
+                </Text>
+            )}
         </>
     );
 };
