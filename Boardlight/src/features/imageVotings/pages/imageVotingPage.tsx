@@ -3,31 +3,35 @@ import {
     Badge,
     Box,
     Button,
+    Card,
     Center,
     Group,
     Loader,
     Modal,
+    Select,
+    SimpleGrid,
     Text,
     TextInput,
     Title,
     createStyles,
     rem,
+    useMantineTheme,
 } from "@mantine/core";
 import { IconCheck, IconPlus } from "@tabler/icons-react";
-import { Suspense, lazy } from "react";
+import { NotFoundError, ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
+import { Suspense, lazy, useState } from "react";
 import { isNotEmpty, useForm } from "@mantine/form";
 import {
+    useGetApiImageVotingEntries,
+    useGetApiImageVotingEntriesId,
     usePostApiImageVotingEntries,
-    usePostApiImageVotingEntriesIdChoose,
-    usePostApiImageVotingEntriesImageVotingIdImages,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
 
 import { FullScreenLoading } from "../../../core/components/fullScreenLoading";
+import { ImageVotingEntryCard } from "../components/imageVotingEntryCard";
 import { ImageVotingEntryImageSelector } from "../components/imageVotingEntryImageSelector";
 import { ImageVotingsViewImageVotingResponse } from "../../../api/generated/models";
-import { NotFoundError } from "../../../helpers/apiHelpers";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
-import { isNodeEmpty } from "@tiptap/react";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
@@ -49,8 +53,6 @@ const CreateEntryModal = ({
     close(): void;
     imageVoting: ImageVotingsViewImageVotingResponse;
 }): JSX.Element => {
-    const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
-
     const createEntry = usePostApiImageVotingEntries();
 
     const form = useForm({
@@ -99,12 +101,16 @@ const CreateEntryModal = ({
 
 const ImageVotingPage = (): JSX.Element => {
     const { classes } = useStyles();
+    const theme = useMantineTheme();
+
     const { id } = useParams<{ id: string }>();
 
     const imageVoting = useGetApiImageVotingsId(parseInt(id), { query: { retry: 0 } });
+    const imageVotingEntries = useGetApiImageVotingEntries({ Filters: `ImageVotingId==${id}` });
 
     const [createEnrtryModalOpened, { close: closeCreateEntryModal, open: openCreateEntryModal }] =
         useDisclosure(false);
+    const [aspectKey, setAspectKey] = useState<string | null>(null);
 
     const FourOFour = lazy(() => import("../../../features/base/pages/fourOFour"));
 
@@ -114,7 +120,7 @@ const ImageVotingPage = (): JSX.Element => {
                 <FourOFour />
             </Suspense>
         );
-    } else if (imageVoting.isError) {
+    } else if (imageVoting.isError || imageVotingEntries.isError) {
         console.error(imageVoting.error);
 
         return (
@@ -126,7 +132,7 @@ const ImageVotingPage = (): JSX.Element => {
         );
     }
 
-    if (imageVoting.isLoading)
+    if (imageVoting.isLoading || imageVotingEntries.isLoading)
         return (
             <Center className={classes.center}>
                 <Loader />
@@ -177,6 +183,55 @@ const ImageVotingPage = (): JSX.Element => {
                     )}
                 </Group>
             </Box>
+            <SimpleGrid
+                cols={4}
+                breakpoints={[
+                    { maxWidth: theme.breakpoints.md, cols: 3, spacing: "md" },
+                    { maxWidth: theme.breakpoints.sm, cols: 2, spacing: "sm" },
+                    { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
+                ]}
+            >
+                {imageVotingEntries.data.map((imageVotingEntry) => (
+                    <ImageVotingEntryCard
+                        imageVoting={imageVoting.data}
+                        imageVotingEntry={imageVotingEntry}
+                        key={imageVotingEntry.id}
+                        chosen={
+                            imageVoting.data.aspects.find((aspect) => aspect.key === aspectKey)?.chosenEntryId ===
+                            imageVotingEntry.id
+                        }
+                        aspectKey={aspectKey}
+                    />
+                ))}
+            </SimpleGrid>
+            {imageVoting.data.aspects.length > 0 && (
+                <Card
+                    withBorder={true}
+                    radius="md"
+                    mb="md"
+                    pos="fixed"
+                    sx={{
+                        bottom: 0,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 10,
+                    }}
+                    w={rem(300)}
+                >
+                    <Select
+                        label="Értékelési szempont"
+                        value={aspectKey}
+                        onChange={(value) => setAspectKey(value)}
+                        data={imageVoting.data.aspects.map((aspect) => ({
+                            value: aspect.key,
+                            label: aspect.name,
+                        }))}
+                        clearable={true}
+                        allowDeselect={false}
+                        withinPortal={true}
+                    />
+                </Card>
+            )}
         </>
     );
 };

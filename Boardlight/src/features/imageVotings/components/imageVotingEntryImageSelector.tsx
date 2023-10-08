@@ -196,7 +196,7 @@ export const ImageVotingEntryImageSelector = ({
                     ))}
                 </Group>
             )}
-            <Group align="flex-end">
+            <Group align="flex-end" w="100%">
                 <FileInput
                     label="Kép feltöltése"
                     accept="image/bmp,image/jpeg,image/x-png,image/png,image/gif"
@@ -204,7 +204,7 @@ export const ImageVotingEntryImageSelector = ({
                     onChange={setSelectedImage}
                     clearable={true}
                     error={imageError ?? error}
-                    sx={{ flex: 1 }}
+                    sx={{ flex: "1 !important" }}
                 />
                 <Button onClick={() => doUploadImage()} mb={imageError || error ? rem(19) : 0}>
                     Feltöltés

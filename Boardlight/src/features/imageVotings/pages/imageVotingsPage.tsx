@@ -52,14 +52,11 @@ const ImageVotingsPage = (): JSX.Element => {
                 ]}
             >
                 {imageVotings.data.map((imageVoting) => (
-                    <ImageVotingCard imageVoting={imageVoting} key={imageVoting.id} openDetails={() => {}} />
+                    <ImageVotingCard imageVoting={imageVoting} key={imageVoting.id} />
                 ))}
             </SimpleGrid>
             {imageVotings.data.length === 0 && (
-                <Text color="dimmed">
-                    Úgy néz ki még nincsenek szavazások... Kattints a &quot;Szavazások kezelése&quot; felirat melleti
-                    plusz ikonra, hogy létrehozz egyet.
-                </Text>
+                <Text color="dimmed">Úgy néz ki még nincsenek szavazások... Amint lesznek, itt látod majd őket.</Text>
             )}
         </>
     );

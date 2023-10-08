@@ -26,10 +26,8 @@ const useStyles = createStyles((theme) => ({
 
 export const ImageVotingCard = ({
     imageVoting,
-    openDetails,
 }: {
     imageVoting: ImageVotingsIndexImageVotingsResponse;
-    openDetails(): void;
 }): JSX.Element => {
     const { classes } = useStyles();
     const theme = useMantineTheme();
@@ -71,13 +69,7 @@ export const ImageVotingCard = ({
                 fallback={<Card.Section mb={`-${rem(12)}`} />}
             >
                 <Card.Section className={classes.section} mb={`-${rem(16)}`}>
-                    <Button
-                        component={Link}
-                        to={`/image-votings/${imageVoting.id}`}
-                        fullWidth={true}
-                        color="blue"
-                        onClick={() => openDetails()}
-                    >
+                    <Button component={Link} to={`/image-votings/${imageVoting.id}`} fullWidth={true} color="blue">
                         Mutasd!
                     </Button>
                 </Card.Section>
