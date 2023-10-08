@@ -601,7 +601,7 @@ const links = [
             {
                 link: "/image-votings",
                 label: "Szavazások",
-                permissions: ["ImageVotings.IndexActiveImageVotings"],
+                permissions: ["ImageVotings.IndexActiveImageVotings", "ImageVotings.IndexImageVotings"],
             },
             {
                 link: "/image-votings/manage",

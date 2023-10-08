@@ -1,5 +1,5 @@
 import { Box, Group, Paper, Stack, Text, createStyles, useMantineTheme } from "@mantine/core";
-import { IconPhoto, IconPhotoCheck, IconPhotoUp, IconUser } from "@tabler/icons-react";
+import { IconPhotoCheck, IconPhotoUp } from "@tabler/icons-react";
 
 import { ImageVotingsIndexImageVotingsResponse } from "../../../api/generated/models";
 
@@ -23,10 +23,16 @@ export const ManageImageVotingCard = ({
     return (
         <Paper withBorder={true} radius="md" p="xs" className={classes.card} onClick={() => openDetails()}>
             <Group position="apart" maw="100%" sx={{ flexWrap: "nowrap" }}>
-                <Stack justify="space-between" align="stretch" spacing={0} sx={{ flex: 1, overflow: "hidden" }}>
+                <Stack
+                    justify="space-between"
+                    align="stretch"
+                    spacing={0}
+                    sx={{ flex: 1, overflow: "hidden" }}
+                    w="100%"
+                >
                     <Box maw="100%">
                         <Text size="lg" weight={500} truncate={true}>
-                            {imageVoting.name}{" "}
+                            {imageVoting.name}
                         </Text>
                     </Box>
                     <Text size="sm" color="dimmed" truncate={true}>

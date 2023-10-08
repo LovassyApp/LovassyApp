@@ -33,6 +33,9 @@ public static class IndexImageVotingEntryImages
         public Guid UserId { get; set; }
 
         public string Url { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>

@@ -13,6 +13,7 @@ import {
 import { FullScreenLoading } from "../../components/fullScreenLoading";
 import { getGetApiFeedItemsQueryKey } from "../../../api/generated/features/feed-items/feed-items";
 import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
+import { getGetApiImageVotingEntriesQueryKey } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
 import { getGetApiImageVotingsQueryKey } from "../../../api/generated/features/image-votings/image-votings";
 import { getGetApiProductsQueryKey } from "../../../api/generated/features/products/products";
 import { getGetApiQRCodesQueryKey } from "../../../api/generated/features/qrcodes/qrcodes";
@@ -37,6 +38,7 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const ownedItemsQueryKey = getGetApiOwnedItemsQueryKey();
     const feedItemsQueryKey = getGetApiFeedItemsQueryKey();
     const imageVotingsQueryKey = getGetApiImageVotingsQueryKey();
+    const imageVotingEntriesQueryKey = getGetApiImageVotingEntriesQueryKey();
 
     const [loading, setLoading] = useState(false);
 
@@ -112,6 +114,11 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                 hubConnection.on("RefreshImageVotings", async () => {
                     console.log("RefreshImageVotings notification received");
                     await queryClient.invalidateQueries({ queryKey: [imageVotingsQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshImageVotingEntries", async () => {
+                    console.log("RefreshImageVotingEntries notification received");
+                    await queryClient.invalidateQueries({ queryKey: [imageVotingEntriesQueryKey[0]] });
                 });
 
                 try {

@@ -9,6 +9,8 @@ export const getImageVotingsRoutes = () => {
     const AuthenticatedLayout = lazy(() => import("../../core/routing/layouts/authenticatedLayout"));
 
     const ManageImageVotingsPage = lazy(() => import("./pages/manageImageVotingsPage"));
+    const ImageVotingsPage = lazy(() => import("./pages/imageVotingsPage"));
+    const ImageVotingPage = lazy(() => import("./pages/imageVotingPage"));
 
     return (
         <>
@@ -18,6 +20,30 @@ export const getImageVotingsRoutes = () => {
                         <Route element={<FeatureGuard features={["ImageVotings"]} />}>
                             <Route element={<PermissionGuard permissions={["ImageVotings.IndexImageVotings"]} />}>
                                 <Route path="/image-votings/manage" element={<ManageImageVotingsPage />} />
+                            </Route>
+                            <Route
+                                element={
+                                    <PermissionGuard
+                                        permissions={[
+                                            "ImageVotings.IndexImageVotings",
+                                            "ImageVotings.IndexActiveImageVotings",
+                                        ]}
+                                    />
+                                }
+                            >
+                                <Route path="/image-votings" element={<ImageVotingsPage />} />
+                            </Route>
+                            <Route
+                                element={
+                                    <PermissionGuard
+                                        permissions={[
+                                            "ImageVotings.ViewImageVoting",
+                                            "ImageVotings.ViewActiveImageVoting",
+                                        ]}
+                                    />
+                                }
+                            >
+                                <Route path="/image-votings/:id" element={<ImageVotingPage />} />
                             </Route>
                         </Route>
                     </Route>

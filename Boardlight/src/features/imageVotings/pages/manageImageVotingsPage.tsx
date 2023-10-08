@@ -222,7 +222,7 @@ const CreateImageVotingModal = ({ opened, close }: { opened: boolean; close(): v
                     Szempont hozzáadása
                 </Button>
                 <Button type="submit" fullWidth={true} loading={createImageVoting.isLoading} mt="md">
-                    Mentés
+                    Létrehozás
                 </Button>
             </form>
         </Modal>

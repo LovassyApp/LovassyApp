@@ -46,7 +46,8 @@ public static class UploadImageVotingEntryImage
         {
             RuleFor(x => x.File)
                 .NotNull()
-                .AllowedMimeTypes(new[] { "image/bmp", "image/jpeg", "image/x-png", "image/png", "image/gif" })
+                .AllowedMimeTypes(new[]
+                    { "image/bmp", "image/jpeg", "image/x-png", "image/png", "image/gif" })
                 .MaxFileSize(4 * 1024 * 1024);
         }
     }
