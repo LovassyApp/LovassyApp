@@ -13,4 +13,6 @@ export interface ImageVotingsIndexImageVotingEntryImagesResponse {
   path?: string | null;
   userId?: string;
   url?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
