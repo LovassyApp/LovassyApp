@@ -14,6 +14,7 @@ using Helpers.WebApi;
 using Helpers.WebApi.Extensions;
 using Helpers.WebApi.Filters;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 
@@ -152,6 +153,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources/FileUploads")),
+    RequestPath = new PathString("/Files")
+});
 
 app.UseRouting();
 app.UseCors();

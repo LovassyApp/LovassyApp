@@ -1,3 +1,4 @@
+using Blueboard.Infrastructure.Files.Services;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Seeders;
 using EFCoreSecondLevelCacheInterceptor;
@@ -30,10 +31,13 @@ public static class AddInfrastructureExtension
             }
         );
 
-        //Seeding
+        // Seeding
         services.AddScoped<GradeImportSeeder>();
         services.AddScoped<UserSeeder>();
         services.AddScoped<ProductSeeder>();
         services.AddScoped<QRCodeSeeder>();
+
+        // Files
+        services.AddScoped<FilesService>();
     }
 }

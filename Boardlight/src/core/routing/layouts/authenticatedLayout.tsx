@@ -542,6 +542,8 @@ const shopIndexPermissions = [
     "Shop.IndexOwnLoloRequests",
 ];
 
+const votingIndexPermissions = ["ImageVotings.IndexImageVotings", "ImageVotings.IndexActiveImageVotings"];
+
 const administratorIndexPermissions = [
     "Auth.IndexPermissions",
     "Auth.IndexUserGroups",
@@ -588,6 +590,23 @@ const links = [
                 link: "/shop/own-owned-items",
                 label: "Kincstár",
                 permissions: ["Shop.IndexOwnOwnedItems"],
+            },
+        ],
+    },
+    {
+        label: "Szavazó rendszer",
+        permissions: votingIndexPermissions,
+        features: ["ImageVotings"],
+        links: [
+            {
+                link: "/image-votings",
+                label: "Szavazások",
+                permissions: ["ImageVotings.IndexActiveImageVotings", "ImageVotings.IndexImageVotings"],
+            },
+            {
+                link: "/image-votings/manage",
+                label: "Szavazások kezelése",
+                permissions: ["ImageVotings.IndexImageVotings"],
             },
         ],
     },

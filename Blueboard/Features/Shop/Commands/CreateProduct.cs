@@ -94,7 +94,7 @@ public static class CreateProduct
             RuleFor(x => x.RichTextContent).NotEmpty();
             RuleFor(x => x.Visible).NotNull();
             RuleFor(x => x.QRCodeActivated).NotNull();
-            RuleFor(x => x.QRCodes).NotNull().MustAsync(BeExistingQRCodes)
+            RuleFor(x => x.QRCodes).NotNull().MustAsync(BeExistingQRCodesAsync)
                 .WithMessage("A megadott QR kódok közül legalább egy nem létezik.");
             RuleFor(x => x.Price).NotNull().GreaterThanOrEqualTo(0);
             RuleFor(x => x.Quantity).NotNull().GreaterThanOrEqualTo(0);
@@ -106,7 +106,7 @@ public static class CreateProduct
             {
                 v.RuleFor(i => i.Key).NotEmpty().Matches("^[a-zA-Z][a-zA-Z0-9_]*$").WithMessage(
                     "A kulcs csak angol kis- és nagybetűket, számokat és alulvonásokat tartalmazhat, és nem kezdődhet számmal.");
-                v.RuleFor(i => i.Label).NotEmpty();
+                v.RuleFor(i => i.Label).NotEmpty().MaximumLength(255);
                 v.RuleFor(i => i.Type).NotEmpty().IsEnumName(typeof(ProductInputType));
             });
             RuleFor(x => x.NotifiedEmails).NotNull();
@@ -114,7 +114,7 @@ public static class CreateProduct
             RuleFor(x => x.ThumbnailUrl).NotEmpty();
         }
 
-        private async Task<bool> BeExistingQRCodes(RequestBody model, int[] qrCodes,
+        private async Task<bool> BeExistingQRCodesAsync(RequestBody model, int[] qrCodes,
             CancellationToken cancellationToken)
         {
             return await _context.QRCodes.Select(c => c.Id)

@@ -277,7 +277,7 @@ const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void 
                     mt="sm"
                 />
                 <TextInput required={true} label="Kép URL" {...form.getInputProps("thumbnailUrl")} mt="sm" />
-                <Button type="submit" fullWidth={true} mt="md">
+                <Button type="submit" loading={createProduct.isLoading} fullWidth={true} mt="md">
                     Létrehozás
                 </Button>
             </form>
@@ -643,7 +643,7 @@ const DetailsModal = ({
                         mt="sm"
                     />
                     <TextInput required={true} label="Kép URL" {...form.getInputProps("thumbnailUrl")} mt="sm" />
-                    <Button type="submit" fullWidth={true} mt="md">
+                    <Button type="submit" fullWidth={true} loading={updateProduct.isLoading} mt="md">
                         Mentés
                     </Button>
                 </form>

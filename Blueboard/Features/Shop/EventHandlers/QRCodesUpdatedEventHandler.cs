@@ -8,16 +8,16 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blueboard.Features.Shop.EventHandlers;
 
-public class QRCodeUpdatedEventHandler : INotificationHandler<QRCodeUpdatedEvent>
+public class QRCodesUpdatedEventHandler : INotificationHandler<QRCodesUpdatedEvent>
 {
     private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
 
-    public QRCodeUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    public QRCodesUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
     {
         _notificationsHub = notificationsHub;
     }
 
-    public async Task Handle(QRCodeUpdatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(QRCodesUpdatedEvent notification, CancellationToken cancellationToken)
     {
         if (PermissionUtils.PermissionTypesToNames == null)
             throw new InvalidOperationException("Permissions are not loaded yet");

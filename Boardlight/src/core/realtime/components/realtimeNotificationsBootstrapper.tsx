@@ -1,23 +1,25 @@
-import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { ReactNode, useEffect, useState } from 'react';
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import { ReactNode, useEffect, useState } from "react";
 import {
     getGetApiLoloRequestsOwnQueryKey,
     getGetApiLoloRequestsQueryKey,
-} from '../../../api/generated/features/lolo-requests/lolo-requests';
-import { getGetApiLolosOwnQueryKey, getGetApiLolosQueryKey } from '../../../api/generated/features/lolos/lolos';
+} from "../../../api/generated/features/lolo-requests/lolo-requests";
+import { getGetApiLolosOwnQueryKey, getGetApiLolosQueryKey } from "../../../api/generated/features/lolos/lolos";
 import {
     getGetApiOwnedItemsOwnQueryKey,
     getGetApiOwnedItemsQueryKey,
-} from '../../../api/generated/features/owned-items/owned-items';
+} from "../../../api/generated/features/owned-items/owned-items";
 
-import { FullScreenLoading } from '../../components/fullScreenLoading';
-import { getGetApiFeedItemsQueryKey } from '../../../api/generated/features/feed-items/feed-items';
-import { getGetApiGradesQueryKey } from '../../../api/generated/features/grades/grades';
-import { getGetApiProductsQueryKey } from '../../../api/generated/features/products/products';
-import { getGetApiQRCodesQueryKey } from '../../../api/generated/features/qrcodes/qrcodes';
-import { getGetApiUserGroupsQueryKey } from '../../../api/generated/features/user-groups/user-groups';
-import { useAuthStore } from '../../stores/authStore';
-import { useQueryClient } from '@tanstack/react-query';
+import { FullScreenLoading } from "../../components/fullScreenLoading";
+import { getGetApiFeedItemsQueryKey } from "../../../api/generated/features/feed-items/feed-items";
+import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
+import { getGetApiImageVotingEntriesQueryKey } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
+import { getGetApiImageVotingsQueryKey } from "../../../api/generated/features/image-votings/image-votings";
+import { getGetApiProductsQueryKey } from "../../../api/generated/features/products/products";
+import { getGetApiQRCodesQueryKey } from "../../../api/generated/features/qrcodes/qrcodes";
+import { getGetApiUserGroupsQueryKey } from "../../../api/generated/features/user-groups/user-groups";
+import { useAuthStore } from "../../stores/authStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const RealtimeNotificationsBootstrapper = ({ children }: { children: ReactNode }): JSX.Element => {
     const accessToken = useAuthStore((state) => state.accessToken);
@@ -35,15 +37,17 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const ownOwnedItemsQueryKey = getGetApiOwnedItemsOwnQueryKey();
     const ownedItemsQueryKey = getGetApiOwnedItemsQueryKey();
     const feedItemsQueryKey = getGetApiFeedItemsQueryKey();
+    const imageVotingsQueryKey = getGetApiImageVotingsQueryKey();
+    const imageVotingEntriesQueryKey = getGetApiImageVotingEntriesQueryKey();
 
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         let hubConnection: HubConnection | undefined;
 
-        if (accessToken && accessToken !== '') {
+        if (accessToken && accessToken !== "") {
             hubConnection = new HubConnectionBuilder()
-                .withUrl(`${import.meta.env.VITE_BLUEBOARD_URL ?? ''}/Hubs/Notifications`, {
+                .withUrl(`${import.meta.env.VITE_BLUEBOARD_URL ?? ""}/Hubs/Notifications`, {
                     accessTokenFactory: () => accessToken,
                 })
                 .configureLogging(LogLevel.Information)
@@ -52,65 +56,75 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
 
         (async () => {
             if (hubConnection) {
-                hubConnection.on('RefreshProducts', async () => {
-                    console.log('RefreshProducts notification received');
+                hubConnection.on("RefreshProducts", async () => {
+                    console.log("RefreshProducts notification received");
                     await queryClient.invalidateQueries({ queryKey: [productsQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshGrades', async () => {
-                    console.log('RefreshGrades notification received');
+                hubConnection.on("RefreshGrades", async () => {
+                    console.log("RefreshGrades notification received");
                     await queryClient.invalidateQueries({ queryKey: [gradesQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshOwnLolos', async () => {
-                    console.log('RefreshOwnLolos notification received');
+                hubConnection.on("RefreshOwnLolos", async () => {
+                    console.log("RefreshOwnLolos notification received");
                     await queryClient.invalidateQueries({ queryKey: [ownLolosQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshLolos', async () => {
-                    console.log('RefreshLolos notification received');
+                hubConnection.on("RefreshLolos", async () => {
+                    console.log("RefreshLolos notification received");
                     await queryClient.invalidateQueries({ queryKey: [lolosQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshQRCodes', async () => {
-                    console.log('RefreshQRCodes notification received');
+                hubConnection.on("RefreshQRCodes", async () => {
+                    console.log("RefreshQRCodes notification received");
                     await queryClient.invalidateQueries({ queryKey: [qrcodesQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshOwnLoloRequests', async () => {
-                    console.log('RefreshOwnLoloRequests notification received');
+                hubConnection.on("RefreshOwnLoloRequests", async () => {
+                    console.log("RefreshOwnLoloRequests notification received");
                     await queryClient.invalidateQueries({ queryKey: [ownLoloRequestsQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshLoloRequests', async () => {
-                    console.log('RefreshLoloRequests notification received');
+                hubConnection.on("RefreshLoloRequests", async () => {
+                    console.log("RefreshLoloRequests notification received");
                     await queryClient.invalidateQueries({ queryKey: [loloRequestsQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshUserGroups', async () => {
-                    console.log('RefreshUserGroups notification received');
+                hubConnection.on("RefreshUserGroups", async () => {
+                    console.log("RefreshUserGroups notification received");
                     await queryClient.invalidateQueries({ queryKey: [userGroupsQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshOwnOwnedItems', async () => {
-                    console.log('RefreshOwnOwnedItems notification received');
+                hubConnection.on("RefreshOwnOwnedItems", async () => {
+                    console.log("RefreshOwnOwnedItems notification received");
                     await queryClient.invalidateQueries({ queryKey: [ownOwnedItemsQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshOwnedItems', async () => {
-                    console.log('RefreshOwnedItems notification received');
+                hubConnection.on("RefreshOwnedItems", async () => {
+                    console.log("RefreshOwnedItems notification received");
                     await queryClient.invalidateQueries({ queryKey: [ownedItemsQueryKey[0]] });
                 });
 
-                hubConnection.on('RefreshFeedItems', async () => {
-                    console.log('RefreshFeedItems notification received');
+                hubConnection.on("RefreshFeedItems", async () => {
+                    console.log("RefreshFeedItems notification received");
                     await queryClient.invalidateQueries({ queryKey: [feedItemsQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshImageVotings", async () => {
+                    console.log("RefreshImageVotings notification received");
+                    await queryClient.invalidateQueries({ queryKey: [imageVotingsQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshImageVotingEntries", async () => {
+                    console.log("RefreshImageVotingEntries notification received");
+                    await queryClient.invalidateQueries({ queryKey: [imageVotingEntriesQueryKey[0]] });
                 });
 
                 try {
                     setLoading(true);
                     await hubConnection.start();
-                    console.log('Connected to realtime notifications');
+                    console.log("Connected to realtime notifications");
                 } catch (err) {
                     console.error(err);
                 } finally {
@@ -122,7 +136,7 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
         return () => {
             if (hubConnection) {
                 hubConnection.stop();
-                console.log('Disconnected from realtime notifications');
+                console.log("Disconnected from realtime notifications");
             }
         };
     }, [accessToken]);

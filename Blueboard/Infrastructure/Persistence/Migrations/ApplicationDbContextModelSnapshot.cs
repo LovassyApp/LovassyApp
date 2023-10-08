@@ -24,8 +24,53 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "grade_type", new[] { "regular_grade", "behaviour_grade", "diligence_grade" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "image_voting_type", new[] { "single_choice", "increment" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "lolo_type", new[] { "from_grades", "from_request" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.FileUpload", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Filename")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OriginalFilename")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FileUploads");
+                });
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.Grade", b =>
                 {
@@ -133,6 +178,168 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("GradeImports");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVoting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<List<ImageVotingAspect>>("Aspects")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<int?>("BannedUserGroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("MaxUploadsPerUser")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("ShowUploaderInfo")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UploaderUserGroupId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BannedUserGroupId");
+
+                    b.HasIndex("UploaderUserGroupId");
+
+                    b.ToTable("ImageVotings");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingChoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AspectKey")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ImageVotingEntryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ImageVotingId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageVotingEntryId");
+
+                    b.HasIndex("ImageVotingId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ImageVotingChoices");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ImageVotingId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageVotingId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ImageVotingEntries");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntryIncrement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AspectKey")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ImageVotingEntryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Increment")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageVotingEntryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ImageVotingEntryIncrements");
                 });
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImportKey", b =>
@@ -667,6 +874,17 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.ToTable("UserUserGroup");
                 });
 
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.FileUpload", b =>
+                {
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany("FileUploads")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.GradeImport", b =>
                 {
                     b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
@@ -674,6 +892,89 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVoting", b =>
+                {
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "BannedUserGroup")
+                        .WithMany("BannedImageVotings")
+                        .HasForeignKey("BannedUserGroupId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.UserGroup", "UploaderUserGroup")
+                        .WithMany("UploadableImageVotings")
+                        .HasForeignKey("UploaderUserGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("BannedUserGroup");
+
+                    b.Navigation("UploaderUserGroup");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingChoice", b =>
+                {
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntry", "ImageVotingEntry")
+                        .WithMany("Choices")
+                        .HasForeignKey("ImageVotingEntryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.ImageVoting", "ImageVoting")
+                        .WithMany("Choices")
+                        .HasForeignKey("ImageVotingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany("ImageVotingChoices")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ImageVoting");
+
+                    b.Navigation("ImageVotingEntry");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntry", b =>
+                {
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.ImageVoting", "ImageVoting")
+                        .WithMany("Entries")
+                        .HasForeignKey("ImageVotingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany("ImageVotingEntries")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ImageVoting");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntryIncrement", b =>
+                {
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntry", "ImageVotingEntry")
+                        .WithMany("Increments")
+                        .HasForeignKey("ImageVotingEntryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blueboard.Infrastructure.Persistence.Entities.User", "User")
+                        .WithMany("ImageVotingEntryIncrements")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ImageVotingEntry");
 
                     b.Navigation("User");
                 });
@@ -796,6 +1097,20 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVoting", b =>
+                {
+                    b.Navigation("Choices");
+
+                    b.Navigation("Entries");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.ImageVotingEntry", b =>
+                {
+                    b.Navigation("Choices");
+
+                    b.Navigation("Increments");
+                });
+
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.OwnedItem", b =>
                 {
                     b.Navigation("OwnedItemUses");
@@ -813,7 +1128,15 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.User", b =>
                 {
+                    b.Navigation("FileUploads");
+
                     b.Navigation("GradeImports");
+
+                    b.Navigation("ImageVotingChoices");
+
+                    b.Navigation("ImageVotingEntries");
+
+                    b.Navigation("ImageVotingEntryIncrements");
 
                     b.Navigation("LoloRequests");
 
@@ -824,6 +1147,13 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Navigation("PersonalAccessTokens");
 
                     b.Navigation("StoreHistories");
+                });
+
+            modelBuilder.Entity("Blueboard.Infrastructure.Persistence.Entities.UserGroup", b =>
+                {
+                    b.Navigation("BannedImageVotings");
+
+                    b.Navigation("UploadableImageVotings");
                 });
 #pragma warning restore 612, 618
         }
