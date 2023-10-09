@@ -1,5 +1,5 @@
-import { ActionIcon, Box, Card, Image, Text, createStyles, rem } from "@mantine/core";
-import { IconCheck, IconSquareForbid2, IconTrash } from "@tabler/icons-react";
+import { ActionIcon, Box, Card, Center, Image, Overlay, Text, createStyles, rem } from "@mantine/core";
+import { IconCheck, IconSquareForbid2, IconTrash, IconZoomIn } from "@tabler/icons-react";
 import {
     ImageVotingsIndexImageVotingEntriesResponse,
     ImageVotingsViewImageVotingResponse,
@@ -15,6 +15,7 @@ import { PermissionRequirement } from "../../../core/components/requirements/per
 import { ValidationError } from "../../../helpers/apiHelpers";
 import { getGetApiImageVotingsIdQueryKey } from "../../../api/generated/features/image-votings/image-votings";
 import { notifications } from "@mantine/notifications";
+import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 import { useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -88,6 +89,8 @@ export const ImageVotingEntryCard = ({
 
     const deleteImageVotingEntry = useDeleteApiImageVotingEntriesId();
 
+    const [magnifiedViewOpen, { close: closeMagnifiedViewOpen, open: openMagnifiedViewOpen }] = useDisclosure();
+
     const doDeleteImageVotingEntry = async () => {
         try {
             await deleteImageVotingEntry.mutateAsync({ id: imageVotingEntry.id });
@@ -131,71 +134,113 @@ export const ImageVotingEntryCard = ({
     };
 
     return (
-        <Card
-            radius="md"
-            withBorder={true}
-            className={chosen || imageVotingEntry.chosen ? classes.activeCard : undefined}
-            sx={{ cursor: canChoose || canUnchoose ? "pointer" : "default" }}
-            onClick={canChoose || canUnchoose ? onClick : undefined}
-        >
-            <Card.Section>
-                <Box className={classes.overlayContainer} pos="relative">
+        <>
+            {magnifiedViewOpen && (
+                <Overlay
+                    fixed={true}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        closeMagnifiedViewOpen();
+                    }}
+                    center={true}
+                >
                     <Image
                         src={imageVotingEntry.imageUrl}
                         alt={imageVotingEntry.title}
-                        height={200}
                         fit="contain"
                         sx={(theme) => ({
                             backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1],
+                            maxWidth: "90vw",
+                            maxHeight: "90vh",
                         })}
                     />
-                    <PermissionRequirement
-                        permissions={["ImageVotings.DeleteImageVotingEntry", "ImageVotings.DeleteOwnImageVotingEntry"]}
-                        fallback={
-                            <Box c="white" pos="absolute" bottom={rem(8)} left={rem(8)} sx={{ zIndex: 2 }}>
-                                <IconSquareForbid2 />
-                            </Box>
-                        }
-                    >
-                        {(imageVotingEntry.canChoose === false && imageVotingEntry.userId === control.data.user.id) ||
-                        control.data.permissions.includes("ImageVotings.DeleteImageVotingEntry") ||
-                        control.data.isSuperUser ? (
-                            <ActionIcon
-                                variant="transparent"
-                                pos="absolute"
-                                bottom={rem(8)}
-                                left={rem(8)}
-                                sx={{ zIndex: 2 }}
-                                color="red.5"
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    doDeleteImageVotingEntry();
-                                }}
-                            >
-                                <IconTrash />
-                            </ActionIcon>
-                        ) : undefined}
-                    </PermissionRequirement>
-                </Box>
-            </Card.Section>
-            <Card.Section className={classes.section} mt={0}>
-                <Box maw="100%">
-                    <Text size="lg" weight={500} truncate={true}>
-                        {imageVotingEntry.title}
-                    </Text>
-                </Box>
-            </Card.Section>
-            {imageVotingEntry.user && (
-                <Card.Section className={classes.section}>
+                </Overlay>
+            )}
+            <Card
+                radius="md"
+                withBorder={true}
+                className={chosen || imageVotingEntry.chosen ? classes.activeCard : undefined}
+                sx={{ cursor: canChoose || canUnchoose ? "pointer" : "default" }}
+                onClick={canChoose || canUnchoose ? onClick : undefined}
+            >
+                <Card.Section>
+                    <Box className={classes.overlayContainer} pos="relative">
+                        <Image
+                            src={imageVotingEntry.imageUrl}
+                            alt={imageVotingEntry.title}
+                            height={200}
+                            fit="contain"
+                            sx={(theme) => ({
+                                backgroundColor:
+                                    theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1],
+                            })}
+                        />
+                        <PermissionRequirement
+                            permissions={[
+                                "ImageVotings.DeleteImageVotingEntry",
+                                "ImageVotings.DeleteOwnImageVotingEntry",
+                            ]}
+                            fallback={
+                                <Box c="white" pos="absolute" bottom={rem(8)} left={rem(8)} sx={{ zIndex: 2 }}>
+                                    <IconSquareForbid2 />
+                                </Box>
+                            }
+                        >
+                            {(imageVotingEntry.canChoose === false &&
+                                imageVotingEntry.userId === control.data.user.id) ||
+                            control.data.permissions.includes("ImageVotings.DeleteImageVotingEntry") ||
+                            control.data.isSuperUser ? (
+                                <ActionIcon
+                                    variant="transparent"
+                                    pos="absolute"
+                                    bottom={rem(8)}
+                                    left={rem(8)}
+                                    sx={{ zIndex: 2 }}
+                                    color="red.5"
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        doDeleteImageVotingEntry();
+                                    }}
+                                >
+                                    <IconTrash />
+                                </ActionIcon>
+                            ) : undefined}
+                        </PermissionRequirement>
+                        <ActionIcon
+                            c="white"
+                            variant="transparent"
+                            pos="absolute"
+                            bottom={rem(8)}
+                            right={rem(8)}
+                            sx={{ zIndex: 2 }}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                openMagnifiedViewOpen();
+                            }}
+                        >
+                            <IconZoomIn />
+                        </ActionIcon>
+                    </Box>
+                </Card.Section>
+                <Card.Section className={classes.section} mt={0}>
                     <Box maw="100%">
-                        <Text size="sm" color="dimmed" truncate={true}>
-                            {imageVotingEntry.user.realName
-                                ? `${imageVotingEntry.user.realName} - ${imageVotingEntry.user.class}`
-                                : imageVotingEntry.user.name}
+                        <Text size="lg" weight={500} truncate={true}>
+                            {imageVotingEntry.title}
                         </Text>
                     </Box>
                 </Card.Section>
-            )}
-        </Card>
+                {imageVotingEntry.user && (
+                    <Card.Section className={classes.section}>
+                        <Box maw="100%">
+                            <Text size="sm" color="dimmed" truncate={true}>
+                                {imageVotingEntry.user.realName
+                                    ? `${imageVotingEntry.user.realName} - ${imageVotingEntry.user.class}`
+                                    : imageVotingEntry.user.name}
+                            </Text>
+                        </Box>
+                    </Card.Section>
+                )}
+            </Card>
+        </>
     );
 };
