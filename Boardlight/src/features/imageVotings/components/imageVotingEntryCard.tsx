@@ -1,5 +1,5 @@
-import { ActionIcon, Box, Card, Center, Image, Overlay, Text, createStyles, rem } from "@mantine/core";
-import { IconCheck, IconSquareForbid2, IconTrash, IconZoomIn } from "@tabler/icons-react";
+import { ActionIcon, Box, Card, Image, Overlay, Text, createStyles, rem } from "@mantine/core";
+import { IconCheck, IconSquareForbid2, IconTrash, IconX, IconZoomIn } from "@tabler/icons-react";
 import {
     ImageVotingsIndexImageVotingEntriesResponse,
     ImageVotingsViewImageVotingResponse,
@@ -10,7 +10,6 @@ import {
     usePostApiImageVotingEntriesIdUnchoose,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
 
-import { IconX } from "@tabler/icons-react";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { ValidationError } from "../../../helpers/apiHelpers";
 import { getGetApiImageVotingsIdQueryKey } from "../../../api/generated/features/image-votings/image-votings";

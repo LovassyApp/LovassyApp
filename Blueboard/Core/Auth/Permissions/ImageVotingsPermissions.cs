@@ -36,6 +36,25 @@ public static class ImageVotingsPermissions
         public bool Dangerous => false;
     }
 
+    public class ViewImageVotingResults : IPermission
+    {
+        public string Name => "ImageVotings.ViewImageVotingResults";
+        public string DisplayName => "Kép szavazás eredményének megtekintése";
+
+        public string Description =>
+            "Egy adott (bármilyen) kép szavazás eredményének lekérése és megtekintése id alapján";
+
+        public bool Dangerous => false;
+    }
+
+    public class ViewActiveImageVotingResults : IPermission
+    {
+        public string Name => "ImageVotings.ViewActiveImageVotingResults";
+        public string DisplayName => "Aktív kép szavazás eredményének megtekintése";
+        public string Description => "Egy adott aktív kép szavazás eredményének lekérése és megtekintése id alapján";
+        public bool Dangerous => false;
+    }
+
     public class CreateImageVoting : IPermission
     {
         public string Name => "ImageVotings.CreateImageVoting";

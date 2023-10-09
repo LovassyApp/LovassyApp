@@ -507,7 +507,7 @@ const DetailsModal = ({
             >
                 <Divider my="sm" />
                 <Button component={Link} to={`/image-votings/${imageVoting?.id}`} fullWidth={true} color="blue">
-                    Mutasd!
+                    Megtekintés
                 </Button>
             </PermissionRequirement>
             <PermissionRequirement permissions={["ImageVotings.UpdateImageVoting"]}>

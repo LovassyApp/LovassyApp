@@ -1,13 +1,16 @@
 import {
     ActionIcon,
+    Anchor,
     Badge,
     Box,
     Button,
     Card,
     Center,
+    Divider,
     Group,
     Loader,
     Modal,
+    Paper,
     Select,
     SimpleGrid,
     Text,
@@ -17,15 +20,19 @@ import {
     rem,
     useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconPlus } from "@tabler/icons-react";
+import { IconCheck, IconPlus, IconTrophy } from "@tabler/icons-react";
 import { NotFoundError, ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useMemo, useState } from "react";
 import { isNotEmpty, useForm } from "@mantine/form";
 import {
     useGetApiImageVotingEntries,
     useGetApiImageVotingEntriesId,
     usePostApiImageVotingEntries,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
+import {
+    useGetApiImageVotingsId,
+    useGetApiImageVotingsIdResults,
+} from "../../../api/generated/features/image-votings/image-votings";
 
 import { FullScreenLoading } from "../../../core/components/fullScreenLoading";
 import { ImageVotingEntryCard } from "../components/imageVotingEntryCard";
@@ -35,7 +42,6 @@ import { PermissionRequirement } from "../../../core/components/requirements/per
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useGetApiImageVotingsId } from "../../../api/generated/features/image-votings/image-votings";
 import { useParams } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
@@ -99,6 +105,124 @@ const CreateEntryModal = ({
     );
 };
 
+const ResultsModal = ({
+    imageVoting,
+    opened,
+    close,
+}: {
+    imageVoting: ImageVotingsViewImageVotingResponse | undefined;
+    opened: boolean;
+    close(): void;
+}): JSX.Element => {
+    const results = useGetApiImageVotingsIdResults(imageVoting?.id, { query: { enabled: opened } });
+
+    const [aspectKey, setAspectKey] = useState<string | null>(null);
+    const [expanded, setExpanded] = useState<boolean>(false);
+
+    const getAspectVotes = (entry, aspectKey) => {
+        const aspect = entry.aspects.find((a) => a.key === aspectKey);
+        return aspect?.choicesCount ?? aspect?.incrementSum ?? "NaN";
+    };
+
+    const orderedEntries = useMemo(() => {
+        if (!results.data) return [];
+
+        if (imageVoting.type === "SingleChoice") {
+            if (aspectKey === null || imageVoting.aspects.length === 0)
+                return results.data.entries.sort((a, b) => b.choicesCount - a.choicesCount);
+            return results.data.entries.sort(
+                (a, b) =>
+                    b.aspects.find((aspect) => aspect.key === aspectKey)?.choicesCount -
+                    a.aspects.find((aspect) => aspect.key === aspectKey)?.choicesCount
+            );
+        } else if (imageVoting.type === "Increment") {
+            if (aspectKey === null || imageVoting.aspects.length === 0)
+                return results.data.entries.sort((a, b) => b.incrementSum - a.incrementSum);
+            return results.data.entries.sort(
+                (a, b) =>
+                    b.aspects.find((aspect) => aspect.key === aspectKey)?.incrementSum -
+                    a.aspects.find((aspect) => aspect.key === aspectKey)?.incrementSum
+            );
+        }
+        return [];
+    }, [results.data, imageVoting.type, aspectKey, imageVoting.aspects]);
+
+    if (results.isLoading)
+        return (
+            <Modal opened={opened} onClose={close} title="Eredmények" size="lg">
+                <Loader />
+            </Modal>
+        );
+
+    return (
+        <Modal opened={opened} onClose={close} title="Eredmények" size="lg">
+            {imageVoting?.aspects.length > 0 && (
+                <>
+                    <Select
+                        label="Értékelési szempont"
+                        placeholder="Válassz értékelési szempontot"
+                        value={aspectKey}
+                        onChange={(value) => setAspectKey(value)}
+                        data={imageVoting?.aspects.map((aspect) => ({
+                            value: aspect.key,
+                            label: aspect.name,
+                        }))}
+                        clearable={true}
+                        allowDeselect={false}
+                        withinPortal={true}
+                    />
+                    <Divider my="sm" />
+                </>
+            )}
+            <Group position="apart" spacing={0}>
+                <Text>Feltöltők száma:</Text>
+                <Text weight="bold">{results.data.uploaderCount}</Text>
+            </Group>
+            <Group position="apart" spacing={0}>
+                <Text>Szavazók száma:</Text>
+                <Text weight="bold">{results.data.chooserCount ?? results.data.incrementerCount}</Text>
+            </Group>
+            <Divider my="sm" />
+            <Text mb="md">Toplista</Text>
+            {orderedEntries.slice(0, !expanded ? 5 : undefined).map((entry) => (
+                <Paper
+                    key={entry.id}
+                    radius="md"
+                    sx={(theme) => ({
+                        backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[1],
+                    })}
+                    mb="sm"
+                    p="sm"
+                >
+                    <Group position="apart" sx={{ overflow: "hidden" }} w="100%" noWrap={true}>
+                        <Text truncate={true} weight={600}>
+                            {entry.title}
+                        </Text>
+                        <Text>
+                            {entry.choicesCount ?? entry.incrementSum ?? getAspectVotes(entry, aspectKey) ?? "NaN"}
+                        </Text>
+                    </Group>
+                    <Box sx={{ overflow: "hidden" }} maw="100%">
+                        <Anchor truncate={true} href={entry.imageUrl} target="_blank">
+                            Beküldött kép
+                        </Anchor>
+                    </Box>
+                </Paper>
+            ))}
+            {orderedEntries.length > 5 && (
+                <Button
+                    fullWidth={true}
+                    variant="outline"
+                    onClick={() => setExpanded(!expanded)}
+                    sx={{ justifyContent: "center" }}
+                >
+                    {expanded ? "Kevesebb" : "Több"}
+                </Button>
+            )}
+        </Modal>
+    );
+};
+
 const ImageVotingPage = (): JSX.Element => {
     const { classes } = useStyles();
     const theme = useMantineTheme();
@@ -110,6 +234,7 @@ const ImageVotingPage = (): JSX.Element => {
 
     const [createEnrtryModalOpened, { close: closeCreateEntryModal, open: openCreateEntryModal }] =
         useDisclosure(false);
+    const [resultsModalOpened, { close: closeResultsModal, open: openResultsModal }] = useDisclosure(false);
     const [aspectKey, setAspectKey] = useState<string | null>(null);
 
     const FourOFour = lazy(() => import("../../../features/base/pages/fourOFour"));
@@ -146,6 +271,7 @@ const ImageVotingPage = (): JSX.Element => {
                 close={closeCreateEntryModal}
                 imageVoting={imageVoting.data}
             />
+            <ResultsModal imageVoting={imageVoting.data} opened={resultsModalOpened} close={closeResultsModal} />
             <Box mb="md">
                 <Group position="apart" align="center">
                     <Box>
@@ -165,22 +291,38 @@ const ImageVotingPage = (): JSX.Element => {
                             {imageVoting.data.description}
                         </Text>
                     </Box>
-                    {imageVoting.data.canUpload && (
+                    <Group spacing="xs">
                         <PermissionRequirement
                             permissions={
                                 imageVoting.data.active
                                     ? [
-                                          "ImageVotings.CreateImageVotingEntry",
-                                          "ImageVotings.CreateActiveImageVotingEntry",
+                                          "ImageVotings.ViewImageVotingResults",
+                                          "ImageVotings.ViewActiveImageVotingResults",
                                       ]
-                                    : ["ImageVotings.CreateImageVotingEntry"]
+                                    : ["ImageVotings.ViewImageVotingResults"]
                             }
                         >
-                            <ActionIcon variant="transparent" color="dark" onClick={() => openCreateEntryModal()}>
-                                <IconPlus />
+                            <ActionIcon variant="transparent" color="dark" onClick={() => openResultsModal()}>
+                                <IconTrophy />
                             </ActionIcon>
                         </PermissionRequirement>
-                    )}
+                        {imageVoting.data.canUpload && (
+                            <PermissionRequirement
+                                permissions={
+                                    imageVoting.data.active
+                                        ? [
+                                              "ImageVotings.CreateImageVotingEntry",
+                                              "ImageVotings.CreateActiveImageVotingEntry",
+                                          ]
+                                        : ["ImageVotings.CreateImageVotingEntry"]
+                                }
+                            >
+                                <ActionIcon variant="transparent" color="dark" onClick={() => openCreateEntryModal()}>
+                                    <IconPlus />
+                                </ActionIcon>
+                            </PermissionRequirement>
+                        )}
+                    </Group>
                 </Group>
             </Box>
             <SimpleGrid
@@ -220,6 +362,7 @@ const ImageVotingPage = (): JSX.Element => {
                 >
                     <Select
                         label="Értékelési szempont"
+                        placeholder="Válassz értékelési szempontot"
                         value={aspectKey}
                         onChange={(value) => setAspectKey(value)}
                         data={imageVoting.data.aspects.map((aspect) => ({

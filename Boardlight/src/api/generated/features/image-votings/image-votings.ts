@@ -23,7 +23,8 @@ import type {
   ImageVotingsCreateImageVotingRequestBody,
   ImageVotingsViewImageVotingResponse,
   ProblemDetails,
-  ImageVotingsUpdateImageVotingRequestBody
+  ImageVotingsUpdateImageVotingRequestBody,
+  ImageVotingsViewImageVotingResultsResponse
 } from '../../models'
 import { useCustomClient } from '../../../customClient';
 import type { ErrorType, BodyType } from '../../../customClient';
@@ -298,4 +299,56 @@ export const useDeleteApiImageVotingsId = <TError = ErrorType<ProblemDetails>,
      
       return useMutation(mutationOptions);
     }
+    /**
+ * Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVotingResults, ImageVotings.ViewActiveImageVotingResults; Requires the following features to be enabled: ImageVotings
+ * @summary Get results of an image voting
+ */
+export const getApiImageVotingsIdResults = (
+    id: number,
+ signal?: AbortSignal
+) => {
+      return useCustomClient<ImageVotingsViewImageVotingResultsResponse>(
+      {url: `/Api/ImageVotings/${id}/Results`, method: 'get', signal
+    },
+      );
+    }
+  
+
+export const getGetApiImageVotingsIdResultsQueryKey = (id: number,) => [`/Api/ImageVotings/${id}/Results`] as const;
+  
+
     
+export const getGetApiImageVotingsIdResultsQueryOptions = <TData = Awaited<ReturnType<typeof getApiImageVotingsIdResults>>, TError = ErrorType<void | ProblemDetails>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingsIdResults>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingsIdResults>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiImageVotingsIdResultsQueryKey(id);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiImageVotingsIdResults>>> = ({ signal }) => getApiImageVotingsIdResults(id, signal);
+    
+      
+      
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions}}
+
+export type GetApiImageVotingsIdResultsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiImageVotingsIdResults>>>
+export type GetApiImageVotingsIdResultsQueryError = ErrorType<void | ProblemDetails>
+
+/**
+ * @summary Get results of an image voting
+ */
+export const useGetApiImageVotingsIdResults = <TData = Awaited<ReturnType<typeof getApiImageVotingsIdResults>>, TError = ErrorType<void | ProblemDetails>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingsIdResults>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiImageVotingsIdResultsQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+

@@ -46,6 +46,22 @@ public class ImageVotingsController : ApiControllerBase
         return Ok(response);
     }
 
+    [HttpGet("{id}/Results")]
+    [Permissions(typeof(ImageVotingsPermissions.ViewImageVotingResults),
+        typeof(ImageVotingsPermissions.ViewActiveImageVotingResults))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [EndpointSummary("Get results of an image voting")]
+    public async Task<ActionResult<ViewImageVotingResults.Response>> ViewResults([FromRoute] int id)
+    {
+        var response = await Mediator.Send(new ViewImageVotingResults.Query
+        {
+            Id = id
+        });
+
+        return Ok(response);
+    }
+
     [HttpPost]
     [Permissions(typeof(ImageVotingsPermissions.CreateImageVoting))]
     [ProducesResponseType(StatusCodes.Status201Created)]

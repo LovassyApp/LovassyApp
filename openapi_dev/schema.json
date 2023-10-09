@@ -1425,6 +1425,60 @@
         ]
       }
     },
+    "/Api/ImageVotings/{id}/Results": {
+      "get": {
+        "tags": [
+          "ImageVotings"
+        ],
+        "summary": "Get results of an image voting",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVotingResults, ImageVotings.ViewActiveImageVotingResults; Requires the following features to be enabled: ImageVotings",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageVotingsViewImageVotingResultsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/Import/Users": {
       "get": {
         "tags": [
@@ -5453,6 +5507,92 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsViewImageVotingResultsResponse": {
+        "type": "object",
+        "properties": {
+          "chooserCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "incrementerCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uploaderCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageVotingsViewImageVotingResultsResponseEntry"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsViewImageVotingResultsResponseEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "choicesCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "incrementSum": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageVotingsViewImageVotingResultsResponseEntryAspect"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsViewImageVotingResultsResponseEntryAspect": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "choicesCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "incrementSum": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
