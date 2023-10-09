@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**api_image_votings_id_delete**](ImageVotingsApi.md#api_image_votings_id_delete) | **DELETE** /Api/ImageVotings/{id} | Delete an image voting
 [**api_image_votings_id_get**](ImageVotingsApi.md#api_image_votings_id_get) | **GET** /Api/ImageVotings/{id} | Get information about an image voting
 [**api_image_votings_id_patch**](ImageVotingsApi.md#api_image_votings_id_patch) | **PATCH** /Api/ImageVotings/{id} | Update an image voting
+[**api_image_votings_id_results_get**](ImageVotingsApi.md#api_image_votings_id_results_get) | **GET** /Api/ImageVotings/{id}/Results | Get results of an image voting
 [**api_image_votings_post**](ImageVotingsApi.md#api_image_votings_post) | **POST** /Api/ImageVotings | Create a new image voting
 
 
@@ -131,6 +132,36 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json, text/json, application/*+json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## api_image_votings_id_results_get
+
+> crate::models::ImageVotingsViewImageVotingResultsResponse api_image_votings_id_results_get(id)
+Get results of an image voting
+
+Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVotingResults, ImageVotings.ViewActiveImageVotingResults; Requires the following features to be enabled: ImageVotings
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **i32** |  | [required] |
+
+### Return type
+
+[**crate::models::ImageVotingsViewImageVotingResultsResponse**](ImageVotingsViewImageVotingResultsResponse.md)
+
+### Authorization
+
+[Token](../README.md#Token)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
