@@ -148,9 +148,12 @@ export const ImageVotingEntryCard = ({
                         src={imageVotingEntry.imageUrl}
                         alt={imageVotingEntry.title}
                         fit="contain"
-                        height="90vh"
                         maw="90vw"
+                        height={"90vh"}
                     />
+                    <Text pos="fixed" bottom={0} size="lg" weight={500} mt="md" align="center" m="sm">
+                        {imageVotingEntry.title}
+                    </Text>
                 </Overlay>
             )}
             <Card

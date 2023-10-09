@@ -96,8 +96,12 @@ public static class ViewImageVoting
                 _userAccessor.User.UserGroups.Any(g => g.Id == imageVoting.UploaderUserGroupId) &&
                 _userAccessor.User.UserGroups.All(g => g.Id != imageVoting.BannedUserGroupId);
 
-            response.CanUpload = imageVoting.Active && inUploaderUserGroup &&
-                                 imageVoting.Entries.Count < imageVoting.MaxUploadsPerUser;
+            response.CanUpload =
+                (_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateImageVotingEntry)) ||
+                 (imageVoting.Active &&
+                  _permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateActiveImageVotingEntry)))) &&
+                inUploaderUserGroup &&
+                imageVoting.Entries.Count < imageVoting.MaxUploadsPerUser;
 
             return response;
         }

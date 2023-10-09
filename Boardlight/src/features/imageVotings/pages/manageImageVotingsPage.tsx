@@ -33,6 +33,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useGetApiUserGroups, useGetApiUserGroupsId } from "../../../api/generated/features/user-groups/user-groups";
 
+import { Link } from "react-router-dom";
 import { ManageImageVotingCard } from "../components/manageImageVotingCard";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { notifications } from "@mantine/notifications";
@@ -497,6 +498,18 @@ const DetailsModal = ({
                 <Text>Módosítás dátuma:</Text>
                 <Text weight="bold">{new Date(imageVoting?.updatedAt).toLocaleDateString("hu-HU", {})}</Text>
             </Group>
+            <PermissionRequirement
+                permissions={
+                    imageVoting?.active
+                        ? ["ImageVotings.ViewImageVoting", "ImageVotings.ViewActiveImageVoting"]
+                        : ["ImageVotings.ViewImageVoting"]
+                }
+            >
+                <Divider my="sm" />
+                <Button component={Link} to={`/image-votings/${imageVoting?.id}`} fullWidth={true} color="blue">
+                    Mutasd!
+                </Button>
+            </PermissionRequirement>
             <PermissionRequirement permissions={["ImageVotings.UpdateImageVoting"]}>
                 <Divider my="sm" />
                 <form onSubmit={submit}>
