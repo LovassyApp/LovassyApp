@@ -148,11 +148,8 @@ export const ImageVotingEntryCard = ({
                         src={imageVotingEntry.imageUrl}
                         alt={imageVotingEntry.title}
                         fit="contain"
-                        sx={(theme) => ({
-                            backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1],
-                            maxWidth: "90vw",
-                            maxHeight: "90vh",
-                        })}
+                        height="90vh"
+                        maw="90vw"
                     />
                 </Overlay>
             )}
