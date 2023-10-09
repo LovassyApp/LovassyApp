@@ -1,15 +1,17 @@
-import { Box, Card, Image, Text, createStyles, rem } from "@mantine/core";
+import { ActionIcon, Box, Card, Image, Text, createStyles, rem } from "@mantine/core";
+import { IconCheck, IconSquareForbid2, IconTrash } from "@tabler/icons-react";
 import {
     ImageVotingsIndexImageVotingEntriesResponse,
     ImageVotingsViewImageVotingResponse,
 } from "../../../api/generated/models";
 import {
+    useDeleteApiImageVotingEntriesId,
     usePostApiImageVotingEntriesIdChoose,
     usePostApiImageVotingEntriesIdUnchoose,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
 
-import { IconSquareForbid2 } from "@tabler/icons-react";
 import { IconX } from "@tabler/icons-react";
+import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { ValidationError } from "../../../helpers/apiHelpers";
 import { getGetApiImageVotingsIdQueryKey } from "../../../api/generated/features/image-votings/image-votings";
 import { notifications } from "@mantine/notifications";
@@ -84,6 +86,30 @@ export const ImageVotingEntryCard = ({
     const chooseEntry = usePostApiImageVotingEntriesIdChoose();
     const unchooseEntry = usePostApiImageVotingEntriesIdUnchoose();
 
+    const deleteImageVotingEntry = useDeleteApiImageVotingEntriesId();
+
+    const doDeleteImageVotingEntry = async () => {
+        try {
+            await deleteImageVotingEntry.mutateAsync({ id: imageVotingEntry.id });
+            notifications.show({
+                title: "Kép törölve",
+                color: "green",
+                icon: <IconCheck />,
+                message: "A képet (nevezést) sikeresen törölted.",
+            });
+            await queryClient.invalidateQueries({ queryKey: [imageVotingQueryKey[0]] });
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                notifications.show({
+                    title: "Hiba (400)",
+                    color: "red",
+                    icon: <IconX />,
+                    message: err.message,
+                });
+            }
+        }
+    };
+
     const onClick = async () => {
         try {
             if (chosen || imageVotingEntry.chosen) {
@@ -123,12 +149,33 @@ export const ImageVotingEntryCard = ({
                             backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1],
                         })}
                     />
-                    {imageVotingEntry.canChoose === false && (
-                        <Box pos="absolute" bottom={rem(8)} left={rem(8)} sx={{ zIndex: 2 }}>
-                            {" "}
-                            <IconSquareForbid2 />
-                        </Box>
-                    )}
+                    <PermissionRequirement
+                        permissions={["ImageVotings.DeleteImageVotingEntry", "ImageVotings.DeleteOwnImageVotingEntry"]}
+                        fallback={
+                            <Box c="white" pos="absolute" bottom={rem(8)} left={rem(8)} sx={{ zIndex: 2 }}>
+                                <IconSquareForbid2 />
+                            </Box>
+                        }
+                    >
+                        {(imageVotingEntry.canChoose === false && imageVotingEntry.userId === control.data.user.id) ||
+                        control.data.permissions.includes("ImageVotings.DeleteImageVotingEntry") ||
+                        control.data.isSuperUser ? (
+                            <ActionIcon
+                                variant="transparent"
+                                pos="absolute"
+                                bottom={rem(8)}
+                                left={rem(8)}
+                                sx={{ zIndex: 2 }}
+                                color="red.5"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    doDeleteImageVotingEntry();
+                                }}
+                            >
+                                <IconTrash />
+                            </ActionIcon>
+                        ) : undefined}
+                    </PermissionRequirement>
                 </Box>
             </Card.Section>
             <Card.Section className={classes.section} mt={0}>
