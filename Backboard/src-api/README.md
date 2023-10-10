@@ -49,6 +49,7 @@ Class | Method | HTTP request | Description
 *ImageVotingsApi* | [**api_image_votings_id_delete**](docs/ImageVotingsApi.md#api_image_votings_id_delete) | **DELETE** /Api/ImageVotings/{id} | Delete an image voting
 *ImageVotingsApi* | [**api_image_votings_id_get**](docs/ImageVotingsApi.md#api_image_votings_id_get) | **GET** /Api/ImageVotings/{id} | Get information about an image voting
 *ImageVotingsApi* | [**api_image_votings_id_patch**](docs/ImageVotingsApi.md#api_image_votings_id_patch) | **PATCH** /Api/ImageVotings/{id} | Update an image voting
+*ImageVotingsApi* | [**api_image_votings_id_results_get**](docs/ImageVotingsApi.md#api_image_votings_id_results_get) | **GET** /Api/ImageVotings/{id}/Results | Get results of an image voting
 *ImageVotingsApi* | [**api_image_votings_post**](docs/ImageVotingsApi.md#api_image_votings_post) | **POST** /Api/ImageVotings | Create a new image voting
 *ImportApi* | [**api_import_grades_user_id_post**](docs/ImportApi.md#api_import_grades_user_id_post) | **POST** /Api/Import/Grades/{userId} | Import grades for a user
 *ImportApi* | [**api_import_reset_key_password_put**](docs/ImportApi.md#api_import_reset_key_password_put) | **PUT** /Api/Import/ResetKeyPassword | Set the reset key password
@@ -142,6 +143,9 @@ Class | Method | HTTP request | Description
  - [ImageVotingsViewImageVotingEntryResponseUser](docs/ImageVotingsViewImageVotingEntryResponseUser.md)
  - [ImageVotingsViewImageVotingResponse](docs/ImageVotingsViewImageVotingResponse.md)
  - [ImageVotingsViewImageVotingResponseImageVotingAspect](docs/ImageVotingsViewImageVotingResponseImageVotingAspect.md)
+ - [ImageVotingsViewImageVotingResultsResponse](docs/ImageVotingsViewImageVotingResultsResponse.md)
+ - [ImageVotingsViewImageVotingResultsResponseEntry](docs/ImageVotingsViewImageVotingResultsResponseEntry.md)
+ - [ImageVotingsViewImageVotingResultsResponseEntryAspect](docs/ImageVotingsViewImageVotingResultsResponseEntryAspect.md)
  - [ImportCreateImportKeyRequestBody](docs/ImportCreateImportKeyRequestBody.md)
  - [ImportCreateImportKeyResponse](docs/ImportCreateImportKeyResponse.md)
  - [ImportImportGradesRequestBody](docs/ImportImportGradesRequestBody.md)
