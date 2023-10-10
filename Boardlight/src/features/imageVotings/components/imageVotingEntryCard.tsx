@@ -150,7 +150,7 @@ export const ImageVotingEntryCard = ({
                         maw="90vw"
                         height={"90vh"}
                     />
-                    <Text pos="fixed" bottom={0} size="lg" weight={500} mt="md" align="center" m="sm">
+                    <Text pos="fixed" bottom={0} size="lg" weight={500} mt="md" align="center" m="sm" color="white">
                         {imageVotingEntry.title}
                     </Text>
                 </Overlay>

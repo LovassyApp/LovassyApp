@@ -26,7 +26,6 @@ import { Suspense, lazy, useMemo, useState } from "react";
 import { isNotEmpty, useForm } from "@mantine/form";
 import {
     useGetApiImageVotingEntries,
-    useGetApiImageVotingEntriesId,
     usePostApiImageVotingEntries,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
 import {
@@ -41,7 +40,6 @@ import { ImageVotingsViewImageVotingResponse } from "../../../api/generated/mode
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
-import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
 import { useParams } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
@@ -325,6 +323,20 @@ const ImageVotingPage = (): JSX.Element => {
                     </Group>
                 </Group>
             </Box>
+            {imageVoting.data.aspects.length > 0 &&
+                imageVoting.data.type === "SingleChoice" &&
+                imageVoting.data.aspects.some((a) => a.canChoose) && (
+                    <Text mb="md" color="dimmed" size="xs" align="center">
+                        Válassz ki egy értékelési szempontot majd kattints egy képre, hogy rá szavazz!
+                    </Text>
+                )}
+            {imageVoting.data.aspects.length === 0 &&
+                imageVoting.data.type === "SingleChoice" &&
+                imageVotingEntries.data.some((e) => e.canChoose) && (
+                    <Text mb="md" color="dimmed" size="xs" align="center">
+                        Kattints egy képre, hogy rá szavazz!
+                    </Text>
+                )}
             <SimpleGrid
                 cols={4}
                 breakpoints={[
