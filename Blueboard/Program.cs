@@ -85,7 +85,7 @@ builder.Services.AddRateLimiter(o =>
             partition => new TokenBucketRateLimiterOptions
             {
                 AutoReplenishment = true,
-                TokenLimit = 120,
+                TokenLimit = 180,
                 ReplenishmentPeriod = TimeSpan.FromMinutes(2),
                 TokensPerPeriod = 60
             }));
