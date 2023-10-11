@@ -205,21 +205,6 @@ const UserInformationModal = ({ opened, close }: { opened: boolean; close(): voi
                     ))}
                 </Group>
             </Paper>
-            <Paper p="xs" className={classes.avatarSectionContainer} mt="sm">
-                <Stack>
-                    <Group position="center" spacing={rem(2)}>
-                        <IconKey stroke={1.5} size={20} />
-                        <Text align="center">Jogosultságok</Text>
-                    </Group>
-                    <Group spacing="xs" position="center">
-                        {control.data.permissions.map((userGroup) => (
-                            <Badge key={userGroup} variant="filled">
-                                {userGroup}
-                            </Badge>
-                        ))}
-                    </Group>
-                </Stack>
-            </Paper>
         </Modal>
     );
 };
