@@ -275,14 +275,15 @@ const ImageVotingPage = (): JSX.Element => {
                     <Box>
                         <Group spacing="xs" align="center">
                             <Title>
-                                {imageVoting.data.name}{" "}
-                                <Text component="span" display="inline-block">
+                                {imageVoting.data.name}
+
+                                <Text component="span" ml="xs">
                                     {imageVoting.data.active ? (
-                                        <Badge sx={{ transform: `translateY(${rem(-4)})` }} color="green">
+                                        <Badge sx={{ transform: `translateY(${rem(-4)})` }} color="green" size="lg">
                                             Aktív
                                         </Badge>
                                     ) : (
-                                        <Badge sx={{ transform: `translateY(${rem(-4)})` }} color="red">
+                                        <Badge sx={{ transform: `translateY(${rem(-4)})` }} color="red" size="lg">
                                             Inaktív
                                         </Badge>
                                     )}
