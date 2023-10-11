@@ -17,8 +17,14 @@ export const GradesAverageCard = (): JSX.Element => {
     const average = useMemo(() => {
         if (grades.data) {
             return (
-                grades.data.flatMap((s) => s.grades).reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
-                grades.data.flatMap((s) => s.grades).reduce((acc, grade) => acc + grade.weight, 0)
+                grades.data
+                    .flatMap((s) => s.grades)
+                    .filter((g) => g.gradeValue !== 0)
+                    .reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
+                grades.data
+                    .flatMap((s) => s.grades)
+                    .filter((g) => g.gradeValue !== 0)
+                    .reduce((acc, grade) => acc + grade.weight, 0)
             );
         }
         return 0;

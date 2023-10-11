@@ -302,7 +302,7 @@ public static class ImageVotingsPermissions
     public class DeleteOwnImageVotingEntryIncrement : IPermission
     {
         public string Name => "ImageVotings.DeleteOwnImageVotingEntryIncrement";
-        public string DisplayName => "Kép szavazás saját képének szavazatának törlése";
+        public string DisplayName => "Kép szavazásban saját szavazat törlése";
         public string Description => "Egy adott saját szavazat (kép szavazásban) törlése id alapján";
         public bool Dangerous => false;
     }

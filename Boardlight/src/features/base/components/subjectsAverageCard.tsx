@@ -19,8 +19,10 @@ export const SubjectsAverageCard = (): JSX.Element => {
         if (grades.data) {
             for (const subject of grades.data) {
                 subjectAverages.push(
-                    subject.grades.reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
-                        subject.grades.reduce((acc, grade) => acc + grade.weight, 0)
+                    subject.grades
+                        .filter((g) => g.gradeValue !== 0)
+                        .reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
+                        subject.grades.filter((g) => g.gradeValue !== 0).reduce((acc, grade) => acc + grade.weight, 0)
                 );
             }
             return subjectAverages.reduce((acc, grade) => acc + grade, 0) / subjectAverages.length;

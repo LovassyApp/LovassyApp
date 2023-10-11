@@ -60,8 +60,10 @@ const GradesPage = (): JSX.Element => {
             grades.data?.map((subject, index) => ({
                 value: index.toString(),
                 label: `${subject.subject} - ${(
-                    subject.grades.reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
-                    subject.grades.reduce((acc, grade) => acc + grade.weight, 0)
+                    subject.grades
+                        .filter((g) => g.gradeValue !== 0)
+                        .reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
+                    subject.grades.filter((g) => g.gradeValue !== 0).reduce((acc, grade) => acc + grade.weight, 0)
                 ).toPrecision(3)}`,
             })),
         [grades.data]
