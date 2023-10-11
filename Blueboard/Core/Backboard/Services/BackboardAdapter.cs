@@ -73,7 +73,8 @@ public class BackboardAdapter
             return;
 
         _user.RealName = gradeCollection.StudentName;
-        _user.Class = gradeCollection.SchoolClass;
+        if (gradeCollection.SchoolClass != null)
+            _user.Class = gradeCollection.SchoolClass;
 
         var grades = TransformGrades(gradeCollection);
 
