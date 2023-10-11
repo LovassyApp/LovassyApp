@@ -4,6 +4,7 @@ import {
     ImageVotingsIndexImageVotingEntriesResponse,
     ImageVotingsViewImageVotingResponse,
 } from "../../../api/generated/models";
+import React, { useMemo, useState } from "react";
 import {
     useDeleteApiImageVotingEntriesId,
     usePostApiImageVotingEntriesIdChoose,
@@ -16,7 +17,6 @@ import { getGetApiImageVotingsIdQueryKey } from "../../../api/generated/features
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles((theme) => ({
@@ -89,6 +89,7 @@ export const ImageVotingEntryCard = ({
     const deleteImageVotingEntry = useDeleteApiImageVotingEntriesId();
 
     const [magnifiedViewOpen, { close: closeMagnifiedViewOpen, open: openMagnifiedViewOpen }] = useDisclosure();
+    const [optimisticallyChosen, setOptimisticallyChosen] = useState<boolean | undefined>(undefined);
 
     const doDeleteImageVotingEntry = async () => {
         try {
@@ -115,9 +116,13 @@ export const ImageVotingEntryCard = ({
     const onClick = async () => {
         try {
             if (chosen || imageVotingEntry.chosen) {
+                setOptimisticallyChosen(false);
                 await unchooseEntry.mutateAsync({ id: imageVotingEntry.id, data: { aspectKey: aspectKey } });
+                setOptimisticallyChosen(undefined);
             } else {
+                setOptimisticallyChosen(true);
                 await chooseEntry.mutateAsync({ id: imageVotingEntry.id, data: { aspectKey: aspectKey } });
+                setOptimisticallyChosen(undefined);
             }
             if (aspectKey) await queryClient.invalidateQueries({ queryKey: [imageVotingQueryKey[0]] });
         } catch (err) {
@@ -159,7 +164,7 @@ export const ImageVotingEntryCard = ({
                 radius="md"
                 withBorder={true}
                 className={chosen || imageVotingEntry.chosen ? classes.activeCard : undefined}
-                sx={{ cursor: canChoose || canUnchoose ? "pointer" : "default" }}
+                sx={{ cursor: canChoose || canUnchoose || optimisticallyChosen ? "pointer" : "default" }}
                 onClick={canChoose || canUnchoose ? onClick : undefined}
             >
                 <Card.Section>
