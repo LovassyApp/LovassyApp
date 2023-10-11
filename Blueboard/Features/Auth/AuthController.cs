@@ -44,6 +44,7 @@ public class AuthController : ApiControllerBase
         return Ok(response);
     }
 
+    [EnableRateLimiting("Relaxed")]
     [Authorize]
     [HttpGet("Control")]
     [Permissions(typeof(AuthPermissions.ViewControl))]
