@@ -92,11 +92,17 @@ async fn import_grades(
             Error::ResponseError(response_error) => {
                 if let StatusCode::UNAUTHORIZED = response_error.status {
                     "401".to_string()
+                } else if StatusCode::NOT_FOUND == response_error.status {
+                    "404".to_string()
+                } else if StatusCode::TOO_MANY_REQUESTS == response_error.status {
+                    "429".to_string()
+                } else if StatusCode::INTERNAL_SERVER_ERROR == response_error.status {
+                    "500".to_string()
                 } else {
                     "error".to_string() // TODO: maybe find a better way to handle this (not important for now)
                 }
             }
-            _ => "error".to_string(), // TODO: maybe find a better way to handle this (not important for now)
+            _ => "unknown".to_string(), // TODO: maybe find a better way to handle this (not important for now)
         })?;
 
     window.emit("import-users", &users.len()).unwrap();
@@ -202,13 +208,19 @@ async fn import_grades(
                 .await
                 .map_err(|e| match e {
                     Error::ResponseError(response_error) => {
-                        if let StatusCode::UNAUTHORIZED = response_error.status {
+                        if StatusCode::UNAUTHORIZED == response_error.status {
                             "401".to_string()
+                        } else if StatusCode::NOT_FOUND == response_error.status {
+                            "404".to_string()
+                        } else if StatusCode::TOO_MANY_REQUESTS == response_error.status {
+                            "429".to_string()
+                        } else if StatusCode::INTERNAL_SERVER_ERROR == response_error.status {
+                            "500".to_string()
                         } else {
                             "error".to_string() // TODO: maybe find a better way to handle this (not important for now)
                         }
                     }
-                    _ => "error".to_string(), // TODO: maybe find a better way to handle this (not important for now)
+                    _ => "unknown".to_string(), // TODO: maybe find a better way to handle this (not important for now)
                 })?;
             }
         }

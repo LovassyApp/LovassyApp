@@ -79,7 +79,11 @@ const GradeImportPage = (): JSX.Element => {
             });
         } catch (error) {
             if (error === "401") setError("Hibás import kulcs!");
-            else setError("Nem sikerült feltölteni a visszaállítási jelszót!");
+            else if (error === "429") setError("Túl sok kérelem rövid idő alatt!");
+            else if (error === "404") setError("Egy megadott felhasználó nem létezik!");
+            else if (error === "500") setError("Szerver hiba történt!");
+            else if (error === "unknown") setError("Ismeretlen reqwest hiba történt!");
+            else setError("Nem sikerült feltölteni a jegyeket!");
         }
 
         setTimeout(() => {
