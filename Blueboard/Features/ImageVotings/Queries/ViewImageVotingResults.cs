@@ -32,8 +32,8 @@ public static class ViewImageVotingResults
         public string Title { get; set; }
         public string ImageUrl { get; set; }
 
-        public int? ChoicesCount { get; set; }
-        public int? IncrementSum { get; set; }
+        public int ChoicesCount { get; set; }
+        public int IncrementSum { get; set; }
 
         public List<ResponseEntryAspect> Aspects { get; set; }
     }
@@ -92,6 +92,9 @@ public static class ViewImageVotingResults
                             .Where(i => i.AspectKey == aspect.Key)
                             .Sum(i => i.Increment);
                     }
+
+                    entry.ChoicesCount = entry.Aspects.Sum(a => a.ChoicesCount);
+                    entry.IncrementSum = entry.Aspects.Sum(a => a.IncrementSum);
                 }
             else
                 foreach (var entry in entries)

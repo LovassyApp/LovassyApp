@@ -5553,13 +5553,11 @@
           },
           "choicesCount": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "incrementSum": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "aspects": {
             "type": "array",

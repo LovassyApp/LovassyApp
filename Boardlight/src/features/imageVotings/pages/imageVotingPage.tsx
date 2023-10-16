@@ -181,7 +181,7 @@ const ResultsModal = ({
                 <Text weight="bold">{results.data.chooserCount ?? results.data.incrementerCount}</Text>
             </Group>
             <Divider my="sm" />
-            <Text mb="md">Toplista</Text>
+            <Text mb="md">Toplista {imageVoting.aspects.length > 0 && !aspectKey && " (összesített értékek)"}</Text>
             {orderedEntries.slice(0, !expanded ? 5 : undefined).map((entry) => (
                 <Paper
                     key={entry.id}
@@ -197,7 +197,7 @@ const ResultsModal = ({
                             {entry.title}
                         </Text>
                         <Text>
-                            {entry.choicesCount ?? entry.incrementSum ?? getAspectVotes(entry, aspectKey) ?? "NaN"}
+                            {aspectKey ? getAspectVotes(entry, aspectKey) : entry.choicesCount ?? entry.incrementSum}
                         </Text>
                     </Group>
                     <Box sx={{ overflow: "hidden" }} maw="100%">
