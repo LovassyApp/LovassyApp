@@ -1,5 +1,5 @@
-import { Box, Group, Image, Paper, Stack, Text, createStyles, rem, useMantineTheme } from "@mantine/core";
-import { IconCoin, IconForms, IconQrcode, IconQrcodeOff } from "@tabler/icons-react";
+import { Box, Group, Image, Paper, Stack, Text, createStyles, rem } from "@mantine/core";
+import { IconForms, IconQrcode, IconQrcodeOff } from "@tabler/icons-react";
 
 import { ShopIndexOwnOwnedItemsResponse } from "../../../api/generated/models";
 

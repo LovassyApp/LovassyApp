@@ -10,7 +10,6 @@ import {
     Loader,
     Modal,
     MultiSelect,
-    Select,
     SimpleGrid,
     Text,
     TextInput,
@@ -18,7 +17,7 @@ import {
     createStyles,
     useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconFilter, IconSearch, IconTrash, IconX } from "@tabler/icons-react";
+import { IconCheck, IconFilter, IconSearch, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
     getGetApiUsersIdQueryKey,

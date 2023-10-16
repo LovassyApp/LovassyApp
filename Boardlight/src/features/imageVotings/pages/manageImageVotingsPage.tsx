@@ -20,7 +20,6 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import { IconCheck, IconPlus, IconTrash, IconX } from "@tabler/icons-react";
-import { ImageVotingsIndexImageVotingsResponse, ShopIndexLoloRequestsResponse } from "../../../api/generated/models";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
     getGetApiImageVotingsIdQueryKey,
@@ -33,6 +32,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useGetApiUserGroups, useGetApiUserGroupsId } from "../../../api/generated/features/user-groups/user-groups";
 
+import { ImageVotingsIndexImageVotingsResponse } from "../../../api/generated/models";
 import { Link } from "react-router-dom";
 import { ManageImageVotingCard } from "../components/manageImageVotingCard";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";

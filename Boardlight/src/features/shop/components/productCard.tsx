@@ -1,5 +1,5 @@
 import { Box, Group, Image, Paper, Stack, Text, createStyles, rem } from "@mantine/core";
-import { IconEyeOff, IconForms, IconQrcode, IconQrcodeOff } from "@tabler/icons-react";
+import { IconEyeOff, IconQrcode, IconQrcodeOff } from "@tabler/icons-react";
 
 import { ShopIndexProductsResponse } from "../../../api/generated/models";
 

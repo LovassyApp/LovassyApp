@@ -1,4 +1,4 @@
-import { Box, Center, Loader, SimpleGrid, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
+import { Center, Loader, SimpleGrid, Text, Title, createStyles, useMantineTheme } from "@mantine/core";
 
 import { ImageVotingCard } from "../components/imageVotingCard";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";

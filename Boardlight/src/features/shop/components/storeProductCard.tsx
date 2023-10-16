@@ -1,4 +1,4 @@
-import { Box, Button, Card, Group, Image, Text, createStyles, rem, useMantineTheme } from "@mantine/core";
+import { Box, Button, Card, Group, Image, Text, createStyles, rem } from "@mantine/core";
 import { IconQrcode, IconQrcodeOff } from "@tabler/icons-react";
 
 import { ShopIndexProductsResponse } from "../../../api/generated/models";

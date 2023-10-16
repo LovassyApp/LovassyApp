@@ -1,4 +1,3 @@
-import { Box, createStyles } from "@mantine/core";
 import { Link, RichTextEditor, RichTextEditorProps } from "@mantine/tiptap";
 
 import Highlight from "@tiptap/extension-highlight";
