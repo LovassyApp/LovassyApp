@@ -279,11 +279,11 @@ const ImageVotingPage = (): JSX.Element => {
 
                                 <Text component="span" ml="xs">
                                     {imageVoting.data.active ? (
-                                        <Badge sx={{ transform: `translateY(${rem(-4)})` }} color="green" size="lg">
+                                        <Badge sx={{ transform: `translateY(${rem(-6)})` }} color="green" size="lg">
                                             Aktív
                                         </Badge>
                                     ) : (
-                                        <Badge sx={{ transform: `translateY(${rem(-4)})` }} color="red" size="lg">
+                                        <Badge sx={{ transform: `translateY(${rem(-6)})` }} color="red" size="lg">
                                             Inaktív
                                         </Badge>
                                     )}
