@@ -72,9 +72,9 @@ public class BackboardAdapter
         if (gradeCollection == null)
             return;
 
-        _user.RealName = gradeCollection.StudentName;
+        _user.RealName = gradeCollection.StudentName.Trim();
         if (gradeCollection.SchoolClass != null)
-            _user.Class = gradeCollection.SchoolClass;
+            _user.Class = gradeCollection.SchoolClass.Trim(); // For some reason, the class can contain leading spaces
 
         var grades = TransformGrades(gradeCollection);
 
