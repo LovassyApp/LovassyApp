@@ -48,12 +48,7 @@ public class UnchooseImageVotingEntry
             if (entry == null)
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
 
-            if (entry.ImageVoting.Type != ImageVotingType.SingleChoice)
-                throw new BadRequestException("A megadott szavazás nem egy választásos szavazás");
-
-            if (!entry.ImageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UnchooseImageVotingEntry)))
-                throw new BadRequestException("A megadott szavazás nem aktív");
+            CheckUnchoosability(entry);
 
             if (entry.ImageVoting.Aspects.Any())
             {
@@ -90,6 +85,16 @@ public class UnchooseImageVotingEntry
             await _publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
+        }
+
+        private void CheckUnchoosability(ImageVotingEntry entry)
+        {
+            if (entry.ImageVoting.Type != ImageVotingType.SingleChoice)
+                throw new BadRequestException("A megadott szavazás nem egy választásos szavazás");
+
+            if (!entry.ImageVoting.Active &&
+                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UnchooseImageVotingEntry)))
+                throw new BadRequestException("A megadott szavazás nem aktív");
         }
     }
 }
