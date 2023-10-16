@@ -4,12 +4,12 @@ import {
     ImageVotingsIndexImageVotingEntriesResponse,
     ImageVotingsViewImageVotingResponse,
 } from "../../../api/generated/models";
-import React, { useMemo, useState } from "react";
 import {
     useDeleteApiImageVotingEntriesId,
     usePostApiImageVotingEntriesIdChoose,
     usePostApiImageVotingEntriesIdUnchoose,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
+import { useMemo, useState } from "react";
 
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { ValidationError } from "../../../helpers/apiHelpers";

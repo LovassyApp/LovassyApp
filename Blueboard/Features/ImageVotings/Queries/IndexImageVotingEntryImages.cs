@@ -15,7 +15,7 @@ public static class IndexImageVotingEntryImages
 {
     public class Query : IRequest<IEnumerable<Response>>
     {
-        public int ImageVotingId { get; set; }
+        public RequestBody Body { get; set; }
         public SieveModel SieveModel { get; set; }
     }
 
@@ -36,6 +36,11 @@ public static class IndexImageVotingEntryImages
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+    }
+
+    public class RequestBody
+    {
+        public int ImageVotingId { get; set; }
     }
 
     internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
@@ -59,10 +64,10 @@ public static class IndexImageVotingEntryImages
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
             var imageVoting = await _context.ImageVotings
-                .FirstOrDefaultAsync(x => x.Id == request.ImageVotingId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.Body.ImageVotingId, cancellationToken);
 
             if (imageVoting == null)
-                throw new NotFoundException(nameof(ImageVoting), request.ImageVotingId);
+                throw new NotFoundException(nameof(ImageVoting), request.Body.ImageVotingId);
 
             var onlyOwn =
                 !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingEntryImages));

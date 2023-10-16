@@ -16,7 +16,6 @@ public static class UploadImageVotingEntryImage
 {
     public class Command : IRequest<Response>
     {
-        public int ImageVotingId { get; set; }
         public RequestBody Body { get; set; }
     }
 
@@ -37,6 +36,7 @@ public static class UploadImageVotingEntryImage
 
     public class RequestBody
     {
+        public int ImageVotingId { get; set; }
         public IFormFile File { get; set; }
     }
 
@@ -72,9 +72,9 @@ public static class UploadImageVotingEntryImage
         {
             var imageVoting = await _dbContext.ImageVotings
                 .Include(x => x.Entries.Where(e => e.UserId == _userAccessor.User.Id))
-                .FirstOrDefaultAsync(x => x.Id == request.ImageVotingId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.Body.ImageVotingId, cancellationToken);
 
-            if (imageVoting == null) throw new NotFoundException(nameof(ImageVoting), request.ImageVotingId);
+            if (imageVoting == null) throw new NotFoundException(nameof(ImageVoting), request.Body.ImageVotingId);
 
             if (!imageVoting.Active &&
                 !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UploadImageVotingEntryImage)))

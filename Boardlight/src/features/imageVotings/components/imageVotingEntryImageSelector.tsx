@@ -17,12 +17,11 @@ import {
 } from "../../../api/generated/models";
 import React, { ReactNode, useEffect, useMemo } from "react";
 import {
-    getApiImageVotingEntriesImageVotingIdImages,
-    getGetApiImageVotingEntriesImageVotingIdImagesQueryKey,
-    useDeleteApiImageVotingEntriesImagesId,
-    useGetApiImageVotingEntriesImageVotingIdImages,
-    usePostApiImageVotingEntriesImageVotingIdImages,
-} from "../../../api/generated/features/image-voting-entries/image-voting-entries";
+    getGetApiImageVotingEntryImagesQueryKey,
+    useDeleteApiImageVotingEntryImagesId,
+    useGetApiImageVotingEntryImages,
+    usePostApiImageVotingEntryImages,
+} from "../../../api/generated/features/image-voting-entry-images/image-voting-entry-images";
 
 import { IconTrash } from "@tabler/icons-react";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
@@ -58,9 +57,9 @@ const SelectableImage = ({
     const { classes, cx } = useStyles();
 
     const queryClient = useQueryClient();
-    const imagesQueryKey = getGetApiImageVotingEntriesImageVotingIdImagesQueryKey(imageVotingId);
+    const imagesQueryKey = getGetApiImageVotingEntryImagesQueryKey({ imageVotingId });
 
-    const deleteEntryImage = useDeleteApiImageVotingEntriesImagesId();
+    const deleteEntryImage = useDeleteApiImageVotingEntryImagesId();
 
     const doDeleteImage = async () => {
         try {
@@ -114,7 +113,7 @@ export const ImageVotingEntryImageSelector = ({
     const { classes } = useStyles();
 
     const queryClient = useQueryClient();
-    const imagesQueryKey = getGetApiImageVotingEntriesImageVotingIdImagesQueryKey(imageVoting.id);
+    const imagesQueryKey = getGetApiImageVotingEntryImagesQueryKey({ imageVotingId: imageVoting.id });
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
@@ -127,8 +126,10 @@ export const ImageVotingEntryImageSelector = ({
         [control]
     );
 
-    const imageVotingEntryImages = useGetApiImageVotingEntriesImageVotingIdImages(
-        imageVoting.id,
+    const imageVotingEntryImages = useGetApiImageVotingEntryImages(
+        {
+            imageVotingId: imageVoting.id,
+        },
         {
             Filters:
                 control.data?.permissions?.includes("ImageVotings.IndexImageVotingEntryImages") ||
@@ -141,7 +142,7 @@ export const ImageVotingEntryImageSelector = ({
         }
     );
 
-    const uploadImage = usePostApiImageVotingEntriesImageVotingIdImages();
+    const uploadImage = usePostApiImageVotingEntryImages();
 
     const [selectedImage, setSelectedImage] = React.useState<File | null>(null);
     const [imageError, setImageError] = React.useState<string | null>(null);
@@ -160,8 +161,8 @@ export const ImageVotingEntryImageSelector = ({
         try {
             setImageError(null);
             const res = await uploadImage.mutateAsync({
-                imageVotingId: imageVoting.id,
                 data: {
+                    ImageVotingId: imageVoting.id,
                     File: selectedImage,
                 },
             });

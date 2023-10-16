@@ -1,17 +1,5 @@
-import {
-    Box,
-    Button,
-    Card,
-    Divider,
-    Group,
-    Paper,
-    Stack,
-    Text,
-    createStyles,
-    rem,
-    useMantineTheme,
-} from "@mantine/core";
-import { IconPhoto, IconPhotoCheck, IconPhotoQuestion, IconPhotoUp, IconUser } from "@tabler/icons-react";
+import { Box, Button, Card, Group, Stack, Text, createStyles, rem, useMantineTheme } from "@mantine/core";
+import { IconPhotoCheck, IconPhotoQuestion, IconPhotoUp } from "@tabler/icons-react";
 
 import { ImageVotingsIndexImageVotingsResponse } from "../../../api/generated/models";
 import { Link } from "react-router-dom";

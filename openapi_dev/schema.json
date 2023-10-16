@@ -918,24 +918,14 @@
         ]
       }
     },
-    "/Api/ImageVotingEntries/{imageVotingId}/Images": {
+    "/Api/ImageVotingEntryImages": {
       "get": {
         "tags": [
-          "ImageVotingEntries"
+          "ImageVotingEntryImages"
         ],
         "summary": "List all images of an image voting",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexOwnImageVotingEntryImages, ImageVotings.IndexImageVotingEntryImages; Requires the following features to be enabled: ImageVotings",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.IndexOwnImageVotingEntryImages, ImageVotings.IndexImageVotingEntryImages",
         "parameters": [
-          {
-            "name": "imageVotingId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
           {
             "name": "Filters",
             "in": "query",
@@ -975,6 +965,25 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsIndexImageVotingEntryImagesRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsIndexImageVotingEntryImagesRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsIndexImageVotingEntryImagesRequestBody"
+              }
+            }
+          }
+        },
         "responses": {
           "404": {
             "description": "Not Found",
@@ -1014,10 +1023,10 @@
       },
       "post": {
         "tags": [
-          "ImageVotingEntries"
+          "ImageVotingEntryImages"
         ],
         "summary": "Upload an image to be used in an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UploadActiveImageVotingEntryImage, ImageVotings.UploadImageVotingEntryImage; Requires the following features to be enabled: ImageVotings",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UploadActiveImageVotingEntryImage, ImageVotings.UploadImageVotingEntryImage",
         "parameters": [
           {
             "name": "imageVotingId",
@@ -1036,6 +1045,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "ImageVotingId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
                   "File": {
                     "type": "string",
                     "format": "binary"
@@ -1043,6 +1056,9 @@
                 }
               },
               "encoding": {
+                "ImageVotingId": {
+                  "style": "form"
+                },
                 "File": {
                   "style": "form"
                 }
@@ -1085,13 +1101,13 @@
         ]
       }
     },
-    "/Api/ImageVotingEntries/Images/{id}": {
+    "/Api/ImageVotingEntryImages/{id}": {
       "delete": {
         "tags": [
-          "ImageVotingEntries"
+          "ImageVotingEntryImages"
         ],
         "summary": "Delete an image meant for an image voting entry",
-        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteOwnImageVotingEntryImage, ImageVotings.DeleteImageVotingEntryImage; Requires the following features to be enabled: ImageVotings",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteOwnImageVotingEntryImage, ImageVotings.DeleteImageVotingEntryImage",
         "parameters": [
           {
             "name": "id",
@@ -5120,6 +5136,16 @@
           "class": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsIndexImageVotingEntryImagesRequestBody": {
+        "type": "object",
+        "properties": {
+          "imageVotingId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
