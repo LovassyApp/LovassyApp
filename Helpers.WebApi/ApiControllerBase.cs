@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Helpers.WebApi;
@@ -10,6 +11,7 @@ namespace Helpers.WebApi;
 [ApiController]
 [Route("Api/[controller]")]
 [Produces("application/json")]
+[EnableRateLimiting("Default")]
 public abstract class ApiControllerBase : Controller
 {
     private ISender? _mediator;

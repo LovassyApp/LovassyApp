@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.RateLimiting;
 using Blueboard.Core.Auth;
 using Blueboard.Core.Backboard;
 using Blueboard.Core.Lolo;
@@ -76,38 +75,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services.AddCors(o =>
     o.AddDefaultPolicy(p => p.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
-builder.Services.AddRateLimiter(o =>
-{
-    o.RejectionStatusCode = 429;
-    o.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
-        RateLimitPartition.GetTokenBucketLimiter(
-            context.Connection.RemoteIpAddress!.ToString(),
-            partition => new TokenBucketRateLimiterOptions
-            {
-                AutoReplenishment = true,
-                TokenLimit = 180,
-                ReplenishmentPeriod = TimeSpan.FromMinutes(2),
-                TokensPerPeriod = 60
-            }));
 
-    o.AddPolicy("Strict", context => RateLimitPartition.GetFixedWindowLimiter(
-        context.Connection.RemoteIpAddress!.ToString() + context.Request.Path,
-        partition => new FixedWindowRateLimiterOptions
-        {
-            AutoReplenishment = true,
-            PermitLimit = 10,
-            Window = TimeSpan.FromSeconds(30)
-        }));
-
-    o.AddPolicy("Relaxed", context => RateLimitPartition.GetFixedWindowLimiter(
-        context.Connection.RemoteIpAddress!.ToString() + context.Request.Path,
-        partition => new FixedWindowRateLimiterOptions
-        {
-            AutoReplenishment = true,
-            PermitLimit = 1200,
-            Window = TimeSpan.FromMinutes(1)
-        })); // Primarily used for the grade import endpoint
-});
 builder.Services.AddControllers(o =>
 {
     o.Filters.Add(new ExceptionFilter());

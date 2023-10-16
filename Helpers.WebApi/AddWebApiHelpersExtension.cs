@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Security.Claims;
+using System.Threading.RateLimiting;
 using FluentValidation;
 using Helpers.WebApi.Behaviours;
 using Helpers.WebApi.Filters.Operation;
@@ -9,6 +10,7 @@ using Helpers.WebApi.Services;
 using Helpers.WebApi.Services.Options;
 using MediatR;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -88,6 +90,39 @@ public static class AddWebApiHelpersExtension
         {
             o.FeatureGroupClaim = frameworkHelpersConfiguration.FeatureGroupClaim;
             o.FeatureUserClaim = frameworkHelpersConfiguration.FeatureUserClaim;
+        });
+
+        //Rate limiter
+        services.AddRateLimiter(o =>
+        {
+            o.RejectionStatusCode = 429;
+            o.AddPolicy("Default", context => RateLimitPartition.GetTokenBucketLimiter(
+                context.Connection.RemoteIpAddress!.ToString(),
+                partition => new TokenBucketRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    TokenLimit = 180,
+                    ReplenishmentPeriod = TimeSpan.FromMinutes(2),
+                    TokensPerPeriod = 60
+                }));
+
+            o.AddPolicy("Strict", context => RateLimitPartition.GetFixedWindowLimiter(
+                context.Connection.RemoteIpAddress!.ToString() + context.Request.Path,
+                partition => new FixedWindowRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    PermitLimit = 10,
+                    Window = TimeSpan.FromSeconds(30)
+                }));
+
+            o.AddPolicy("Relaxed", context => RateLimitPartition.GetFixedWindowLimiter(
+                context.Connection.RemoteIpAddress!.ToString() + context.Request.Path,
+                partition => new FixedWindowRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    PermitLimit = 1200,
+                    Window = TimeSpan.FromMinutes(1)
+                }));
         });
     }
 
