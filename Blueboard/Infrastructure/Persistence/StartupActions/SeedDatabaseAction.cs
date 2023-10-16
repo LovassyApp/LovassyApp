@@ -9,11 +9,13 @@ namespace Blueboard.Infrastructure.Persistence.StartupActions;
 
 public class SeedDatabaseAction : IStartupAction
 {
+    private readonly ILogger<SeedDatabaseAction> _logger;
     private readonly IServiceProvider _serviceProvider;
 
-    public SeedDatabaseAction(IServiceProvider serviceProvider)
+    public SeedDatabaseAction(IServiceProvider serviceProvider, ILogger<SeedDatabaseAction> logger)
     {
         _serviceProvider = serviceProvider;
+        _logger = logger;
     }
 
     public async Task Execute()
@@ -26,13 +28,11 @@ public class SeedDatabaseAction : IStartupAction
 
         if (defaultGroup == null)
         {
-            var permissionTypes = Assembly.GetExecutingAssembly().GetTypes()
+            var permissionNames = Assembly.GetExecutingAssembly()
+                .GetTypes()
                 .Where(x => typeof(IPermission).IsAssignableFrom(x) && x is { IsInterface: false, IsAbstract: false })
-                .ToList();
-
-            var permissionNames = permissionTypes.Select(x =>
-                ((IPermission)Activator.CreateInstance(x)!).Name
-            ).ToArray(); // We can't use PermissionUtils just yet as it is also initialized in a startup action
+                .Select(x => ((IPermission)Activator.CreateInstance(x)!).Name)
+                .ToArray(); // We can't use PermissionUtils just yet as it is also initialized in a startup action
 
             var group = new UserGroup
             {
@@ -46,6 +46,8 @@ public class SeedDatabaseAction : IStartupAction
 
             await context.Database.ExecuteSqlRawAsync(
                 @$"select setval(pg_get_serial_sequence('""{nameof(ApplicationDbContext.UserGroups)}""', '{nameof(UserGroup.Id)}'), (select max(""{nameof(UserGroup.Id)}"") from ""{nameof(ApplicationDbContext.UserGroups)}""))");
+
+            _logger.LogInformation("Created the default user group");
         }
     }
 }
