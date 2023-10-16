@@ -95,8 +95,6 @@ public static class ResetPassword
                 User = user
             }, cancellationToken);
 
-            //TODO: Send out an event and a notification through websockets in the handler
-
             return Unit.Value;
         }
     }

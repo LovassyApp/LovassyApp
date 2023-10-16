@@ -43,7 +43,7 @@ public static class AddServicesExtension
             .AddAuthentication(AuthConstants
                 .TokenScheme) //TODO: Investigate this: Whenever we use a different scheme, we still run the handler for the default scheme, but we only challenge the other scheme (rn this has basically no effect, but it might be a problem in the future)
             .AddScheme<TokenAuthenticationSchemeOptions, TokenAuthenticationSchemeHandler>(AuthConstants.TokenScheme,
-                o => { o.HubsBasePath = "/Hubs"; }) //TODO: Add HubsBasePath once there are hubs
+                o => { o.HubsBasePath = "/Hubs"; })
             .AddScheme<ImportKeyAuthenticationSchemeOptions, ImportKeyAuthenticationSchemeHandler>(
                 AuthConstants.ImportKeyScheme, o => { });
 

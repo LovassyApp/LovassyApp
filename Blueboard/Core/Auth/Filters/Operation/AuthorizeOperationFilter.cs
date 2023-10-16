@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Blueboard.Core.Auth.Filters.Operation;
 
-//TODO: Maybe move this to Helpers.Blueboard
+//TODO: Maybe move this to Helpers.WebApi
 public class AuthorizeOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
