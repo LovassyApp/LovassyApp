@@ -23,6 +23,7 @@ docs/FeedIndexFeedItemsResponse.md
 docs/FeedItemsApi.md
 docs/GradesApi.md
 docs/ImageVotingEntriesApi.md
+docs/ImageVotingEntryImagesApi.md
 docs/ImageVotingsApi.md
 docs/ImageVotingsChooseImageVotingEntryRequestBody.md
 docs/ImageVotingsCreateImageVotingEntryRequestBody.md
@@ -33,6 +34,7 @@ docs/ImageVotingsCreateImageVotingResponse.md
 docs/ImageVotingsCreateImageVotingResponseImageVotingAspect.md
 docs/ImageVotingsIndexImageVotingEntriesResponse.md
 docs/ImageVotingsIndexImageVotingEntriesResponseUser.md
+docs/ImageVotingsIndexImageVotingEntryImagesRequestBody.md
 docs/ImageVotingsIndexImageVotingEntryImagesResponse.md
 docs/ImageVotingsIndexImageVotingsResponse.md
 docs/ImageVotingsUnchooseImageVotingEntryRequestBody.md
@@ -127,6 +129,7 @@ src/apis/configuration.rs
 src/apis/feed_items_api.rs
 src/apis/grades_api.rs
 src/apis/image_voting_entries_api.rs
+src/apis/image_voting_entry_images_api.rs
 src/apis/image_votings_api.rs
 src/apis/import_api.rs
 src/apis/import_keys_api.rs
@@ -167,6 +170,7 @@ src/models/image_votings_create_image_voting_response.rs
 src/models/image_votings_create_image_voting_response_image_voting_aspect.rs
 src/models/image_votings_index_image_voting_entries_response.rs
 src/models/image_votings_index_image_voting_entries_response_user.rs
+src/models/image_votings_index_image_voting_entry_images_request_body.rs
 src/models/image_votings_index_image_voting_entry_images_response.rs
 src/models/image_votings_index_image_votings_response.rs
 src/models/image_votings_unchoose_image_voting_entry_request_body.rs

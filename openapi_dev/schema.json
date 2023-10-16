@@ -1027,18 +1027,6 @@
         ],
         "summary": "Upload an image to be used in an image voting entry",
         "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UploadActiveImageVotingEntryImage, ImageVotings.UploadImageVotingEntryImage",
-        "parameters": [
-          {
-            "name": "imageVotingId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {

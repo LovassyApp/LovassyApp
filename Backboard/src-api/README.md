@@ -41,10 +41,10 @@ Class | Method | HTTP request | Description
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_get**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_get) | **GET** /Api/ImageVotingEntries/{id} | Get information about an image voting entry
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_patch**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_patch) | **PATCH** /Api/ImageVotingEntries/{id} | Update an image voting entry
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_unchoose_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_unchoose_post) | **POST** /Api/ImageVotingEntries/{id}/Unchoose | Unchoose an image voting entry (single choice image votings only)
-*ImageVotingEntriesApi* | [**api_image_voting_entries_image_voting_id_images_get**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_image_voting_id_images_get) | **GET** /Api/ImageVotingEntries/{imageVotingId}/Images | List all images of an image voting
-*ImageVotingEntriesApi* | [**api_image_voting_entries_image_voting_id_images_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_image_voting_id_images_post) | **POST** /Api/ImageVotingEntries/{imageVotingId}/Images | Upload an image to be used in an image voting entry
-*ImageVotingEntriesApi* | [**api_image_voting_entries_images_id_delete**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_images_id_delete) | **DELETE** /Api/ImageVotingEntries/Images/{id} | Delete an image meant for an image voting entry
 *ImageVotingEntriesApi* | [**api_image_voting_entries_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_post) | **POST** /Api/ImageVotingEntries | Create an image voting entry
+*ImageVotingEntryImagesApi* | [**api_image_voting_entry_images_get**](docs/ImageVotingEntryImagesApi.md#api_image_voting_entry_images_get) | **GET** /Api/ImageVotingEntryImages | List all images of an image voting
+*ImageVotingEntryImagesApi* | [**api_image_voting_entry_images_id_delete**](docs/ImageVotingEntryImagesApi.md#api_image_voting_entry_images_id_delete) | **DELETE** /Api/ImageVotingEntryImages/{id} | Delete an image meant for an image voting entry
+*ImageVotingEntryImagesApi* | [**api_image_voting_entry_images_post**](docs/ImageVotingEntryImagesApi.md#api_image_voting_entry_images_post) | **POST** /Api/ImageVotingEntryImages | Upload an image to be used in an image voting entry
 *ImageVotingsApi* | [**api_image_votings_get**](docs/ImageVotingsApi.md#api_image_votings_get) | **GET** /Api/ImageVotings | Get a list of image votings
 *ImageVotingsApi* | [**api_image_votings_id_delete**](docs/ImageVotingsApi.md#api_image_votings_id_delete) | **DELETE** /Api/ImageVotings/{id} | Delete an image voting
 *ImageVotingsApi* | [**api_image_votings_id_get**](docs/ImageVotingsApi.md#api_image_votings_id_get) | **GET** /Api/ImageVotings/{id} | Get information about an image voting
@@ -132,6 +132,7 @@ Class | Method | HTTP request | Description
  - [ImageVotingsCreateImageVotingResponseImageVotingAspect](docs/ImageVotingsCreateImageVotingResponseImageVotingAspect.md)
  - [ImageVotingsIndexImageVotingEntriesResponse](docs/ImageVotingsIndexImageVotingEntriesResponse.md)
  - [ImageVotingsIndexImageVotingEntriesResponseUser](docs/ImageVotingsIndexImageVotingEntriesResponseUser.md)
+ - [ImageVotingsIndexImageVotingEntryImagesRequestBody](docs/ImageVotingsIndexImageVotingEntryImagesRequestBody.md)
  - [ImageVotingsIndexImageVotingEntryImagesResponse](docs/ImageVotingsIndexImageVotingEntryImagesResponse.md)
  - [ImageVotingsIndexImageVotingsResponse](docs/ImageVotingsIndexImageVotingsResponse.md)
  - [ImageVotingsUnchooseImageVotingEntryRequestBody](docs/ImageVotingsUnchooseImageVotingEntryRequestBody.md)

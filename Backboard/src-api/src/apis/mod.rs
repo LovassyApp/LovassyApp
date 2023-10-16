@@ -94,6 +94,7 @@ pub mod auth_api;
 pub mod feed_items_api;
 pub mod grades_api;
 pub mod image_voting_entries_api;
+pub mod image_voting_entry_images_api;
 pub mod image_votings_api;
 pub mod import_api;
 pub mod import_keys_api;

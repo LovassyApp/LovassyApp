@@ -19,10 +19,10 @@ pub struct ImageVotingsViewImageVotingResultsResponseEntry {
     pub title: Option<Option<String>>,
     #[serde(rename = "imageUrl", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub image_url: Option<Option<String>>,
-    #[serde(rename = "choicesCount", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
-    pub choices_count: Option<Option<i32>>,
-    #[serde(rename = "incrementSum", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
-    pub increment_sum: Option<Option<i32>>,
+    #[serde(rename = "choicesCount", skip_serializing_if = "Option::is_none")]
+    pub choices_count: Option<i32>,
+    #[serde(rename = "incrementSum", skip_serializing_if = "Option::is_none")]
+    pub increment_sum: Option<i32>,
     #[serde(rename = "aspects", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub aspects: Option<Option<Vec<crate::models::ImageVotingsViewImageVotingResultsResponseEntryAspect>>>,
 }

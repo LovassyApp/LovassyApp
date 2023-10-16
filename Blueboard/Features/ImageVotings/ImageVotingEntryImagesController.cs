@@ -40,7 +40,6 @@ public class ImageVotingEntryImagesController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [EndpointSummary("Upload an image to be used in an image voting entry")]
     public async Task<ActionResult<UploadImageVotingEntryImage.Response>> Create(
-        [FromRoute] int imageVotingId,
         [FromForm] UploadImageVotingEntryImage.RequestBody body)
     {
         var response = await Mediator.Send(new UploadImageVotingEntryImage.Command
