@@ -2,6 +2,7 @@ using Blueboard.Features.Status.Commands;
 using Blueboard.Features.Status.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Blueboard.Features.Status;
 
@@ -21,6 +22,7 @@ public class StatusController : ApiControllerBase
         return body.SendOk ? Ok(response) : Json(response);
     }
 
+    [DisableRateLimiting]
     [HttpGet("ServiceStatus")]
     [EndpointSummary("Get information about the status of the application")]
     public async Task<ActionResult<ViewServiceStatus.Response>> ViewServiceStatus()
