@@ -10,7 +10,7 @@ export interface ImageVotingsViewImageVotingResultsResponseEntry {
   id?: number;
   title?: string | null;
   imageUrl?: string | null;
-  choicesCount?: number | null;
-  incrementSum?: number | null;
+  choicesCount?: number;
+  incrementSum?: number;
   aspects?: ImageVotingsViewImageVotingResultsResponseEntryAspect[] | null;
 }
