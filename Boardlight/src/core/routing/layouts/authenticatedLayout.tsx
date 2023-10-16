@@ -409,7 +409,7 @@ const AuthenticatedHeader = ({ links, toggleDrawer }: AuthenticatedHeaderProps) 
         <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0 }}>
             <Container className={classes.content} fluid={true}>
                 <Group>
-                    <Text size="xl" weight={700} variant="gradient">
+                    <Text component={Link} to="/" size="xl" weight={700} variant="gradient">
                         LovassyApp
                     </Text>
                 </Group>
