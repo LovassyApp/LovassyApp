@@ -118,10 +118,22 @@ export const ImageVotingEntryCard = ({
             if (chosen || imageVotingEntry.chosen) {
                 setOptimisticallyChosen(false);
                 await unchooseEntry.mutateAsync({ id: imageVotingEntry.id, data: { aspectKey: aspectKey } });
+                notifications.show({
+                    title: "Kép kiválasztásának visszavonása",
+                    color: "green",
+                    icon: <IconCheck />,
+                    message: "A kép kiválasztását sikeresen visszavontad.",
+                });
                 setOptimisticallyChosen(undefined);
             } else {
                 setOptimisticallyChosen(true);
                 await chooseEntry.mutateAsync({ id: imageVotingEntry.id, data: { aspectKey: aspectKey } });
+                notifications.show({
+                    title: "Kép kiválasztva",
+                    color: "green",
+                    icon: <IconCheck />,
+                    message: "A képet sikeresen kiválasztottad.",
+                });
                 setOptimisticallyChosen(undefined);
             }
             if (aspectKey) await queryClient.invalidateQueries({ queryKey: [imageVotingQueryKey[0]] });
