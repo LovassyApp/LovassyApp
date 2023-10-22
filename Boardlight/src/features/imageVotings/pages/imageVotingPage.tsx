@@ -200,11 +200,6 @@ const ResultsModal = ({
                             {aspectKey ? getAspectVotes(entry, aspectKey) : entry.choicesCount ?? entry.incrementSum}
                         </Text>
                     </Group>
-                    <Box sx={{ overflow: "hidden" }} maw="100%">
-                        <Anchor truncate={true} href={entry.imageUrl} target="_blank">
-                            Beküldött kép
-                        </Anchor>
-                    </Box>
                 </Paper>
             ))}
             {orderedEntries.length > 5 && (
