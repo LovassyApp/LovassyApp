@@ -64,7 +64,7 @@ public static class IndexImageVotingEntries
         {
             var entries = _context.ImageVotingEntries.Include(e => e.ImageVoting)
                 .ThenInclude(v => v.Choices.Where(c => c.UserId == _userAccessor.User.Id)).Include(e => e.User)
-                .AsNoTracking();
+                .AsNoTracking(); //I verified that there is no cartesian explosion here
 
             if (!_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingEntries)))
                 entries = entries.Where(e => e.ImageVoting.Active);

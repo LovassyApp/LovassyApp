@@ -16,22 +16,6 @@ namespace Blueboard.Features.ImageVotings;
 [FeatureGate("ImageVotings")]
 public class ImageVotingEntriesController : ApiControllerBase
 {
-    [HttpGet("{id}")]
-    [Permissions(typeof(ImageVotingsPermissions.ViewImageVotingEntry),
-        typeof(ImageVotingsPermissions.ViewActiveImageVotingEntry))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [EndpointSummary("Get information about an image voting entry")]
-    public async Task<ActionResult<ViewImageVotingEntry.Response>> View([FromRoute] int id)
-    {
-        var response = await Mediator.Send(new ViewImageVotingEntry.Query
-        {
-            Id = id
-        });
-
-        return Ok(response);
-    }
-
     [HttpGet]
     [Permissions(typeof(ImageVotingsPermissions.IndexImageVotingEntries),
         typeof(ImageVotingsPermissions.IndexActiveImageVotingEntries))]
@@ -47,6 +31,21 @@ public class ImageVotingEntriesController : ApiControllerBase
         return Ok(response);
     }
 
+    [HttpGet("{id}")]
+    [Permissions(typeof(ImageVotingsPermissions.ViewImageVotingEntry),
+        typeof(ImageVotingsPermissions.ViewActiveImageVotingEntry))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [EndpointSummary("Get information about an image voting entry")]
+    public async Task<ActionResult<ViewImageVotingEntry.Response>> View([FromRoute] int id)
+    {
+        var response = await Mediator.Send(new ViewImageVotingEntry.Query
+        {
+            Id = id
+        });
+
+        return Ok(response);
+    }
 
     [HttpPost]
     [Permissions(typeof(ImageVotingsPermissions.ChooseImageVotingEntry),
