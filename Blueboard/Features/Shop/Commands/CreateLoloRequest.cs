@@ -13,6 +13,7 @@ public static class CreateLoloRequest
     public class Command : IRequest<Response>
     {
         public RequestBody Body { get; set; }
+        public string LoloRequestsUrl { get; set; }
     }
 
     public class RequestBody
@@ -67,6 +68,12 @@ public static class CreateLoloRequest
             await _publisher.Publish(new LoloRequestUpdatedEvent
             {
                 UserId = _userAccessor.User.Id
+            }, cancellationToken);
+
+            await _publisher.Publish(new LoloRequestCreatedEvent
+            {
+                LoloRequest = loloRequest,
+                LoloRequestsUrl = request.LoloRequestsUrl
             }, cancellationToken);
 
             return loloRequest.Adapt<Response>();

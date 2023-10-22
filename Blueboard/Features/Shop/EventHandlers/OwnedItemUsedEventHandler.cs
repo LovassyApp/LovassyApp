@@ -20,7 +20,7 @@ public class OwnedItemUsedEventHandler : INotificationHandler<OwnedItemUsedEvent
         var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
 
         var sendOwnedItemUsedNotificationJob = JobBuilder.Create<SendOwnedItemUsedNotificationJob>()
-            .WithIdentity($"SendOwnedItemUseNotifierJob-{notification.User.Id}-{notification.Product.Id}")
+            .WithIdentity($"SendOwnedItemUseNotificationJob-{notification.User.Id}-{notification.Product.Id}")
             .UsingJobData("userJson", JsonSerializer.Serialize(notification.User))
             .UsingJobData("productJson", JsonSerializer.Serialize(notification.Product))
             .UsingJobData("inputValuesJson", JsonSerializer.Serialize(notification.InputValues))

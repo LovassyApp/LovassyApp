@@ -33,6 +33,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ImageVotingEntryIncrement> ImageVotingEntryIncrements { get; set; }
     public DbSet<ImageVotingChoice> ImageVotingChoices { get; set; }
     public DbSet<FileUpload> FileUploads { get; set; }
+    public DbSet<LoloRequestCreatedNotifier> LoloRequestCreatedNotifiers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

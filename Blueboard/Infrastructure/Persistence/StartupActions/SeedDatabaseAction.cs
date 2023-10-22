@@ -45,7 +45,7 @@ public class SeedDatabaseAction : IStartupAction
             await context.SaveChangesAsync();
 
             await context.Database.ExecuteSqlRawAsync(
-                @$"select setval(pg_get_serial_sequence('""{nameof(ApplicationDbContext.UserGroups)}""', '{nameof(UserGroup.Id)}'), (select max(""{nameof(UserGroup.Id)}"") from ""{nameof(ApplicationDbContext.UserGroups)}""))");
+                @$"select setval(pg_get_serial_sequence('""{context.Model.FindEntityType(typeof(UserGroup))!.GetTableName()}""', '{nameof(UserGroup.Id)}'), (select max(""{nameof(UserGroup.Id)}"") from ""{context.Model.FindEntityType(typeof(UserGroup))!.GetTableName()}""))");
 
             _logger.LogInformation("Created the default user group");
         }

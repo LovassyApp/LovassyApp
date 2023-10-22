@@ -1,0 +1,20 @@
+@using Helpers.Email.Views.Shared
+@model Helpers.Email.Views.Emails.LoloRequestCreatedNotification.LoloRequestCreatedNotificationViewModel
+
+@{
+    ViewData["EmailTitle"] = "Kérvény létrehozva";
+}
+
+<p>Egy új loló kérvény lett létrehozva a LovassyAppon.</p>
+<p>
+    A kérvény címe: <strong>@Model.Title</strong>
+</p>
+<p style="color: #2C2E33;">
+    A kérvény törzsszövege: @Model.Body
+</p>
+
+@await Html.PartialAsync("EmailButton", new EmailButtonViewModel { Text = "Kérvények megtekintése", Url = Model.LoloRequestsUrl })
+
+<br>
+<p>Üdvözlettel:</p>
+<p>A LovasssyApp csapata</p>

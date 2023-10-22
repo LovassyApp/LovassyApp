@@ -59,11 +59,13 @@ public class LoloRequestsController : ApiControllerBase
     [Permissions(typeof(ShopPermissions.CreateLoloRequest))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [EndpointSummary("Create a new lolo request")]
-    public async Task<ActionResult<CreateLoloRequest.Response>> Create([FromBody] CreateLoloRequest.RequestBody body)
+    public async Task<ActionResult<CreateLoloRequest.Response>> Create([FromBody] CreateLoloRequest.RequestBody body,
+        [FromQuery] string loloRequestsUrl)
     {
         var response = await Mediator.Send(new CreateLoloRequest.Command
         {
-            Body = body
+            Body = body,
+            LoloRequestsUrl = loloRequestsUrl
         });
 
         return CreatedAtAction(nameof(View), new { id = response.Id }, response);

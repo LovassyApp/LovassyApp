@@ -92,6 +92,22 @@ public static class ShopPermissions
         public bool Dangerous => true;
     }
 
+    public class IndexLoloRequestCreatedNotifiers : IPermission
+    {
+        public string Name => "Shop.IndexLoloRequestCreatedNotifiers";
+        public string DisplayName => "Loló kérvény létrehozás értesítők lekérése";
+        public string Description => "Az összes loló kérvény létehozásakor értesítendő email cím lekérése és listázása";
+        public bool Dangerous => false;
+    }
+
+    public class UpdateLoloRequestCreatedNotifiers : IPermission
+    {
+        public string Name => "Shop.UpdateLoloRequestCreatedNotifiers";
+        public string DisplayName => "Loló kérvény létrehozás értesítők módosítása";
+        public string Description => "A loló kérvények létehozásakor értesítendő email címek módosítása";
+        public bool Dangerous => false;
+    }
+
     public class IndexQRCodes : IPermission
     {
         public string Name => "Shop.IndexQRCodes";

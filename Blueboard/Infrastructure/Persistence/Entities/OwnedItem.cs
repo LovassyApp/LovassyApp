@@ -2,23 +2,31 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Sieve.Attributes;
 
 namespace Blueboard.Infrastructure.Persistence.Entities;
 
 public class OwnedItem : TimestampedEntity
 {
-    [Key] public int Id { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    [Key]
+    public int Id { get; set; }
 
-    [Required] public Guid UserId { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    [Required]
+    public Guid UserId { get; set; }
 
     [JsonIgnore] public User User { get; set; }
 
-    [Required] public int ProductId { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    [Required]
+    public int ProductId { get; set; }
 
     [JsonIgnore] public Product Product { get; set; }
 
     [JsonIgnore] public StoreHistory StoreHistory { get; set; }
 
+    [Sieve(CanFilter = true, CanSort = true)]
     public DateTime? UsedAt { get; set; }
 
     [JsonIgnore] public List<OwnedItemUse> OwnedItemUses { get; set; }
