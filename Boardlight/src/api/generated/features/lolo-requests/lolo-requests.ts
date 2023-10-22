@@ -21,6 +21,7 @@ import type {
   GetApiLoloRequestsParams,
   ShopCreateLoloRequestResponse,
   ShopCreateLoloRequestRequestBody,
+  PostApiLoloRequestsParams,
   ShopIndexOwnLoloRequestsResponse,
   GetApiLoloRequestsOwnParams,
   ShopViewLoloRequestResponse,
@@ -96,11 +97,13 @@ export const useGetApiLoloRequests = <TData = Awaited<ReturnType<typeof getApiLo
  */
 export const postApiLoloRequests = (
     shopCreateLoloRequestRequestBody: BodyType<ShopCreateLoloRequestRequestBody>,
+    params?: PostApiLoloRequestsParams,
  ) => {
       return useCustomClient<ShopCreateLoloRequestResponse>(
       {url: `/Api/LoloRequests`, method: 'post',
       headers: {'Content-Type': 'application/json', },
-      data: shopCreateLoloRequestRequestBody
+      data: shopCreateLoloRequestRequestBody,
+        params
     },
       );
     }
@@ -109,17 +112,17 @@ export const postApiLoloRequests = (
 
 export const getPostApiLoloRequestsMutationOptions = <TError = ErrorType<void>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequests>>, TError,{data: BodyType<ShopCreateLoloRequestRequestBody>}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequests>>, TError,{data: BodyType<ShopCreateLoloRequestRequestBody>}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequests>>, TError,{data: BodyType<ShopCreateLoloRequestRequestBody>;params?: PostApiLoloRequestsParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequests>>, TError,{data: BodyType<ShopCreateLoloRequestRequestBody>;params?: PostApiLoloRequestsParams}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiLoloRequests>>, {data: BodyType<ShopCreateLoloRequestRequestBody>}> = (props) => {
-          const {data} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiLoloRequests>>, {data: BodyType<ShopCreateLoloRequestRequestBody>;params?: PostApiLoloRequestsParams}> = (props) => {
+          const {data,params} = props ?? {};
 
-          return  postApiLoloRequests(data,)
+          return  postApiLoloRequests(data,params,)
         }
 
         
@@ -136,7 +139,7 @@ export const getPostApiLoloRequestsMutationOptions = <TError = ErrorType<void>,
  */
 export const usePostApiLoloRequests = <TError = ErrorType<void>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequests>>, TError,{data: BodyType<ShopCreateLoloRequestRequestBody>}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLoloRequests>>, TError,{data: BodyType<ShopCreateLoloRequestRequestBody>;params?: PostApiLoloRequestsParams}, TContext>, }
 ) => {
     
       const mutationOptions = getPostApiLoloRequestsMutationOptions(options);

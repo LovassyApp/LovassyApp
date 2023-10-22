@@ -52,6 +52,9 @@ const CreateLoloRequestModal = ({ opened, close }: { opened: boolean; close(): v
         try {
             await createLoloRequest.mutateAsync({
                 data: values,
+                params: {
+                    loloRequestsUrl: `${window.location.origin}/shop/lolo-requests`,
+                },
             });
             notifications.show({
                 title: "Kérvény létrehozva",

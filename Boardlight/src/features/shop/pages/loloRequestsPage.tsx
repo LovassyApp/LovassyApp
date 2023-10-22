@@ -1,10 +1,12 @@
 import {
+    ActionIcon,
     Button,
     Center,
     Divider,
     Group,
     Loader,
     Modal,
+    MultiSelect,
     NumberInput,
     SegmentedControl,
     SimpleGrid,
@@ -15,7 +17,7 @@ import {
     createStyles,
     useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconX } from "@tabler/icons-react";
+import { IconBell, IconCheck, IconX } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import {
     useDeleteApiLoloRequestsId,
@@ -24,6 +26,10 @@ import {
     usePostApiLoloRequestsOverruleId,
 } from "../../../api/generated/features/lolo-requests/lolo-requests";
 import { useEffect, useMemo, useState } from "react";
+import {
+    useGetApiLoloRequestCreatedNotifiers,
+    usePutApiLoloRequestCreatedNotifiers,
+} from "../../../api/generated/features/lolo-request-created-notifiers/lolo-request-created-notifiers";
 
 import { LoloRequestCard } from "../components/loloRequestCard";
 import { LoloRequestStats } from "../components/loloRequestStats";
@@ -40,6 +46,102 @@ const useStyles = createStyles(() => ({
         height: "100%",
     },
 }));
+
+const NotifiersModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
+    const { classes } = useStyles();
+
+    const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
+
+    const notifiersQueryEnabled = useMemo(
+        () =>
+            (control.data?.permissions?.includes("Shop.IndexLoloRequestCreatedNotifiers") ||
+                control.data?.isSuperUser) ??
+            false,
+        [control]
+    );
+
+    const notifiers = useGetApiLoloRequestCreatedNotifiers({}, { query: { enabled: notifiersQueryEnabled } });
+    const updateNotifiers = usePutApiLoloRequestCreatedNotifiers();
+
+    const [creatableNotifiersData, setCreatableNotifiersData] = useState([]);
+    const [selectedNotifiers, setSelectedNotifiers] = useState([]);
+
+    const form = useForm({
+        initialValues: {
+            emails: [],
+        },
+    });
+
+    useEffect(() => {
+        if (!notifiers.data) return;
+
+        const notifiersData = notifiers.data.map((notifier) => ({
+            label: notifier.email,
+            value: notifier.email,
+        }));
+
+        setCreatableNotifiersData(notifiersData);
+        form.setFieldValue(
+            "emails",
+            notifiersData.map((notifier) => notifier.value)
+        );
+    }, [notifiers.data]);
+
+    if (notifiers.isLoading)
+        return (
+            <Modal opened={opened} onClose={close} size="lg" title="Értesítők">
+                <Center className={classes.center}>
+                    <Loader />
+                </Center>
+            </Modal>
+        );
+
+    const submit = form.onSubmit(async (values) => {
+        try {
+            await updateNotifiers.mutateAsync({ data: values });
+            notifications.show({
+                title: "Értesítők frissítve",
+                message: "Az értesítőket sikeresen frissítetted.",
+                color: "green",
+                icon: <IconCheck />,
+            });
+            close();
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                handleValidationErrors(err, form);
+            }
+        }
+    });
+
+    return (
+        <Modal opened={opened} onClose={close} size="lg" title="Értesítők">
+            <form onSubmit={submit}>
+                <MultiSelect
+                    label="Értesítendő email címek"
+                    description={
+                        !notifiersQueryEnabled &&
+                        "Figyelem! Az értesítők módosításával minden eddigi értesítőt felülírsz."
+                    }
+                    data={creatableNotifiersData}
+                    {...form.getInputProps("emails")}
+                    withinPortal={true}
+                    searchable={true}
+                    clearable={true}
+                    creatable={true}
+                    required={true}
+                    getCreateLabel={(value) => `+ Email hozzáadása: ${value}`}
+                    onCreate={(query) => {
+                        setCreatableNotifiersData([...creatableNotifiersData, { label: query, value: query }]);
+                        return { label: query, value: query };
+                    }}
+                />
+                <Button type="submit" loading={updateNotifiers.isLoading} fullWidth={true} mt="md">
+                    Mentés
+                </Button>
+            </form>
+        </Modal>
+    );
+};
 
 const DetailsModal = ({
     loloRequest,
@@ -141,6 +243,23 @@ const DetailsModal = ({
             }
         }
     };
+
+    if (user.isInitialLoading)
+        return (
+            <Modal
+                opened={opened}
+                onClose={() => {
+                    overruleForm.reset();
+                    close();
+                }}
+                size="lg"
+                title="Részletek"
+            >
+                <Center>
+                    <Loader />
+                </Center>
+            </Modal>
+        );
 
     return (
         <Modal
@@ -274,6 +393,7 @@ const LoloRequestsPage = (): JSX.Element => {
 
     const loloRequests = useGetApiLoloRequests();
 
+    const [notifiersModalOpened, { close: closeNotifiersModal, open: openNotifiersModal }] = useDisclosure(false);
     const [detailsModalOpened, { close: closeDetailsModal, open: openDetailsModal }] = useDisclosure(false);
     const [detailsModalLoloRequest, setDetailsModalLoloRequest] = useState<ShopIndexLoloRequestsResponse>();
 
@@ -295,12 +415,20 @@ const LoloRequestsPage = (): JSX.Element => {
 
     return (
         <>
+            <NotifiersModal opened={notifiersModalOpened} close={closeNotifiersModal} />
             <DetailsModal opened={detailsModalOpened} close={closeDetailsModal} loloRequest={detailsModalLoloRequest} />
             <Title mb="md">Összevont statisztikák</Title>
             <SimpleGrid cols={2} breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}>
                 <LoloRequestStats data={loloRequests.data} />
             </SimpleGrid>
-            <Title my="md">Összes kérvény</Title>
+            <Group position="apart" align="baseline" my="md" spacing={0}>
+                <Title>Összes kérvény</Title>
+                <PermissionRequirement permissions={["Shop.UpdateLoloRequestCreatedNotifiers"]}>
+                    <ActionIcon variant="transparent" color="dark" onClick={() => openNotifiersModal()}>
+                        <IconBell />
+                    </ActionIcon>
+                </PermissionRequirement>
+            </Group>
             <SimpleGrid
                 cols={4}
                 breakpoints={[
