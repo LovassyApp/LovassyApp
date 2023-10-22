@@ -17,13 +17,13 @@ import type {
   QueryKey
 } from '@tanstack/react-query'
 import type {
-  ImageVotingsViewImageVotingEntryResponse,
-  ProblemDetails,
-  ImageVotingsUpdateImageVotingEntryRequestBody,
   ImageVotingsIndexImageVotingEntriesResponse,
   GetApiImageVotingEntriesParams,
   ImageVotingsCreateImageVotingEntryResponse,
+  ProblemDetails,
   ImageVotingsCreateImageVotingEntryRequestBody,
+  ImageVotingsViewImageVotingEntryResponse,
+  ImageVotingsUpdateImageVotingEntryRequestBody,
   ImageVotingsChooseImageVotingEntryRequestBody,
   ImageVotingsUnchooseImageVotingEntryRequestBody
 } from '../../models'
@@ -36,6 +36,113 @@ type AwaitedInput<T> = PromiseLike<T> | T;
 
 
 /**
+ * Requires verified email; Requires one of the following permissions: ImageVotings.IndexImageVotingEntries, ImageVotings.IndexActiveImageVotingEntries; Requires the following features to be enabled: ImageVotings
+ * @summary Get a list of all image voting entries
+ */
+export const getApiImageVotingEntries = (
+    params?: GetApiImageVotingEntriesParams,
+ signal?: AbortSignal
+) => {
+      return useCustomClient<ImageVotingsIndexImageVotingEntriesResponse[]>(
+      {url: `/Api/ImageVotingEntries`, method: 'get',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetApiImageVotingEntriesQueryKey = (params?: GetApiImageVotingEntriesParams,) => [`/Api/ImageVotingEntries`, ...(params ? [params]: [])] as const;
+  
+
+    
+export const getGetApiImageVotingEntriesQueryOptions = <TData = Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError = ErrorType<void>>(params?: GetApiImageVotingEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError, TData>, }
+): UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError, TData> & { queryKey: QueryKey } => {
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiImageVotingEntriesQueryKey(params);
+
+  
+  
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiImageVotingEntries>>> = ({ signal }) => getApiImageVotingEntries(params, signal);
+    
+      
+      
+   return  { queryKey, queryFn, ...queryOptions}}
+
+export type GetApiImageVotingEntriesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiImageVotingEntries>>>
+export type GetApiImageVotingEntriesQueryError = ErrorType<void>
+
+/**
+ * @summary Get a list of all image voting entries
+ */
+export const useGetApiImageVotingEntries = <TData = Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError = ErrorType<void>>(
+ params?: GetApiImageVotingEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetApiImageVotingEntriesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+/**
+ * Requires verified email; Requires one of the following permissions: ImageVotings.ChooseImageVotingEntry, ImageVotings.CreateActiveImageVotingEntry; Requires the following features to be enabled: ImageVotings
+ * @summary Create an image voting entry
+ */
+export const postApiImageVotingEntries = (
+    imageVotingsCreateImageVotingEntryRequestBody: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>,
+ ) => {
+      return useCustomClient<ImageVotingsCreateImageVotingEntryResponse>(
+      {url: `/Api/ImageVotingEntries`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: imageVotingsCreateImageVotingEntryRequestBody
+    },
+      );
+    }
+  
+
+
+export const getPostApiImageVotingEntriesMutationOptions = <TError = ErrorType<void | ProblemDetails>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntries>>, TError,{data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntries>>, TError,{data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiImageVotingEntries>>, {data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiImageVotingEntries(data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiImageVotingEntriesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiImageVotingEntries>>>
+    export type PostApiImageVotingEntriesMutationBody = BodyType<ImageVotingsCreateImageVotingEntryRequestBody>
+    export type PostApiImageVotingEntriesMutationError = ErrorType<void | ProblemDetails>
+
+    /**
+ * @summary Create an image voting entry
+ */
+export const usePostApiImageVotingEntries = <TError = ErrorType<void | ProblemDetails>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntries>>, TError,{data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiImageVotingEntriesMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    /**
  * Requires verified email; Requires one of the following permissions: ImageVotings.ViewImageVotingEntry, ImageVotings.ViewActiveImageVotingEntry; Requires the following features to be enabled: ImageVotings
  * @summary Get information about an image voting entry
  */
@@ -190,113 +297,6 @@ export const useDeleteApiImageVotingEntriesId = <TError = ErrorType<ProblemDetai
 ) => {
     
       const mutationOptions = getDeleteApiImageVotingEntriesIdMutationOptions(options);
-     
-      return useMutation(mutationOptions);
-    }
-    /**
- * Requires verified email; Requires one of the following permissions: ImageVotings.IndexImageVotingEntries, ImageVotings.IndexActiveImageVotingEntries; Requires the following features to be enabled: ImageVotings
- * @summary Get a list of all image voting entries
- */
-export const getApiImageVotingEntries = (
-    params?: GetApiImageVotingEntriesParams,
- signal?: AbortSignal
-) => {
-      return useCustomClient<ImageVotingsIndexImageVotingEntriesResponse[]>(
-      {url: `/Api/ImageVotingEntries`, method: 'get',
-        params, signal
-    },
-      );
-    }
-  
-
-export const getGetApiImageVotingEntriesQueryKey = (params?: GetApiImageVotingEntriesParams,) => [`/Api/ImageVotingEntries`, ...(params ? [params]: [])] as const;
-  
-
-    
-export const getGetApiImageVotingEntriesQueryOptions = <TData = Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError = ErrorType<void>>(params?: GetApiImageVotingEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError, TData>, }
-): UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError, TData> & { queryKey: QueryKey } => {
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetApiImageVotingEntriesQueryKey(params);
-
-  
-  
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiImageVotingEntries>>> = ({ signal }) => getApiImageVotingEntries(params, signal);
-    
-      
-      
-   return  { queryKey, queryFn, ...queryOptions}}
-
-export type GetApiImageVotingEntriesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiImageVotingEntries>>>
-export type GetApiImageVotingEntriesQueryError = ErrorType<void>
-
-/**
- * @summary Get a list of all image voting entries
- */
-export const useGetApiImageVotingEntries = <TData = Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError = ErrorType<void>>(
- params?: GetApiImageVotingEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntries>>, TError, TData>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-
-  const queryOptions = getGetApiImageVotingEntriesQueryOptions(params,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
-}
-
-/**
- * Requires verified email; Requires one of the following permissions: ImageVotings.ChooseImageVotingEntry, ImageVotings.CreateActiveImageVotingEntry; Requires the following features to be enabled: ImageVotings
- * @summary Create an image voting entry
- */
-export const postApiImageVotingEntries = (
-    imageVotingsCreateImageVotingEntryRequestBody: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>,
- ) => {
-      return useCustomClient<ImageVotingsCreateImageVotingEntryResponse>(
-      {url: `/Api/ImageVotingEntries`, method: 'post',
-      headers: {'Content-Type': 'application/json', },
-      data: imageVotingsCreateImageVotingEntryRequestBody
-    },
-      );
-    }
-  
-
-
-export const getPostApiImageVotingEntriesMutationOptions = <TError = ErrorType<void | ProblemDetails>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntries>>, TError,{data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntries>>, TError,{data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}, TContext> => {
- const {mutation: mutationOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiImageVotingEntries>>, {data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postApiImageVotingEntries(data,)
-        }
-
-        
-
- 
-   return  { mutationFn, ...mutationOptions }}
-
-    export type PostApiImageVotingEntriesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiImageVotingEntries>>>
-    export type PostApiImageVotingEntriesMutationBody = BodyType<ImageVotingsCreateImageVotingEntryRequestBody>
-    export type PostApiImageVotingEntriesMutationError = ErrorType<void | ProblemDetails>
-
-    /**
- * @summary Create an image voting entry
- */
-export const usePostApiImageVotingEntries = <TError = ErrorType<void | ProblemDetails>,
-    
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntries>>, TError,{data: BodyType<ImageVotingsCreateImageVotingEntryRequestBody>}, TContext>, }
-) => {
-    
-      const mutationOptions = getPostApiImageVotingEntriesMutationOptions(options);
      
       return useMutation(mutationOptions);
     }
