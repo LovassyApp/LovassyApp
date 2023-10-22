@@ -17,4 +17,5 @@ public interface INotificationsClient
     Task RefreshImageVotingEntries();
     Task RefreshImageVotingChoices();
     Task RefreshImageVotingEntryIncrements();
+    Task RefreshLoloRequestCreatedNotifiers();
 }

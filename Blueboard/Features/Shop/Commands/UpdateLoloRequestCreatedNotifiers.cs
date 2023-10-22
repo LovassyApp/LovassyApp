@@ -1,3 +1,4 @@
+using Blueboard.Features.Shop.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
@@ -39,10 +40,12 @@ public static class UpdateLoloRequestCreatedNotifiers
     internal sealed class Handler : IRequestHandler<Command>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPublisher _publisher;
 
-        public Handler(ApplicationDbContext context)
+        public Handler(ApplicationDbContext context, IPublisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -54,6 +57,8 @@ public static class UpdateLoloRequestCreatedNotifiers
             var notifiers = request.Body.Emails.Select(e => new LoloRequestCreatedNotifier { Email = e }).ToList();
             await _context.LoloRequestCreatedNotifiers.AddRangeAsync(notifiers, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+
+            await _publisher.Publish(new LoloRequestCreatedNotifiersUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

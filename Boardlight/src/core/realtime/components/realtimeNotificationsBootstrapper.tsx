@@ -15,6 +15,7 @@ import { getGetApiFeedItemsQueryKey } from "../../../api/generated/features/feed
 import { getGetApiGradesQueryKey } from "../../../api/generated/features/grades/grades";
 import { getGetApiImageVotingEntriesQueryKey } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
 import { getGetApiImageVotingsQueryKey } from "../../../api/generated/features/image-votings/image-votings";
+import { getGetApiLoloRequestCreatedNotifiersQueryKey } from "../../../api/generated/features/lolo-request-created-notifiers/lolo-request-created-notifiers";
 import { getGetApiProductsQueryKey } from "../../../api/generated/features/products/products";
 import { getGetApiQRCodesQueryKey } from "../../../api/generated/features/qrcodes/qrcodes";
 import { getGetApiUserGroupsQueryKey } from "../../../api/generated/features/user-groups/user-groups";
@@ -39,6 +40,7 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
     const feedItemsQueryKey = getGetApiFeedItemsQueryKey();
     const imageVotingsQueryKey = getGetApiImageVotingsQueryKey();
     const imageVotingEntriesQueryKey = getGetApiImageVotingEntriesQueryKey();
+    const loloRequestCreatedNotifiersQueryKey = getGetApiLoloRequestCreatedNotifiersQueryKey();
 
     const [loading, setLoading] = useState(false);
 
@@ -119,6 +121,11 @@ export const RealtimeNotificationsBootstrapper = ({ children }: { children: Reac
                 hubConnection.on("RefreshImageVotingEntries", async () => {
                     console.log("RefreshImageVotingEntries notification received");
                     await queryClient.invalidateQueries({ queryKey: [imageVotingEntriesQueryKey[0]] });
+                });
+
+                hubConnection.on("RefreshLoloRequestCreatedNotifiers", async () => {
+                    console.log("RefreshLoloRequestCreatedNotifiers notification received");
+                    await queryClient.invalidateQueries({ queryKey: [loloRequestCreatedNotifiersQueryKey[0]] });
                 });
 
                 try {
