@@ -35,6 +35,8 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**api_auth_verify_email_post**](docs/AuthApi.md#api_auth_verify_email_post) | **POST** /Api/Auth/VerifyEmail | Verify a user's email address
 *FeedItemsApi* | [**api_feed_items_get**](docs/FeedItemsApi.md#api_feed_items_get) | **GET** /Api/FeedItems | Get a list of all feed items
 *GradesApi* | [**api_grades_get**](docs/GradesApi.md#api_grades_get) | **GET** /Api/Grades | Get a list of the current user's grades
+*ImageVotingChoicesApi* | [**api_image_voting_choices_get**](docs/ImageVotingChoicesApi.md#api_image_voting_choices_get) | **GET** /Api/ImageVotingChoices | Get a list of all image voting choices
+*ImageVotingChoicesApi* | [**api_image_voting_choices_id_get**](docs/ImageVotingChoicesApi.md#api_image_voting_choices_id_get) | **GET** /Api/ImageVotingChoices/{id} | Get information about an image voting choice
 *ImageVotingEntriesApi* | [**api_image_voting_entries_get**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_get) | **GET** /Api/ImageVotingEntries | Get a list of all image voting entries
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_choose_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_choose_post) | **POST** /Api/ImageVotingEntries/{id}/Choose | Choose an image voting entry (single choice image votings only)
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_delete**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_delete) | **DELETE** /Api/ImageVotingEntries/{id} | Delete an image voting entry
@@ -59,6 +61,8 @@ Class | Method | HTTP request | Description
 *ImportKeysApi* | [**api_import_keys_id_get**](docs/ImportKeysApi.md#api_import_keys_id_get) | **GET** /Api/ImportKeys/{id} | Get information about an import key
 *ImportKeysApi* | [**api_import_keys_id_patch**](docs/ImportKeysApi.md#api_import_keys_id_patch) | **PATCH** /Api/ImportKeys/{id} | Update an import key
 *ImportKeysApi* | [**api_import_keys_post**](docs/ImportKeysApi.md#api_import_keys_post) | **POST** /Api/ImportKeys | Create a new import key
+*LoloRequestCreatedNotifiersApi* | [**api_lolo_request_created_notifiers_get**](docs/LoloRequestCreatedNotifiersApi.md#api_lolo_request_created_notifiers_get) | **GET** /Api/LoloRequestCreatedNotifiers | Get a list of all emails to notify when a lolo request is created
+*LoloRequestCreatedNotifiersApi* | [**api_lolo_request_created_notifiers_put**](docs/LoloRequestCreatedNotifiersApi.md#api_lolo_request_created_notifiers_put) | **PUT** /Api/LoloRequestCreatedNotifiers | Update the list of emails to notify when a lolo request is created
 *LoloRequestsApi* | [**api_lolo_requests_get**](docs/LoloRequestsApi.md#api_lolo_requests_get) | **GET** /Api/LoloRequests | Get a list of all lolo requests
 *LoloRequestsApi* | [**api_lolo_requests_id_delete**](docs/LoloRequestsApi.md#api_lolo_requests_id_delete) | **DELETE** /Api/LoloRequests/{id} | Delete a lolo request
 *LoloRequestsApi* | [**api_lolo_requests_id_get**](docs/LoloRequestsApi.md#api_lolo_requests_id_get) | **GET** /Api/LoloRequests/{id} | Get information about a lolo request
@@ -130,6 +134,8 @@ Class | Method | HTTP request | Description
  - [ImageVotingsCreateImageVotingRequestBodyImageVotingAspect](docs/ImageVotingsCreateImageVotingRequestBodyImageVotingAspect.md)
  - [ImageVotingsCreateImageVotingResponse](docs/ImageVotingsCreateImageVotingResponse.md)
  - [ImageVotingsCreateImageVotingResponseImageVotingAspect](docs/ImageVotingsCreateImageVotingResponseImageVotingAspect.md)
+ - [ImageVotingsIndexImageVotingChoicesResponse](docs/ImageVotingsIndexImageVotingChoicesResponse.md)
+ - [ImageVotingsIndexImageVotingChoicesResponseImageVotingEntry](docs/ImageVotingsIndexImageVotingChoicesResponseImageVotingEntry.md)
  - [ImageVotingsIndexImageVotingEntriesResponse](docs/ImageVotingsIndexImageVotingEntriesResponse.md)
  - [ImageVotingsIndexImageVotingEntriesResponseUser](docs/ImageVotingsIndexImageVotingEntriesResponseUser.md)
  - [ImageVotingsIndexImageVotingEntryImagesRequestBody](docs/ImageVotingsIndexImageVotingEntryImagesRequestBody.md)
@@ -140,6 +146,11 @@ Class | Method | HTTP request | Description
  - [ImageVotingsUpdateImageVotingRequestBody](docs/ImageVotingsUpdateImageVotingRequestBody.md)
  - [ImageVotingsUpdateImageVotingRequestBodyImageVotingAspect](docs/ImageVotingsUpdateImageVotingRequestBodyImageVotingAspect.md)
  - [ImageVotingsUploadImageVotingEntryImageResponse](docs/ImageVotingsUploadImageVotingEntryImageResponse.md)
+ - [ImageVotingsViewImageVotingChoiceResponse](docs/ImageVotingsViewImageVotingChoiceResponse.md)
+ - [ImageVotingsViewImageVotingChoiceResponseImageVoting](docs/ImageVotingsViewImageVotingChoiceResponseImageVoting.md)
+ - [ImageVotingsViewImageVotingChoiceResponseImageVotingAspect](docs/ImageVotingsViewImageVotingChoiceResponseImageVotingAspect.md)
+ - [ImageVotingsViewImageVotingChoiceResponseImageVotingEntry](docs/ImageVotingsViewImageVotingChoiceResponseImageVotingEntry.md)
+ - [ImageVotingsViewImageVotingChoiceResponseImageVotingEntryUser](docs/ImageVotingsViewImageVotingChoiceResponseImageVotingEntryUser.md)
  - [ImageVotingsViewImageVotingEntryResponse](docs/ImageVotingsViewImageVotingEntryResponse.md)
  - [ImageVotingsViewImageVotingEntryResponseUser](docs/ImageVotingsViewImageVotingEntryResponseUser.md)
  - [ImageVotingsViewImageVotingResponse](docs/ImageVotingsViewImageVotingResponse.md)
@@ -170,6 +181,7 @@ Class | Method | HTTP request | Description
  - [ShopCreateProductResponseInput](docs/ShopCreateProductResponseInput.md)
  - [ShopCreateQrCodeRequestBody](docs/ShopCreateQrCodeRequestBody.md)
  - [ShopCreateQrCodeResponse](docs/ShopCreateQrCodeResponse.md)
+ - [ShopIndexLoloRequestCreatedNotifiersResponse](docs/ShopIndexLoloRequestCreatedNotifiersResponse.md)
  - [ShopIndexLoloRequestsResponse](docs/ShopIndexLoloRequestsResponse.md)
  - [ShopIndexLolosResponse](docs/ShopIndexLolosResponse.md)
  - [ShopIndexOwnLoloRequestsResponse](docs/ShopIndexOwnLoloRequestsResponse.md)
@@ -185,6 +197,7 @@ Class | Method | HTTP request | Description
  - [ShopIndexProductsResponse](docs/ShopIndexProductsResponse.md)
  - [ShopIndexQrCodesResponse](docs/ShopIndexQrCodesResponse.md)
  - [ShopOverruleLoloRequestRequestBody](docs/ShopOverruleLoloRequestRequestBody.md)
+ - [ShopUpdateLoloRequestCreatedNotifiersRequestBody](docs/ShopUpdateLoloRequestCreatedNotifiersRequestBody.md)
  - [ShopUpdateLoloRequestRequestBody](docs/ShopUpdateLoloRequestRequestBody.md)
  - [ShopUpdateOwnedItemRequestBody](docs/ShopUpdateOwnedItemRequestBody.md)
  - [ShopUpdateProductRequestBody](docs/ShopUpdateProductRequestBody.md)

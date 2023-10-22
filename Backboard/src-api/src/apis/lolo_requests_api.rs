@@ -296,7 +296,7 @@ pub async fn api_lolo_requests_own_get(configuration: &configuration::Configurat
 }
 
 /// Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest; Requires the following features to be enabled: Shop
-pub async fn api_lolo_requests_post(configuration: &configuration::Configuration, shop_create_lolo_request_request_body: Option<crate::models::ShopCreateLoloRequestRequestBody>) -> Result<crate::models::ShopCreateLoloRequestResponse, Error<ApiLoloRequestsPostError>> {
+pub async fn api_lolo_requests_post(configuration: &configuration::Configuration, lolo_requests_url: Option<&str>, shop_create_lolo_request_request_body: Option<crate::models::ShopCreateLoloRequestRequestBody>) -> Result<crate::models::ShopCreateLoloRequestResponse, Error<ApiLoloRequestsPostError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -304,6 +304,9 @@ pub async fn api_lolo_requests_post(configuration: &configuration::Configuration
     let local_var_uri_str = format!("{}/Api/LoloRequests", local_var_configuration.base_path);
     let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
+    if let Some(ref local_var_str) = lolo_requests_url {
+        local_var_req_builder = local_var_req_builder.query(&[("loloRequestsUrl", &local_var_str.to_string())]);
+    }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
