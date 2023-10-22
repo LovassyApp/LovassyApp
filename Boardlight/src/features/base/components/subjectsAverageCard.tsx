@@ -77,7 +77,7 @@ export const SubjectsAverageCard = (): JSX.Element => {
                         roundCaps={true}
                         label={
                             <Text size="sm" align="center" weight={500}>
-                                {average.toFixed(2)}
+                                {isNaN(average) ? "-" : average.toFixed(2)}
                             </Text>
                         }
                         sx={{ alignSelf: "center" }}

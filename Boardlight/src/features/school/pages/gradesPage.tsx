@@ -57,15 +57,18 @@ const GradesPage = (): JSX.Element => {
 
     const subjectValues = useMemo(
         () =>
-            grades.data?.map((subject, index) => ({
-                value: index.toString(),
-                label: `${subject.subject} - ${(
+            grades.data?.map((subject, index) => {
+                const average =
                     subject.grades
                         .filter((g) => g.gradeValue !== 0)
                         .reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
-                    subject.grades.filter((g) => g.gradeValue !== 0).reduce((acc, grade) => acc + grade.weight, 0)
-                ).toPrecision(3)}`,
-            })),
+                    subject.grades.filter((g) => g.gradeValue !== 0).reduce((acc, grade) => acc + grade.weight, 0);
+
+                return {
+                    value: index.toString(),
+                    label: isNaN(average) ? `${subject.subject}` : `${subject.subject} - ${average.toFixed(2)}`,
+                };
+            }),
         [grades.data]
     );
 

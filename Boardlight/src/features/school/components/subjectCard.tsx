@@ -30,8 +30,8 @@ export const SubjectCard = ({
     const { classes, cx } = useStyles();
 
     const average =
-        grades.reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
-        grades.reduce((acc, grade) => acc + grade.weight, 0);
+        grades.filter((g) => g.gradeValue !== 0).reduce((acc, grade) => acc + grade.gradeValue * grade.weight, 0) /
+        grades.filter((g) => g.gradeValue !== 0).reduce((acc, grade) => acc + grade.weight, 0);
 
     const color =
         average >= 4.5
@@ -70,7 +70,7 @@ export const SubjectCard = ({
                     roundCaps={true}
                     label={
                         <Text size="sm" align="center" weight={500}>
-                            {average.toFixed(2)}
+                            {isNaN(average) ? "-" : average.toFixed(2)}
                         </Text>
                     }
                 />

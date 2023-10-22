@@ -28,7 +28,6 @@ import {
     IconChevronDown,
     IconInfoCircle,
     IconInfoSquareRounded,
-    IconKey,
     IconLogout,
     IconMail,
     IconPackages,
