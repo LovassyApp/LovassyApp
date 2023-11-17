@@ -204,7 +204,7 @@ Name | Type | Description  | Required | Notes
 
 ## api_lolo_requests_post
 
-> crate::models::ShopCreateLoloRequestResponse api_lolo_requests_post(shop_create_lolo_request_request_body)
+> crate::models::ShopCreateLoloRequestResponse api_lolo_requests_post(lolo_requests_url, shop_create_lolo_request_request_body)
 Create a new lolo request
 
 Requires verified email; Requires one of the following permissions: Shop.CreateLoloRequest; Requires the following features to be enabled: Shop
@@ -214,6 +214,7 @@ Requires verified email; Requires one of the following permissions: Shop.CreateL
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
+**lolo_requests_url** | Option<**String**> |  |  |
 **shop_create_lolo_request_request_body** | Option<[**ShopCreateLoloRequestRequestBody**](ShopCreateLoloRequestRequestBody.md)> |  |  |
 
 ### Return type

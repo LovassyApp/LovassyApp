@@ -22,6 +22,7 @@ docs/AuthViewUserGroupResponse.md
 docs/FeedIndexFeedItemsResponse.md
 docs/FeedItemsApi.md
 docs/GradesApi.md
+docs/ImageVotingChoicesApi.md
 docs/ImageVotingEntriesApi.md
 docs/ImageVotingEntryImagesApi.md
 docs/ImageVotingsApi.md
@@ -32,6 +33,8 @@ docs/ImageVotingsCreateImageVotingRequestBody.md
 docs/ImageVotingsCreateImageVotingRequestBodyImageVotingAspect.md
 docs/ImageVotingsCreateImageVotingResponse.md
 docs/ImageVotingsCreateImageVotingResponseImageVotingAspect.md
+docs/ImageVotingsIndexImageVotingChoicesResponse.md
+docs/ImageVotingsIndexImageVotingChoicesResponseImageVotingEntry.md
 docs/ImageVotingsIndexImageVotingEntriesResponse.md
 docs/ImageVotingsIndexImageVotingEntriesResponseUser.md
 docs/ImageVotingsIndexImageVotingEntryImagesRequestBody.md
@@ -42,6 +45,11 @@ docs/ImageVotingsUpdateImageVotingEntryRequestBody.md
 docs/ImageVotingsUpdateImageVotingRequestBody.md
 docs/ImageVotingsUpdateImageVotingRequestBodyImageVotingAspect.md
 docs/ImageVotingsUploadImageVotingEntryImageResponse.md
+docs/ImageVotingsViewImageVotingChoiceResponse.md
+docs/ImageVotingsViewImageVotingChoiceResponseImageVoting.md
+docs/ImageVotingsViewImageVotingChoiceResponseImageVotingAspect.md
+docs/ImageVotingsViewImageVotingChoiceResponseImageVotingEntry.md
+docs/ImageVotingsViewImageVotingChoiceResponseImageVotingEntryUser.md
 docs/ImageVotingsViewImageVotingEntryResponse.md
 docs/ImageVotingsViewImageVotingEntryResponseUser.md
 docs/ImageVotingsViewImageVotingResponse.md
@@ -59,6 +67,7 @@ docs/ImportKeysApi.md
 docs/ImportUpdateImportKeyRequestBody.md
 docs/ImportUpdateResetKeyPasswordRequestBody.md
 docs/ImportViewImportKeyResponse.md
+docs/LoloRequestCreatedNotifiersApi.md
 docs/LoloRequestsApi.md
 docs/LolosApi.md
 docs/OwnedItemsApi.md
@@ -80,6 +89,7 @@ docs/ShopCreateProductResponse.md
 docs/ShopCreateProductResponseInput.md
 docs/ShopCreateQrCodeRequestBody.md
 docs/ShopCreateQrCodeResponse.md
+docs/ShopIndexLoloRequestCreatedNotifiersResponse.md
 docs/ShopIndexLoloRequestsResponse.md
 docs/ShopIndexLolosResponse.md
 docs/ShopIndexOwnLoloRequestsResponse.md
@@ -95,6 +105,7 @@ docs/ShopIndexOwnedItemsResponseProduct.md
 docs/ShopIndexProductsResponse.md
 docs/ShopIndexQrCodesResponse.md
 docs/ShopOverruleLoloRequestRequestBody.md
+docs/ShopUpdateLoloRequestCreatedNotifiersRequestBody.md
 docs/ShopUpdateLoloRequestRequestBody.md
 docs/ShopUpdateOwnedItemRequestBody.md
 docs/ShopUpdateProductRequestBody.md
@@ -128,11 +139,13 @@ src/apis/auth_api.rs
 src/apis/configuration.rs
 src/apis/feed_items_api.rs
 src/apis/grades_api.rs
+src/apis/image_voting_choices_api.rs
 src/apis/image_voting_entries_api.rs
 src/apis/image_voting_entry_images_api.rs
 src/apis/image_votings_api.rs
 src/apis/import_api.rs
 src/apis/import_keys_api.rs
+src/apis/lolo_request_created_notifiers_api.rs
 src/apis/lolo_requests_api.rs
 src/apis/lolos_api.rs
 src/apis/mod.rs
@@ -168,6 +181,8 @@ src/models/image_votings_create_image_voting_request_body.rs
 src/models/image_votings_create_image_voting_request_body_image_voting_aspect.rs
 src/models/image_votings_create_image_voting_response.rs
 src/models/image_votings_create_image_voting_response_image_voting_aspect.rs
+src/models/image_votings_index_image_voting_choices_response.rs
+src/models/image_votings_index_image_voting_choices_response_image_voting_entry.rs
 src/models/image_votings_index_image_voting_entries_response.rs
 src/models/image_votings_index_image_voting_entries_response_user.rs
 src/models/image_votings_index_image_voting_entry_images_request_body.rs
@@ -178,6 +193,11 @@ src/models/image_votings_update_image_voting_entry_request_body.rs
 src/models/image_votings_update_image_voting_request_body.rs
 src/models/image_votings_update_image_voting_request_body_image_voting_aspect.rs
 src/models/image_votings_upload_image_voting_entry_image_response.rs
+src/models/image_votings_view_image_voting_choice_response.rs
+src/models/image_votings_view_image_voting_choice_response_image_voting.rs
+src/models/image_votings_view_image_voting_choice_response_image_voting_aspect.rs
+src/models/image_votings_view_image_voting_choice_response_image_voting_entry.rs
+src/models/image_votings_view_image_voting_choice_response_image_voting_entry_user.rs
 src/models/image_votings_view_image_voting_entry_response.rs
 src/models/image_votings_view_image_voting_entry_response_user.rs
 src/models/image_votings_view_image_voting_response.rs
@@ -209,6 +229,7 @@ src/models/shop_create_product_response.rs
 src/models/shop_create_product_response_input.rs
 src/models/shop_create_qr_code_request_body.rs
 src/models/shop_create_qr_code_response.rs
+src/models/shop_index_lolo_request_created_notifiers_response.rs
 src/models/shop_index_lolo_requests_response.rs
 src/models/shop_index_lolos_response.rs
 src/models/shop_index_own_lolo_requests_response.rs
@@ -224,6 +245,7 @@ src/models/shop_index_owned_items_response_product.rs
 src/models/shop_index_products_response.rs
 src/models/shop_index_qr_codes_response.rs
 src/models/shop_overrule_lolo_request_request_body.rs
+src/models/shop_update_lolo_request_created_notifiers_request_body.rs
 src/models/shop_update_lolo_request_request_body.rs
 src/models/shop_update_owned_item_request_body.rs
 src/models/shop_update_product_request_body.rs
