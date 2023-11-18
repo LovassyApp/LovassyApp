@@ -405,7 +405,7 @@ const AuthenticatedHeader = ({ links, toggleDrawer }: AuthenticatedHeaderProps) 
     });
 
     return (
-        <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0, background: "none", backdropFilter: "blur(5px)" }}>
+        <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0, background: "none", backdropFilter: "blur(10px)" }}>
             <Container className={classes.content} fluid={true}>
                 <Group>
                     <Text component={Link} to="/" size="xl" weight={700} variant="gradient">
