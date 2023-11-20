@@ -15,9 +15,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
-using Microsoft.FeatureManagement.FeatureFilters;
 using Microsoft.OpenApi.Models;
 using Quartz;
+using Quartz.AspNetCore;
 using Sieve.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -78,13 +78,11 @@ public static class AddWebApiHelpersExtension
         services.AddFluentValidationRulesToSwagger();
 
         // Scheduler
-        services.AddQuartz(q => { q.UseMicrosoftDependencyInjectionJobFactory(); });
+        services.AddQuartz();
         services.AddQuartzServer(options => { options.WaitForJobsToComplete = true; });
 
         //Feature Flags
-        services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>().AddFeatureFilter<PercentageFilter>()
-            .AddFeatureFilter<TargetingFilter>();
-        services.AddSingleton<ITargetingContextAccessor, TargetingContextAccessor>();
+        services.AddFeatureManagement().WithTargeting<TargetingContextAccessor>();
         services.AddOptions<FeatureFlagOptions>();
         services.PostConfigureAll<FeatureFlagOptions>(o =>
         {
