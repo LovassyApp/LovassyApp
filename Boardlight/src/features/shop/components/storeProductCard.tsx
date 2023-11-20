@@ -48,7 +48,7 @@ export const StoreProductCard = ({
                 <Group position="apart" sx={{ flexWrap: "nowrap" }}>
                     <Box maw="100%" sx={{ overflow: "hidden" }}>
                         <Text size="lg" weight={500} truncate={true}>
-                            {storeProduct.price} lóló
+                            {storeProduct.price} loló
                         </Text>
                     </Box>
                     <Text size="sm" color="dimmed">
