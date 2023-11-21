@@ -93,7 +93,7 @@ builder.Services.AddControllers(o =>
     o.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(x =>
         $"A megadott érték érvénytelen a(z) '{x}' mezőben.");
     o.ModelBindingMessageProvider.SetValueIsInvalidAccessor(x => $"Az érték '{x}' érvénytelen.");
-    o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => $"A mező '{0}' értéke csak szám lehet.");
+    o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => $"A mező '{x}' értéke csak szám lehet.");
     o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => $"Az érték '{x}' érvénytelen.");
 
     o.ModelValidatorProviders.Clear(); // Disable automatic model validation, fluent validation is used instead

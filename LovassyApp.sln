@@ -1,18 +1,18 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blueboard", "Blueboard\Blueboard.csproj", "{4C2DA0FE-F208-4CEE-9E2B-DC81DCF834B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blueboard", "Blueboard\Blueboard.csproj", "{4C2DA0FE-F208-4CEE-9E2B-DC81DCF834B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.Cryptography.Tests", "Helpers.Cryptography.Tests\Helpers.Cryptography.Tests.csproj", "{6BE8777E-3FA1-4694-BC4E-050EB8324F94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers.Cryptography.Tests", "Helpers.Cryptography.Tests\Helpers.Cryptography.Tests.csproj", "{6BE8777E-3FA1-4694-BC4E-050EB8324F94}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2C72A2FB-4769-45AD-8156-94D523A5D552}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B7E0B831-06E1-4BC0-9A1A-29923B03C6B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.Cryptography", "Helpers.Cryptography\Helpers.Cryptography.csproj", "{5792F98E-CF32-4937-BABA-611D2FADB4E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers.Cryptography", "Helpers.Cryptography\Helpers.Cryptography.csproj", "{5792F98E-CF32-4937-BABA-611D2FADB4E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.WebApi", "Helpers.WebApi\Helpers.WebApi.csproj", "{0F7A0506-432D-4874-99B5-9CEF5A6B3F99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers.WebApi", "Helpers.WebApi\Helpers.WebApi.csproj", "{0F7A0506-432D-4874-99B5-9CEF5A6B3F99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.Email", "Helpers.Email\Helpers.Email.csproj", "{10A18557-4776-4BD5-B85E-39B80A390F3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers.Email", "Helpers.Email\Helpers.Email.csproj", "{10A18557-4776-4BD5-B85E-39B80A390F3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
