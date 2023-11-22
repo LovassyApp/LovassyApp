@@ -96,8 +96,6 @@ public static class BuyProduct
                 throw new BadRequestException("Nincs elég lolód a termék megvásárlásához.");
             }
 
-            //TODO: Send notification to user about a new owned item and to all users about the quantity update
-
             return Unit.Value;
         }
     }

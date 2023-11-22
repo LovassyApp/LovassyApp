@@ -38,10 +38,6 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        modelBuilder.HasPostgresEnum<GradeType>();
-        modelBuilder.HasPostgresEnum<LoloType>();
-        modelBuilder.HasPostgresEnum<ImageVotingType>();
     }
 
     public override int SaveChanges()

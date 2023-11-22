@@ -88,7 +88,7 @@ public class ImageVotingsController : ApiControllerBase
     public async Task<ActionResult> Update([FromRoute] int id,
         [FromBody] UpdateImageVoting.RequestBody body)
     {
-        var response = await Mediator.Send(new UpdateImageVoting.Command
+        await Mediator.Send(new UpdateImageVoting.Command
         {
             Id = id,
             Body = body
