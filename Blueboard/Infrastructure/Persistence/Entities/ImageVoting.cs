@@ -50,6 +50,14 @@ public class ImageVoting : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public int MaxUploadsPerUser { get; set; }
 
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public bool SuperIncrementAllowed { get; set; }
+
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public int SuperIncrementValue { get; set; }
+
     [JsonIgnore] public List<ImageVotingEntry> Entries { get; set; }
 
     [JsonIgnore] public List<ImageVotingChoice> Choices { get; set; }
@@ -72,5 +80,8 @@ public class ImageVotingConfiguration : IEntityTypeConfiguration<ImageVoting>
             .HasForeignKey(v => v.BannedUserGroupId)
             .OnDelete(DeleteBehavior.SetNull);
         builder.OwnsMany<ImageVotingAspect>(v => v.Aspects, b => b.ToJson());
+
+        builder.Property(v => v.SuperIncrementAllowed).HasDefaultValue(false);
+        builder.Property(v => v.SuperIncrementValue).HasDefaultValue(2);
     }
 }
