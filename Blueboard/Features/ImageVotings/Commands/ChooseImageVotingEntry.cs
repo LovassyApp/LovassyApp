@@ -23,30 +23,21 @@ public static class ChooseImageVotingEntry
         public string? AspectKey { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, IPublisher publisher,
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor, IPublisher publisher,
             PermissionManager permissionManager)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _publisher = publisher;
-            _permissionManager = permissionManager;
-        }
-
+        : IRequestHandler<Command>
+    {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var entry = await _context.ImageVotingEntries.Include(e => e.ImageVoting)
-                .ThenInclude(v => v.Choices.Where(c => c.UserId == _userAccessor.User.Id))
+            var entry = await context.ImageVotingEntries.Include(e => e.ImageVoting)
+                .ThenInclude(v => v.Choices.Where(c => c.UserId == userAccessor.User.Id))
                 .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
             if (entry == null)
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
+
+            if (entry.ImageVoting.Type != ImageVotingType.SingleChoice)
+                throw new BadRequestException("A megadott kép nem egy választásos szavazás része");
 
             CheckChoosability(entry);
 
@@ -67,7 +58,7 @@ public static class ChooseImageVotingEntry
                 if (choice == null)
                     entry.ImageVoting.Choices.Add(new ImageVotingChoice
                     {
-                        AspectKey = request.Body.AspectKey, UserId = _userAccessor.User.Id,
+                        AspectKey = request.Body.AspectKey, UserId = userAccessor.User.Id,
                         ImageVotingId = entry.ImageVotingId, ImageVotingEntryId = entry.Id
                     });
                 else
@@ -79,16 +70,16 @@ public static class ChooseImageVotingEntry
                 if (choice == null)
                     entry.ImageVoting.Choices.Add(new ImageVotingChoice
                     {
-                        UserId = _userAccessor.User.Id, ImageVotingId = entry.ImageVotingId,
+                        UserId = userAccessor.User.Id, ImageVotingId = entry.ImageVotingId,
                         ImageVotingEntryId = entry.Id
                     });
                 else
                     choice.ImageVotingEntryId = entry.Id;
             }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }
@@ -99,10 +90,10 @@ public static class ChooseImageVotingEntry
                 throw new BadRequestException("A megadott szavazás nem egy választásos szavazás");
 
             if (!entry.ImageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ChooseImageVotingEntry)))
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ChooseImageVotingEntry)))
                 throw new BadRequestException("A megadott szavazás nem aktív");
 
-            if (entry.UserId == _userAccessor.User.Id)
+            if (entry.UserId == userAccessor.User.Id)
                 throw new BadRequestException("Nem szavazhatsz a saját képedre");
         }
     }

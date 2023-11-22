@@ -2,7 +2,6 @@ using Blueboard.Features.ImageVotings.Events;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentValidation;
-using Helpers.WebApi.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -118,29 +117,17 @@ public static class CreateImageVoting
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler
+        (ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var imageVoting = request.Body.Adapt<ImageVoting>();
 
-            //TODO: Remove this when increment voting is available
-            if (imageVoting.Type == ImageVotingType.Increment)
-                throw new UnavailableException("Az inkrementáló típusú szavazás még nem elérhető.");
+            await context.ImageVotings.AddAsync(imageVoting, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _context.ImageVotings.AddAsync(imageVoting, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            await _publisher.Publish(new ImageVotingsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ImageVotingsUpdatedEvent(), cancellationToken);
 
             return imageVoting.Adapt<Response>();
         }

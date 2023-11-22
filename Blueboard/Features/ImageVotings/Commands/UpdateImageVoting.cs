@@ -89,20 +89,11 @@ public static class UpdateImageVoting
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var imageVoting = await _context.ImageVotings.Include(v => v.Choices).Include(v => v.Entries)
+            var imageVoting = await context.ImageVotings.Include(v => v.Choices).Include(v => v.Entries)
                 .ThenInclude(e => e.Increments).FirstOrDefaultAsync(v => v.Id == request.Id, cancellationToken);
 
             if (imageVoting == null)
@@ -111,10 +102,6 @@ public static class UpdateImageVoting
             var originalImageVoting = imageVoting;
 
             request.Body.Adapt(imageVoting);
-
-            //TODO: Remove this when increment voting is available
-            if (imageVoting.Type == ImageVotingType.Increment)
-                throw new UnavailableException("Az inkrementáló típusú szavazás még nem elérhető.");
 
             var didDeleteChoices = false;
             var didDeleteIncrements = false;
@@ -125,27 +112,27 @@ public static class UpdateImageVoting
             {
                 foreach (var choice in originalImageVoting.Choices.Where(c => c.AspectKey == aspect.Key))
                 {
-                    _context.ImageVotingChoices.Remove(choice);
+                    context.ImageVotingChoices.Remove(choice);
                     didDeleteChoices = true;
                 }
 
                 foreach (var entry in originalImageVoting.Entries)
                 foreach (var increment in entry.Increments.Where(i => i.AspectKey == aspect.Key))
                 {
-                    _context.ImageVotingEntryIncrements.Remove(increment);
+                    context.ImageVotingEntryIncrements.Remove(increment);
                     didDeleteIncrements = true;
                 }
             }
 
             if (didDeleteChoices)
-                await _publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
+                await publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
 
             if (didDeleteIncrements)
-                await _publisher.Publish(new ImageVotingEntryIncrementsUpdatedEvent(), cancellationToken);
+                await publisher.Publish(new ImageVotingEntryIncrementsUpdatedEvent(), cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ImageVotingsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ImageVotingsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

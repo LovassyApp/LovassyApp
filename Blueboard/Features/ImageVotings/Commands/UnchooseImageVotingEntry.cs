@@ -23,30 +23,22 @@ public class UnchooseImageVotingEntry
         public string? AspectKey { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager,
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor,
+            PermissionManager permissionManager,
             IPublisher publisher)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _permissionManager = permissionManager;
-            _publisher = publisher;
-        }
-
+        : IRequestHandler<Command>
+    {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var entry = await _context.ImageVotingEntries.Include(e => e.ImageVoting)
-                .ThenInclude(v => v.Choices.Where(c => c.UserId == _userAccessor.User.Id))
+            var entry = await context.ImageVotingEntries.Include(e => e.ImageVoting)
+                .ThenInclude(v => v.Choices.Where(c => c.UserId == userAccessor.User.Id))
                 .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
             if (entry == null)
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
+
+            if (entry.ImageVoting.Type != ImageVotingType.SingleChoice)
+                throw new BadRequestException("A megadott kép nem egy választásos szavazás része");
 
             CheckUnchoosability(entry);
 
@@ -68,7 +60,7 @@ public class UnchooseImageVotingEntry
                 if (choice == null)
                     throw new BadRequestException("A megadott szempontban nem a megadott képet választottad");
 
-                _context.ImageVotingChoices.Remove(choice);
+                context.ImageVotingChoices.Remove(choice);
             }
             else
             {
@@ -77,12 +69,12 @@ public class UnchooseImageVotingEntry
                 if (choice == null)
                     throw new BadRequestException("Nem a megadott képet választottad");
 
-                _context.ImageVotingChoices.Remove(choice);
+                context.ImageVotingChoices.Remove(choice);
             }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }
@@ -93,7 +85,7 @@ public class UnchooseImageVotingEntry
                 throw new BadRequestException("A megadott szavazás nem egy választásos szavazás");
 
             if (!entry.ImageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UnchooseImageVotingEntry)))
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UnchooseImageVotingEntry)))
                 throw new BadRequestException("A megadott szavazás nem aktív");
         }
     }

@@ -65,8 +65,6 @@ public class ImageVotingsController : ApiControllerBase
     [HttpPost]
     [Permissions(typeof(ImageVotingsPermissions.CreateImageVoting))]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes
-        .Status503ServiceUnavailable)] //TODO: Remove this when the incremental feature is implemented
     [EndpointSummary("Create a new image voting")]
     public async Task<ActionResult<CreateImageVoting.Response>> Create([FromBody] CreateImageVoting.RequestBody body)
     {
@@ -82,8 +80,6 @@ public class ImageVotingsController : ApiControllerBase
     [Permissions(typeof(ImageVotingsPermissions.UpdateImageVoting))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes
-        .Status503ServiceUnavailable)] //TODO: Remove this when the incremental feature is implemented
     [EndpointSummary("Update an image voting")]
     public async Task<ActionResult> Update([FromRoute] int id,
         [FromBody] UpdateImageVoting.RequestBody body)
