@@ -16,4 +16,6 @@ export interface ImageVotingsCreateImageVotingRequestBody {
   uploaderUserGroupId: number;
   bannedUserGroupId?: number | null;
   maxUploadsPerUser: number;
+  superIncrementAllowed: boolean;
+  superIncrementValue: number;
 }

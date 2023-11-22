@@ -17,6 +17,8 @@ export interface ImageVotingsCreateImageVotingResponse {
   uploaderUserGroupId?: number;
   bannedUserGroupId?: number | null;
   maxUploadsPerUser?: number;
+  superIncrementAllowed?: boolean;
+  superIncrementValue?: number;
   createdAt?: string;
   updatedAt?: string;
 }

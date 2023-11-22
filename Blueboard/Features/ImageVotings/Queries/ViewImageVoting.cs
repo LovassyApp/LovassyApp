@@ -35,6 +35,9 @@ public static class ViewImageVoting
 
         public int MaxUploadsPerUser { get; set; }
 
+        public bool SuperIncrementAllowed { get; set; }
+        public int SuperIncrementValue { get; set; }
+
         public bool CanUpload { get; set; }
 
         public DateTime CreatedAt { get; set; }

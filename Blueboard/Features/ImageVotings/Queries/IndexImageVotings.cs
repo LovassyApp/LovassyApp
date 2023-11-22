@@ -33,6 +33,9 @@ public static class IndexImageVotings
 
         public int MaxUploadsPerUser { get; set; }
 
+        public bool SuperIncrementAllowed { get; set; }
+        public int SuperIncrementValue { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

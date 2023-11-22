@@ -80,6 +80,8 @@ const CreateImageVotingModal = ({ opened, close }: { opened: boolean; close(): v
             uploaderUserGroupId: "",
             bannedUserGroupId: "",
             maxUploadsPerUser: 1,
+            superIncrementAllowed: true,
+            superIncrementValue: 2,
         },
         transformValues: (values) => ({
             ...values,
@@ -310,6 +312,8 @@ const DetailsModal = ({
             uploaderUserGroupId: imageVoting?.uploaderUserGroupId.toString(),
             bannedUserGroupId: imageVoting?.bannedUserGroupId?.toString(),
             maxUploadsPerUser: imageVoting?.maxUploadsPerUser,
+            superIncrementAllowed: imageVoting?.superIncrementAllowed,
+            superIncrementValue: imageVoting?.superIncrementValue,
         },
         transformValues: (values) => ({
             ...values,
@@ -334,6 +338,8 @@ const DetailsModal = ({
             uploaderUserGroupId: imageVoting?.uploaderUserGroupId.toString(),
             bannedUserGroupId: imageVoting?.bannedUserGroupId?.toString(),
             maxUploadsPerUser: imageVoting?.maxUploadsPerUser,
+            superIncrementAllowed: imageVoting?.superIncrementAllowed,
+            superIncrementValue: imageVoting?.superIncrementValue,
         });
     }, [imageVoting, imageVotingDetailed.data, opened]);
 

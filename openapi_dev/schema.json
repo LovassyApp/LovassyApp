@@ -5532,6 +5532,13 @@
             "type": "integer",
             "format": "int32"
           },
+          "superIncrementAllowed": {
+            "type": "boolean"
+          },
+          "superIncrementValue": {
+            "type": "integer",
+            "format": "int32"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5950,6 +5957,13 @@
             "nullable": true
           },
           "maxUploadsPerUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "superIncrementAllowed": {
+            "type": "boolean"
+          },
+          "superIncrementValue": {
             "type": "integer",
             "format": "int32"
           },
