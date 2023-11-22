@@ -34,6 +34,9 @@ public static class CreateImageVoting
 
         public int MaxUploadsPerUser { get; set; }
 
+        public bool SuperIncrementAllowed { get; set; }
+        public int SuperIncrementValue { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -61,6 +64,9 @@ public static class CreateImageVoting
         public int? BannedUserGroupId { get; set; }
 
         public int MaxUploadsPerUser { get; set; }
+
+        public bool SuperIncrementAllowed { get; set; }
+        public int SuperIncrementValue { get; set; }
     }
 
     public class RequestBodyImageVotingAspect
@@ -101,6 +107,9 @@ public static class CreateImageVoting
                 .WithMessage("A megadott felhasználói csoport nem létezik.");
 
             RuleFor(x => x.MaxUploadsPerUser).NotNull().GreaterThanOrEqualTo(1);
+
+            RuleFor(x => x.SuperIncrementAllowed).NotNull();
+            RuleFor(x => x.SuperIncrementValue).NotNull().GreaterThanOrEqualTo(1);
         }
 
         private async Task<bool> BeExistingUserGroupAsync(RequestBody model, int userGroupId,
