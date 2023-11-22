@@ -14,6 +14,8 @@ Name | Type | Description | Notes
 **uploader_user_group_id** | Option<**i32**> |  | [optional]
 **banned_user_group_id** | Option<**i32**> |  | [optional]
 **max_uploads_per_user** | Option<**i32**> |  | [optional]
+**super_increment_allowed** | Option<**bool**> |  | [optional]
+**super_increment_value** | Option<**i32**> |  | [optional]
 **created_at** | Option<**String**> |  | [optional]
 **updated_at** | Option<**String**> |  | [optional]
 
