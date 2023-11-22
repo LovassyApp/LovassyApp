@@ -49,7 +49,6 @@ pub enum ApiImageVotingsIdGetError {
 #[serde(untagged)]
 pub enum ApiImageVotingsIdPatchError {
     Status404(crate::models::ProblemDetails),
-    Status503(),
     Status401(),
     Status403(),
     UnknownValue(serde_json::Value),
@@ -69,7 +68,6 @@ pub enum ApiImageVotingsIdResultsGetError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ApiImageVotingsPostError {
-    Status503(),
     Status401(),
     Status403(),
     UnknownValue(serde_json::Value),

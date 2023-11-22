@@ -31,10 +31,14 @@ pub struct ImageVotingsCreateImageVotingRequestBody {
     pub banned_user_group_id: Option<Option<i32>>,
     #[serde(rename = "maxUploadsPerUser")]
     pub max_uploads_per_user: i32,
+    #[serde(rename = "superIncrementAllowed")]
+    pub super_increment_allowed: bool,
+    #[serde(rename = "superIncrementValue")]
+    pub super_increment_value: i32,
 }
 
 impl ImageVotingsCreateImageVotingRequestBody {
-    pub fn new(name: String, description: String, r#type: String, aspects: Vec<crate::models::ImageVotingsCreateImageVotingRequestBodyImageVotingAspect>, active: bool, show_uploader_info: bool, uploader_user_group_id: i32, max_uploads_per_user: i32) -> ImageVotingsCreateImageVotingRequestBody {
+    pub fn new(name: String, description: String, r#type: String, aspects: Vec<crate::models::ImageVotingsCreateImageVotingRequestBodyImageVotingAspect>, active: bool, show_uploader_info: bool, uploader_user_group_id: i32, max_uploads_per_user: i32, super_increment_allowed: bool, super_increment_value: i32) -> ImageVotingsCreateImageVotingRequestBody {
         ImageVotingsCreateImageVotingRequestBody {
             name,
             description,
@@ -45,6 +49,8 @@ impl ImageVotingsCreateImageVotingRequestBody {
             uploader_user_group_id,
             banned_user_group_id: None,
             max_uploads_per_user,
+            super_increment_allowed,
+            super_increment_value,
         }
     }
 }
