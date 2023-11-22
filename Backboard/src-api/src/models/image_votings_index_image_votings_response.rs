@@ -31,6 +31,10 @@ pub struct ImageVotingsIndexImageVotingsResponse {
     pub banned_user_group_id: Option<Option<i32>>,
     #[serde(rename = "maxUploadsPerUser", skip_serializing_if = "Option::is_none")]
     pub max_uploads_per_user: Option<i32>,
+    #[serde(rename = "superIncrementAllowed", skip_serializing_if = "Option::is_none")]
+    pub super_increment_allowed: Option<bool>,
+    #[serde(rename = "superIncrementValue", skip_serializing_if = "Option::is_none")]
+    pub super_increment_value: Option<i32>,
     #[serde(rename = "createdAt", skip_serializing_if = "Option::is_none")]
     pub created_at: Option<String>,
     #[serde(rename = "updatedAt", skip_serializing_if = "Option::is_none")]
@@ -49,6 +53,8 @@ impl ImageVotingsIndexImageVotingsResponse {
             uploader_user_group_id: None,
             banned_user_group_id: None,
             max_uploads_per_user: None,
+            super_increment_allowed: None,
+            super_increment_value: None,
             created_at: None,
             updated_at: None,
         }
