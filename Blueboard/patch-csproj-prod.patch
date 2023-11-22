@@ -1,5 +1,5 @@
 --- Blueboard.csproj	2023-11-22 19:59:18
-+++ test.txt	2023-11-22 22:00:01
++++ Blueboard_prod.csproj	2023-11-22 22:14:30
 @@ -32,8 +32,4 @@
      <_ContentIncludedByDefault Remove="Core\Email\Shared\EmailLayout.cshtml" />
      <_ContentIncludedByDefault Remove="Features\Auth\Emails\VerifyEmail.cshtml" />
@@ -9,3 +9,4 @@
 -    <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
 -  </Target>
  </Project>
+\ No newline at end of file
