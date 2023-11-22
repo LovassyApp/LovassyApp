@@ -1375,9 +1375,6 @@
               }
             }
           },
-          "503": {
-            "description": "Server Error"
-          },
           "401": {
             "description": "Unauthorized"
           },
@@ -1495,9 +1492,6 @@
                 }
               }
             }
-          },
-          "503": {
-            "description": "Server Error"
           },
           "401": {
             "description": "Unauthorized"

@@ -4,17 +4,10 @@ using Org.BouncyCastle.Security;
 
 namespace Blueboard.Infrastructure.Persistence.Seeders;
 
-public class QRCodeSeeder
+public class QRCodeSeeder(ApplicationDbContext context)
 {
     private const int QRCodeCount = 10;
     private static readonly Faker Faker = new();
-
-    private readonly ApplicationDbContext _context;
-
-    public QRCodeSeeder(ApplicationDbContext context)
-    {
-        _context = context;
-    }
 
     public async Task RunAsync()
     {
@@ -25,8 +18,8 @@ public class QRCodeSeeder
             qrcodes.Add(qrcode);
         }
 
-        await _context.QRCodes.AddRangeAsync(qrcodes);
-        await _context.SaveChangesAsync();
+        await context.QRCodes.AddRangeAsync(qrcodes);
+        await context.SaveChangesAsync();
     }
 
     private QRCode CreateQRCode()

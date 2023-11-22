@@ -6,21 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Core.Auth.StartupActions;
 
-public class ClearDeletedPermissionsAction : IStartupAction
-{
-    private readonly ILogger<ClearDeletedPermissionsAction> _logger;
-    private readonly IServiceProvider _serviceProvider;
-
-    public ClearDeletedPermissionsAction(IServiceProvider serviceProvider,
+public class ClearDeletedPermissionsAction(IServiceProvider serviceProvider,
         ILogger<ClearDeletedPermissionsAction> logger)
-    {
-        _serviceProvider = serviceProvider;
-        _logger = logger;
-    }
-
+    : IStartupAction
+{
     public async Task Execute()
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
         await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         var permissionNames = Assembly.GetExecutingAssembly()
@@ -38,6 +30,6 @@ public class ClearDeletedPermissionsAction : IStartupAction
 
         await context.SaveChangesAsync();
 
-        _logger.LogInformation("Cleared deleted permissions from user groups");
+        logger.LogInformation("Cleared deleted permissions from user groups");
     }
 }

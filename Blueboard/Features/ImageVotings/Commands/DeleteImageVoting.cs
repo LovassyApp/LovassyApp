@@ -13,26 +13,17 @@ public static class DeleteImageVoting
         public int Id { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var imageVoting = await _context.ImageVotings.FindAsync(request.Id);
+            var imageVoting = await context.ImageVotings.FindAsync(request.Id);
             if (imageVoting == null) throw new NotFoundException(nameof(ImageVoting), request.Id);
 
-            _context.ImageVotings.Remove(imageVoting);
-            await _context.SaveChangesAsync(cancellationToken);
+            context.ImageVotings.Remove(imageVoting);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ImageVotingsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ImageVotingsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

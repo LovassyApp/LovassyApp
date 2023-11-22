@@ -37,28 +37,19 @@ public static class UpdateLoloRequestCreatedNotifiers
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            await _context.Database.ExecuteSqlRawAsync(
-                @$"truncate table ""{_context.Model.FindEntityType(typeof(LoloRequestCreatedNotifier))!.GetTableName()}""",
+            await context.Database.ExecuteSqlRawAsync(
+                @$"truncate table ""{context.Model.FindEntityType(typeof(LoloRequestCreatedNotifier))!.GetTableName()}""",
                 cancellationToken);
 
             var notifiers = request.Body.Emails.Select(e => new LoloRequestCreatedNotifier { Email = e }).ToList();
-            await _context.LoloRequestCreatedNotifiers.AddRangeAsync(notifiers, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.LoloRequestCreatedNotifiers.AddRangeAsync(notifiers, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new LoloRequestCreatedNotifiersUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new LoloRequestCreatedNotifiersUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

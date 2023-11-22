@@ -9,24 +9,10 @@ namespace Blueboard.Core.Auth.Services;
 /// <summary>
 ///     The scoped service responsible for hashing data using the user's encrypted salt. (primarily used for hashing ids)
 /// </summary>
-public class HashManager
+public class HashManager(EncryptionManager encryptionManager, UserAccessor userAccessor,
+    IMemoryCache memoryCache, IOptions<HashManagerOptions> hashManagerOptions)
 {
-    private readonly EncryptionManager _encryptionManager;
-    private readonly HashManagerOptions _hashManagerOptions;
-    private readonly IMemoryCache _memoryCache;
-    private readonly UserAccessor _userAccessor;
-
     private string? _userSalt;
-
-    public HashManager(EncryptionManager encryptionManager, UserAccessor userAccessor,
-        IMemoryCache memoryCache,
-        IOptions<HashManagerOptions> hashManagerOptions)
-    {
-        _encryptionManager = encryptionManager;
-        _memoryCache = memoryCache;
-        _userAccessor = userAccessor;
-        _hashManagerOptions = hashManagerOptions.Value;
-    }
 
     /// <summary>
     ///     Hashes a payload with the <see cref="User" />'s own encrypted salt. Primarily meant for hashing the user id and
@@ -39,19 +25,19 @@ public class HashManager
         if (_userSalt == null)
             Init();
 
-        var cached = _memoryCache.Get<string>($"{_hashManagerOptions.HashManagerCachePrefix}:{payload}");
+        var cached = memoryCache.Get<string>($"{hashManagerOptions.Value.HashManagerCachePrefix}:{payload}");
 
         if (cached != null)
             return cached;
 
         var hash = HashingUtils.HashWithSalt(payload, _userSalt);
-        _memoryCache.Set($"{_hashManagerOptions.HashManagerCachePrefix}:{payload}", hash);
+        memoryCache.Set($"{hashManagerOptions.Value.HashManagerCachePrefix}:{payload}", hash);
 
         return hash;
     }
 
     private void Init()
     {
-        _userSalt = _encryptionManager.Decrypt(_userAccessor.User.HasherSaltEncrypted);
+        _userSalt = encryptionManager.Decrypt(userAccessor.User.HasherSaltEncrypted);
     }
 }

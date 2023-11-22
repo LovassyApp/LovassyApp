@@ -43,22 +43,13 @@ public static class ViewImageVotingEntry
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager,
+            UserAccessor userAccessor)
+        : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager, UserAccessor userAccessor)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-            _userAccessor = userAccessor;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var entry = await _context.ImageVotingEntries
+            var entry = await context.ImageVotingEntries
                 .Include(e => e.User)
                 .Include(e => e.ImageVoting)
                 .ThenInclude(i => i.Choices)
@@ -69,7 +60,7 @@ public static class ViewImageVotingEntry
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
 
             if (!entry.ImageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ViewImageVotingEntry)))
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ViewImageVotingEntry)))
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
 
             var response = entry.Adapt<Response>();
@@ -87,7 +78,7 @@ public static class ViewImageVotingEntry
                 response.Chosen = entry.ImageVoting.Choices.Any(c => c.ImageVotingEntryId == entry.Id);
             }
 
-            if (entry.UserId == _userAccessor.User.Id)
+            if (entry.UserId == userAccessor.User.Id)
                 response.CanChoose = false;
 
             return response;

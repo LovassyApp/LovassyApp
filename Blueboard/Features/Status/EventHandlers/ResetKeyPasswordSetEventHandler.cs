@@ -5,18 +5,11 @@ using Quartz;
 
 namespace Blueboard.Features.Status.EventHandlers;
 
-public class ResetKeyPasswordSetEventHandler : INotificationHandler<ResetKeyPasswordSetEvent>
+public class ResetKeyPasswordSetEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<ResetKeyPasswordSetEvent>
 {
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public ResetKeyPasswordSetEventHandler(ISchedulerFactory schedulerFactory)
-    {
-        _schedulerFactory = schedulerFactory;
-    }
-
     public async Task Handle(ResetKeyPasswordSetEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
         var sendResetKeyPasswordSetNotificationsJob = JobBuilder.Create<SendResetKeyPasswordSetNotificationsJob>()
             .Build();

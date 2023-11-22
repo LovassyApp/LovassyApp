@@ -2,12 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Blueboard.Core.Auth.Policies.Permissions;
 
-public class PermissionsRequirement : IAuthorizationRequirement
+public class PermissionsRequirement(string permissions) : IAuthorizationRequirement
 {
-    public PermissionsRequirement(string permissions)
-    {
-        Permissions = permissions;
-    }
-
-    public string Permissions { get; }
+    public string Permissions { get; } = permissions;
 }

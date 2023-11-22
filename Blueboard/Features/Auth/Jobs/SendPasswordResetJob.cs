@@ -8,30 +8,20 @@ using Quartz;
 
 namespace Blueboard.Features.Auth.Jobs;
 
-public class SendPasswordResetJob : IJob
-{
-    private readonly IFluentEmail _fluentEmail;
-    private readonly PasswordResetService _passwordResetService;
-    private readonly RazorViewToStringRenderer _razorViewToStringRenderer;
-
-    public SendPasswordResetJob(IFluentEmail fluentEmail, PasswordResetService passwordResetService,
+public class SendPasswordResetJob(IFluentEmail fluentEmail, PasswordResetService passwordResetService,
         RazorViewToStringRenderer razorViewToStringRenderer)
-    {
-        _fluentEmail = fluentEmail;
-        _passwordResetService = passwordResetService;
-        _razorViewToStringRenderer = razorViewToStringRenderer;
-    }
-
+    : IJob
+{
     public async Task Execute(IJobExecutionContext context)
     {
         var user = JsonSerializer.Deserialize<User>((context.MergedJobDataMap.Get("userJson") as string)!);
         var passwordResetUrl = context.MergedJobDataMap.Get("passwordResetUrl") as string;
         var passwordResetTokenQueryKey = context.MergedJobDataMap.Get("passwordResetTokenQueryKey") as string;
 
-        var passwordResetToken = _passwordResetService.GeneratePasswordResetToken(user!.Id);
+        var passwordResetToken = passwordResetService.GeneratePasswordResetToken(user!.Id);
 
-        var email = _fluentEmail.To(user.Email).Subject("Jelszó visszaállítása").Body(
-            await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/PasswordReset/PasswordReset.cshtml",
+        var email = fluentEmail.To(user.Email).Subject("Jelszó visszaállítása").Body(
+            await razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/PasswordReset/PasswordReset.cshtml",
                 new PasswordResetViewModel
                 {
                     PasswordResetUrl = $"{passwordResetUrl}?{passwordResetTokenQueryKey}={passwordResetToken}"

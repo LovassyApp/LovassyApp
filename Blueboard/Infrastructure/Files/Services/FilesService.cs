@@ -7,17 +7,8 @@ namespace Blueboard.Infrastructure.Files.Services;
 /// <summary>
 ///     The scoped service responsible for handling file <see cref="FileUpload">FileUploads</see>.
 /// </summary>
-public class FilesService
+public class FilesService(ApplicationDbContext context, IServiceProvider serviceProvider)
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IServiceProvider _serviceProvider;
-
-    public FilesService(ApplicationDbContext context, IServiceProvider serviceProvider)
-    {
-        _context = context;
-        _serviceProvider = serviceProvider;
-    }
-
     /// <summary>
     ///     Uploads the file to the server and creates a new <see cref="FileUpload" /> entity. It does not save the changes to
     ///     the database.
@@ -47,9 +38,9 @@ public class FilesService
             UserId = userId
         };
 
-        await _context.FileUploads.AddAsync(fileUpload);
+        await context.FileUploads.AddAsync(fileUpload);
 
-        var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
+        var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
 
         if (httpContextAccessor == null || httpContextAccessor.HttpContext == null)
             return new FileUploadResult
@@ -75,7 +66,7 @@ public class FilesService
     {
         File.Delete(fileUpload.Path);
 
-        _context.FileUploads.Remove(fileUpload);
+        context.FileUploads.Remove(fileUpload);
     }
 
     private string GetUniqueFileName(string fileName)

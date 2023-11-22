@@ -8,18 +8,12 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blueboard.Features.Feed.EventHandlers;
 
-public class FeedItemsUpdatedEventHandler : INotificationHandler<FeedItemsUpdatedEvent>
+public class FeedItemsUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    : INotificationHandler<FeedItemsUpdatedEvent>
 {
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
-
-    public FeedItemsUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
-    {
-        _notificationsHub = notificationsHub;
-    }
-
     public async Task Handle(FeedItemsUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        await _notificationsHub.Clients
+        await notificationsHub.Clients
             .Group(PermissionUtils.PermissionTypesToNames[typeof(FeedPermissions.IndexFeedItems)])
             .RefreshFeedItems();
     }

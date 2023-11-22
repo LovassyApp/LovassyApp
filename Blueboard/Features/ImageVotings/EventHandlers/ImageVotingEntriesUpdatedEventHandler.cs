@@ -8,21 +8,15 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blueboard.Features.ImageVotings.EventHandlers;
 
-public class ImageVotingEntriesUpdatedEventHandler : INotificationHandler<ImageVotingEntriesUpdatedEvent>
+public class ImageVotingEntriesUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    : INotificationHandler<ImageVotingEntriesUpdatedEvent>
 {
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
-
-    public ImageVotingEntriesUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
-    {
-        _notificationsHub = notificationsHub;
-    }
-
     public async Task Handle(ImageVotingEntriesUpdatedEvent notification, CancellationToken cancellationToken)
     {
         if (PermissionUtils.PermissionTypesToNames == null)
             throw new InvalidOperationException("Permissions are not loaded yet");
 
-        await _notificationsHub.Clients
+        await notificationsHub.Clients
             .Groups(PermissionUtils.PermissionTypesToNames[typeof(ImageVotingsPermissions.IndexImageVotingEntries)],
                 PermissionUtils.PermissionTypesToNames[typeof(ImageVotingsPermissions.IndexActiveImageVotingEntries)])
             .RefreshImageVotingEntries();

@@ -6,18 +6,11 @@ using Quartz;
 
 namespace Blueboard.Features.Shop.EventHandlers;
 
-public class OwnedItemUsedEventHandler : INotificationHandler<OwnedItemUsedEvent>
+public class OwnedItemUsedEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<OwnedItemUsedEvent>
 {
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public OwnedItemUsedEventHandler(ISchedulerFactory schedulerFactory)
-    {
-        _schedulerFactory = schedulerFactory;
-    }
-
     public async Task Handle(OwnedItemUsedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
         var sendOwnedItemUsedNotificationJob = JobBuilder.Create<SendOwnedItemUsedNotificationJob>()
             .WithIdentity($"SendOwnedItemUseNotificationJob-{notification.User.Id}-{notification.Product.Id}")

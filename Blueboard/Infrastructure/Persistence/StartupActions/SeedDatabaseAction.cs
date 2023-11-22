@@ -7,20 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Infrastructure.Persistence.StartupActions;
 
-public class SeedDatabaseAction : IStartupAction
+public class SeedDatabaseAction(IServiceProvider serviceProvider, ILogger<SeedDatabaseAction> logger)
+    : IStartupAction
 {
-    private readonly ILogger<SeedDatabaseAction> _logger;
-    private readonly IServiceProvider _serviceProvider;
-
-    public SeedDatabaseAction(IServiceProvider serviceProvider, ILogger<SeedDatabaseAction> logger)
-    {
-        _serviceProvider = serviceProvider;
-        _logger = logger;
-    }
-
     public async Task Execute()
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
         await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var environment = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
 
@@ -47,7 +39,7 @@ public class SeedDatabaseAction : IStartupAction
             await context.Database.ExecuteSqlRawAsync(
                 @$"select setval(pg_get_serial_sequence('""{context.Model.FindEntityType(typeof(UserGroup))!.GetTableName()}""', '{nameof(UserGroup.Id)}'), (select max(""{nameof(UserGroup.Id)}"") from ""{context.Model.FindEntityType(typeof(UserGroup))!.GetTableName()}""))");
 
-            _logger.LogInformation("Created the default user group");
+            logger.LogInformation("Created the default user group");
         }
     }
 }

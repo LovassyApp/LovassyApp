@@ -83,60 +83,46 @@ public static class CreateUser
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler(IPublisher publisher, ApplicationDbContext context,
+            EncryptionManager encryptionManager, HashService hashService, ResetService resetService)
+        : IRequestHandler<Command, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly EncryptionManager _encryptionManager;
-        private readonly HashService _hashService;
-        private readonly IPublisher _publisher;
-        private readonly ResetService _resetService;
-
-        public Handler(IPublisher publisher, ApplicationDbContext context, EncryptionManager encryptionManager,
-            HashService hashService, ResetService resetService)
-        {
-            _publisher = publisher;
-            _context = context;
-            _encryptionManager = encryptionManager;
-            _hashService = hashService;
-            _resetService = resetService;
-        }
-
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (!_resetService.IsResetKeyPasswordSet())
+            if (!resetService.IsResetKeyPasswordSet())
                 throw new UnavailableException(
                     "A visszaállítási jelszó a LovassyApp legutóbbi újraindítása óta még nem lett beállítva.");
 
-            var masterKeySalt = _hashService.GenerateSalt();
+            var masterKeySalt = hashService.GenerateSalt();
             var masterKey = new EncryptableKey();
-            _encryptionManager.SetMasterKeyTemporarily(masterKey.GetKey());
+            encryptionManager.SetMasterKeyTemporarily(masterKey.GetKey());
 
             var storedKey = masterKey.Lock(request.Body.Password, masterKeySalt);
 
             var keys = new KyberKeypair();
 
-            var hasherSalt = _hashService.GenerateSalt();
+            var hasherSalt = hashService.GenerateSalt();
 
             var user = new User
             {
                 Email = request.Body.Email,
                 Name = request.Body.Name,
-                PasswordHashed = _hashService.HashPassword(request.Body.Password),
+                PasswordHashed = hashService.HashPassword(request.Body.Password),
                 PublicKey = keys.PublicKey,
-                PrivateKeyEncrypted = _encryptionManager.Encrypt(keys.PrivateKey),
+                PrivateKeyEncrypted = encryptionManager.Encrypt(keys.PrivateKey),
                 MasterKeyEncrypted = storedKey,
                 MasterKeySalt = masterKeySalt,
-                ResetKeyEncrypted = _resetService.EncryptMasterKey(_encryptionManager.MasterKey!, masterKeySalt),
-                HasherSaltEncrypted = _encryptionManager.Encrypt(hasherSalt),
-                HasherSaltHashed = _hashService.Hash(hasherSalt),
-                OmCodeEncrypted = _encryptionManager.Encrypt(request.Body.OmCode),
-                OmCodeHashed = _hashService.Hash(request.Body.OmCode)
+                ResetKeyEncrypted = resetService.EncryptMasterKey(encryptionManager.MasterKey!, masterKeySalt),
+                HasherSaltEncrypted = encryptionManager.Encrypt(hasherSalt),
+                HasherSaltHashed = hashService.Hash(hasherSalt),
+                OmCodeEncrypted = encryptionManager.Encrypt(request.Body.OmCode),
+                OmCodeHashed = hashService.Hash(request.Body.OmCode)
             };
 
-            await _context.Users.AddAsync(user, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.Users.AddAsync(user, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new UserCreatedEvent
+            await publisher.Publish(new UserCreatedEvent
             {
                 User = user,
                 VerifyUrl = request.VerifyUrl,

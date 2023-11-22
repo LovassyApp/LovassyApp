@@ -5,31 +5,21 @@ using Quartz;
 
 namespace Blueboard.Features.Feed.Jobs;
 
-public class UpdateFeedJob : IJob
+public class UpdateFeedJob(FeedService feedService, ILogger<UpdateFeedJob> logger, IPublisher publisher)
+    : IJob
 {
-    private readonly FeedService _feedService;
-    private readonly ILogger<UpdateFeedJob> _logger;
-    private readonly IPublisher _publisher;
-
-    public UpdateFeedJob(FeedService feedService, ILogger<UpdateFeedJob> logger, IPublisher publisher)
-    {
-        _feedService = feedService;
-        _logger = logger;
-        _publisher = publisher;
-    }
-
     public async Task Execute(IJobExecutionContext context)
     {
-        _logger.LogInformation("Updating feed");
+        logger.LogInformation("Updating feed");
         try
         {
-            await _feedService.UpdateFeed();
-            await _publisher.Publish(new FeedItemsUpdatedEvent());
-            _logger.LogInformation("Feed updated");
+            await feedService.UpdateFeed();
+            await publisher.Publish(new FeedItemsUpdatedEvent());
+            logger.LogInformation("Feed updated");
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error updating feed");
+            logger.LogError(e, "Error updating feed");
         }
     }
 }

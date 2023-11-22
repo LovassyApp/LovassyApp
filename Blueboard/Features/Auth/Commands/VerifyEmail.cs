@@ -12,25 +12,17 @@ public static class VerifyEmail
         public string VerifyToken { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(VerifyEmailService verifyEmailService, ApplicationDbContext context)
+        : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly VerifyEmailService _verifyEmailService;
-
-        public Handler(VerifyEmailService verifyEmailService, ApplicationDbContext context)
-        {
-            _verifyEmailService = verifyEmailService;
-            _context = context;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var tokenContents = _verifyEmailService.DecryptVerifyToken(request.VerifyToken);
+            var tokenContents = verifyEmailService.DecryptVerifyToken(request.VerifyToken);
 
             if (tokenContents == null)
                 throw new BadRequestException("Hibás verify token");
 
-            var user = await _context.Users.FindAsync(tokenContents.UserId, cancellationToken);
+            var user = await context.Users.FindAsync(tokenContents.UserId, cancellationToken);
 
             if (user == null)
                 throw new NotFoundException();
@@ -39,7 +31,7 @@ public static class VerifyEmail
                 throw new BadRequestException("Ez a felhasználó már megerősítette az email címét.");
 
             user.EmailVerifiedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

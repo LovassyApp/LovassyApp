@@ -4,21 +4,13 @@ using Quartz;
 
 namespace Blueboard.Core.Auth.StartupActions;
 
-public class ScheduleAuthJobsAction : IStartupAction
-{
-    private readonly ILogger<ScheduleAuthJobsAction> _logger;
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public ScheduleAuthJobsAction(ISchedulerFactory schedulerFactory,
+public class ScheduleAuthJobsAction(ISchedulerFactory schedulerFactory,
         ILogger<ScheduleAuthJobsAction> logger)
-    {
-        _schedulerFactory = schedulerFactory;
-        _logger = logger;
-    }
-
+    : IStartupAction
+{
     public async Task Execute()
     {
-        var scheduler = await _schedulerFactory.GetScheduler();
+        var scheduler = await schedulerFactory.GetScheduler();
 
         var deleteOldTokensJob = JobBuilder.Create<DeleteOldTokensJob>()
             .WithIdentity("deleteOldTokens", "scheduledAuthJobs").Build();
@@ -30,6 +22,6 @@ public class ScheduleAuthJobsAction : IStartupAction
 
         await scheduler.ScheduleJob(deleteOldTokensJob, deleteOldTokensTrigger);
 
-        _logger.LogInformation($"Added {nameof(DeleteOldTokensJob)} to recurring jobs");
+        logger.LogInformation($"Added {nameof(DeleteOldTokensJob)} to recurring jobs");
     }
 }

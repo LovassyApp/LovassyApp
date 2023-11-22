@@ -39,26 +39,17 @@ public static class IndexProducts
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor,
+            PermissionManager permissionManager)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor, PermissionManager permissionManager)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-            _permissionManager = permissionManager;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var hasIndexProductsPermission = _permissionManager.CheckPermission(typeof(ShopPermissions.IndexProducts));
+            var hasIndexProductsPermission = permissionManager.CheckPermission(typeof(ShopPermissions.IndexProducts));
 
-            var products = _context.Products.AsNoTracking();
+            var products = context.Products.AsNoTracking();
 
-            var filteredProducts = _sieveProcessor.Apply(request.SieveModel, products);
+            var filteredProducts = sieveProcessor.Apply(request.SieveModel, products);
 
             if (!hasIndexProductsPermission) filteredProducts = filteredProducts.Where(p => p.Visible);
 

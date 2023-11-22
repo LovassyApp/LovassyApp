@@ -8,34 +8,22 @@ using Quartz;
 
 namespace Blueboard.Features.Auth.Jobs;
 
-public class UpdateLolosJob : IJob
-{
-    private readonly EncryptionManager _encryptionManager;
-    private readonly LoloManager _loloManager;
-    private readonly IPublisher _publisher;
-    private readonly UserAccessor _userAccessor;
-
-    public UpdateLolosJob(EncryptionManager encryptionManager, UserAccessor userAccessor,
+public class UpdateLolosJob(EncryptionManager encryptionManager, UserAccessor userAccessor,
         LoloManager loloManager, IPublisher publisher)
-    {
-        _encryptionManager = encryptionManager;
-        _userAccessor = userAccessor;
-        _loloManager = loloManager;
-        _publisher = publisher;
-    }
-
+    : IJob
+{
     public async Task Execute(IJobExecutionContext context)
     {
         var user = JsonSerializer.Deserialize<User>((context.MergedJobDataMap.Get("userJson") as string)!);
         var masterKey = context.MergedJobDataMap.Get("masterKey") as string;
 
-        _userAccessor.User = user;
+        userAccessor.User = user;
 
-        _encryptionManager.SetMasterKeyTemporarily(masterKey!);
+        encryptionManager.SetMasterKeyTemporarily(masterKey!);
 
-        await _loloManager.GenerateAsync();
+        await loloManager.GenerateAsync();
 
-        await _publisher.Publish(new LolosUpdatedEvent
+        await publisher.Publish(new LolosUpdatedEvent
         {
             UserId = user!.Id
         });

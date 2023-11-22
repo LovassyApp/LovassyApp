@@ -69,44 +69,29 @@ public static class Login
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly EncryptionManager _encryptionManager;
-        private readonly HashService _hashService;
-        private readonly IPublisher _publisher;
-        private readonly RefreshService _refreshService;
-        private readonly SessionManager _sessionManager;
-
-        public Handler(ApplicationDbContext context, HashService hashService, EncryptionManager encryptionManager,
+    internal sealed class Handler(ApplicationDbContext context, HashService hashService,
+            EncryptionManager encryptionManager,
             IPublisher publisher, RefreshService refreshService, SessionManager sessionManager)
-        {
-            _context = context;
-            _publisher = publisher;
-            _hashService = hashService;
-            _encryptionManager = encryptionManager;
-            _refreshService = refreshService;
-            _sessionManager = sessionManager;
-        }
-
+        : IRequestHandler<Command, Response>
+    {
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             // I wouldn't risk as no tracking here as the user might be updated by the update grades job (although it's reattached there)
-            var user = await _context.Users.Where(x => x.Email == request.Body.Email)
+            var user = await context.Users.Where(x => x.Email == request.Body.Email)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (!_hashService.VerifyPassword(request.Body.Password, user!.PasswordHashed))
+            if (!hashService.VerifyPassword(request.Body.Password, user!.PasswordHashed))
                 throw new ValidationException(new[]
                     { new ValidationFailure(nameof(request.Body.Password), "A megadott jelszó hibás.") });
 
-            var token = await _sessionManager.StartSessionAsync(user.Id);
+            var token = await sessionManager.StartSessionAsync(user.Id);
 
             var masterKey = new EncryptableKey(user.MasterKeyEncrypted);
             var unlockedMasterKey = masterKey.Unlock(request.Body.Password, user.MasterKeySalt);
 
-            _encryptionManager.MasterKey = unlockedMasterKey; // Setting the master key this way saves it in the session
+            encryptionManager.MasterKey = unlockedMasterKey; // Setting the master key this way saves it in the session
 
-            await _publisher.Publish(new SessionCreatedEvent
+            await publisher.Publish(new SessionCreatedEvent
             {
                 User = user,
                 MasterKey = unlockedMasterKey
@@ -114,14 +99,14 @@ public static class Login
 
             if (request.Body.Remember)
             {
-                var refreshToken = _refreshService.GenerateRefreshToken(user.Id, request.Body.Password);
+                var refreshToken = refreshService.GenerateRefreshToken(user.Id, request.Body.Password);
 
                 return new Response
                 {
                     User = user.Adapt<ResponseUser>(),
                     Token = token,
                     RefreshToken = refreshToken,
-                    RefreshTokenExpiration = DateTime.Now.Add(_refreshService.GetRefreshTokenExpiry())
+                    RefreshTokenExpiration = DateTime.Now.Add(refreshService.GetRefreshTokenExpiry())
                 };
             }
 

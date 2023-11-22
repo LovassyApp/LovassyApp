@@ -38,24 +38,10 @@ public static class Refresh
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly EncryptionManager _encryptionManager;
-        private readonly IPublisher _publisher;
-        private readonly RefreshService _refreshService;
-        private readonly SessionManager _sessionManager;
-
-        public Handler(IPublisher publisher, ApplicationDbContext context,
+    internal sealed class Handler(IPublisher publisher, ApplicationDbContext context,
             SessionManager sessionManager, EncryptionManager encryptionManager, RefreshService refreshService)
-        {
-            _publisher = publisher;
-            _context = context;
-            _sessionManager = sessionManager;
-            _encryptionManager = encryptionManager;
-            _refreshService = refreshService;
-        }
-
+        : IRequestHandler<Command, Response>
+    {
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             if (request.RefreshToken is null)
@@ -64,7 +50,7 @@ public static class Refresh
             RefreshTokenContents? refreshTokenContents;
             try
             {
-                refreshTokenContents = _refreshService.DecryptRefreshToken(request.RefreshToken);
+                refreshTokenContents = refreshService.DecryptRefreshToken(request.RefreshToken);
             }
             catch
             {
@@ -75,21 +61,21 @@ public static class Refresh
                 throw new BadRequestException("Hibás refresh token.");
 
             // I wouldn't risk as no tracking here as the user might be updated by the update grades job (although it's reattached there)
-            var user = await _context.Users.FindAsync(refreshTokenContents.UserId);
+            var user = await context.Users.FindAsync(refreshTokenContents.UserId);
 
             if (user == null)
                 throw new BadRequestException("Hibás refresh token.");
 
-            var token = await _sessionManager.StartSessionAsync(user.Id);
+            var token = await sessionManager.StartSessionAsync(user.Id);
 
             var masterKey = new EncryptableKey(user.MasterKeyEncrypted);
             var unlockedMasterKey = masterKey.Unlock(refreshTokenContents.Password, user.MasterKeySalt);
 
-            _encryptionManager.MasterKey = unlockedMasterKey; // Set the master key this way saves it in the session
+            encryptionManager.MasterKey = unlockedMasterKey; // Set the master key this way saves it in the session
 
-            var refreshToken = _refreshService.GenerateRefreshToken(user.Id, refreshTokenContents.Password);
+            var refreshToken = refreshService.GenerateRefreshToken(user.Id, refreshTokenContents.Password);
 
-            await _publisher.Publish(new SessionCreatedEvent
+            await publisher.Publish(new SessionCreatedEvent
             {
                 User = user,
                 MasterKey = unlockedMasterKey
@@ -100,7 +86,7 @@ public static class Refresh
                 User = user.Adapt<ResponseUser>(),
                 Token = token,
                 RefreshToken = refreshToken,
-                RefreshTokenExpiration = DateTime.Now.Add(_refreshService.GetRefreshTokenExpiry())
+                RefreshTokenExpiration = DateTime.Now.Add(refreshService.GetRefreshTokenExpiry())
             };
         }
     }

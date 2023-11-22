@@ -5,15 +5,8 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Blueboard.Core.Auth.Services;
 
-public class SessionService
+public class SessionService(IMemoryCache memoryCache)
 {
-    private readonly IMemoryCache _memoryCache;
-
-    public SessionService(IMemoryCache memoryCache)
-    {
-        _memoryCache = memoryCache;
-    }
-
     /// <summary>
     ///     Stops the session with the given token. For stopping the current session, use
     ///     <see cref="SessionManager.StopSession" />.
@@ -23,11 +16,11 @@ public class SessionService
     public void StopSession(string token)
     {
         var tokenHash = HashingUtils.Hash(token);
-        var session = _memoryCache.Get<Session>(tokenHash);
+        var session = memoryCache.Get<Session>(tokenHash);
 
         if (session == null)
             return;
 
-        _memoryCache.Remove(session.Hash);
+        memoryCache.Remove(session.Hash);
     }
 }

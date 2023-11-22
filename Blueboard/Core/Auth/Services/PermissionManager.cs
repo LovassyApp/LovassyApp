@@ -4,17 +4,10 @@ using Blueboard.Core.Auth.Utils;
 
 namespace Blueboard.Core.Auth.Services;
 
-public class PermissionManager
+public class PermissionManager(IHttpContextAccessor httpContextAccessor)
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
     private ClaimsPrincipal?
         _claimsPrincipal; //Working with the claims principal rather than the user just makes more sense here
-
-    public PermissionManager(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
 
     /// <summary>
     ///     Checks if the current user has the given permission.
@@ -47,9 +40,9 @@ public class PermissionManager
 
     private void Init()
     {
-        if (_httpContextAccessor.HttpContext!.User.Identity?.IsAuthenticated == false)
+        if (httpContextAccessor.HttpContext!.User.Identity?.IsAuthenticated == false)
             throw new InvalidOperationException("User (ClaimsPrincipal) is not authenticated");
 
-        _claimsPrincipal = _httpContextAccessor.HttpContext.User;
+        _claimsPrincipal = httpContextAccessor.HttpContext.User;
     }
 }

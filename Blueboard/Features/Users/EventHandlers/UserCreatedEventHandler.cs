@@ -7,25 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Features.Users.EventHandlers;
 
-public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
+public class UserCreatedEventHandler(ApplicationDbContext context) : INotificationHandler<UserCreatedEvent>
 {
-    private readonly ApplicationDbContext _context;
-
-    public UserCreatedEventHandler(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
         var userGroup = new UserGroup
         {
             Id = AuthConstants.DefaultUserGroupID
         };
-        _context.Entry(userGroup).State = EntityState.Unchanged;
+        context.Entry(userGroup).State = EntityState.Unchanged;
 
         notification.User.UserGroups = new List<UserGroup> { userGroup };
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

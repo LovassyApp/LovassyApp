@@ -37,29 +37,20 @@ public static class IndexImageVotingChoices
         public string Title { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor,
+            PermissionManager permissionManager)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor, PermissionManager permissionManager)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-            _permissionManager = permissionManager;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
             var onlyActive =
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingChoices));
-            var imageVotingChoices = _context.ImageVotingChoices.Include(c => c.ImageVoting).AsSplitQuery()
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingChoices));
+            var imageVotingChoices = context.ImageVotingChoices.Include(c => c.ImageVoting).AsSplitQuery()
                 .Include(c => c.ImageVotingEntry).AsSplitQuery()
                 .Where(c => !onlyActive || c.ImageVoting.Active)
                 .AsNoTracking(); // We want to avoid a cartesian explosion so we need to split the queries
 
-            var filteredImageVotingChoices = _sieveProcessor.Apply(request.SieveModel, imageVotingChoices);
+            var filteredImageVotingChoices = sieveProcessor.Apply(request.SieveModel, imageVotingChoices);
 
             return (await filteredImageVotingChoices.ToListAsync(cancellationToken)).Adapt<IEnumerable<Response>>();
         }

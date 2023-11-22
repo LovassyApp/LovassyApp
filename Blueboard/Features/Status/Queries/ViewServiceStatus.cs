@@ -23,24 +23,15 @@ public static class ViewServiceStatus
         public bool ResetKeyPassword { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, ResetService resetService) : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ResetService _resetService;
-
-        public Handler(ApplicationDbContext context, ResetService resetService)
-        {
-            _context = context;
-            _resetService = resetService;
-        }
-
         public async Task<Response> Handle(Query request,
             CancellationToken cancellationToken)
         {
             var status = new ResponseServiceStatus
             {
-                Database = await _context.Database.CanConnectAsync(cancellationToken),
-                ResetKeyPassword = _resetService.IsResetKeyPasswordSet(),
+                Database = await context.Database.CanConnectAsync(cancellationToken),
+                ResetKeyPassword = resetService.IsResetKeyPasswordSet(),
                 Realtime = true
             };
 

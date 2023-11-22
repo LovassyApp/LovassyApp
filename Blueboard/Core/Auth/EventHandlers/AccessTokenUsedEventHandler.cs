@@ -6,18 +6,11 @@ using Quartz;
 
 namespace Blueboard.Core.Auth.EventHandlers;
 
-public class AccessTokenUsedEventHandler : INotificationHandler<AccessTokenUsedEvent>
+public class AccessTokenUsedEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<AccessTokenUsedEvent>
 {
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public AccessTokenUsedEventHandler(ISchedulerFactory schedulerFactory)
-    {
-        _schedulerFactory = schedulerFactory;
-    }
-
     public async Task Handle(AccessTokenUsedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
         var updateTokenLastUsedAtJob = JobBuilder.Create<UpdateTokenLastUsedAtJob>()
             .UsingJobData("id", notification.AccessToken.Id)

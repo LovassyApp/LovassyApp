@@ -44,33 +44,23 @@ public static class CreateLoloRequest
         public DateTime? DeniedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler(UserAccessor userAccessor, ApplicationDbContext context, IPublisher publisher)
+        : IRequestHandler<Command, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(UserAccessor userAccessor, ApplicationDbContext context, IPublisher publisher)
-        {
-            _userAccessor = userAccessor;
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var loloRequest = request.Body.Adapt<LoloRequest>();
-            loloRequest.UserId = _userAccessor.User.Id;
+            loloRequest.UserId = userAccessor.User.Id;
 
-            await _context.LoloRequests.AddAsync(loloRequest, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.LoloRequests.AddAsync(loloRequest, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new LoloRequestUpdatedEvent
+            await publisher.Publish(new LoloRequestUpdatedEvent
             {
-                UserId = _userAccessor.User.Id
+                UserId = userAccessor.User.Id
             }, cancellationToken);
 
-            await _publisher.Publish(new LoloRequestCreatedEvent
+            await publisher.Publish(new LoloRequestCreatedEvent
             {
                 LoloRequest = loloRequest,
                 LoloRequestsUrl = request.LoloRequestsUrl

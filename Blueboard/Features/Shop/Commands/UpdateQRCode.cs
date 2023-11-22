@@ -31,28 +31,19 @@ public static class UpdateQRCode
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var qrcode = await _context.QRCodes.FindAsync(request.Id);
+            var qrcode = await context.QRCodes.FindAsync(request.Id);
 
             if (qrcode == null) throw new NotFoundException(nameof(QRCode), request.Id);
 
             request.Body.Adapt(qrcode);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new QRCodesUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new QRCodesUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

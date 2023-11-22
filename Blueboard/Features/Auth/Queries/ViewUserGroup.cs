@@ -24,18 +24,11 @@ public static class ViewUserGroup
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context) : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-
-        public Handler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var userGroup = await _context.UserGroups.Where(g => g.Id == request.Id).AsNoTracking()
+            var userGroup = await context.UserGroups.Where(g => g.Id == request.Id).AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (userGroup == null) throw new NotFoundException(nameof(UserGroup), request.Id);

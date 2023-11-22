@@ -29,25 +29,16 @@ public static class IndexOwnLoloRequests
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor,
+            UserAccessor userAccessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SieveProcessor _sieveProcessor;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor, UserAccessor userAccessor)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-            _userAccessor = userAccessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var loloRequests = _context.LoloRequests.Where(r => r.UserId == _userAccessor.User.Id).AsNoTracking();
+            var loloRequests = context.LoloRequests.Where(r => r.UserId == userAccessor.User.Id).AsNoTracking();
 
             var filteredLoloRequests =
-                await _sieveProcessor.Apply(request.SieveModel, loloRequests).ToListAsync(cancellationToken);
+                await sieveProcessor.Apply(request.SieveModel, loloRequests).ToListAsync(cancellationToken);
 
             return filteredLoloRequests.Adapt<IEnumerable<Response>>();
         }

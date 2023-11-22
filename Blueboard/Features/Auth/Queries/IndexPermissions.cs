@@ -22,15 +22,8 @@ public static class IndexPermissions
         public bool Dangerous { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(SieveProcessor sieveProcessor) : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(SieveProcessor sieveProcessor)
-        {
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
             var permissions = PermissionUtils.Permissions;
@@ -39,7 +32,7 @@ public static class IndexPermissions
                 throw new UnavailableException(
                     "A jogosultságok még nincsenek betöltve. (Ennek nem kéne megtörténnie, kérlek jelezd a hibát a fejlesztőknek)");
 
-            var filteredPermissions = _sieveProcessor.Apply(request.SieveModel, permissions.AsQueryable()).ToList();
+            var filteredPermissions = sieveProcessor.Apply(request.SieveModel, permissions.AsQueryable()).ToList();
 
             return filteredPermissions.Adapt<IEnumerable<Response>>();
         }

@@ -4,21 +4,14 @@ using Helpers.WebApi.Interfaces;
 
 namespace Blueboard.Core.Auth.StartupActions;
 
-public class LoadPermissionsAction : IStartupAction
+public class LoadPermissionsAction(ILogger<LoadPermissionsAction> logger) : IStartupAction
 {
-    private readonly ILogger<LoadPermissionsAction> _logger;
-
-    public LoadPermissionsAction(ILogger<LoadPermissionsAction> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task Execute()
     {
         // Basically, the reason this works is because startup actions are executed right after app.Build()
         // Now when we do app.MapControllers() in the startup, it will require the permissions to be loaded
         // So we always have to pay attention to this, but if we don't it's luckily an error right at startup
         PermissionUtils.LoadPermissions(Assembly.GetExecutingAssembly());
-        _logger.LogInformation("Loaded permissions into PermissionUtils");
+        logger.LogInformation("Loaded permissions into PermissionUtils");
     }
 }

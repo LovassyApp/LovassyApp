@@ -12,24 +12,17 @@ public static class DeleteImportKey
         public int Id { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-
-        public Handler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var importKey = await _context.ImportKeys.FindAsync(request.Id);
+            var importKey = await context.ImportKeys.FindAsync(request.Id);
 
             if (importKey is null)
                 throw new NotFoundException(nameof(ImportKey), request.Id);
 
-            _context.ImportKeys.Remove(importKey);
-            await _context.SaveChangesAsync(cancellationToken);
+            context.ImportKeys.Remove(importKey);
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

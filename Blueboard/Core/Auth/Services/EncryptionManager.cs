@@ -11,29 +11,21 @@ namespace Blueboard.Core.Auth.Services;
 ///     The scoped service responsible for encrypting and decrypting data using the master key of the current
 ///     <see cref="User" />.
 /// </summary>
-public class EncryptionManager
+public class EncryptionManager(SessionManager sessionManager,
+    IOptions<EncryptionManagerOptions> encryptionManagerOptions)
 {
-    private readonly EncryptionManagerOptions _encryptionManagerOptions;
-    private readonly SessionManager _sessionManager;
-
     private string? _masterKey;
-
-    public EncryptionManager(SessionManager sessionManager, IOptions<EncryptionManagerOptions> encryptionManagerOptions)
-    {
-        _sessionManager = sessionManager;
-        _encryptionManagerOptions = encryptionManagerOptions.Value;
-    }
 
     public string? MasterKey
     {
         get => _masterKey;
         set
         {
-            if (_sessionManager.Session == null)
+            if (sessionManager.Session == null)
                 throw new SessionNotFoundException();
 
             _masterKey = value;
-            _sessionManager.SetEncrypted(_encryptionManagerOptions.MasterKeySessionKey, value);
+            sessionManager.SetEncrypted(encryptionManagerOptions.Value.MasterKeySessionKey, value);
         }
     }
 
@@ -111,7 +103,7 @@ public class EncryptionManager
     {
         try
         {
-            _masterKey = _sessionManager.GetEncrypted(_encryptionManagerOptions.MasterKeySessionKey);
+            _masterKey = sessionManager.GetEncrypted(encryptionManagerOptions.Value.MasterKeySessionKey);
         }
         catch (SessionNotFoundException)
         {

@@ -28,18 +28,11 @@ public static class ImportGrades
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-
-        public Handler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FindAsync(request.UserId);
+            var user = await context.Users.FindAsync(request.UserId);
 
             if (user is null) throw new NotFoundException(nameof(User), request.UserId);
 
@@ -48,8 +41,8 @@ public static class ImportGrades
             gradeImport.UserId = user.Id;
             user.ImportAvailable = true;
 
-            await _context.AddAsync(gradeImport, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.AddAsync(gradeImport, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

@@ -79,20 +79,12 @@ public static class ViewImageVotingChoice
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager)
+        : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var choice = await _context.ImageVotingChoices
+            var choice = await context.ImageVotingChoices
                 .Include(c => c.ImageVoting)
                 .Include(c => c.ImageVotingEntry)
                 .ThenInclude(e => e.User)
@@ -103,7 +95,7 @@ public static class ViewImageVotingChoice
                 throw new NotFoundException(nameof(ImageVotingChoice), request.Id);
 
             if (!choice.ImageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ViewImageVotingChoice)))
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ViewImageVotingChoice)))
                 throw new NotFoundException(nameof(ImageVotingChoice), request.Id);
 
             var response = choice.Adapt<Response>();

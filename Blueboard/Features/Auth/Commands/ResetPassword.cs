@@ -34,38 +34,24 @@ public static class ResetPassword
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly HashService _hashService;
-        private readonly PasswordResetService _passwordResetService;
-        private readonly IPublisher _publisher;
-        private readonly ResetService _resetService;
-
-        public Handler(ApplicationDbContext context, HashService hashService,
+    internal sealed class Handler(ApplicationDbContext context, HashService hashService,
             PasswordResetService passwordResetService, ResetService resetService, IPublisher publisher)
-        {
-            _context = context;
-            _hashService = hashService;
-            _passwordResetService = passwordResetService;
-            _resetService = resetService;
-            _publisher = publisher;
-        }
-
+        : IRequestHandler<Command>
+    {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (!_resetService.IsResetKeyPasswordSet())
+            if (!resetService.IsResetKeyPasswordSet())
                 throw new UnavailableException(
                     "A visszaállítási jelszó a LovassyApp legutóbbi újraindítása óta még nem lett beállítva.");
 
 
-            var tokenContents = _passwordResetService.DecryptPasswordResetToken(request.PasswordResetToken);
+            var tokenContents = passwordResetService.DecryptPasswordResetToken(request.PasswordResetToken);
 
 
             if (tokenContents == null)
                 throw new BadRequestException("Hibás reset token");
 
-            var user = await _context.Users.FindAsync(tokenContents.UserId, cancellationToken);
+            var user = await context.Users.FindAsync(tokenContents.UserId, cancellationToken);
 
             if (user == null)
                 throw new NotFoundException();
@@ -74,7 +60,7 @@ public static class ResetPassword
 
             try
             {
-                resetKey = _resetService.DecryptMasterKey(user.ResetKeyEncrypted, user.MasterKeySalt);
+                resetKey = resetService.DecryptMasterKey(user.ResetKeyEncrypted, user.MasterKeySalt);
             }
             catch (CryptographicException)
             {
@@ -86,11 +72,11 @@ public static class ResetPassword
                 HashingUtils.GenerateBasicKey(request.Body.NewPassword, user.MasterKeySalt));
 
             user.MasterKeyEncrypted = newMasterKeyEncrypted;
-            user.PasswordHashed = _hashService.HashPassword(request.Body.NewPassword);
+            user.PasswordHashed = hashService.HashPassword(request.Body.NewPassword);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new PasswordResetEvent
+            await publisher.Publish(new PasswordResetEvent
             {
                 User = user
             }, cancellationToken);

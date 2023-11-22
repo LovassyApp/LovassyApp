@@ -37,17 +37,8 @@ public static class CreateQRCode
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var qrCode = request.Body.Adapt<QRCode>();
@@ -58,10 +49,10 @@ public static class CreateQRCode
 
             qrCode.Secret = Convert.ToBase64String(secretBytes);
 
-            await _context.QRCodes.AddAsync(qrCode, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.QRCodes.AddAsync(qrCode, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new QRCodesUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new QRCodesUpdatedEvent(), cancellationToken);
 
             return qrCode.Adapt<Response>();
         }

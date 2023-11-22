@@ -9,18 +9,11 @@ public static class Logout
     {
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(SessionManager sessionManager) : IRequestHandler<Command>
     {
-        private readonly SessionManager _sessionManager;
-
-        public Handler(SessionManager sessionManager)
-        {
-            _sessionManager = sessionManager;
-        }
-
         public Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            _sessionManager.StopSession();
+            sessionManager.StopSession();
 
             return Unit.Task;
         }

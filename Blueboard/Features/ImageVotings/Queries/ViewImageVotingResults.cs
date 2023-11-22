@@ -48,20 +48,12 @@ public static class ViewImageVotingResults
         public int IncrementSum { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager)
+        : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var imageVoting = await _context.ImageVotings
+            var imageVoting = await context.ImageVotings
                 .Include(v => v.Entries)
                 .ThenInclude(e => e.Increments)
                 .Include(v => v.Choices)
@@ -72,7 +64,7 @@ public static class ViewImageVotingResults
                 throw new NotFoundException(nameof(ImageVoting), request.Id);
 
             if (!imageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ViewImageVotingResults)))
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ViewImageVotingResults)))
                 throw new NotFoundException(nameof(ImageVoting), request.Id);
 
             var entries = imageVoting.Entries.Adapt<List<ResponseEntry>>();

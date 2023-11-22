@@ -9,18 +9,11 @@ namespace Blueboard.Core.Auth.Policies;
 ///     It is unpredictable asp.net core authorization whether it checks requirements before checking if the user is
 ///     authenticated and it makes no sense. (With this RequireAuthenticatedUser is not needed when defining policies)
 /// </summary>
-public class ChallengeUnauthenticatedPolicyEvaluator : IPolicyEvaluator
+public class ChallengeUnauthenticatedPolicyEvaluator(PolicyEvaluator defaultEvaluator) : IPolicyEvaluator
 {
-    private readonly PolicyEvaluator _defaultEvaluator;
-
-    public ChallengeUnauthenticatedPolicyEvaluator(PolicyEvaluator defaultEvaluator)
-    {
-        _defaultEvaluator = defaultEvaluator;
-    }
-
     public Task<AuthenticateResult> AuthenticateAsync(AuthorizationPolicy policy, HttpContext context)
     {
-        return _defaultEvaluator.AuthenticateAsync(policy, context);
+        return defaultEvaluator.AuthenticateAsync(policy, context);
     }
 
     public Task<PolicyAuthorizationResult> AuthorizeAsync(AuthorizationPolicy policy,
@@ -30,6 +23,6 @@ public class ChallengeUnauthenticatedPolicyEvaluator : IPolicyEvaluator
         if (!authenticationResult.Succeeded)
             return Task.FromResult(PolicyAuthorizationResult.Challenge());
 
-        return _defaultEvaluator.AuthorizeAsync(policy, authenticationResult, context, resource);
+        return defaultEvaluator.AuthorizeAsync(policy, authenticationResult, context, resource);
     }
 }

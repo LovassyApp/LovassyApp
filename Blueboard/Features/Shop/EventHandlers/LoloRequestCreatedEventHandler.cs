@@ -6,18 +6,11 @@ using Quartz;
 
 namespace Blueboard.Features.Shop.EventHandlers;
 
-public class LoloRequestCreatedEventHandler : INotificationHandler<LoloRequestCreatedEvent>
+public class LoloRequestCreatedEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<LoloRequestCreatedEvent>
 {
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public LoloRequestCreatedEventHandler(ISchedulerFactory schedulerFactory)
-    {
-        _schedulerFactory = schedulerFactory;
-    }
-
     public async Task Handle(LoloRequestCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
         var sendLoloRequestCreatedNotificationJob = JobBuilder.Create<SendLoloRequestCreatedNotificationJob>()
             .WithIdentity($"SendLoloRequestCreatedNotification-{notification.LoloRequest.Id}")

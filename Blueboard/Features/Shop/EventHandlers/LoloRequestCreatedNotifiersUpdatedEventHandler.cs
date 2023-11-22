@@ -9,22 +9,15 @@ using Microsoft.AspNetCore.SignalR;
 namespace Blueboard.Features.Shop.EventHandlers;
 
 public class
-    LoloRequestCreatedNotifiersUpdatedEventHandler : INotificationHandler<LoloRequestCreatedNotifiersUpdatedEvent>
+    LoloRequestCreatedNotifiersUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    : INotificationHandler<LoloRequestCreatedNotifiersUpdatedEvent>
 {
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
-
-    public LoloRequestCreatedNotifiersUpdatedEventHandler(
-        IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
-    {
-        _notificationsHub = notificationsHub;
-    }
-
     public async Task Handle(LoloRequestCreatedNotifiersUpdatedEvent notification, CancellationToken cancellationToken)
     {
         if (PermissionUtils.PermissionTypesToNames == null)
             throw new InvalidOperationException("Permissions are not loaded yet");
 
-        await _notificationsHub.Clients
+        await notificationsHub.Clients
             .Group(PermissionUtils.PermissionTypesToNames[typeof(ShopPermissions.IndexLoloRequestCreatedNotifiers)])
             .RefreshLoloRequestCreatedNotifiers();
     }

@@ -52,31 +52,19 @@ public static class IndexGrades
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly HashManager _hashManager;
-        private readonly SieveProcessor _sieveProcessor;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(UserAccessor userAccessor, ApplicationDbContext context,
+    internal sealed class Handler(UserAccessor userAccessor, ApplicationDbContext context,
             SieveProcessor sieveProcessor, HashManager hashManager)
-        {
-            _userAccessor = userAccessor;
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-            _hashManager = hashManager;
-        }
-
+        : IRequestHandler<Query, IEnumerable<Response>>
+    {
         public async Task<IEnumerable<Response>> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            var userIdHashed = _hashManager.HashWithHasherSalt(_userAccessor.User.Id.ToString());
+            var userIdHashed = hashManager.HashWithHasherSalt(userAccessor.User.Id.ToString());
 
-            var grades = _context.Grades
+            var grades = context.Grades
                 .Where(g => g.UserIdHashed == userIdHashed && g.GradeType == GradeType.RegularGrade).AsNoTracking();
 
-            var filteredGrades = await _sieveProcessor.Apply(request.SieveModel, grades).GroupBy(g => g.Subject)
+            var filteredGrades = await sieveProcessor.Apply(request.SieveModel, grades).GroupBy(g => g.Subject)
                 .ToListAsync(cancellationToken);
 
             var response = filteredGrades.Select(g => new Response

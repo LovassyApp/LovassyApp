@@ -26,25 +26,15 @@ public static class UseOwnedItem
         public Dictionary<string, string>? Inputs { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor, IPublisher publisher)
+        : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, IPublisher publisher)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var ownedItem = await _context.OwnedItems.Include(i => i.Product).ThenInclude(p => p.QRCodes)
+            var ownedItem = await context.OwnedItems.Include(i => i.Product).ThenInclude(p => p.QRCodes)
                 .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
-            if (ownedItem == null || ownedItem.UserId != _userAccessor.User.Id)
+            if (ownedItem == null || ownedItem.UserId != userAccessor.User.Id)
                 throw new NotFoundException(nameof(OwnedItem), request.Id);
 
             if (ownedItem.UsedAt != null)
@@ -121,29 +111,29 @@ public static class UseOwnedItem
                 }
             }
 
-            await _context.Database.BeginTransactionAsync(cancellationToken);
+            await context.Database.BeginTransactionAsync(cancellationToken);
 
             ownedItem.UsedAt = DateTime.Now.ToUniversalTime();
 
-            await _context.OwnedItemUses.AddAsync(new OwnedItemUse
+            await context.OwnedItemUses.AddAsync(new OwnedItemUse
             {
                 Values = request.Body.Inputs ?? new Dictionary<string, string>(),
                 OwnedItem = ownedItem
             }, cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _context.Database.CommitTransactionAsync(cancellationToken);
+            await context.Database.CommitTransactionAsync(cancellationToken);
 
-            await _publisher.Publish(new OwnedItemUsedEvent
+            await publisher.Publish(new OwnedItemUsedEvent
             {
                 Product = ownedItem.Product,
-                User = _userAccessor.User,
+                User = userAccessor.User,
                 InputValues = inputLabelsToValues,
                 QRCodeEmail = qrCodeEmail
             }, cancellationToken);
 
-            await _publisher.Publish(new OwnedItemUpdatedEvent
+            await publisher.Publish(new OwnedItemUpdatedEvent
             {
                 UserId = ownedItem.UserId
             }, cancellationToken);

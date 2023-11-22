@@ -33,38 +33,26 @@ public static class UpdateImageVotingEntry
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, IPublisher publisher,
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor, IPublisher publisher,
             PermissionManager permissionManager)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _publisher = publisher;
-            _permissionManager = permissionManager;
-        }
-
+        : IRequestHandler<Command>
+    {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var entry = await _context.ImageVotingEntries.FindAsync(request.Id);
+            var entry = await context.ImageVotingEntries.FindAsync(request.Id);
 
             if (entry == null)
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
 
-            if (entry.UserId != _userAccessor.User.Id &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UpdateImageVotingEntry)))
+            if (entry.UserId != userAccessor.User.Id &&
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UpdateImageVotingEntry)))
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
 
             request.Body.Adapt(entry);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ImageVotingEntriesUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ImageVotingEntriesUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

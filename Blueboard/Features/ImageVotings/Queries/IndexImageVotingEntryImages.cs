@@ -43,48 +43,36 @@ public static class IndexImageVotingEntryImages
         public int ImageVotingId { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly PermissionManager _permissionManager;
-        private readonly SieveProcessor _sieveProcessor;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager,
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor,
+            PermissionManager permissionManager,
             SieveProcessor sieveProcessor, IHttpContextAccessor httpContextAccessor)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _permissionManager = permissionManager;
-            _sieveProcessor = sieveProcessor;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
+        
+        : IRequestHandler<Query, IEnumerable<Response>>
+    {
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var imageVoting = await _context.ImageVotings
+            var imageVoting = await context.ImageVotings
                 .FirstOrDefaultAsync(x => x.Id == request.Body.ImageVotingId, cancellationToken);
 
             if (imageVoting == null)
                 throw new NotFoundException(nameof(ImageVoting), request.Body.ImageVotingId);
 
             var onlyOwn =
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingEntryImages));
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingEntryImages));
 
-            var fileUploads = _context.FileUploads
+            var fileUploads = context.FileUploads
                 .Where(x => x.Purpose == $"ImageVoting-{imageVoting.Id}" &&
-                            (!onlyOwn || x.UserId == _userAccessor.User.Id))
+                            (!onlyOwn || x.UserId == userAccessor.User.Id))
                 .AsNoTracking();
 
-            var filteredFileUploads = _sieveProcessor.Apply(request.SieveModel, fileUploads);
+            var filteredFileUploads = sieveProcessor.Apply(request.SieveModel, fileUploads);
 
             var response = (await filteredFileUploads.ToListAsync(cancellationToken)).Adapt<IEnumerable<Response>>();
 
             var responseList = response.ToList();
             foreach (var fileUpload in responseList)
                 fileUpload.Url =
-                    $"{_httpContextAccessor.HttpContext!.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}{_httpContextAccessor.HttpContext.Request.PathBase}/Files/{fileUpload.Filename}";
+                    $"{httpContextAccessor.HttpContext!.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}{httpContextAccessor.HttpContext.Request.PathBase}/Files/{fileUpload.Filename}";
 
             return responseList;
         }

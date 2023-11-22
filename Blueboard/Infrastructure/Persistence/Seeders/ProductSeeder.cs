@@ -5,21 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Infrastructure.Persistence.Seeders;
 
-public class ProductSeeder
+public class ProductSeeder(ApplicationDbContext context)
 {
     private const int ProductCount = 10;
     private static readonly Faker Faker = new();
 
-    private readonly ApplicationDbContext _context;
-
-    public ProductSeeder(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task RunAsync()
     {
-        var qrCodes = await _context.QRCodes.ToListAsync();
+        var qrCodes = await context.QRCodes.ToListAsync();
 
         var products = new List<Product>();
         for (var i = 0; i < ProductCount; i++)
@@ -28,8 +21,8 @@ public class ProductSeeder
             products.Add(product);
         }
 
-        await _context.Products.AddRangeAsync(products);
-        await _context.SaveChangesAsync();
+        await context.Products.AddRangeAsync(products);
+        await context.SaveChangesAsync();
     }
 
     private Product CreateProduct(List<QRCode> qrCodes)

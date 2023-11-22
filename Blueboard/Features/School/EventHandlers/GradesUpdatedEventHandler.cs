@@ -6,17 +6,11 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blueboard.Features.School.EventHandlers;
 
-public class GradesUpdatedEventHandler : INotificationHandler<GradesUpdatedEvent>
+public class GradesUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    : INotificationHandler<GradesUpdatedEvent>
 {
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
-
-    public GradesUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
-    {
-        _notificationsHub = notificationsHub;
-    }
-
     public async Task Handle(GradesUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        await _notificationsHub.Clients.User(notification.UserId.ToString()).RefreshGrades();
+        await notificationsHub.Clients.User(notification.UserId.ToString()).RefreshGrades();
     }
 }

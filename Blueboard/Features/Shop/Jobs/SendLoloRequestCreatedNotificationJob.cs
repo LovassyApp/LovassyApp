@@ -10,20 +10,10 @@ using Quartz;
 
 namespace Blueboard.Features.Shop.Jobs;
 
-public class SendLoloRequestCreatedNotificationJob : IJob
+public class SendLoloRequestCreatedNotificationJob(IFluentEmail fluentEmail,
+        RazorViewToStringRenderer razorViewToStringRenderer, ApplicationDbContext dbContext)
+    : IJob
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IFluentEmail _fluentEmail;
-    private readonly RazorViewToStringRenderer _razorViewToStringRenderer;
-
-    public SendLoloRequestCreatedNotificationJob(IFluentEmail fluentEmail,
-        RazorViewToStringRenderer razorViewToStringRenderer, ApplicationDbContext context)
-    {
-        _fluentEmail = fluentEmail;
-        _razorViewToStringRenderer = razorViewToStringRenderer;
-        _context = context;
-    }
-
     public async Task Execute(IJobExecutionContext context)
     {
         var loloRequest =
@@ -31,13 +21,13 @@ public class SendLoloRequestCreatedNotificationJob : IJob
         var loloRequestsUrl = context.MergedJobDataMap.Get("loloRequestsUrl") as string;
 
 
-        var addresses = (await _context.LoloRequestCreatedNotifiers.AsNoTracking().ToListAsync())
+        var addresses = (await dbContext.LoloRequestCreatedNotifiers.AsNoTracking().ToListAsync())
             .Select(e => new Address(e.Email)).ToList();
 
         if (addresses.Count == 0) return;
 
-        var email = _fluentEmail.BCC(addresses).Subject($"Kérvény létrehozva: {loloRequest!.Title}").Body(
-            await _razorViewToStringRenderer.RenderViewToStringAsync(
+        var email = fluentEmail.BCC(addresses).Subject($"Kérvény létrehozva: {loloRequest!.Title}").Body(
+            await razorViewToStringRenderer.RenderViewToStringAsync(
                 "/Views/Emails/LoloRequestCreatedNotification/LoloRequestCreatedNotification.cshtml",
                 new LoloRequestCreatedNotificationViewModel
                 {

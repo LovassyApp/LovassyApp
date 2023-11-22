@@ -8,21 +8,15 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blueboard.Features.Shop.EventHandlers;
 
-public class ProductsUpdatedEventHandler : INotificationHandler<ProductsUpdatedEvent>
+public class ProductsUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    : INotificationHandler<ProductsUpdatedEvent>
 {
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
-
-    public ProductsUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
-    {
-        _notificationsHub = notificationsHub;
-    }
-
     public async Task Handle(ProductsUpdatedEvent notification, CancellationToken cancellationToken)
     {
         if (PermissionUtils.PermissionTypesToNames == null)
             throw new InvalidOperationException("Permissions are not loaded yet");
 
-        await _notificationsHub.Clients
+        await notificationsHub.Clients
             .Groups(PermissionUtils.PermissionTypesToNames[typeof(ShopPermissions.IndexStoreProducts)],
                 PermissionUtils.PermissionTypesToNames[typeof(ShopPermissions.IndexProducts)]).RefreshProducts();
     }

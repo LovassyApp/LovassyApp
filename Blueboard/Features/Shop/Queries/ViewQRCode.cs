@@ -28,18 +28,11 @@ public static class ViewQRCode
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context) : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-
-        public Handler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var qrcode = await _context.QRCodes.AsNoTracking()
+            var qrcode = await context.QRCodes.AsNoTracking()
                 .FirstOrDefaultAsync(q => q.Id == request.Id, cancellationToken);
 
             if (qrcode == null)

@@ -52,49 +52,37 @@ public static class UploadImageVotingEntryImage
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
-    {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly FilesService _filesService;
-        private readonly PermissionManager _permissionManager;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext dbContext, UserAccessor userAccessor, FilesService filesService,
+    internal sealed class Handler(ApplicationDbContext dbContext, UserAccessor userAccessor, FilesService filesService,
             PermissionManager permissionManager)
-        {
-            _dbContext = dbContext;
-            _userAccessor = userAccessor;
-            _filesService = filesService;
-            _permissionManager = permissionManager;
-        }
-
+        : IRequestHandler<Command, Response>
+    {
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
-            var imageVoting = await _dbContext.ImageVotings
-                .Include(x => x.Entries.Where(e => e.UserId == _userAccessor.User.Id))
+            var imageVoting = await dbContext.ImageVotings
+                .Include(x => x.Entries.Where(e => e.UserId == userAccessor.User.Id))
                 .FirstOrDefaultAsync(x => x.Id == request.Body.ImageVotingId, cancellationToken);
 
             if (imageVoting == null) throw new NotFoundException(nameof(ImageVoting), request.Body.ImageVotingId);
 
             if (!imageVoting.Active &&
-                !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UploadImageVotingEntryImage)))
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.UploadImageVotingEntryImage)))
                 throw new BadRequestException("A megadott szavazás nem aktív");
 
-            if (_userAccessor.User.UserGroups.Any(x => x.Id == imageVoting.BannedUserGroupId) ||
-                _userAccessor.User.UserGroups.All(x => x.Id != imageVoting.UploaderUserGroupId))
+            if (userAccessor.User.UserGroups.Any(x => x.Id == imageVoting.BannedUserGroupId) ||
+                userAccessor.User.UserGroups.All(x => x.Id != imageVoting.UploaderUserGroupId))
                 throw new BadRequestException("Nem tölthetsz fel képet erre a szavazásra");
 
-            var fileUploadCount = await _dbContext.FileUploads.CountAsync(
-                u => u.UserId == _userAccessor.User.Id && u.Purpose == $"ImageVoting-{imageVoting.Id}",
+            var fileUploadCount = await dbContext.FileUploads.CountAsync(
+                u => u.UserId == userAccessor.User.Id && u.Purpose == $"ImageVoting-{imageVoting.Id}",
                 cancellationToken);
 
             if (fileUploadCount >= imageVoting.MaxUploadsPerUser)
                 throw new BadRequestException("Elérted a maximális feltöltések számát");
 
-            var fileUploadResult = await _filesService.UploadFileAsync(request.Body.File, _userAccessor.User.Id,
+            var fileUploadResult = await filesService.UploadFileAsync(request.Body.File, userAccessor.User.Id,
                 $"ImageVoting-{imageVoting.Id}");
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             var response = fileUploadResult.FileUpload.Adapt<Response>();
             response.Url = fileUploadResult.Url!;

@@ -37,25 +37,20 @@ public static class ViewVersion
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(IOptions<StatusOptions> statusOptions) : IRequestHandler<Query, Response>
     {
-        private readonly StatusOptions _options;
-
-        public Handler(IOptions<StatusOptions> options)
-        {
-            _options = options.Value;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
             var response = new Response
             {
-                WhoAmI = _options.WhoAmI,
-                Version = _options.Version,
+                WhoAmI = statusOptions.Value.WhoAmI,
+                Version = statusOptions.Value.Version,
                 DotNetVersion = Environment.Version.ToString(),
-                Contributors = _options.Contributors,
-                Repository = _options.Repository,
-                MOTD = request.Body.SendMOTD ? _options.MOTDs[new Random().Next(0, _options.MOTDs.Count)] : null
+                Contributors = statusOptions.Value.Contributors,
+                Repository = statusOptions.Value.Repository,
+                MOTD = request.Body.SendMOTD
+                    ? statusOptions.Value.MOTDs[new Random().Next(0, statusOptions.Value.MOTDs.Count)]
+                    : null
             };
 
             return response;

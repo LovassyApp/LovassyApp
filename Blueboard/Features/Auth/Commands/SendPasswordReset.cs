@@ -41,23 +41,15 @@ public static class SendPasswordReset
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, ISchedulerFactory schedulerFactory)
+        : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ISchedulerFactory _schedulerFactory;
-
-        public Handler(ApplicationDbContext context, ISchedulerFactory schedulerFactory)
-        {
-            _context = context;
-            _schedulerFactory = schedulerFactory;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users
+            var user = await context.Users
                 .Where(x => x.Email == request.Body.Email).AsNoTracking().FirstOrDefaultAsync(cancellationToken);
 
-            var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+            var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
             var sendPasswordResetJob = JobBuilder.Create<SendPasswordResetJob>()
                 .UsingJobData("userJson", JsonSerializer.Serialize(user))

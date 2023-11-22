@@ -29,22 +29,14 @@ public static class IndexLolos
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var lolos = _context.Lolos.AsNoTracking();
+            var lolos = context.Lolos.AsNoTracking();
 
-            var filteredLolos = await _sieveProcessor.Apply(request.SieveModel, lolos).ToListAsync(cancellationToken);
+            var filteredLolos = await sieveProcessor.Apply(request.SieveModel, lolos).ToListAsync(cancellationToken);
 
             return filteredLolos.Adapt<IEnumerable<Response>>();
         }

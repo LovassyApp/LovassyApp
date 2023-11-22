@@ -33,31 +33,20 @@ public static class UpdateLoloRequest
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager,
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor,
+            PermissionManager permissionManager,
             IPublisher publisher)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _permissionManager = permissionManager;
-            _publisher = publisher;
-        }
-
+        : IRequestHandler<Command>
+    {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var loloRequest = await _context.LoloRequests.FindAsync(request.Id);
+            var loloRequest = await context.LoloRequests.FindAsync(request.Id);
 
             if (loloRequest == null)
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
 
-            if (loloRequest.UserId != _userAccessor.User.Id &&
-                !_permissionManager.CheckPermission(typeof(ShopPermissions.UpdateLoloRequest)))
+            if (loloRequest.UserId != userAccessor.User.Id &&
+                !permissionManager.CheckPermission(typeof(ShopPermissions.UpdateLoloRequest)))
                 throw new ForbiddenException();
 
             if (loloRequest.AcceptedAt != null || loloRequest.DeniedAt != null)
@@ -65,9 +54,9 @@ public static class UpdateLoloRequest
                     "Ez a kérvény már nem módosítható. (el lett fogadva vagy el lett utasítva)");
 
             request.Body.Adapt(loloRequest);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new LoloRequestUpdatedEvent
+            await publisher.Publish(new LoloRequestUpdatedEvent
             {
                 UserId = loloRequest.UserId
             }, cancellationToken).ConfigureAwait(false);

@@ -57,20 +57,12 @@ public static class ViewProduct
         public string Name { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager)
+        : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products
+            var product = await context.Products
                 .Include(p => p.QRCodes)
                 .Where(p => p.Id == request.Id)
                 .AsNoTracking()
@@ -79,7 +71,7 @@ public static class ViewProduct
             if (product == null)
                 throw new NotFoundException(nameof(Product), request.Id);
 
-            if (!_permissionManager.CheckPermission(typeof(ShopPermissions.ViewProduct)))
+            if (!permissionManager.CheckPermission(typeof(ShopPermissions.ViewProduct)))
             {
                 if (!product.Visible)
                     throw new NotFoundException(nameof(Product), request.Id);

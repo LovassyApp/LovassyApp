@@ -48,25 +48,17 @@ public static class CreateUserGroup
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler
+        (ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var userGroup = request.Body.Adapt<UserGroup>();
 
-            await _context.UserGroups.AddAsync(userGroup, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.UserGroups.AddAsync(userGroup, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new UserGroupsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new UserGroupsUpdatedEvent(), cancellationToken);
 
             return userGroup.Adapt<Response>();
         }

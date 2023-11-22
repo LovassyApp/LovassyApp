@@ -42,28 +42,19 @@ public static class UpdateUserGroup
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var userGroup = await _context.UserGroups.FindAsync(request.Id);
+            var userGroup = await context.UserGroups.FindAsync(request.Id);
 
             if (userGroup == null)
                 throw new NotFoundException(nameof(UserGroup), request.Id);
 
             request.Body.Adapt(userGroup);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new UserGroupsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new UserGroupsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

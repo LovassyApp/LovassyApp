@@ -55,29 +55,20 @@ public static class ViewOwnedItem
         public string Label { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager,
+            UserAccessor userAccessor)
+        : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager, UserAccessor userAccessor)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-            _userAccessor = userAccessor;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var ownedItem = await _context.OwnedItems.Include(i => i.Product).AsNoTracking()
+            var ownedItem = await context.OwnedItems.Include(i => i.Product).AsNoTracking()
                 .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
             if (ownedItem == null)
                 throw new NotFoundException(nameof(OwnedItem), request.Id);
 
-            if (ownedItem.UserId != _userAccessor.User.Id &&
-                !_permissionManager.CheckPermission(typeof(ShopPermissions.ViewOwnedItem)))
+            if (ownedItem.UserId != userAccessor.User.Id &&
+                !permissionManager.CheckPermission(typeof(ShopPermissions.ViewOwnedItem)))
                 throw new NotFoundException(nameof(OwnedItem), request.Id);
 
             return ownedItem.Adapt<Response>();

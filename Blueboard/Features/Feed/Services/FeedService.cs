@@ -10,15 +10,8 @@ namespace Blueboard.Features.Feed.Services;
 /// <summary>
 ///     The singleton service responsible for storing feed items.
 /// </summary>
-public class FeedService
+public class FeedService(IOptionsMonitor<FeedOptions> feedOptionsMonitor)
 {
-    private readonly IOptionsMonitor<FeedOptions> _feedOptionsMonitor;
-
-    public FeedService(IOptionsMonitor<FeedOptions> feedOptionsMonitor)
-    {
-        _feedOptionsMonitor = feedOptionsMonitor;
-    }
-
     public List<IFeedItem> FeedItems { get; } = new();
 
     public async Task UpdateFeed()
@@ -57,7 +50,7 @@ public class FeedService
     private async Task<string> LoadLovassyWebsiteAsync()
     {
         var client = new HttpClient();
-        var response = await client.GetStringAsync(_feedOptionsMonitor.CurrentValue.LovassyWebsiteUrl);
+        var response = await client.GetStringAsync(feedOptionsMonitor.CurrentValue.LovassyWebsiteUrl);
         return response;
     }
 }

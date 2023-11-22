@@ -53,22 +53,14 @@ public static class IndexOwnedItems
         public string Label { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var ownedItems = _context.OwnedItems.Include(i => i.Product).AsNoTracking();
+            var ownedItems = context.OwnedItems.Include(i => i.Product).AsNoTracking();
 
-            var filteredOwnedItems = _sieveProcessor.Apply(request.SieveModel, ownedItems);
+            var filteredOwnedItems = sieveProcessor.Apply(request.SieveModel, ownedItems);
 
             if (!string.IsNullOrEmpty(request.Search))
             {

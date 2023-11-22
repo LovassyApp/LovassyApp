@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Infrastructure.Persistence.Seeders;
 
-public class GradeImportSeeder
+public class GradeImportSeeder(ApplicationDbContext context)
 {
     private static readonly Faker Faker = new();
     private static readonly int GradeCount = 5;
@@ -40,16 +40,9 @@ public class GradeImportSeeder
         "Írásbeli témazáró dolgozat (dupla súllyal)"
     };
 
-    private readonly ApplicationDbContext _context;
-
-    public GradeImportSeeder(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task RunAsync()
     {
-        var users = await _context.Users.Where(u => !u.ImportAvailable).ToListAsync();
+        var users = await context.Users.Where(u => !u.ImportAvailable).ToListAsync();
 
         foreach (var user in users)
         {
@@ -63,11 +56,11 @@ public class GradeImportSeeder
                 User = user,
                 JsonEncrypted = gradeCollectionEncrypted
             };
-            await _context.GradeImports.AddAsync(gradeImport);
+            await context.GradeImports.AddAsync(gradeImport);
             user.ImportAvailable = true;
         }
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
     private BackboardGradeCollection MakeGradeCollection(User user)

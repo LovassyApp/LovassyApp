@@ -86,29 +86,20 @@ public static class CreateOwnedItem
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products
+            var product = await context.Products
                 .FindAsync(request.Body.ProductId);
 
             var ownedItem = request.Body.Adapt<OwnedItem>();
             ownedItem.Product = product!;
 
-            await _context.OwnedItems.AddAsync(ownedItem, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.OwnedItems.AddAsync(ownedItem, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new OwnedItemUpdatedEvent
+            await publisher.Publish(new OwnedItemUpdatedEvent
             {
                 UserId = ownedItem.UserId
             }, cancellationToken);

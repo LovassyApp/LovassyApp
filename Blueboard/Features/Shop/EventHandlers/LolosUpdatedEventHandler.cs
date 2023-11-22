@@ -8,22 +8,16 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blueboard.Features.Shop.EventHandlers;
 
-public class LolosUpdatedEventHandler : INotificationHandler<LolosUpdatedEvent>
+public class LolosUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    : INotificationHandler<LolosUpdatedEvent>
 {
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
-
-    public LolosUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
-    {
-        _notificationsHub = notificationsHub;
-    }
-
     public async Task Handle(LolosUpdatedEvent notification, CancellationToken cancellationToken)
     {
         if (PermissionUtils.PermissionTypesToNames == null)
             throw new InvalidOperationException("Permissions are not loaded yet");
 
-        await _notificationsHub.Clients.User(notification.UserId.ToString()).RefreshOwnLolos();
-        await _notificationsHub.Clients
+        await notificationsHub.Clients.User(notification.UserId.ToString()).RefreshOwnLolos();
+        await notificationsHub.Clients
             .Group(PermissionUtils.PermissionTypesToNames[typeof(ShopPermissions.IndexLolos)]).RefreshLolos();
     }
 }

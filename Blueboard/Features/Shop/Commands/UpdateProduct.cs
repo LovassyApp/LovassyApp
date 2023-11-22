@@ -92,20 +92,11 @@ public static class UpdateProduct
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.Where(p => p.Id == request.Id)
+            var product = await context.Products.Where(p => p.Id == request.Id)
                 .Include(p => p.QRCodes)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -132,13 +123,13 @@ public static class UpdateProduct
                     {
                         Id = qrCodeId
                     };
-                    _context.Entry(qrcode).State = EntityState.Unchanged;
+                    context.Entry(qrcode).State = EntityState.Unchanged;
                     product.QRCodes.Add(qrcode);
                 }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

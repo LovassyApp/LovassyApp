@@ -9,16 +9,9 @@ namespace Blueboard.Features.Auth.Services;
 /// <summary>
 ///     The singleton service responsible for generating and decrypting refresh tokens.
 /// </summary>
-public class RefreshService
+public class RefreshService(EncryptionService encryptionService, IOptions<RefreshOptions> refreshOptions)
 {
-    private readonly EncryptionService _encryptionService;
-    private readonly RefreshOptions _refreshOptions;
-
-    public RefreshService(EncryptionService encryptionService, IOptions<RefreshOptions> refreshOptions)
-    {
-        _encryptionService = encryptionService;
-        _refreshOptions = refreshOptions.Value;
-    }
+    private readonly RefreshOptions _refreshOptions = refreshOptions.Value;
 
     /// <summary>
     ///     Generates a refresh token for a <see cref="User" />.
@@ -28,7 +21,7 @@ public class RefreshService
     /// <returns>The refresh token itself.</returns>
     public string GenerateRefreshToken(Guid userId, string password)
     {
-        return _encryptionService.SerializeProtect(
+        return encryptionService.SerializeProtect(
             new RefreshTokenContents { Password = password, UserId = userId, Purpose = "Refresh" },
             TimeSpan.FromDays(_refreshOptions.ExpiryDays));
     }
@@ -42,7 +35,7 @@ public class RefreshService
     {
         try
         {
-            var contents = _encryptionService.DeserializeUnprotect<RefreshTokenContents>(refreshToken, out _);
+            var contents = encryptionService.DeserializeUnprotect<RefreshTokenContents>(refreshToken, out _);
             if (contents == null || contents.Purpose != "Refresh") return null;
 
             return contents;

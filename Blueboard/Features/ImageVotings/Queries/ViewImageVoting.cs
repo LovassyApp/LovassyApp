@@ -51,31 +51,22 @@ public static class ViewImageVoting
         public int? ChosenEntryId { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor,
+            PermissionManager permissionManager)
+        : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _permissionManager = permissionManager;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var imageVoting = await _context.ImageVotings
-                .Include(v => v.Entries.Where(e => e.UserId == _userAccessor.User.Id))
-                .Include(v => v.Choices.Where(e => e.UserId == _userAccessor.User.Id))
+            var imageVoting = await context.ImageVotings
+                .Include(v => v.Entries.Where(e => e.UserId == userAccessor.User.Id))
+                .Include(v => v.Choices.Where(e => e.UserId == userAccessor.User.Id))
                 .Include(x => x.UploaderUserGroup)
                 .Include(x => x.BannedUserGroup)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (imageVoting == null || (!imageVoting.Active &&
-                                        !_permissionManager.CheckPermission(
+                                        !permissionManager.CheckPermission(
                                             typeof(ImageVotingsPermissions.ViewImageVoting))))
                 throw new NotFoundException(nameof(ImageVoting), request.Id);
 
@@ -86,20 +77,20 @@ public static class ViewImageVoting
                 var choice = imageVoting.Choices.FirstOrDefault(c => c.AspectKey == aspect.Key);
                 aspect.CanChoose = imageVoting.Type == ImageVotingType.SingleChoice &&
                                    (imageVoting.Active ||
-                                    _permissionManager.CheckPermission(
+                                    permissionManager.CheckPermission(
                                         typeof(ImageVotingsPermissions.ChooseImageVotingEntry)));
                 aspect.ChosenEntryId = choice?.ImageVotingEntryId;
             }
 
 
             var inUploaderUserGroup =
-                _userAccessor.User.UserGroups.Any(g => g.Id == imageVoting.UploaderUserGroupId) &&
-                _userAccessor.User.UserGroups.All(g => g.Id != imageVoting.BannedUserGroupId);
+                userAccessor.User.UserGroups.Any(g => g.Id == imageVoting.UploaderUserGroupId) &&
+                userAccessor.User.UserGroups.All(g => g.Id != imageVoting.BannedUserGroupId);
 
             response.CanUpload =
-                (_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateImageVotingEntry)) ||
+                (permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateImageVotingEntry)) ||
                  (imageVoting.Active &&
-                  _permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateActiveImageVotingEntry)))) &&
+                  permissionManager.CheckPermission(typeof(ImageVotingsPermissions.CreateActiveImageVotingEntry)))) &&
                 inUploaderUserGroup &&
                 imageVoting.Entries.Count < imageVoting.MaxUploadsPerUser;
 

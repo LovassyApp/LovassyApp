@@ -17,59 +17,47 @@ public static class BuyProduct
         public int ProductId { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly LoloManager _loloManager;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, LoloManager loloManager, UserAccessor userAccessor,
+    internal sealed class Handler(ApplicationDbContext context, LoloManager loloManager, UserAccessor userAccessor,
             IPublisher publisher)
-        {
-            _context = context;
-            _loloManager = loloManager;
-            _userAccessor = userAccessor;
-            _publisher = publisher;
-        }
-
+        : IRequestHandler<Command>
+    {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.FindAsync(request.ProductId);
+            var product = await context.Products.FindAsync(request.ProductId);
 
             if (product == null) throw new NotFoundException(nameof(Product), request.ProductId);
 
-            await _loloManager.LoadAsync();
+            await loloManager.LoadAsync();
 
             if (product.Quantity < 1) throw new BadRequestException("A termék elfogyott.");
 
-            if (_loloManager.Balance < product.Price)
+            if (loloManager.Balance < product.Price)
                 throw new BadRequestException("Nincs elég lolód a termék megvásárlásához.");
 
             if (product.UserLimited)
             {
-                var storeHistories = await _context.StoreHistories
-                    .Where(h => h.ProductId == product.Id && h.UserId == _userAccessor.User.Id)
+                var storeHistories = await context.StoreHistories
+                    .Where(h => h.ProductId == product.Id && h.UserId == userAccessor.User.Id)
                     .ToListAsync(cancellationToken);
 
                 if (storeHistories.Count >= product.UserLimit)
                     throw new BadRequestException("Ebből a termékből te nem vehetsz többet.");
             }
 
-            var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+            var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
 
             try
             {
-                await _loloManager.SpendAsync(product.Price, false);
+                await loloManager.SpendAsync(product.Price, false);
                 product.Quantity--;
 
                 var ownedItem = new OwnedItem
                 {
-                    UserId = _userAccessor.User.Id,
+                    UserId = userAccessor.User.Id,
                     ProductId = product.Id,
                     StoreHistory = new StoreHistory
                     {
-                        UserId = _userAccessor.User.Id,
+                        UserId = userAccessor.User.Id,
                         ProductId = product.Id,
                         LolosSpent =
                             product.Price, // We don't want to trust the price from the product because it can change
@@ -77,16 +65,16 @@ public static class BuyProduct
                     }
                 };
 
-                await _context.OwnedItems.AddAsync(ownedItem, cancellationToken);
-                await _context.SaveChangesAsync(cancellationToken);
+                await context.OwnedItems.AddAsync(ownedItem, cancellationToken);
+                await context.SaveChangesAsync(cancellationToken);
                 await transaction.CommitAsync(cancellationToken);
 
-                await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
-                await _publisher.Publish(new LolosUpdatedEvent
+                await publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
+                await publisher.Publish(new LolosUpdatedEvent
                 {
-                    UserId = _userAccessor.User.Id
+                    UserId = userAccessor.User.Id
                 }, cancellationToken);
-                await _publisher.Publish(new OwnedItemUpdatedEvent
+                await publisher.Publish(new OwnedItemUpdatedEvent
                 {
                     UserId = ownedItem.UserId
                 }, cancellationToken);

@@ -40,40 +40,26 @@ public static class ViewControl
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
-    {
-        private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IFeatureManager _featureManager;
-        private readonly PermissionManager _permissionManager;
-        private readonly SessionManager _sessionManager;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(IHttpContextAccessor contextAccessor, SessionManager sessionManager,
+    internal sealed class Handler(IHttpContextAccessor contextAccessor, SessionManager sessionManager,
             UserAccessor userAccessor, IFeatureManager featureManager, PermissionManager permissionManager)
-        {
-            _contextAccessor = contextAccessor;
-            _sessionManager = sessionManager;
-            _userAccessor = userAccessor;
-            _featureManager = featureManager;
-            _permissionManager = permissionManager;
-        }
-
+        : IRequestHandler<Query, Response>
+    {
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
             var enabledFeatures = new List<string>();
             // ReSharper disable once UseCancellationTokenForIAsyncEnumerable
-            await foreach (var feature in _featureManager.GetFeatureNamesAsync())
-                if (await _featureManager.IsEnabledAsync(feature))
+            await foreach (var feature in featureManager.GetFeatureNamesAsync())
+                if (await featureManager.IsEnabledAsync(feature))
                     enabledFeatures.Add(feature);
 
             var response = new Response
             {
-                User = _userAccessor.User.Adapt<ResponseUser>(),
-                Session = _sessionManager.Session!.Adapt<ResponseSession>(),
-                IsSuperUser = _permissionManager.CheckSuperUser(),
-                Permissions = _contextAccessor.HttpContext!.User.FindAll(AuthConstants.PermissionClaim)
+                User = userAccessor.User.Adapt<ResponseUser>(),
+                Session = sessionManager.Session!.Adapt<ResponseSession>(),
+                IsSuperUser = permissionManager.CheckSuperUser(),
+                Permissions = contextAccessor.HttpContext!.User.FindAll(AuthConstants.PermissionClaim)
                     .Select(c => c.Value).ToArray(),
-                UserGroups = _userAccessor.User.UserGroups.Select(userGroup => userGroup.Name).ToArray(),
+                UserGroups = userAccessor.User.UserGroups.Select(userGroup => userGroup.Name).ToArray(),
                 Features = enabledFeatures.ToArray()
             };
 

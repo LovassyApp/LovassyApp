@@ -17,22 +17,12 @@ namespace Blueboard.Core.Auth.Services;
 ///     The scoped service responsible for managing the session of the current user. Initialized in the
 ///     <see cref="TokenAuthenticationSchemeHandler" />.
 /// </summary>
-public class SessionManager
+public class SessionManager(IMemoryCache memoryCache, ApplicationDbContext context,
+    IOptions<SessionOptions> sessionOptions)
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IMemoryCache _memoryCache;
-    private readonly SessionOptions _sessionOptions;
-
     private string? _encryptionKey;
 
     private string? _token;
-
-    public SessionManager(IMemoryCache memoryCache, ApplicationDbContext context, IOptions<SessionOptions> options)
-    {
-        _memoryCache = memoryCache;
-        _context = context;
-        _sessionOptions = options.Value;
-    }
 
     public Session? Session { get; set; }
 
@@ -50,7 +40,7 @@ public class SessionManager
         _token = token;
 
         var tokenHash = HashingUtils.Hash(token);
-        var session = _memoryCache.Get<Session>(tokenHash);
+        var session = memoryCache.Get<Session>(tokenHash);
 
         Session = session ?? throw new SessionNotFoundException();
         _encryptionKey = HashingUtils.GenerateBasicKey(token, Session.Salt);
@@ -69,7 +59,7 @@ public class SessionManager
         var tokenBytes = RandomNumberGenerator.GetBytes(64);
         _token = Convert.ToBase64String(tokenBytes);
 
-        var expiry = DateTime.Now.AddMinutes(_sessionOptions.ExpiryMinutes);
+        var expiry = DateTime.Now.AddMinutes(sessionOptions.Value.ExpiryMinutes);
 
         var hash = HashingUtils.Hash(_token);
 
@@ -78,8 +68,8 @@ public class SessionManager
             UserId = userId,
             Token = _token
         };
-        await _context.PersonalAccessTokens.AddAsync(personalAccessToken);
-        await _context.SaveChangesAsync();
+        await context.PersonalAccessTokens.AddAsync(personalAccessToken);
+        await context.SaveChangesAsync();
 
         Session = new Session
         {
@@ -109,7 +99,7 @@ public class SessionManager
         if (Session == null)
             throw new SessionNotFoundException();
 
-        _memoryCache.Remove(Session.Hash);
+        memoryCache.Remove(Session.Hash);
         Session = null;
         _token = null;
         _encryptionKey = null;
@@ -157,6 +147,6 @@ public class SessionManager
 
     private void UpdateCache()
     {
-        _memoryCache.Set(Session!.Hash, Session, Session.Expiry);
+        memoryCache.Set(Session!.Hash, Session, Session.Expiry);
     }
 }

@@ -24,23 +24,15 @@ public static class IndexQRCodes
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var qrcodes = _context.QRCodes.AsNoTracking();
+            var qrcodes = context.QRCodes.AsNoTracking();
 
             var filteredQrcodes =
-                await _sieveProcessor.Apply(request.SieveModel, qrcodes).ToListAsync(cancellationToken);
+                await sieveProcessor.Apply(request.SieveModel, qrcodes).ToListAsync(cancellationToken);
 
             return filteredQrcodes.Adapt<IEnumerable<Response>>();
         }

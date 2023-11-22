@@ -15,20 +15,11 @@ public static class DeleteUserGroup
         public int Id { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var userGroup = await _context.UserGroups.Include(g => g.UploadableImageVotings)
+            var userGroup = await context.UserGroups.Include(g => g.UploadableImageVotings)
                 .FirstOrDefaultAsync(g => g.Id == request.Id, cancellationToken);
 
             if (userGroup == null)
@@ -40,10 +31,10 @@ public static class DeleteUserGroup
             if (userGroup.UploadableImageVotings.Count > 0)
                 throw new BadRequestException("Nem törölheted a csoportot, mert szavazás van hozzárendelve.");
 
-            _context.UserGroups.Remove(userGroup);
-            await _context.SaveChangesAsync(cancellationToken);
+            context.UserGroups.Remove(userGroup);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new UserGroupsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new UserGroupsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }

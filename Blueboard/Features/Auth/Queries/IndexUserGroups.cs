@@ -24,22 +24,14 @@ public static class IndexUserGroups
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var userGroups = _context.UserGroups.AsNoTracking();
+            var userGroups = context.UserGroups.AsNoTracking();
             var filteredUserGroups =
-                await _sieveProcessor.Apply(request.SieveModel, userGroups).ToListAsync(cancellationToken);
+                await sieveProcessor.Apply(request.SieveModel, userGroups).ToListAsync(cancellationToken);
             return filteredUserGroups.Adapt<IEnumerable<Response>>();
         }
     }

@@ -40,30 +40,20 @@ public static class CreateImportKey
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly EncryptionService _encryptionService;
-        private readonly HashService _hashService;
-
-        public Handler(ApplicationDbContext context, EncryptionService encryptionService,
+    internal sealed class Handler(ApplicationDbContext context, EncryptionService encryptionService,
             HashService hashService)
-        {
-            _context = context;
-            _encryptionService = encryptionService;
-            _hashService = hashService;
-        }
-
+        : IRequestHandler<Command, Response>
+    {
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var importKey = request.Body.Adapt<ImportKey>();
             var key = Convert.ToBase64String(RandomNumberGenerator.GetBytes(512 / 8));
 
-            importKey.KeyProtected = _encryptionService.Protect(key);
-            importKey.KeyHashed = _hashService.Hash(key);
+            importKey.KeyProtected = encryptionService.Protect(key);
+            importKey.KeyHashed = hashService.Hash(key);
 
-            await _context.ImportKeys.AddAsync(importKey, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.ImportKeys.AddAsync(importKey, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
             var response = importKey.Adapt<Response>();
             response.Key = key;

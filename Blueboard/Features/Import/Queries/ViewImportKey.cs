@@ -27,25 +27,17 @@ public static class ViewImportKey
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context, EncryptionService encryptionService)
+        : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly EncryptionService _encryptionService;
-
-        public Handler(ApplicationDbContext context, EncryptionService encryptionService)
-        {
-            _context = context;
-            _encryptionService = encryptionService;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var importKey = await _context.ImportKeys.FindAsync(request.Id);
+            var importKey = await context.ImportKeys.FindAsync(request.Id);
 
             if (importKey is null)
                 throw new NotFoundException(nameof(ImportKey), request.Id);
 
-            var key = _encryptionService.Unprotect(importKey.KeyProtected);
+            var key = encryptionService.Unprotect(importKey.KeyProtected);
 
             var response = importKey.Adapt<Response>();
             response.Key = key;

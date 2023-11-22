@@ -44,32 +44,21 @@ public static class IndexImageVotingEntries
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly SieveProcessor _sieveProcessor;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager, SieveProcessor sieveProcessor,
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager,
+            SieveProcessor sieveProcessor,
             UserAccessor userAccessor)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-            _sieveProcessor = sieveProcessor;
-            _userAccessor = userAccessor;
-        }
-
+        : IRequestHandler<Query, IEnumerable<Response>>
+    {
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var entries = _context.ImageVotingEntries.Include(e => e.ImageVoting)
-                .ThenInclude(v => v.Choices.Where(c => c.UserId == _userAccessor.User.Id)).Include(e => e.User)
+            var entries = context.ImageVotingEntries.Include(e => e.ImageVoting)
+                .ThenInclude(v => v.Choices.Where(c => c.UserId == userAccessor.User.Id)).Include(e => e.User)
                 .AsNoTracking(); //I verified that there is no cartesian explosion here
 
-            if (!_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingEntries)))
+            if (!permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotingEntries)))
                 entries = entries.Where(e => e.ImageVoting.Active);
 
-            var response = (await _sieveProcessor.Apply(request.SieveModel, entries).ToListAsync(cancellationToken))
+            var response = (await sieveProcessor.Apply(request.SieveModel, entries).ToListAsync(cancellationToken))
                 .Select(entry => CreateResponse(entry));
 
             return response;
@@ -91,7 +80,7 @@ public static class IndexImageVotingEntries
                 response.Chosen = entry.ImageVoting.Choices.Any(c => c.ImageVotingEntryId == entry.Id);
             }
 
-            if (entry.UserId == _userAccessor.User.Id)
+            if (entry.UserId == userAccessor.User.Id)
                 response.CanChoose = false;
 
             return response;

@@ -32,22 +32,12 @@ public static class OverruleLoloRequest
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, LoloManager loloManager, IPublisher publisher)
+        : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly LoloManager _loloManager;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, LoloManager loloManager, IPublisher publisher)
-        {
-            _context = context;
-            _loloManager = loloManager;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var loloRequest = await _context.LoloRequests.FindAsync(request.Id, cancellationToken);
+            var loloRequest = await context.LoloRequests.FindAsync(request.Id, cancellationToken);
 
             if (loloRequest is null)
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
@@ -59,9 +49,9 @@ public static class OverruleLoloRequest
             {
                 loloRequest.AcceptedAt = DateTime.UtcNow;
 
-                await _loloManager.SaveFromRequestAsync(loloRequest, request.Body.LoloAmount);
+                await loloManager.SaveFromRequestAsync(loloRequest, request.Body.LoloAmount);
 
-                await _publisher.Publish(new LolosUpdatedEvent
+                await publisher.Publish(new LolosUpdatedEvent
                 {
                     UserId = loloRequest.UserId
                 }, cancellationToken);
@@ -71,9 +61,9 @@ public static class OverruleLoloRequest
                 loloRequest.DeniedAt = DateTime.UtcNow;
             }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new LoloRequestUpdatedEvent
+            await publisher.Publish(new LoloRequestUpdatedEvent
             {
                 UserId = loloRequest.UserId
             }, cancellationToken);

@@ -40,18 +40,11 @@ public static class ViewUser
         public string[] Permissions { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context) : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-
-        public Handler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.Id == request.Id).Include(u => u.UserGroups)
+            var user = await context.Users.Where(u => u.Id == request.Id).Include(u => u.UserGroups)
                 .Include(u =>
                     u.PersonalAccessTokens.Where(t => t.LastUsedAt != null).OrderByDescending(t => t.LastUsedAt))
                 .AsNoTracking()

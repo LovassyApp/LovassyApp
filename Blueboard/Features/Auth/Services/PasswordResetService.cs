@@ -8,22 +8,14 @@ namespace Blueboard.Features.Auth.Services;
 /// <summary>
 ///     The singleton service responsible for generating and decrypting password reset tokens.
 /// </summary>
-public class PasswordResetService
+public class PasswordResetService(EncryptionService encryptionService,
+    IOptions<PasswordResetOptions> passwordResetOptions)
 {
-    private readonly EncryptionService _encryptionService;
-    private readonly PasswordResetOptions _options;
-
-    public PasswordResetService(EncryptionService encryptionService, IOptions<PasswordResetOptions> options)
-    {
-        _encryptionService = encryptionService;
-        _options = options.Value;
-    }
-
     public string GeneratePasswordResetToken(Guid userId)
     {
-        return _encryptionService.SerializeProtect(
+        return encryptionService.SerializeProtect(
             new PasswordResetTokenContents { UserId = userId, Purpose = "PasswordReset" },
-            TimeSpan.FromMinutes(_options.ExpiryMinutes));
+            TimeSpan.FromMinutes(passwordResetOptions.Value.ExpiryMinutes));
     }
 
     public PasswordResetTokenContents? DecryptPasswordResetToken(string passwordResetToken)
@@ -31,7 +23,7 @@ public class PasswordResetService
         try
         {
             var contents =
-                _encryptionService.DeserializeUnprotect<PasswordResetTokenContents>(passwordResetToken, out _);
+                encryptionService.DeserializeUnprotect<PasswordResetTokenContents>(passwordResetToken, out _);
             if (contents == null || contents.Purpose != "PasswordReset") return null;
 
             return contents;

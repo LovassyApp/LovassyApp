@@ -8,18 +8,10 @@ using Quartz;
 
 namespace Blueboard.Features.Shop.Jobs;
 
-public class SendOwnedItemUsedNotificationJob : IJob
-{
-    private readonly IFluentEmail _fluentEmail;
-    private readonly RazorViewToStringRenderer _razorViewToStringRenderer;
-
-    public SendOwnedItemUsedNotificationJob(IFluentEmail fluentEmail,
+public class SendOwnedItemUsedNotificationJob(IFluentEmail fluentEmail,
         RazorViewToStringRenderer razorViewToStringRenderer)
-    {
-        _fluentEmail = fluentEmail;
-        _razorViewToStringRenderer = razorViewToStringRenderer;
-    }
-
+    : IJob
+{
     public async Task Execute(IJobExecutionContext context)
     {
         var user = JsonSerializer.Deserialize<User>((context.MergedJobDataMap.Get("userJson") as string)!);
@@ -34,8 +26,8 @@ public class SendOwnedItemUsedNotificationJob : IJob
 
         if (addresses.Count == 0) return;
 
-        var email = _fluentEmail.BCC(addresses.Distinct()).Subject($"Termék felhasználva: {product.Name}").Body(
-            await _razorViewToStringRenderer.RenderViewToStringAsync(
+        var email = fluentEmail.BCC(addresses.Distinct()).Subject($"Termék felhasználva: {product.Name}").Body(
+            await razorViewToStringRenderer.RenderViewToStringAsync(
                 "/Views/Emails/OwnedItemUsedNotification/OwnedItemUsedNotification.cshtml",
                 new OwnedItemUsedNotificationViewModel
                 {

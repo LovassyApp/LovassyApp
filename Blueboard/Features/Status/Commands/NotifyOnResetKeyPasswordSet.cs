@@ -38,20 +38,11 @@ public static class NotifyOnResetKeyPasswordSet
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, ResetService resetService) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ResetService _resetService;
-
-        public Handler(ApplicationDbContext context, ResetService resetService)
-        {
-            _context = context;
-            _resetService = resetService;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (_resetService.IsResetKeyPasswordSet())
+            if (resetService.IsResetKeyPasswordSet())
                 throw new UnavailableException("A visszaállítási jelszó már be lett állítva.");
 
             var notifier = new ResetKeyPasswordSetNotifier
@@ -59,8 +50,8 @@ public static class NotifyOnResetKeyPasswordSet
                 Email = request.Body.Email
             };
 
-            await _context.ResetKeyPasswordSetNotifiers.AddAsync(notifier, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.ResetKeyPasswordSetNotifiers.AddAsync(notifier, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

@@ -14,22 +14,14 @@ public static class ResendVerifyEmail
         public string VerifyTokenQueryKey { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(UserAccessor userAccessor, ISchedulerFactory schedulerFactory)
+        : IRequestHandler<Command>
     {
-        private readonly ISchedulerFactory _schedulerFactory;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(UserAccessor userAccessor, ISchedulerFactory schedulerFactory)
-        {
-            _userAccessor = userAccessor;
-            _schedulerFactory = schedulerFactory;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = _userAccessor.User;
+            var user = userAccessor.User;
 
-            var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+            var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
             var sendVerifyEmailJob = JobBuilder.Create<SendVerifyEmailJob>()
                 .UsingJobData("userJson", JsonSerializer.Serialize(user))

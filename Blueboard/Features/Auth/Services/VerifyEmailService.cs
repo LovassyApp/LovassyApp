@@ -9,16 +9,9 @@ namespace Blueboard.Features.Auth.Services;
 /// <summary>
 ///     The singleton service responsible for generating and decrypting email verify tokens.
 /// </summary>
-public class VerifyEmailService
+public class VerifyEmailService(EncryptionService encryptionService, IOptions<VerifyEmailOptions> verifyEmailOptions)
 {
-    private readonly EncryptionService _encryptionService;
-    private readonly VerifyEmailOptions _verifyEmailOptions;
-
-    public VerifyEmailService(EncryptionService encryptionService, IOptions<VerifyEmailOptions> verifyEmailOptions)
-    {
-        _encryptionService = encryptionService;
-        _verifyEmailOptions = verifyEmailOptions.Value;
-    }
+    private readonly VerifyEmailOptions _verifyEmailOptions = verifyEmailOptions.Value;
 
     /// <summary>
     ///     Generates an email verify token for a <see cref="User" />.
@@ -27,7 +20,7 @@ public class VerifyEmailService
     /// <returns>The verify token itself.</returns>
     public string GenerateVerifyToken(Guid userId)
     {
-        return _encryptionService.SerializeProtect(
+        return encryptionService.SerializeProtect(
             new VerifyEmailTokenContents { UserId = userId, Purpose = "VerifyEmail" },
             TimeSpan.FromMinutes(_verifyEmailOptions.ExpiryMinutes));
     }
@@ -41,7 +34,7 @@ public class VerifyEmailService
     {
         try
         {
-            var contents = _encryptionService.DeserializeUnprotect<VerifyEmailTokenContents>(verifyToken, out _);
+            var contents = encryptionService.DeserializeUnprotect<VerifyEmailTokenContents>(verifyToken, out _);
             if (contents == null || contents.Purpose != "VerifyEmail") return null;
 
             return contents;

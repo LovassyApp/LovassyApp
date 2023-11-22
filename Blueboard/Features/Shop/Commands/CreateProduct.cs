@@ -123,17 +123,9 @@ public static class CreateProduct
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Response>
+    internal sealed class Handler
+        (ApplicationDbContext context, IPublisher publisher) : IRequestHandler<Command, Response>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IPublisher _publisher;
-
-        public Handler(ApplicationDbContext context, IPublisher publisher)
-        {
-            _context = context;
-            _publisher = publisher;
-        }
-
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var product = request.Body.Adapt<Product>();
@@ -149,14 +141,14 @@ public static class CreateProduct
                 {
                     Id = codeId
                 };
-                _context.Entry(qrcode).State = EntityState.Unchanged;
+                context.Entry(qrcode).State = EntityState.Unchanged;
                 product.QRCodes.Add(qrcode);
             }
 
-            await _context.AddAsync(product, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.AddAsync(product, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ProductsUpdatedEvent(), cancellationToken);
 
             var response = product.Adapt<Response>();
             response.QRCodes = request.Body.QRCodes;

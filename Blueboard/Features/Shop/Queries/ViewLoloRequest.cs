@@ -30,18 +30,11 @@ public static class ViewLoloRequest
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(ApplicationDbContext context) : IRequestHandler<Query, Response>
     {
-        private readonly ApplicationDbContext _context;
-
-        public Handler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            var loloRequest = await _context.LoloRequests.Where(r => r.Id == request.Id).AsNoTracking()
+            var loloRequest = await context.LoloRequests.Where(r => r.Id == request.Id).AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (loloRequest == null)

@@ -26,24 +26,16 @@ public static class IndexImportKeys
     }
 
     internal sealed class
-        Handler : IRequestHandler<Query, IEnumerable<Response>>
+        Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request,
             CancellationToken cancellationToken)
         {
-            var importKeys = _context.ImportKeys;
+            var importKeys = context.ImportKeys;
 
             var filteredImportKeys =
-                await _sieveProcessor.Apply(request.SieveModel, importKeys).ToListAsync(cancellationToken);
+                await sieveProcessor.Apply(request.SieveModel, importKeys).ToListAsync(cancellationToken);
 
             return filteredImportKeys.Adapt<IEnumerable<Response>>();
         }

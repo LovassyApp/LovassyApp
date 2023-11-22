@@ -13,29 +13,20 @@ public static class DeleteUser
         public Guid Id { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FindAsync(request.Id, cancellationToken);
+            var user = await context.Users.FindAsync(request.Id, cancellationToken);
 
             if (user == null)
                 throw new NotFoundException(nameof(User), request.Id);
 
-            if (user.Id == _userAccessor.User.Id)
+            if (user.Id == userAccessor.User.Id)
                 throw new BadRequestException("Nem törölheted saját magad.");
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync(cancellationToken);
+            context.Users.Remove(user);
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

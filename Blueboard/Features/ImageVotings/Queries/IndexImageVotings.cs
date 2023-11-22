@@ -37,27 +37,18 @@ public static class IndexImageVotings
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager,
+            SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager, SieveProcessor sieveProcessor)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var onlyActive = !_permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotings));
-            var imageVotings = _context.ImageVotings
+            var onlyActive = !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.IndexImageVotings));
+            var imageVotings = context.ImageVotings
                 .Where(x => !onlyActive || x.Active)
                 .AsNoTracking();
 
-            var filteredImageVotings = _sieveProcessor.Apply(request.SieveModel, imageVotings);
+            var filteredImageVotings = sieveProcessor.Apply(request.SieveModel, imageVotings);
 
             return (await filteredImageVotings.ToListAsync(cancellationToken)).Adapt<IEnumerable<Response>>();
         }

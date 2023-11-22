@@ -64,26 +64,17 @@ public static class IndexOwnLolos
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, Response>
+    internal sealed class Handler(LoloManager loloManager, SieveProcessor sieveProcessor) : IRequestHandler<Query, Response>
     {
-        private readonly LoloManager _loloManager;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(LoloManager loloManager, SieveProcessor sieveProcessor)
-        {
-            _loloManager = loloManager;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
-            await _loloManager.LoadAsync();
+            await loloManager.LoadAsync();
 
-            var filteredLolos = _sieveProcessor.Apply(request.SieveModel, _loloManager.Coins!.AsQueryable()).ToList();
+            var filteredLolos = sieveProcessor.Apply(request.SieveModel, loloManager.Coins!.AsQueryable()).ToList();
 
             return new Response
             {
-                Balance = (int)_loloManager.Balance!,
+                Balance = (int)loloManager.Balance!,
                 Coins = filteredLolos.Adapt<List<ResponseCoin>>()
             };
         }

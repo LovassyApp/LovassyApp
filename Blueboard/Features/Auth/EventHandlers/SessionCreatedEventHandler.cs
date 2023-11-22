@@ -8,18 +8,11 @@ using Quartz.Listener;
 
 namespace Blueboard.Features.Auth.EventHandlers;
 
-public class SessionCreatedEventHandler : INotificationHandler<SessionCreatedEvent>
+public class SessionCreatedEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<SessionCreatedEvent>
 {
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public SessionCreatedEventHandler(ISchedulerFactory schedulerFactory)
-    {
-        _schedulerFactory = schedulerFactory;
-    }
-
     public async Task Handle(SessionCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
         // We need this because we want to be able to concurrently run the same job
         var idSalt = Guid.NewGuid().ToString();

@@ -37,24 +37,16 @@ public static class IndexUsers
         public string Name { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Query, IEnumerable<Response>>
+    internal sealed class Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, IEnumerable<Response>>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SieveProcessor _sieveProcessor;
-
-        public Handler(ApplicationDbContext context, SieveProcessor sieveProcessor)
-        {
-            _context = context;
-            _sieveProcessor = sieveProcessor;
-        }
-
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var users = _context.Users
+            var users = context.Users
                 .Include(u => u.UserGroups)
                 .AsNoTracking();
 
-            var filteredUsers = await _sieveProcessor.Apply(request.SieveModel, users).ToListAsync(cancellationToken);
+            var filteredUsers = await sieveProcessor.Apply(request.SieveModel, users).ToListAsync(cancellationToken);
 
             return filteredUsers.Adapt<IEnumerable<Response>>();
         }

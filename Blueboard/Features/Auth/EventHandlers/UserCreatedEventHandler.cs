@@ -6,18 +6,11 @@ using Quartz;
 
 namespace Blueboard.Features.Auth.EventHandlers;
 
-public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
+public class UserCreatedEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<UserCreatedEvent>
 {
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public UserCreatedEventHandler(ISchedulerFactory schedulerFactory)
-    {
-        _schedulerFactory = schedulerFactory;
-    }
-
     public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
 
         var sendVerifyEmailJob = JobBuilder.Create<SendVerifyEmailJob>()
             .UsingJobData("userJson", JsonSerializer.Serialize(notification.User))

@@ -15,41 +15,29 @@ public static class DeleteLoloRequest
         public int Id { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, UserAccessor userAccessor,
+            PermissionManager permissionManager, IPublisher publisher)
+        : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, UserAccessor userAccessor, PermissionManager permissionManager,
-            IPublisher publisher)
-        {
-            _context = context;
-            _userAccessor = userAccessor;
-            _permissionManager = permissionManager;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var loloRequest = await _context.LoloRequests.FindAsync(request.Id);
+            var loloRequest = await context.LoloRequests.FindAsync(request.Id);
 
             if (loloRequest == null)
                 throw new NotFoundException(nameof(LoloRequest), request.Id);
 
-            if (loloRequest.UserId != _userAccessor.User.Id &&
-                !_permissionManager.CheckPermission(typeof(ShopPermissions.DeleteLoloRequest)))
+            if (loloRequest.UserId != userAccessor.User.Id &&
+                !permissionManager.CheckPermission(typeof(ShopPermissions.DeleteLoloRequest)))
                 throw new ForbiddenException();
 
             if (loloRequest.AcceptedAt != null || loloRequest.DeniedAt != null)
                 throw new BadRequestException(
                     "Ez a kérvény már nem törölhető. (el lett fogadva vagy el lett utasítva)");
 
-            _context.LoloRequests.Remove(loloRequest);
-            await _context.SaveChangesAsync(cancellationToken);
+            context.LoloRequests.Remove(loloRequest);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new LoloRequestUpdatedEvent
+            await publisher.Publish(new LoloRequestUpdatedEvent
             {
                 UserId = loloRequest.UserId
             }, cancellationToken);

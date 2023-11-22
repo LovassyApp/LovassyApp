@@ -15,37 +15,25 @@ public static class DeleteOwnedItem
         public int Id { get; set; }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager,
+            UserAccessor userAccessor, IPublisher publisher)
+        : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly PermissionManager _permissionManager;
-        private readonly IPublisher _publisher;
-        private readonly UserAccessor _userAccessor;
-
-        public Handler(ApplicationDbContext context, PermissionManager permissionManager, UserAccessor userAccessor,
-            IPublisher publisher)
-        {
-            _context = context;
-            _permissionManager = permissionManager;
-            _userAccessor = userAccessor;
-            _publisher = publisher;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var ownedItem = await _context.OwnedItems.FindAsync(request.Id);
+            var ownedItem = await context.OwnedItems.FindAsync(request.Id);
 
             if (ownedItem == null)
                 throw new NotFoundException(nameof(OwnedItem), request.Id);
 
-            if (ownedItem.UserId != _userAccessor.User.Id &&
-                !_permissionManager.CheckPermission(typeof(ShopPermissions.DeleteOwnedItem)))
+            if (ownedItem.UserId != userAccessor.User.Id &&
+                !permissionManager.CheckPermission(typeof(ShopPermissions.DeleteOwnedItem)))
                 throw new NotFoundException(nameof(OwnedItem), request.Id);
 
-            _context.OwnedItems.Remove(ownedItem);
-            await _context.SaveChangesAsync(cancellationToken);
+            context.OwnedItems.Remove(ownedItem);
+            await context.SaveChangesAsync(cancellationToken);
 
-            await _publisher.Publish(new OwnedItemUpdatedEvent
+            await publisher.Publish(new OwnedItemUpdatedEvent
             {
                 UserId = ownedItem.UserId
             }, cancellationToken);

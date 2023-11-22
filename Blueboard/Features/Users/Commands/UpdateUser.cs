@@ -62,25 +62,18 @@ public static class UpdateUser
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command>
+    internal sealed class Handler(ApplicationDbContext context) : IRequestHandler<Command>
     {
-        private readonly ApplicationDbContext _context;
-
-        public Handler(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.Where(u => u.Id == request.Id).Include(u => u.UserGroups)
+            var user = await context.Users.Where(u => u.Id == request.Id).Include(u => u.UserGroups)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
                 throw new NotFoundException(nameof(User), request.Id);
 
             if (user.Email != request.Body.Email &&
-                await _context.Users.AnyAsync(x => x.Email == request.Body.Email, cancellationToken))
+                await context.Users.AnyAsync(x => x.Email == request.Body.Email, cancellationToken))
                 throw new ValidationException(new[]
                 {
                     new ValidationFailure(nameof(request.Body.Email), "A megadott email cím már foglalt.")
@@ -105,11 +98,11 @@ public static class UpdateUser
                     {
                         Id = groupId
                     };
-                    _context.Entry(userGroup).State = EntityState.Unchanged;
+                    context.Entry(userGroup).State = EntityState.Unchanged;
                     user.UserGroups.Add(userGroup);
                 }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

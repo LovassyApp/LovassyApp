@@ -8,21 +8,15 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blueboard.Features.Auth.EventHandlers;
 
-public class UserGroupsUpdatedEventHandler : INotificationHandler<UserGroupsUpdatedEvent>
+public class UserGroupsUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
+    : INotificationHandler<UserGroupsUpdatedEvent>
 {
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _notificationsHub;
-
-    public UserGroupsUpdatedEventHandler(IHubContext<NotificationsHub, INotificationsClient> notificationsHub)
-    {
-        _notificationsHub = notificationsHub;
-    }
-
     public async Task Handle(UserGroupsUpdatedEvent notification, CancellationToken cancellationToken)
     {
         if (PermissionUtils.PermissionTypesToNames == null)
             throw new InvalidOperationException("Permissions are not loaded yet");
 
-        await _notificationsHub.Clients
+        await notificationsHub.Clients
             .Group(PermissionUtils.PermissionTypesToNames[typeof(AuthPermissions.IndexUserGroups)]).RefreshUserGroups();
     }
 }
