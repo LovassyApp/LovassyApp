@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Blueboard.Infrastructure.Persistence.Entities.Owned;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +25,7 @@ public class ImageVoting : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public ImageVotingType Type { get; set; }
 
-    [Required]
-    [Column(TypeName = "jsonb")]
-    public List<ImageVotingAspect> Aspects { get; set; }
+    [Required] public List<ImageVotingAspect> Aspects { get; set; }
 
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
@@ -74,5 +71,6 @@ public class ImageVotingConfiguration : IEntityTypeConfiguration<ImageVoting>
         builder.HasOne(v => v.BannedUserGroup).WithMany(g => g.BannedImageVotings)
             .HasForeignKey(v => v.BannedUserGroupId)
             .OnDelete(DeleteBehavior.SetNull);
+        builder.OwnsMany<ImageVotingAspect>(v => v.Aspects, b => b.ToJson());
     }
 }

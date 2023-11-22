@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Blueboard.Infrastructure.Persistence.Entities.Owned;
 using Microsoft.EntityFrameworkCore;
@@ -55,9 +54,7 @@ public class Product : TimestampedEntity
     [Sieve(CanFilter = true, CanSort = true)]
     public int UserLimit { get; set; }
 
-    [Required]
-    [Column(TypeName = "jsonb")]
-    public List<ProductInput> Inputs { get; set; }
+    [Required] public List<ProductInput> Inputs { get; set; }
 
     [Required] public string[] NotifiedEmails { get; set; }
 
@@ -72,10 +69,13 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
+        builder.OwnsMany<ProductInput>(p => p.Inputs, b => b.ToJson());
+
         builder.HasGeneratedTsVectorColumn(p => p.SearchVector, "hungarian", p => new
         {
             p.Name, p.Description, p.RichTextContent
         }).HasIndex(p => p.SearchVector).HasMethod("GIN");
+
         builder.Property(p => p.UserLimited).HasDefaultValue(false);
         builder.Property(p => p.UserLimit).HasDefaultValue(0);
     }
