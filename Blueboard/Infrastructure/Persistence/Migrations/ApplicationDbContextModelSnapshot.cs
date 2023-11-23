@@ -38,27 +38,27 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Filename")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("MimeType")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("OriginalFilename")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Purpose")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -99,51 +99,51 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Group")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("LoloIdHashed")
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("ShortTextGrade")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("SubjectCategory")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Teacher")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("TextGrade")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Theme")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Uid")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -151,7 +151,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("UserIdHashed")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<int>("Weight")
                         .HasColumnType("integer");
@@ -178,7 +178,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("JsonEncrypted")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -213,7 +213,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<int>("MaxUploadsPerUser")
                         .HasColumnType("integer");
@@ -221,7 +221,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<bool>("ShowUploaderInfo")
                         .HasColumnType("boolean");
@@ -264,7 +264,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("AspectKey")
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -306,7 +306,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<int>("ImageVotingId")
                         .HasColumnType("integer");
@@ -314,7 +314,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -341,7 +341,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("AspectKey")
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -384,17 +384,17 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("KeyHashed")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("KeyProtected")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -429,7 +429,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Reason")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -458,7 +458,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -469,7 +469,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -498,7 +498,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -588,7 +588,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -620,12 +620,12 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string[]>("NotifiedEmails")
                         .IsRequired()
@@ -643,7 +643,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("RichTextContent")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<NpgsqlTsVector>("SearchVector")
                         .IsRequired()
@@ -655,7 +655,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("ThumbnailUrl")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -696,17 +696,17 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Secret")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -733,7 +733,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -769,7 +769,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Reason")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -797,7 +797,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Class")
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -805,7 +805,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime?>("EmailVerifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -813,12 +813,12 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("HasherSaltEncrypted")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("HasherSaltHashed")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<bool>("ImportAvailable")
                         .ValueGeneratedOnAdd()
@@ -828,52 +828,52 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("MasterKeyEncrypted")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("MasterKeySalt")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("OmCodeEncrypted")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("OmCodeHashed")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("PasswordHashed")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("PrivateKeyEncrypted")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("PublicKey")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("RealName")
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string>("ResetKeyEncrypted")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -909,7 +909,7 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
-                        .UseCollation("hu_HU");
+                        .UseCollation("hu-HU-x-icu");
 
                     b.Property<string[]>("Permissions")
                         .IsRequired()
@@ -1000,17 +1000,17 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                             b1.Property<string>("Description")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .UseCollation("hu_HU");
+                                .UseCollation("hu-HU-x-icu");
 
                             b1.Property<string>("Key")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .UseCollation("hu_HU");
+                                .UseCollation("hu-HU-x-icu");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .UseCollation("hu_HU");
+                                .UseCollation("hu-HU-x-icu");
 
                             b1.HasKey("ImageVotingId", "Id");
 
@@ -1171,12 +1171,12 @@ namespace Blueboard.Infrastructure.Persistence.Migrations
                             b1.Property<string>("Key")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .UseCollation("hu_HU");
+                                .UseCollation("hu-HU-x-icu");
 
                             b1.Property<string>("Label")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .UseCollation("hu_HU");
+                                .UseCollation("hu-HU-x-icu");
 
                             b1.Property<int>("Type")
                                 .HasColumnType("integer");

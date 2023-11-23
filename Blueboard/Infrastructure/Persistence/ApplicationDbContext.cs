@@ -42,7 +42,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        configurationBuilder.Properties<string>().UseCollation("hu_HU");
+        configurationBuilder.Properties<string>().UseCollation("hu-HU-x-icu");
     }
 
     public override int SaveChanges()
