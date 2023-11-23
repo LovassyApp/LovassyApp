@@ -53,6 +53,7 @@ const useStyles = createStyles((theme) => ({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        backgroundColor: theme.colorScheme === "dark" ? "rgba(26, 27, 30, 0.8)" : "rgba(255, 255, 255, 0.8)",
     },
     links: {
         [theme.fn.smallerThan("md")]: {
@@ -405,7 +406,7 @@ const AuthenticatedHeader = ({ links, toggleDrawer }: AuthenticatedHeaderProps) 
     });
 
     return (
-        <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0, background: "none", backdropFilter: "blur(10px)" }}>
+        <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0, backdropFilter: "blur(10px)" }}>
             <Container className={classes.content} fluid={true}>
                 <Group>
                     <Text component={Link} to="/" size="xl" weight={700} variant="gradient">
