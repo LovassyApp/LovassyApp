@@ -1,12 +1,12 @@
---- Blueboard.csproj	2023-11-22 19:59:18
-+++ Blueboard_prod.csproj	2023-11-22 22:14:30
+--- Blueboard.csproj	2023-11-23 09:46:05
++++ Blueboard_prod.csproj	2023-11-23 16:46:32
 @@ -32,8 +32,4 @@
-     <_ContentIncludedByDefault Remove="Core\Email\Shared\EmailLayout.cshtml" />
-     <_ContentIncludedByDefault Remove="Features\Auth\Emails\VerifyEmail.cshtml" />
-   </ItemGroup>
--  <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
--    <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)" />
--    <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
--  </Target>
+         <_ContentIncludedByDefault Remove="Core\Email\Shared\EmailLayout.cshtml"/>
+         <_ContentIncludedByDefault Remove="Features\Auth\Emails\VerifyEmail.cshtml"/>
+     </ItemGroup>
+-    <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+-        <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)"/>
+-        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)"/>
+-    </Target>
  </Project>
 \ No newline at end of file
