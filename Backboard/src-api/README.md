@@ -38,11 +38,13 @@ Class | Method | HTTP request | Description
 *ImageVotingChoicesApi* | [**api_image_voting_choices_get**](docs/ImageVotingChoicesApi.md#api_image_voting_choices_get) | **GET** /Api/ImageVotingChoices | Get a list of all image voting choices
 *ImageVotingChoicesApi* | [**api_image_voting_choices_id_get**](docs/ImageVotingChoicesApi.md#api_image_voting_choices_id_get) | **GET** /Api/ImageVotingChoices/{id} | Get information about an image voting choice
 *ImageVotingEntriesApi* | [**api_image_voting_entries_get**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_get) | **GET** /Api/ImageVotingEntries | Get a list of all image voting entries
-*ImageVotingEntriesApi* | [**api_image_voting_entries_id_choose_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_choose_post) | **POST** /Api/ImageVotingEntries/{id}/Choose | Choose an image voting entry (single choice image votings only)
+*ImageVotingEntriesApi* | [**api_image_voting_entries_id_choice_delete**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_choice_delete) | **DELETE** /Api/ImageVotingEntries/{id}/Choice | Unchoose an image voting entry (SingleChoice image votings only)
+*ImageVotingEntriesApi* | [**api_image_voting_entries_id_choice_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_choice_post) | **POST** /Api/ImageVotingEntries/{id}/Choice | Choose an image voting entry (SingleChoice image votings only)
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_delete**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_delete) | **DELETE** /Api/ImageVotingEntries/{id} | Delete an image voting entry
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_get**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_get) | **GET** /Api/ImageVotingEntries/{id} | Get information about an image voting entry
+*ImageVotingEntriesApi* | [**api_image_voting_entries_id_increment_delete**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_increment_delete) | **DELETE** /Api/ImageVotingEntries/{id}/Increment | Delete an image voting entry increment (Increment image votings only)
+*ImageVotingEntriesApi* | [**api_image_voting_entries_id_increment_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_increment_post) | **POST** /Api/ImageVotingEntries/{id}/Increment | Increment an image voting entry (Increment image votings only)
 *ImageVotingEntriesApi* | [**api_image_voting_entries_id_patch**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_patch) | **PATCH** /Api/ImageVotingEntries/{id} | Update an image voting entry
-*ImageVotingEntriesApi* | [**api_image_voting_entries_id_unchoose_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_id_unchoose_post) | **POST** /Api/ImageVotingEntries/{id}/Unchoose | Unchoose an image voting entry (single choice image votings only)
 *ImageVotingEntriesApi* | [**api_image_voting_entries_post**](docs/ImageVotingEntriesApi.md#api_image_voting_entries_post) | **POST** /Api/ImageVotingEntries | Create an image voting entry
 *ImageVotingEntryImagesApi* | [**api_image_voting_entry_images_get**](docs/ImageVotingEntryImagesApi.md#api_image_voting_entry_images_get) | **GET** /Api/ImageVotingEntryImages | List all images of an image voting
 *ImageVotingEntryImagesApi* | [**api_image_voting_entry_images_id_delete**](docs/ImageVotingEntryImagesApi.md#api_image_voting_entry_images_id_delete) | **DELETE** /Api/ImageVotingEntryImages/{id} | Delete an image meant for an image voting entry
@@ -128,12 +130,14 @@ Class | Method | HTTP request | Description
  - [AuthViewUserGroupResponse](docs/AuthViewUserGroupResponse.md)
  - [FeedIndexFeedItemsResponse](docs/FeedIndexFeedItemsResponse.md)
  - [ImageVotingsChooseImageVotingEntryRequestBody](docs/ImageVotingsChooseImageVotingEntryRequestBody.md)
+ - [ImageVotingsCreateImageVotingEntryIncrementRequestBody](docs/ImageVotingsCreateImageVotingEntryIncrementRequestBody.md)
  - [ImageVotingsCreateImageVotingEntryRequestBody](docs/ImageVotingsCreateImageVotingEntryRequestBody.md)
  - [ImageVotingsCreateImageVotingEntryResponse](docs/ImageVotingsCreateImageVotingEntryResponse.md)
  - [ImageVotingsCreateImageVotingRequestBody](docs/ImageVotingsCreateImageVotingRequestBody.md)
  - [ImageVotingsCreateImageVotingRequestBodyImageVotingAspect](docs/ImageVotingsCreateImageVotingRequestBodyImageVotingAspect.md)
  - [ImageVotingsCreateImageVotingResponse](docs/ImageVotingsCreateImageVotingResponse.md)
  - [ImageVotingsCreateImageVotingResponseImageVotingAspect](docs/ImageVotingsCreateImageVotingResponseImageVotingAspect.md)
+ - [ImageVotingsDeleteImageVotingEntryIncrementRequestBody](docs/ImageVotingsDeleteImageVotingEntryIncrementRequestBody.md)
  - [ImageVotingsIndexImageVotingChoicesResponse](docs/ImageVotingsIndexImageVotingChoicesResponse.md)
  - [ImageVotingsIndexImageVotingChoicesResponseImageVotingEntry](docs/ImageVotingsIndexImageVotingChoicesResponseImageVotingEntry.md)
  - [ImageVotingsIndexImageVotingEntriesResponse](docs/ImageVotingsIndexImageVotingEntriesResponse.md)

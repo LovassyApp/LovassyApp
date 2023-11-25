@@ -27,6 +27,10 @@ pub struct ImageVotingsViewImageVotingChoiceResponseImageVoting {
     pub active: Option<bool>,
     #[serde(rename = "showUploaderInfo", skip_serializing_if = "Option::is_none")]
     pub show_uploader_info: Option<bool>,
+    #[serde(rename = "superIncrementAllowed", skip_serializing_if = "Option::is_none")]
+    pub super_increment_allowed: Option<bool>,
+    #[serde(rename = "superIncrementValue", skip_serializing_if = "Option::is_none")]
+    pub super_increment_value: Option<i32>,
     #[serde(rename = "createdAt", skip_serializing_if = "Option::is_none")]
     pub created_at: Option<String>,
     #[serde(rename = "updatedAt", skip_serializing_if = "Option::is_none")]
@@ -43,6 +47,8 @@ impl ImageVotingsViewImageVotingChoiceResponseImageVoting {
             aspects: None,
             active: None,
             show_uploader_info: None,
+            super_increment_allowed: None,
+            super_increment_value: None,
             created_at: None,
             updated_at: None,
         }

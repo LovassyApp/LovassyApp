@@ -24,10 +24,20 @@ pub enum ApiImageVotingEntriesGetError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`api_image_voting_entries_id_choose_post`]
+/// struct for typed errors of method [`api_image_voting_entries_id_choice_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiImageVotingEntriesIdChoosePostError {
+pub enum ApiImageVotingEntriesIdChoiceDeleteError {
+    Status404(crate::models::ProblemDetails),
+    Status401(),
+    Status403(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`api_image_voting_entries_id_choice_post`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ApiImageVotingEntriesIdChoicePostError {
     Status404(crate::models::ProblemDetails),
     Status401(),
     Status403(),
@@ -54,20 +64,30 @@ pub enum ApiImageVotingEntriesIdGetError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`api_image_voting_entries_id_patch`]
+/// struct for typed errors of method [`api_image_voting_entries_id_increment_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiImageVotingEntriesIdPatchError {
+pub enum ApiImageVotingEntriesIdIncrementDeleteError {
     Status404(crate::models::ProblemDetails),
     Status401(),
     Status403(),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`api_image_voting_entries_id_unchoose_post`]
+/// struct for typed errors of method [`api_image_voting_entries_id_increment_post`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiImageVotingEntriesIdUnchoosePostError {
+pub enum ApiImageVotingEntriesIdIncrementPostError {
+    Status404(crate::models::ProblemDetails),
+    Status401(),
+    Status403(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`api_image_voting_entries_id_patch`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ApiImageVotingEntriesIdPatchError {
     Status404(crate::models::ProblemDetails),
     Status401(),
     Status403(),
@@ -128,13 +148,45 @@ pub async fn api_image_voting_entries_get(configuration: &configuration::Configu
     }
 }
 
-/// Requires verified email; Requires one of the following permissions: ImageVotings.ChooseActiveImageVotingEntry, ImageVotings.ChooseImageVotingEntry; Requires the following features to be enabled: ImageVotings
-pub async fn api_image_voting_entries_id_choose_post(configuration: &configuration::Configuration, id: i32, image_votings_choose_image_voting_entry_request_body: Option<crate::models::ImageVotingsChooseImageVotingEntryRequestBody>) -> Result<(), Error<ApiImageVotingEntriesIdChoosePostError>> {
+/// Requires verified email; Requires one of the following permissions: ImageVotings.UnchooseActiveImageVotingEntry, ImageVotings.UnchooseImageVotingEntry; Requires the following features to be enabled: ImageVotings
+pub async fn api_image_voting_entries_id_choice_delete(configuration: &configuration::Configuration, id: i32, image_votings_unchoose_image_voting_entry_request_body: Option<crate::models::ImageVotingsUnchooseImageVotingEntryRequestBody>) -> Result<(), Error<ApiImageVotingEntriesIdChoiceDeleteError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
 
-    let local_var_uri_str = format!("{}/Api/ImageVotingEntries/{id}/Choose", local_var_configuration.base_path, id=id);
+    let local_var_uri_str = format!("{}/Api/ImageVotingEntries/{id}/Choice", local_var_configuration.base_path, id=id);
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&image_votings_unchoose_image_voting_entry_request_body);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        Ok(())
+    } else {
+        let local_var_entity: Option<ApiImageVotingEntriesIdChoiceDeleteError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Requires verified email; Requires one of the following permissions: ImageVotings.ChooseActiveImageVotingEntry, ImageVotings.ChooseImageVotingEntry; Requires the following features to be enabled: ImageVotings
+pub async fn api_image_voting_entries_id_choice_post(configuration: &configuration::Configuration, id: i32, image_votings_choose_image_voting_entry_request_body: Option<crate::models::ImageVotingsChooseImageVotingEntryRequestBody>) -> Result<(), Error<ApiImageVotingEntriesIdChoicePostError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/Api/ImageVotingEntries/{id}/Choice", local_var_configuration.base_path, id=id);
     let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
@@ -154,7 +206,7 @@ pub async fn api_image_voting_entries_id_choose_post(configuration: &configurati
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         Ok(())
     } else {
-        let local_var_entity: Option<ApiImageVotingEntriesIdChoosePostError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_entity: Option<ApiImageVotingEntriesIdChoicePostError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
         Err(Error::ResponseError(local_var_error))
     }
@@ -222,6 +274,70 @@ pub async fn api_image_voting_entries_id_get(configuration: &configuration::Conf
     }
 }
 
+/// Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVotingEntryIncrement, ImageVotings.DeleteActiveImageVotingEntryIncrement; Requires the following features to be enabled: ImageVotings
+pub async fn api_image_voting_entries_id_increment_delete(configuration: &configuration::Configuration, id: i32, image_votings_delete_image_voting_entry_increment_request_body: Option<crate::models::ImageVotingsDeleteImageVotingEntryIncrementRequestBody>) -> Result<(), Error<ApiImageVotingEntriesIdIncrementDeleteError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/Api/ImageVotingEntries/{id}/Increment", local_var_configuration.base_path, id=id);
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&image_votings_delete_image_voting_entry_increment_request_body);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        Ok(())
+    } else {
+        let local_var_entity: Option<ApiImageVotingEntriesIdIncrementDeleteError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVotingEntryIncrement, ImageVotings.CreateActiveImageVotingEntryIncrement; Requires the following features to be enabled: ImageVotings
+pub async fn api_image_voting_entries_id_increment_post(configuration: &configuration::Configuration, id: i32, image_votings_create_image_voting_entry_increment_request_body: Option<crate::models::ImageVotingsCreateImageVotingEntryIncrementRequestBody>) -> Result<(), Error<ApiImageVotingEntriesIdIncrementPostError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/Api/ImageVotingEntries/{id}/Increment", local_var_configuration.base_path, id=id);
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&image_votings_create_image_voting_entry_increment_request_body);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        Ok(())
+    } else {
+        let local_var_entity: Option<ApiImageVotingEntriesIdIncrementPostError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
 /// Requires verified email; Requires one of the following permissions: ImageVotings.UpdateImageVotingEntry, ImageVotings.UpdateOwnImageVotingEntry; Requires the following features to be enabled: ImageVotings
 pub async fn api_image_voting_entries_id_patch(configuration: &configuration::Configuration, id: i32, image_votings_update_image_voting_entry_request_body: Option<crate::models::ImageVotingsUpdateImageVotingEntryRequestBody>) -> Result<(), Error<ApiImageVotingEntriesIdPatchError>> {
     let local_var_configuration = configuration;
@@ -249,38 +365,6 @@ pub async fn api_image_voting_entries_id_patch(configuration: &configuration::Co
         Ok(())
     } else {
         let local_var_entity: Option<ApiImageVotingEntriesIdPatchError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Requires verified email; Requires one of the following permissions: ImageVotings.UnchooseActiveImageVotingEntry, ImageVotings.UnchooseImageVotingEntry; Requires the following features to be enabled: ImageVotings
-pub async fn api_image_voting_entries_id_unchoose_post(configuration: &configuration::Configuration, id: i32, image_votings_unchoose_image_voting_entry_request_body: Option<crate::models::ImageVotingsUnchooseImageVotingEntryRequestBody>) -> Result<(), Error<ApiImageVotingEntriesIdUnchoosePostError>> {
-    let local_var_configuration = configuration;
-
-    let local_var_client = &local_var_configuration.client;
-
-    let local_var_uri_str = format!("{}/Api/ImageVotingEntries/{id}/Unchoose", local_var_configuration.base_path, id=id);
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    local_var_req_builder = local_var_req_builder.json(&image_votings_unchoose_image_voting_entry_request_body);
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        Ok(())
-    } else {
-        let local_var_entity: Option<ApiImageVotingEntriesIdUnchoosePostError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
         Err(Error::ResponseError(local_var_error))
     }

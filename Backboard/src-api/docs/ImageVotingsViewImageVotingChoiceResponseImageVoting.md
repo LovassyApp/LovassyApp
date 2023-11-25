@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **aspects** | Option<[**Vec<crate::models::ImageVotingsViewImageVotingChoiceResponseImageVotingAspect>**](ImageVotingsViewImageVotingChoiceResponseImageVotingAspect.md)> |  | [optional]
 **active** | Option<**bool**> |  | [optional]
 **show_uploader_info** | Option<**bool**> |  | [optional]
+**super_increment_allowed** | Option<**bool**> |  | [optional]
+**super_increment_value** | Option<**i32**> |  | [optional]
 **created_at** | Option<**String**> |  | [optional]
 **updated_at** | Option<**String**> |  | [optional]
 
