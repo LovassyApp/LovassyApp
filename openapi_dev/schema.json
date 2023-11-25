@@ -915,12 +915,12 @@
         ]
       }
     },
-    "/Api/ImageVotingEntries/{id}/Choose": {
+    "/Api/ImageVotingEntries/{id}/Choice": {
       "post": {
         "tags": [
           "ImageVotingEntries"
         ],
-        "summary": "Choose an image voting entry (single choice image votings only)",
+        "summary": "Choose an image voting entry (SingleChoice image votings only)",
         "description": "Requires verified email; Requires one of the following permissions: ImageVotings.ChooseActiveImageVotingEntry, ImageVotings.ChooseImageVotingEntry; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
@@ -979,14 +979,12 @@
             "Token": [ ]
           }
         ]
-      }
-    },
-    "/Api/ImageVotingEntries/{id}/Unchoose": {
-      "post": {
+      },
+      "delete": {
         "tags": [
           "ImageVotingEntries"
         ],
-        "summary": "Unchoose an image voting entry (single choice image votings only)",
+        "summary": "Unchoose an image voting entry (SingleChoice image votings only)",
         "description": "Requires verified email; Requires one of the following permissions: ImageVotings.UnchooseActiveImageVotingEntry, ImageVotings.UnchooseImageVotingEntry; Requires the following features to be enabled: ImageVotings",
         "parameters": [
           {
@@ -1015,6 +1013,136 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/ImageVotingsUnchooseImageVotingEntryRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
+    "/Api/ImageVotingEntries/{id}/Increment": {
+      "post": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Increment an image voting entry (Increment image votings only)",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVotingEntryIncrement, ImageVotings.CreateActiveImageVotingEntryIncrement; Requires the following features to be enabled: ImageVotings",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingEntryIncrementRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingEntryIncrementRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsCreateImageVotingEntryIncrementRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "ImageVotingEntries"
+        ],
+        "summary": "Delete an image voting entry increment (Increment image votings only)",
+        "description": "Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVotingEntryIncrement, ImageVotings.DeleteActiveImageVotingEntryIncrement; Requires the following features to be enabled: ImageVotings",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsDeleteImageVotingEntryIncrementRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsDeleteImageVotingEntryIncrementRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageVotingsDeleteImageVotingEntryIncrementRequestBody"
               }
             }
           }
@@ -5100,6 +5228,20 @@
         },
         "additionalProperties": false
       },
+      "ImageVotingsCreateImageVotingEntryIncrementRequestBody": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "aspectKey": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ImageVotingsCreateImageVotingEntryRequestBody": {
         "required": [
           "imageUrl",
@@ -5217,7 +5359,7 @@
             "type": "boolean"
           },
           "superIncrementValue": {
-            "minimum": 1,
+            "minimum": 2,
             "type": "integer",
             "format": "int32"
           }
@@ -5325,6 +5467,16 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImageVotingsDeleteImageVotingEntryIncrementRequestBody": {
+        "type": "object",
+        "properties": {
+          "aspectKey": {
             "type": "string",
             "nullable": true
           }
@@ -5639,7 +5791,7 @@
             "type": "boolean"
           },
           "superIncrementValue": {
-            "minimum": 1,
+            "minimum": 2,
             "type": "integer",
             "format": "int32"
           }
@@ -5769,6 +5921,13 @@
           },
           "showUploaderInfo": {
             "type": "boolean"
+          },
+          "superIncrementAllowed": {
+            "type": "boolean"
+          },
+          "superIncrementValue": {
+            "type": "integer",
+            "format": "int32"
           },
           "createdAt": {
             "type": "string",

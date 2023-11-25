@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blueboard.Features.ImageVotings.Commands;
 
-public static class ChooseImageVotingEntry
+public static class DeleteImageVotingEntryIncrement
 {
     public class Command : IRequest
     {
@@ -30,13 +30,13 @@ public static class ChooseImageVotingEntry
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
             var entry = await context.ImageVotingEntries.Include(e => e.ImageVoting)
-                .ThenInclude(v => v.Choices.Where(c => c.UserId == userAccessor.User.Id))
+                .Include(e => e.Increments.Where(i => i.UserId == userAccessor.User.Id))
                 .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
             if (entry == null)
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
 
-            CheckChoosability(entry);
+            CheckIncrementDeletability(entry);
 
             if (entry.ImageVoting.Aspects.Any())
             {
@@ -50,48 +50,38 @@ public static class ChooseImageVotingEntry
                     throw new ValidationException(new[]
                         { new ValidationFailure(nameof(RequestBody.AspectKey), "A megadott szempont nem létezik.") });
 
-                var choice = entry.ImageVoting.Choices.FirstOrDefault(a => a.AspectKey == request.Body.AspectKey);
+                var increment = entry.Increments.FirstOrDefault(i => i.AspectKey == request.Body.AspectKey);
 
-                if (choice == null)
-                    entry.ImageVoting.Choices.Add(new ImageVotingChoice
-                    {
-                        AspectKey = request.Body.AspectKey, UserId = userAccessor.User.Id,
-                        ImageVotingId = entry.ImageVotingId, ImageVotingEntryId = entry.Id
-                    });
-                else
-                    choice.ImageVotingEntryId = entry.Id;
+                if (increment == null)
+                    throw new BadRequestException("A megadott szempontban nem szabvaztál a megadott képre");
+
+                context.ImageVotingEntryIncrements.Remove(increment);
             }
             else
             {
-                var choice = entry.ImageVoting.Choices.FirstOrDefault();
-                if (choice == null)
-                    entry.ImageVoting.Choices.Add(new ImageVotingChoice
-                    {
-                        UserId = userAccessor.User.Id, ImageVotingId = entry.ImageVotingId,
-                        ImageVotingEntryId = entry.Id
-                    });
-                else
-                    choice.ImageVotingEntryId = entry.Id;
+                var increment = entry.Increments.FirstOrDefault();
+
+                if (increment == null)
+                    throw new BadRequestException("A megadott képre nem szavaztál");
+
+                context.ImageVotingEntryIncrements.Remove(increment);
             }
 
             await context.SaveChangesAsync(cancellationToken);
 
-            await publisher.Publish(new ImageVotingChoicesUpdatedEvent(), cancellationToken);
+            await publisher.Publish(new ImageVotingEntryIncrementsUpdatedEvent(), cancellationToken);
 
             return Unit.Value;
         }
 
-        private void CheckChoosability(ImageVotingEntry entry)
+        private void CheckIncrementDeletability(ImageVotingEntry entry)
         {
-            if (entry.ImageVoting.Type != ImageVotingType.SingleChoice)
-                throw new BadRequestException("A megadott szavazás nem egy választásos szavazás");
+            if (entry.ImageVoting.Type != ImageVotingType.Increment)
+                throw new BadRequestException("A megadott kép nem egy inkrementáló szavazás része");
 
             if (!entry.ImageVoting.Active &&
-                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.ChooseImageVotingEntry)))
+                !permissionManager.CheckPermission(typeof(ImageVotingsPermissions.DeleteImageVotingEntryIncrement)))
                 throw new BadRequestException("A megadott szavazás nem aktív");
-
-            if (entry.UserId == userAccessor.User.Id)
-                throw new BadRequestException("Nem szavazhatsz a saját képedre");
         }
     }
 }

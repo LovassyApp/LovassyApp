@@ -99,12 +99,12 @@ public class ImageVotingEntriesController : ApiControllerBase
         return NoContent();
     }
 
-    [HttpPost("{id}/Choose")]
+    [HttpPost("{id}/Choice")]
     [Permissions(typeof(ImageVotingsPermissions.ChooseActiveImageVotingEntry),
         typeof(ImageVotingsPermissions.ChooseImageVotingEntry))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [EndpointSummary("Choose an image voting entry (single choice image votings only)")]
+    [EndpointSummary("Choose an image voting entry (SingleChoice image votings only)")]
     public async Task<ActionResult> ChooseImageVotingEntry([FromRoute] int id,
         [FromBody] ChooseImageVotingEntry.RequestBody body)
     {
@@ -117,16 +117,52 @@ public class ImageVotingEntriesController : ApiControllerBase
         return NoContent();
     }
 
-    [HttpPost("{id}/Unchoose")]
+    [HttpDelete("{id}/Choice")]
     [Permissions(typeof(ImageVotingsPermissions.UnchooseActiveImageVotingEntry),
         typeof(ImageVotingsPermissions.UnchooseImageVotingEntry))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [EndpointSummary("Unchoose an image voting entry (single choice image votings only)")]
+    [EndpointSummary("Unchoose an image voting entry (SingleChoice image votings only)")]
     public async Task<ActionResult> UnchooseImageVotingEntry([FromRoute] int id,
         [FromBody] UnchooseImageVotingEntry.RequestBody body)
     {
         await Mediator.Send(new UnchooseImageVotingEntry.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+    [HttpPost("{id}/Increment")]
+    [Permissions(typeof(ImageVotingsPermissions.CreateImageVotingEntryIncrement),
+        typeof(ImageVotingsPermissions.CreateActiveImageVotingEntryIncrement))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Increment an image voting entry (Increment image votings only)")]
+    public async Task<ActionResult> CreateImageVotingEntryIncrement([FromRoute] int id,
+        [FromBody] CreateImageVotingEntryIncrement.RequestBody body)
+    {
+        await Mediator.Send(new CreateImageVotingEntryIncrement.Command
+        {
+            Id = id,
+            Body = body
+        });
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}/Increment")]
+    [Permissions(typeof(ImageVotingsPermissions.DeleteImageVotingEntryIncrement),
+        typeof(ImageVotingsPermissions.DeleteActiveImageVotingEntryIncrement))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [EndpointSummary("Delete an image voting entry increment (Increment image votings only)")]
+    public async Task<ActionResult> DeleteImageVotingEntryIncrement([FromRoute] int id,
+        [FromBody] DeleteImageVotingEntryIncrement.RequestBody body)
+    {
+        await Mediator.Send(new DeleteImageVotingEntryIncrement.Command
         {
             Id = id,
             Body = body

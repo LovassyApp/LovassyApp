@@ -238,6 +238,44 @@ public static class ImageVotingsPermissions
         public bool Dangerous => false;
     }
 
+    public class CreateImageVotingEntryIncrement : IPermission
+    {
+        public string Name => "ImageVotings.CreateImageVotingEntryIncrement";
+        public string DisplayName => "Kép szavazás képének inkrementálása";
+        public string Description => "Egy adott (bármelyik) kép szavazás egy képének (nevezésének) inkrementálása";
+        public bool Dangerous => true;
+    }
+
+    public class CreateActiveImageVotingEntryIncrement : IPermission
+    {
+        public string Name => "ImageVotings.CreateActiveImageVotingEntryIncrement";
+        public string DisplayName => "Aktív kép szavazás képének inkrementálása";
+        public string Description => "Egy adott aktív kép szavazás egy képének (nevezésének) inkrementálása";
+        public bool Dangerous => false;
+    }
+
+    public class DeleteImageVotingEntryIncrement : IPermission
+    {
+        public string Name => "ImageVotings.DeleteImageVotingEntryIncrement";
+        public string DisplayName => "Kép szavazás képéhez tartozó inkrementálás törlése";
+
+        public string Description =>
+            "Egy adott (bármelyik) kép szavazás egy képéhez (nevezésének) tartozó inkrementálás törlése";
+
+        public bool Dangerous => true;
+    }
+
+    public class DeleteActiveImageVotingEntryIncrement : IPermission
+    {
+        public string Name => "ImageVotings.DeleteActiveImageVotingEntryIncrement";
+        public string DisplayName => "Aktív kép szavazás képéhez tartozó inkrementálás törlése";
+
+        public string Description =>
+            "Egy adott aktív kép szavazás egy képéhez (nevezésének) tartozó inkrementálás törlése";
+
+        public bool Dangerous => false;
+    }
+
     public class IndexImageVotingEntryIncrements : IPermission
     {
         public string Name => "ImageVotings.IndexImageVotingEntryIncrements";

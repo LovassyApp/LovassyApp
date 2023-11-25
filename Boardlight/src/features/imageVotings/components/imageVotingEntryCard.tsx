@@ -6,8 +6,8 @@ import {
 } from "../../../api/generated/models";
 import {
     useDeleteApiImageVotingEntriesId,
-    usePostApiImageVotingEntriesIdChoose,
-    usePostApiImageVotingEntriesIdUnchoose,
+    useDeleteApiImageVotingEntriesIdChoice,
+    usePostApiImageVotingEntriesIdChoice,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
 import { useMemo, useState } from "react";
 
@@ -83,8 +83,8 @@ export const ImageVotingEntryCard = ({
         [control]
     );
 
-    const chooseEntry = usePostApiImageVotingEntriesIdChoose();
-    const unchooseEntry = usePostApiImageVotingEntriesIdUnchoose();
+    const chooseEntry = usePostApiImageVotingEntriesIdChoice();
+    const unchooseEntry = useDeleteApiImageVotingEntriesIdChoice();
 
     const deleteImageVotingEntry = useDeleteApiImageVotingEntriesId();
 

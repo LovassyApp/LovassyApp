@@ -78,7 +78,7 @@ public static class UpdateImageVoting
             RuleFor(x => x.MaxUploadsPerUser).NotNull().GreaterThanOrEqualTo(1);
 
             RuleFor(x => x.SuperIncrementAllowed).NotNull();
-            RuleFor(x => x.SuperIncrementValue).NotNull().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.SuperIncrementValue).NotNull().GreaterThanOrEqualTo(2);
         }
 
         private async Task<bool> BeExistingUserGroupAsync(RequestBody model, int userGroupId,

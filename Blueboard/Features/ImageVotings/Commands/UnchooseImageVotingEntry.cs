@@ -37,9 +37,6 @@ public class UnchooseImageVotingEntry
             if (entry == null)
                 throw new NotFoundException(nameof(ImageVotingEntry), request.Id);
 
-            if (entry.ImageVoting.Type != ImageVotingType.SingleChoice)
-                throw new BadRequestException("A megadott kép nem egy választásos szavazás része");
-
             CheckUnchoosability(entry);
 
             if (entry.ImageVoting.Aspects.Any())

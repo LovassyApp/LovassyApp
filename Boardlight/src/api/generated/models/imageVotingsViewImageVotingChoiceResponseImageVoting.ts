@@ -14,6 +14,8 @@ export interface ImageVotingsViewImageVotingChoiceResponseImageVoting {
   aspects?: ImageVotingsViewImageVotingChoiceResponseImageVotingAspect[] | null;
   active?: boolean;
   showUploaderInfo?: boolean;
+  superIncrementAllowed?: boolean;
+  superIncrementValue?: number;
   createdAt?: string;
   updatedAt?: string;
 }

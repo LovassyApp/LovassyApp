@@ -25,7 +25,9 @@ import type {
   ImageVotingsViewImageVotingEntryResponse,
   ImageVotingsUpdateImageVotingEntryRequestBody,
   ImageVotingsChooseImageVotingEntryRequestBody,
-  ImageVotingsUnchooseImageVotingEntryRequestBody
+  ImageVotingsUnchooseImageVotingEntryRequestBody,
+  ImageVotingsCreateImageVotingEntryIncrementRequestBody,
+  ImageVotingsDeleteImageVotingEntryIncrementRequestBody
 } from '../../models'
 import { useCustomClient } from '../../../customClient';
 import type { ErrorType, BodyType } from '../../../customClient';
@@ -302,14 +304,14 @@ export const useDeleteApiImageVotingEntriesId = <TError = ErrorType<ProblemDetai
     }
     /**
  * Requires verified email; Requires one of the following permissions: ImageVotings.ChooseActiveImageVotingEntry, ImageVotings.ChooseImageVotingEntry; Requires the following features to be enabled: ImageVotings
- * @summary Choose an image voting entry (single choice image votings only)
+ * @summary Choose an image voting entry (SingleChoice image votings only)
  */
-export const postApiImageVotingEntriesIdChoose = (
+export const postApiImageVotingEntriesIdChoice = (
     id: number,
     imageVotingsChooseImageVotingEntryRequestBody: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>,
  ) => {
       return useCustomClient<void>(
-      {url: `/Api/ImageVotingEntries/${id}/Choose`, method: 'post',
+      {url: `/Api/ImageVotingEntries/${id}/Choice`, method: 'post',
       headers: {'Content-Type': 'application/json', },
       data: imageVotingsChooseImageVotingEntryRequestBody
     },
@@ -318,19 +320,19 @@ export const postApiImageVotingEntriesIdChoose = (
   
 
 
-export const getPostApiImageVotingEntriesIdChooseMutationOptions = <TError = ErrorType<ProblemDetails>,
+export const getPostApiImageVotingEntriesIdChoiceMutationOptions = <TError = ErrorType<ProblemDetails>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoose>>, TError,{id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoose>>, TError,{id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoice>>, TError,{id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoice>>, TError,{id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoose>>, {id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoice>>, {id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  postApiImageVotingEntriesIdChoose(id,data,)
+          return  postApiImageVotingEntriesIdChoice(id,data,)
         }
 
         
@@ -338,32 +340,32 @@ export const getPostApiImageVotingEntriesIdChooseMutationOptions = <TError = Err
  
    return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiImageVotingEntriesIdChooseMutationResult = NonNullable<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoose>>>
-    export type PostApiImageVotingEntriesIdChooseMutationBody = BodyType<ImageVotingsChooseImageVotingEntryRequestBody>
-    export type PostApiImageVotingEntriesIdChooseMutationError = ErrorType<ProblemDetails>
+    export type PostApiImageVotingEntriesIdChoiceMutationResult = NonNullable<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoice>>>
+    export type PostApiImageVotingEntriesIdChoiceMutationBody = BodyType<ImageVotingsChooseImageVotingEntryRequestBody>
+    export type PostApiImageVotingEntriesIdChoiceMutationError = ErrorType<ProblemDetails>
 
     /**
- * @summary Choose an image voting entry (single choice image votings only)
+ * @summary Choose an image voting entry (SingleChoice image votings only)
  */
-export const usePostApiImageVotingEntriesIdChoose = <TError = ErrorType<ProblemDetails>,
+export const usePostApiImageVotingEntriesIdChoice = <TError = ErrorType<ProblemDetails>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoose>>, TError,{id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdChoice>>, TError,{id: number;data: BodyType<ImageVotingsChooseImageVotingEntryRequestBody>}, TContext>, }
 ) => {
     
-      const mutationOptions = getPostApiImageVotingEntriesIdChooseMutationOptions(options);
+      const mutationOptions = getPostApiImageVotingEntriesIdChoiceMutationOptions(options);
      
       return useMutation(mutationOptions);
     }
     /**
  * Requires verified email; Requires one of the following permissions: ImageVotings.UnchooseActiveImageVotingEntry, ImageVotings.UnchooseImageVotingEntry; Requires the following features to be enabled: ImageVotings
- * @summary Unchoose an image voting entry (single choice image votings only)
+ * @summary Unchoose an image voting entry (SingleChoice image votings only)
  */
-export const postApiImageVotingEntriesIdUnchoose = (
+export const deleteApiImageVotingEntriesIdChoice = (
     id: number,
     imageVotingsUnchooseImageVotingEntryRequestBody: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>,
  ) => {
       return useCustomClient<void>(
-      {url: `/Api/ImageVotingEntries/${id}/Unchoose`, method: 'post',
+      {url: `/Api/ImageVotingEntries/${id}/Choice`, method: 'delete',
       headers: {'Content-Type': 'application/json', },
       data: imageVotingsUnchooseImageVotingEntryRequestBody
     },
@@ -372,19 +374,19 @@ export const postApiImageVotingEntriesIdUnchoose = (
   
 
 
-export const getPostApiImageVotingEntriesIdUnchooseMutationOptions = <TError = ErrorType<ProblemDetails>,
+export const getDeleteApiImageVotingEntriesIdChoiceMutationOptions = <TError = ErrorType<ProblemDetails>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdUnchoose>>, TError,{id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdUnchoose>>, TError,{id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdChoice>>, TError,{id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdChoice>>, TError,{id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}, TContext> => {
  const {mutation: mutationOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiImageVotingEntriesIdUnchoose>>, {id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdChoice>>, {id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  postApiImageVotingEntriesIdUnchoose(id,data,)
+          return  deleteApiImageVotingEntriesIdChoice(id,data,)
         }
 
         
@@ -392,19 +394,127 @@ export const getPostApiImageVotingEntriesIdUnchooseMutationOptions = <TError = E
  
    return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiImageVotingEntriesIdUnchooseMutationResult = NonNullable<Awaited<ReturnType<typeof postApiImageVotingEntriesIdUnchoose>>>
-    export type PostApiImageVotingEntriesIdUnchooseMutationBody = BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>
-    export type PostApiImageVotingEntriesIdUnchooseMutationError = ErrorType<ProblemDetails>
+    export type DeleteApiImageVotingEntriesIdChoiceMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdChoice>>>
+    export type DeleteApiImageVotingEntriesIdChoiceMutationBody = BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>
+    export type DeleteApiImageVotingEntriesIdChoiceMutationError = ErrorType<ProblemDetails>
 
     /**
- * @summary Unchoose an image voting entry (single choice image votings only)
+ * @summary Unchoose an image voting entry (SingleChoice image votings only)
  */
-export const usePostApiImageVotingEntriesIdUnchoose = <TError = ErrorType<ProblemDetails>,
+export const useDeleteApiImageVotingEntriesIdChoice = <TError = ErrorType<ProblemDetails>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdUnchoose>>, TError,{id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdChoice>>, TError,{id: number;data: BodyType<ImageVotingsUnchooseImageVotingEntryRequestBody>}, TContext>, }
 ) => {
     
-      const mutationOptions = getPostApiImageVotingEntriesIdUnchooseMutationOptions(options);
+      const mutationOptions = getDeleteApiImageVotingEntriesIdChoiceMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    /**
+ * Requires verified email; Requires one of the following permissions: ImageVotings.CreateImageVotingEntryIncrement, ImageVotings.CreateActiveImageVotingEntryIncrement; Requires the following features to be enabled: ImageVotings
+ * @summary Increment an image voting entry (Increment image votings only)
+ */
+export const postApiImageVotingEntriesIdIncrement = (
+    id: number,
+    imageVotingsCreateImageVotingEntryIncrementRequestBody: BodyType<ImageVotingsCreateImageVotingEntryIncrementRequestBody>,
+ ) => {
+      return useCustomClient<void>(
+      {url: `/Api/ImageVotingEntries/${id}/Increment`, method: 'post',
+      headers: {'Content-Type': 'application/json', },
+      data: imageVotingsCreateImageVotingEntryIncrementRequestBody
+    },
+      );
+    }
+  
+
+
+export const getPostApiImageVotingEntriesIdIncrementMutationOptions = <TError = ErrorType<ProblemDetails>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdIncrement>>, TError,{id: number;data: BodyType<ImageVotingsCreateImageVotingEntryIncrementRequestBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdIncrement>>, TError,{id: number;data: BodyType<ImageVotingsCreateImageVotingEntryIncrementRequestBody>}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiImageVotingEntriesIdIncrement>>, {id: number;data: BodyType<ImageVotingsCreateImageVotingEntryIncrementRequestBody>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  postApiImageVotingEntriesIdIncrement(id,data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiImageVotingEntriesIdIncrementMutationResult = NonNullable<Awaited<ReturnType<typeof postApiImageVotingEntriesIdIncrement>>>
+    export type PostApiImageVotingEntriesIdIncrementMutationBody = BodyType<ImageVotingsCreateImageVotingEntryIncrementRequestBody>
+    export type PostApiImageVotingEntriesIdIncrementMutationError = ErrorType<ProblemDetails>
+
+    /**
+ * @summary Increment an image voting entry (Increment image votings only)
+ */
+export const usePostApiImageVotingEntriesIdIncrement = <TError = ErrorType<ProblemDetails>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiImageVotingEntriesIdIncrement>>, TError,{id: number;data: BodyType<ImageVotingsCreateImageVotingEntryIncrementRequestBody>}, TContext>, }
+) => {
+    
+      const mutationOptions = getPostApiImageVotingEntriesIdIncrementMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    /**
+ * Requires verified email; Requires one of the following permissions: ImageVotings.DeleteImageVotingEntryIncrement, ImageVotings.DeleteActiveImageVotingEntryIncrement; Requires the following features to be enabled: ImageVotings
+ * @summary Delete an image voting entry increment (Increment image votings only)
+ */
+export const deleteApiImageVotingEntriesIdIncrement = (
+    id: number,
+    imageVotingsDeleteImageVotingEntryIncrementRequestBody: BodyType<ImageVotingsDeleteImageVotingEntryIncrementRequestBody>,
+ ) => {
+      return useCustomClient<void>(
+      {url: `/Api/ImageVotingEntries/${id}/Increment`, method: 'delete',
+      headers: {'Content-Type': 'application/json', },
+      data: imageVotingsDeleteImageVotingEntryIncrementRequestBody
+    },
+      );
+    }
+  
+
+
+export const getDeleteApiImageVotingEntriesIdIncrementMutationOptions = <TError = ErrorType<ProblemDetails>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdIncrement>>, TError,{id: number;data: BodyType<ImageVotingsDeleteImageVotingEntryIncrementRequestBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdIncrement>>, TError,{id: number;data: BodyType<ImageVotingsDeleteImageVotingEntryIncrementRequestBody>}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdIncrement>>, {id: number;data: BodyType<ImageVotingsDeleteImageVotingEntryIncrementRequestBody>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  deleteApiImageVotingEntriesIdIncrement(id,data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiImageVotingEntriesIdIncrementMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdIncrement>>>
+    export type DeleteApiImageVotingEntriesIdIncrementMutationBody = BodyType<ImageVotingsDeleteImageVotingEntryIncrementRequestBody>
+    export type DeleteApiImageVotingEntriesIdIncrementMutationError = ErrorType<ProblemDetails>
+
+    /**
+ * @summary Delete an image voting entry increment (Increment image votings only)
+ */
+export const useDeleteApiImageVotingEntriesIdIncrement = <TError = ErrorType<ProblemDetails>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiImageVotingEntriesIdIncrement>>, TError,{id: number;data: BodyType<ImageVotingsDeleteImageVotingEntryIncrementRequestBody>}, TContext>, }
+) => {
+    
+      const mutationOptions = getDeleteApiImageVotingEntriesIdIncrementMutationOptions(options);
      
       return useMutation(mutationOptions);
     }
