@@ -55,7 +55,8 @@ const useStyles = createStyles((theme) => ({
         alignItems: "center",
     },
     header: {
-        backgroundColor: theme.colorScheme === "dark" ? theme.fn.rgba(theme.colors.dark[7], 0.8) : theme.fn.rgba(theme.colors.gray[0], 0.8),
+        backgroundColor:
+            theme.colorScheme === "dark" ? theme.fn.rgba(theme.colors.dark[7], 0.8) : theme.fn.rgba(theme.white, 0.6),
     },
     links: {
         [theme.fn.smallerThan("md")]: {
@@ -90,6 +91,7 @@ const useStyles = createStyles((theme) => ({
     },
     avatarPlaceholder: {
         color: theme.colorScheme === "dark" ? theme.white : theme.black,
+        backgroundColor: "transparent",
     },
     avatarSectionContainer: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[1],
@@ -408,7 +410,11 @@ const AuthenticatedHeader = ({ links, toggleDrawer }: AuthenticatedHeaderProps) 
     });
 
     return (
-        <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0, backdropFilter: "blur(10px)" }} className={classes.header}>
+        <Header
+            height={HEADER_HEIGHT}
+            sx={{ borderBottom: 0, backdropFilter: "blur(10px)" }}
+            className={classes.header}
+        >
             <Container className={classes.content} fluid={true}>
                 <Group>
                     <Text component={Link} to="/" size="xl" weight={700} variant="gradient">
