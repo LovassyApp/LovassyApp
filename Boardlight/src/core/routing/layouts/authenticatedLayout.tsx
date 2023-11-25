@@ -55,7 +55,7 @@ const useStyles = createStyles((theme) => ({
         alignItems: "center",
     },
     header: {
-        backgroundColor: theme.colorScheme === "dark" ? "rgba(26, 27, 30, 0.8)" : "rgba(255, 255, 255, 0.8)",
+        backgroundColor: theme.colorScheme === "dark" ? theme.fn.rgba(theme.colors.dark[7], 0.8) : theme.fn.rgba(theme.colors.gray[0], 0.8),
     },
     links: {
         [theme.fn.smallerThan("md")]: {
