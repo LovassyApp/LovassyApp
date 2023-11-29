@@ -14,6 +14,7 @@ import { useMemo, useState } from "react";
 
 import { GradeCard } from "../components/gradeCard";
 import { SubjectCard } from "../components/subjectCard";
+import { GradesStatsCard } from "../components/gradesStatsCard";
 import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 
 const useStyles = createStyles((theme) => ({
@@ -129,6 +130,10 @@ const GradesPage = (): JSX.Element => {
             {activeSubject === undefined ? (
                 <Text color="dimmed">Válassz ki egy tantárgyat, hogy láthasd a jegyeidet!</Text>
             ) : (
+                <>
+                <Box mb="md">
+                    <GradesStatsCard grades={grades.data[activeSubject].grades}/>
+                </Box>
                 <SimpleGrid
                     cols={4}
                     breakpoints={[
@@ -141,6 +146,7 @@ const GradesPage = (): JSX.Element => {
                         <GradeCard key={grade.id} grade={grade} />
                     ))}
                 </SimpleGrid>
+                </>
             )}
         </>
     );
