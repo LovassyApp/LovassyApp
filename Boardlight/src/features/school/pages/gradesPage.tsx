@@ -13,8 +13,8 @@ import {
 import { useMemo, useState } from "react";
 
 import { GradeCard } from "../components/gradeCard";
+import { GradesStats } from "../components/gradesStats";
 import { SubjectCard } from "../components/subjectCard";
-import { GradesStatsCard } from "../components/gradesStatsCard";
 import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 
 const useStyles = createStyles((theme) => ({
@@ -131,21 +131,25 @@ const GradesPage = (): JSX.Element => {
                 <Text color="dimmed">Válassz ki egy tantárgyat, hogy láthasd a jegyeidet!</Text>
             ) : (
                 <>
-                <Box mb="md">
-                    <GradesStatsCard grades={grades.data[activeSubject].grades}/>
-                </Box>
-                <SimpleGrid
-                    cols={4}
-                    breakpoints={[
-                        { maxWidth: theme.breakpoints.md, cols: 3, spacing: "md" },
-                        { maxWidth: theme.breakpoints.sm, cols: 2, spacing: "sm" },
-                        { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
-                    ]}
-                >
-                    {grades.data[activeSubject].grades.map((grade) => (
-                        <GradeCard key={grade.id} grade={grade} />
-                    ))}
-                </SimpleGrid>
+                    <SimpleGrid
+                        cols={2}
+                        breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}
+                        mb="md"
+                    >
+                        <GradesStats grades={grades.data[activeSubject].grades} />
+                    </SimpleGrid>
+                    <SimpleGrid
+                        cols={4}
+                        breakpoints={[
+                            { maxWidth: theme.breakpoints.md, cols: 3, spacing: "md" },
+                            { maxWidth: theme.breakpoints.sm, cols: 2, spacing: "sm" },
+                            { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
+                        ]}
+                    >
+                        {grades.data[activeSubject].grades.map((grade) => (
+                            <GradeCard key={grade.id} grade={grade} />
+                        ))}
+                    </SimpleGrid>
                 </>
             )}
         </>
