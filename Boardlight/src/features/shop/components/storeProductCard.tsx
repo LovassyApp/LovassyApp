@@ -20,7 +20,7 @@ export const StoreProductCard = ({
     const { classes } = useStyles();
 
     return (
-        <Card radius="md" withBorder={true} sx={ storeProduct.quantity ? {}:{opacity: "30%"}}>
+        <Card radius="md" withBorder={true} sx={storeProduct.quantity ? {} : { opacity: "50%" }}>
             <Card.Section>
                 <Image src={storeProduct.thumbnailUrl} alt={storeProduct.name} height={200} />
             </Card.Section>
