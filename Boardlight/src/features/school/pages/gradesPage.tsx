@@ -77,10 +77,6 @@ const DetailsModal = ({
                 <Text>{grade?.group}</Text>
             </Group>
             <Group position="apart" spacing={0}>
-                <Text weight="bold">Jegytípus:</Text>
-                <Text>{grade?.gradeType}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
                 <Text weight="bold">Értékelés ideje:</Text>
                 <Text>{new Date(grade?.evaluationDate).toLocaleString("hu-HU", {})}</Text>
             </Group>
