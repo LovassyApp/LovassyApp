@@ -3,6 +3,7 @@ using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Seeders;
 using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace Blueboard.Infrastructure;
 
@@ -17,6 +18,10 @@ public static class AddInfrastructureExtension
     /// <param name="configuration">The app configuration.</param>
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+#pragma warning disable CS0618 // Type or member is obsolete
+        NpgsqlConnection.GlobalTypeMapper.EnableDynamicJson();
+#pragma warning restore CS0618 // Type or member is obsolete
+
         // Persistence
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
