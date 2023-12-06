@@ -1,6 +1,7 @@
 import {
     Box,
     Center,
+    Divider,
     Group,
     Loader,
     MediaQuery,
@@ -13,13 +14,13 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import { useMemo, useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
 
 import { GradeCard } from "../components/gradeCard";
 import { GradesStats } from "../components/gradesStats";
-import { SubjectCard } from "../components/subjectCard";
-import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 import { SchoolIndexGradesResponseGrade } from "../../../api/generated/models";
+import { SubjectCard } from "../components/subjectCard";
+import { useDisclosure } from "@mantine/hooks";
+import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 
 const useStyles = createStyles((theme) => ({
     center: {
@@ -40,7 +41,7 @@ const useStyles = createStyles((theme) => ({
 const DetailsModal = ({
     grade,
     opened,
-    close
+    close,
 }: {
     grade: SchoolIndexGradesResponseGrade;
     opened: boolean;
@@ -49,48 +50,55 @@ const DetailsModal = ({
     return (
         <Modal opened={opened} onClose={close} title="Részletek" size="lg">
             <Group position="apart" spacing={0}>
-                <Text weight="bold">Osztályzat:</Text>
-                <Text>{grade?.textGrade} ({grade?.gradeValue})</Text>
+                <Text>Osztályzat:</Text>
+                <Text weight="bold">
+                    {grade?.textGrade} ({grade?.gradeValue})
+                </Text>
             </Group>
             <Group position="apart" spacing={0}>
-                <Text weight="bold">Súly:</Text>
-                <Text>{grade?.weight}%</Text>
+                <Text>Tantárgy:</Text>
+                <Text weight="bold">{grade?.subject}</Text>
             </Group>
             <Group position="apart" spacing={0}>
-                <Text weight="bold">Típus:</Text>
-                <Text>{grade?.type}</Text>
+                <Text>Tanár:</Text>
+                <Text weight="bold">{grade?.teacher}</Text>
+            </Group>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Téma:</Text>
+                <Text weight="bold">{grade?.theme}</Text>
+            </Group>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Csoport:</Text>
+                <Text weight="bold">{grade?.group}</Text>
+            </Group>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Típus:</Text>
+                <Text weight="bold">{grade?.type}</Text>
             </Group>
             <Group position="apart" spacing={0}>
-                <Text weight="bold">Téma:</Text>
-                <Text>{grade?.theme}</Text>
+                <Text>Súly:</Text>
+                <Text weight="bold">{grade?.weight}%</Text>
+            </Group>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Értékelés ideje:</Text>
+                <Text weight="bold">{new Date(grade?.evaluationDate).toLocaleString("hu-HU", {})}</Text>
             </Group>
             <Group position="apart" spacing={0}>
-                <Text weight="bold">Tanár:</Text>
-                <Text>{grade?.teacher}</Text>
+                <Text>Létrehozva a Krétában:</Text>
+                <Text weight="bold">{new Date(grade?.createDate).toLocaleString("hu-HU", {})}</Text>
+            </Group>
+            <Divider my="sm" />
+            <Group position="apart" spacing={0}>
+                <Text>Importálva:</Text>
+                <Text weight="bold">{new Date(grade?.createdAt).toLocaleString("hu-HU", {})}</Text>
             </Group>
             <Group position="apart" spacing={0}>
-                <Text weight="bold">Tantárgy:</Text>
-                <Text>{grade?.subject}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text weight="bold">Csoport:</Text>
-                <Text>{grade?.group}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text weight="bold">Értékelés ideje:</Text>
-                <Text>{new Date(grade?.evaluationDate).toLocaleString("hu-HU", {})}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text weight="bold">Létrehozva:</Text>
-                <Text>{new Date(grade?.createDate).toLocaleString("hu-HU", {})}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text weight="bold">Importálva:</Text>
-                <Text>{new Date(grade?.createdAt).toLocaleString("hu-HU", {})}</Text>
-            </Group>
-            <Group position="apart" spacing={0}>
-                <Text weight="bold">Módosítva:</Text>
-                <Text>{new Date(grade?.updatedAt).toLocaleString("hu-HU", {})}</Text>
+                <Text>Módosítva:</Text>
+                <Text weight="bold">{new Date(grade?.updatedAt).toLocaleString("hu-HU", {})}</Text>
             </Group>
         </Modal>
     );
@@ -156,11 +164,7 @@ const GradesPage = (): JSX.Element => {
 
     return (
         <>
-            <DetailsModal
-                grade={detailsModalGrade}
-                opened={detailsModalOpened}
-                close={closeDetailsModal}
-            />
+            <DetailsModal grade={detailsModalGrade} opened={detailsModalOpened} close={closeDetailsModal} />
             <Box className={classes.subjectsContainer} mb="md">
                 <Title mb="md">Tantárgyak</Title>
                 <SimpleGrid
@@ -217,11 +221,14 @@ const GradesPage = (): JSX.Element => {
                         ]}
                     >
                         {grades.data[activeSubject].grades.map((grade) => (
-                            <GradeCard key={grade.id} grade={grade} openDetails={() => {
-                                setDetailsModalGrade(grade);
-                                openDetailsModal();
-                            }
-                            }/>
+                            <GradeCard
+                                key={grade.id}
+                                grade={grade}
+                                openDetails={() => {
+                                    setDetailsModalGrade(grade);
+                                    openDetailsModal();
+                                }}
+                            />
                         ))}
                     </SimpleGrid>
                 </>
