@@ -15,6 +15,7 @@ using Helpers.WebApi.Filters;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,7 +58,12 @@ builder.Services.AddWebApiHelpers(builder.Configuration, Assembly.GetExecutingAs
 builder.Services.AddEmailHelpers(builder.Configuration);
 builder.Services.AddCryptographyHelpers(builder.Configuration);
 
-builder.Services.AddInfrastructure(builder.Configuration);
+var dataSourceBuilder = new NpgsqlDataSourceBuilder();
+dataSourceBuilder.EnableDynamicJson();
+
+await using var dataSource = dataSourceBuilder.Build();
+
+builder.Services.AddInfrastructure(dataSource);
 
 builder.Services.AddAuthServices(builder.Configuration);
 builder.Services.AddBackboardServices(builder.Configuration);

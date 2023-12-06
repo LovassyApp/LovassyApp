@@ -16,13 +16,8 @@ public static class AddInfrastructureExtension
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The app configuration.</param>
-    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructure(this IServiceCollection services, NpgsqlDataSource dataSource)
     {
-        var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("DefaultConnection"))
-            .EnableDynamicJson();
-
-        var dataSource = dataSourceBuilder.Build();
-
         // Persistence
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
