@@ -18,14 +18,15 @@ public static class AddInfrastructureExtension
     /// <param name="configuration">The app configuration.</param>
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-#pragma warning disable CS0618 // Type or member is obsolete
-        NpgsqlConnection.GlobalTypeMapper.EnableDynamicJson();
-#pragma warning restore CS0618 // Type or member is obsolete
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(configuration.GetConnectionString("DefaultConnection"))
+            .EnableDynamicJson();
+
+        var dataSource = dataSourceBuilder.Build();
 
         // Persistence
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+            options.UseNpgsql(dataSource)
                 .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
         });
 
