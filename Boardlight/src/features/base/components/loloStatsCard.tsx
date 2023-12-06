@@ -1,6 +1,7 @@
 import { Center, Loader, Paper, Progress, Stack, Text, Title, createStyles } from "@mantine/core";
 
 import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
+import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 import { useMemo } from "react";
 
 const useStyles = createStyles((theme) => ({
@@ -13,6 +14,7 @@ export const LoloStatsCard = (): JSX.Element => {
     const { classes } = useStyles();
 
     const coins = useGetApiLolosOwn();
+    const grades = useGetApiGrades();
 
     const fromGrades = useMemo(() => coins.data?.coins.filter((c) => c.loloType === "FromGrades").length, [coins.data]);
 
@@ -20,6 +22,11 @@ export const LoloStatsCard = (): JSX.Element => {
         () => coins.data?.coins.filter((c) => c.loloType === "FromRequest").length,
         [coins.data]
     );
+
+    const gradeFive = useMemo(() => grades.data?.flatMap((s) => s.grades).filter((grade) => grade.gradeValue == 5).length, [grades.data]);
+    const gradeFour = useMemo(() => grades.data?.flatMap((s) => s.grades).filter((grade) => grade.gradeValue == 4).length, [grades.data]);
+    const fromGradeFive = useMemo(() => coins.data?.coins.filter((c) => c.loloType === "FromGrades" && c.reason === "Ötösökből automatikusan generálva").length, [coins.data]);
+    const fromGradeFour = useMemo(() => coins.data?.coins.filter((c) => c.loloType === "FromGrades" && c.reason === "Négyesekből automatikusan generálva").length, [coins.data]);
 
     if (coins.isLoading) {
         return (
@@ -77,6 +84,7 @@ export const LoloStatsCard = (): JSX.Element => {
                     <Text component="span" weight="bold" color="pink">
                         {fromGrades} db
                     </Text>
+                    <Text component="span" sx={{float: "right"}}>Még <Text weight="bold" component="span">{3 - (gradeFive - (fromGradeFive * 3))} ötös</Text> vagy <Text component="span" weight="bold">{5 - (gradeFour - (fromGradeFour * 5))} négyes</Text> kell egy újabb lólóhoz.</Text>
                 </Text>
                 <Text>
                     Kérvényekből generálva:{" "}
