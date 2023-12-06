@@ -58,7 +58,7 @@ builder.Services.AddWebApiHelpers(builder.Configuration, Assembly.GetExecutingAs
 builder.Services.AddEmailHelpers(builder.Configuration);
 builder.Services.AddCryptographyHelpers(builder.Configuration);
 
-var dataSourceBuilder = new NpgsqlDataSourceBuilder();
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString("DefaultConnection"));
 dataSourceBuilder.EnableDynamicJson();
 
 await using var dataSource = dataSourceBuilder.Build();
