@@ -84,7 +84,7 @@ export const LoloStatsCard = (): JSX.Element => {
                     <Text component="span" weight="bold" color="pink">
                         {fromGrades} db
                     </Text>
-                    <Text component="span" sx={{float: "right"}}>Még <Text weight="bold" component="span">{3 - (gradeFive - (fromGradeFive * 3))} ötös</Text> vagy <Text component="span" weight="bold">{5 - (gradeFour - (fromGradeFour * 5))} négyes</Text> kell egy újabb lólóhoz.</Text>
+                    {" "}(Még <Text weight="bold" component="span">{3 - (gradeFive - (fromGradeFive * 3))} ötös</Text> vagy <Text component="span" weight="bold">{5 - (gradeFour - (fromGradeFour * 5))} négyes</Text> kell egy újabb lólóhoz.)
                 </Text>
                 <Text>
                     Kérvényekből generálva:{" "}
