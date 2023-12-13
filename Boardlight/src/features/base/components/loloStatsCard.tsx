@@ -1,5 +1,6 @@
 import { Center, Loader, Paper, Progress, Stack, Text, Title, createStyles } from "@mantine/core";
 
+import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 import { useMemo } from "react";
 
@@ -13,11 +14,35 @@ export const LoloStatsCard = (): JSX.Element => {
     const { classes } = useStyles();
 
     const coins = useGetApiLolosOwn();
+    const grades = useGetApiGrades();
 
     const fromGrades = useMemo(() => coins.data?.coins.filter((c) => c.loloType === "FromGrades").length, [coins.data]);
 
     const fromRequests = useMemo(
         () => coins.data?.coins.filter((c) => c.loloType === "FromRequest").length,
+        [coins.data]
+    );
+
+    const gradeFive = useMemo(
+        () => grades.data?.flatMap((s) => s.grades).filter((grade) => grade.gradeValue == 5).length,
+        [grades.data]
+    );
+    const gradeFour = useMemo(
+        () => grades.data?.flatMap((s) => s.grades).filter((grade) => grade.gradeValue == 4).length,
+        [grades.data]
+    );
+    const fromGradeFive = useMemo(
+        () =>
+            coins.data?.coins.filter(
+                (c) => c.loloType === "FromGrades" && c.reason === "Ötösökből automatikusan generálva"
+            ).length,
+        [coins.data]
+    );
+    const fromGradeFour = useMemo(
+        () =>
+            coins.data?.coins.filter(
+                (c) => c.loloType === "FromGrades" && c.reason === "Négyesekből automatikusan generálva"
+            ).length,
         [coins.data]
     );
 
@@ -76,7 +101,7 @@ export const LoloStatsCard = (): JSX.Element => {
                     Jegyekből generálva:{" "}
                     <Text component="span" weight="bold" color="pink">
                         {fromGrades} db
-                    </Text>
+                    </Text>{" "}
                 </Text>
                 <Text>
                     Kérvényekből generálva:{" "}
@@ -97,6 +122,17 @@ export const LoloStatsCard = (): JSX.Element => {
                     <Text component="span" weight="bold">
                         {coins.data.coins.length} db
                     </Text>
+                </Text>
+                <Text>
+                    Új lolóhoz{" "}
+                    <Text weight="bold" component="span">
+                        {3 - (gradeFive - fromGradeFive * 3)}db ötös
+                    </Text>{" "}
+                    /{" "}
+                    <Text component="span" weight="bold">
+                        {5 - (gradeFour - fromGradeFour * 5)}db négyes
+                    </Text>{" "}
+                    kell
                 </Text>
             </Stack>
         </Paper>
