@@ -11,7 +11,7 @@ import { SubjectsAverageCard } from "../components/subjectsAverageCard";
 
 const useStyles = createStyles((theme) => ({}));
 
-const PRIMARY_COL_HEIGHT = rem(636);
+const PRIMARY_COL_HEIGHT = rem(606);
 
 const HomePage = (): JSX.Element => {
     const { classes } = useStyles();

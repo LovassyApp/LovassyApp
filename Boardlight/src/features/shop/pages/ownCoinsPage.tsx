@@ -2,6 +2,7 @@ import { Center, Loader, SimpleGrid, Text, Title, createStyles, useMantineTheme 
 
 import { CoinCard } from "../components/coinCard";
 import { CoinsStats } from "../components/coinStats";
+import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 
 const useStyles = createStyles((theme) => ({
@@ -15,8 +16,9 @@ const OwnCoinsPage = (): JSX.Element => {
     const theme = useMantineTheme();
 
     const coins = useGetApiLolosOwn({ Sorts: "isSpent" });
+    const grades = useGetApiGrades();
 
-    if (coins.isLoading)
+    if (coins.isLoading || grades.isLoading)
         return (
             <Center className={classes.center}>
                 <Loader />
@@ -36,7 +38,7 @@ const OwnCoinsPage = (): JSX.Element => {
         <>
             <Title mb="md">Statisztikák</Title>
             <SimpleGrid cols={2} breakpoints={[{ maxWidth: theme.breakpoints.sm, cols: 1, spacing: "sm" }]}>
-                <CoinsStats data={coins.data} />
+                <CoinsStats data={coins.data} grades={grades.isError ? undefined : grades.data} />
             </SimpleGrid>
             <Title my="md">Érmék</Title>
             <SimpleGrid
@@ -47,9 +49,7 @@ const OwnCoinsPage = (): JSX.Element => {
                     { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
                 ]}
             >
-                {coins.data?.coins.map((coin) => (
-                    <CoinCard key={coin.id} coin={coin} />
-                ))}
+                {coins.data?.coins.map((coin) => <CoinCard key={coin.id} coin={coin} />)}
             </SimpleGrid>
             {coins.data.coins.length === 0 && (
                 <Text color="dimmed">
