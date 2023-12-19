@@ -15,7 +15,7 @@ public static class AddInfrastructureExtension
     ///     not a must).
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="configuration">The app configuration.</param>
+    /// <param name="dataSource">The postgres data source.</param>
     public static void AddInfrastructure(this IServiceCollection services, NpgsqlDataSource dataSource)
     {
         // Persistence
