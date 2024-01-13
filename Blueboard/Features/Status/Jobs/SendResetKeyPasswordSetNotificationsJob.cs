@@ -5,14 +5,17 @@ using Helpers.Email.Services;
 using Helpers.Email.Views.Emails.ResetKeyPasswordSetNotification;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
+using Shimmer.Core;
 
 namespace Blueboard.Features.Status.Jobs;
 
-public class SendResetKeyPasswordSetNotificationsJob(ApplicationDbContext dbContext, IFluentEmail fluentEmail,
-        RazorViewToStringRenderer razorViewToStringRenderer)
-    : IJob
+public class SendResetKeyPasswordSetNotificationsJob(
+    ApplicationDbContext dbContext,
+    IFluentEmail fluentEmail,
+    RazorViewToStringRenderer razorViewToStringRenderer)
+    : ShimmerJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    protected override async Task Process(IJobExecutionContext context)
     {
         var notifiers = await dbContext.ResetKeyPasswordSetNotifiers.ToListAsync();
 

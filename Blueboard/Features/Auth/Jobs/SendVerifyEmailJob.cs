@@ -1,32 +1,37 @@
-using System.Text.Json;
 using Blueboard.Features.Auth.Services;
 using Blueboard.Infrastructure.Persistence.Entities;
 using FluentEmail.Core;
 using Helpers.Email.Services;
 using Helpers.Email.Views.Emails.VerifyEmail;
 using Quartz;
+using Shimmer.Core;
 
 namespace Blueboard.Features.Auth.Jobs;
 
-public class SendVerifyEmailJob(IFluentEmail fluentEmail, VerifyEmailService verifyEmailService,
-        RazorViewToStringRenderer razorViewToStringRenderer)
-    : IJob
+public class SendVerifyEmailJob(
+    IFluentEmail fluentEmail,
+    VerifyEmailService verifyEmailService,
+    RazorViewToStringRenderer razorViewToStringRenderer)
+    : ShimmerJob<SendVerifyEmailJob.Data>
 {
-    public async Task Execute(IJobExecutionContext context)
+    protected override async Task Process(Data data, IJobExecutionContext context)
     {
-        var user = JsonSerializer.Deserialize<User>((context.MergedJobDataMap.Get("userJson") as string)!);
-        var verifyUrl = context.MergedJobDataMap.Get("verifyUrl") as string;
-        var verifyTokenQueryKey = context.MergedJobDataMap.Get("verifyTokenQueryKey") as string;
+        var verifyToken = verifyEmailService.GenerateVerifyToken(data.User.Id);
 
-        var verifyToken = verifyEmailService.GenerateVerifyToken(user!.Id);
-
-        var email = fluentEmail.To(user.Email).Subject("Email megerősítése").Body(
+        var email = fluentEmail.To(data.User.Email).Subject("Email megerősítése").Body(
             await razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/VerifyEmail/VerifyEmail.cshtml",
                 new VerifyEmailViewModel
                 {
-                    VerifyEmailUrl = $"{verifyUrl}?{verifyTokenQueryKey}={verifyToken}"
+                    VerifyEmailUrl = $"{data.VerifyUrl}?{data.VerifyTokenQueryKey}={verifyToken}"
                 }), true);
 
         await email.SendAsync();
+    }
+
+    public class Data
+    {
+        public User User { get; set; }
+        public string VerifyUrl { get; set; }
+        public string VerifyTokenQueryKey { get; set; }
     }
 }

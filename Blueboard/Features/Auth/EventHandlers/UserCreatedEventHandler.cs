@@ -1,27 +1,22 @@
-using System.Text.Json;
 using Blueboard.Features.Auth.Jobs;
 using Blueboard.Features.Users.Events;
 using MediatR;
-using Quartz;
+using Shimmer.Services;
 
 namespace Blueboard.Features.Auth.EventHandlers;
 
-public class UserCreatedEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<UserCreatedEvent>
+public class UserCreatedEventHandler(IShimmerJobFactory jobFactory) : INotificationHandler<UserCreatedEvent>
 {
     public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
+        var sendVerifyEmailJob =
+            await jobFactory.CreateAsync<SendVerifyEmailJob, SendVerifyEmailJob.Data>(cancellationToken);
 
-        var sendVerifyEmailJob = JobBuilder.Create<SendVerifyEmailJob>()
-            .UsingJobData("userJson", JsonSerializer.Serialize(notification.User))
-            .UsingJobData("verifyUrl", notification.VerifyUrl)
-            .UsingJobData("verifyTokenQueryKey", notification.VerifyTokenQueryKey)
-            .Build();
-
-        var sendVerifyEmailTrigger = TriggerBuilder.Create()
-            .StartNow()
-            .Build();
-
-        await scheduler.ScheduleJob(sendVerifyEmailJob, sendVerifyEmailTrigger, cancellationToken);
+        sendVerifyEmailJob.Data(new SendVerifyEmailJob.Data
+        {
+            User = notification.User,
+            VerifyUrl = notification.VerifyUrl,
+            VerifyTokenQueryKey = notification.VerifyTokenQueryKey
+        });
     }
 }

@@ -9,6 +9,7 @@ namespace Helpers.Cryptography.Implementations;
 /// <summary>
 ///     The implementation of <see cref="IAsymmetricEncrypter" /> using the Kyber post quantum encryption algorithm.
 /// </summary>
+/// <remarks>Not thread safe!</remarks>
 public class KyberAsymmetricEncrypter : IAsymmetricEncrypter
 {
     private readonly SecureRandom _random;

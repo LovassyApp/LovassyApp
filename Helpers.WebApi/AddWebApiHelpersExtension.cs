@@ -16,8 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
-using Quartz;
-using Quartz.AspNetCore;
+using Shimmer;
+using Shimmer.AspNetCore;
 using Sieve.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -78,8 +78,10 @@ public static class AddWebApiHelpersExtension
         services.AddFluentValidationRulesToSwagger();
 
         // Scheduler
-        services.AddQuartz();
-        services.AddQuartzServer(options => { options.WaitForJobsToComplete = true; });
+        services.AddShimmer();
+        services.AddShimmerHostedService(options => { options.WaitForJobsToComplete = true; });
+
+        services.DiscoverJobs(assembly);
 
         //Feature Flags
         services.AddFeatureManagement().WithTargeting<TargetingContextAccessor>();

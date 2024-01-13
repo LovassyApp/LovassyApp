@@ -1,10 +1,9 @@
-using System.Text.Json;
 using Blueboard.Features.Users.Jobs;
 using Blueboard.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Quartz;
+using Shimmer.Services;
 using SessionOptions = Blueboard.Core.Auth.Services.Options.SessionOptions;
 
 namespace Blueboard.Features.Users.Commands;
@@ -15,8 +14,10 @@ public static class KickAllUsers
     {
     }
 
-    internal sealed class Handler(ApplicationDbContext context, ISchedulerFactory schedulerFactory,
-            IOptions<SessionOptions> sessionOptions)
+    internal sealed class Handler(
+        ApplicationDbContext context,
+        IShimmerJobFactory jobFactory,
+        IOptions<SessionOptions> sessionOptions)
         : IRequestHandler<Command>
     {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -26,18 +27,14 @@ public static class KickAllUsers
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
 
-            var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
+            var kickUsersJob = await jobFactory.CreateAsync<KickUsersJob, KickUsersJob.Data>(cancellationToken);
 
-            //Schedule a job because it could take some time to hash all the tokens and check them against the SessionService
-            var kickUsersJob = JobBuilder.Create<KickUsersJob>()
-                .UsingJobData("tokensJson", JsonSerializer.Serialize(personalAccessTokens.Select(t => t.Token)))
-                .Build();
+            kickUsersJob.Data(new KickUsersJob.Data
+            {
+                Tokens = personalAccessTokens.Select(t => t.Token).ToList()
+            });
 
-            var kickUsersTrigger = TriggerBuilder.Create()
-                .StartNow()
-                .Build();
-
-            await scheduler.ScheduleJob(kickUsersJob, kickUsersTrigger, cancellationToken);
+            await kickUsersJob.FireAsync(cancellationToken);
 
             return Unit.Value;
         }

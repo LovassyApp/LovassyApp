@@ -1,26 +1,25 @@
-using System.Text.Json;
 using Blueboard.Features.Shop.Events;
 using Blueboard.Features.Shop.Jobs;
 using MediatR;
-using Quartz;
+using Shimmer.Services;
 
 namespace Blueboard.Features.Shop.EventHandlers;
 
-public class LoloRequestCreatedEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<LoloRequestCreatedEvent>
+public class LoloRequestCreatedEventHandler(IShimmerJobFactory jobFactory)
+    : INotificationHandler<LoloRequestCreatedEvent>
 {
     public async Task Handle(LoloRequestCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
+        var sendLoloRequestCreatedNotificationJob =
+            await jobFactory.CreateAsync<SendLoloRequestCreatedNotificationJob,
+                SendLoloRequestCreatedNotificationJob.Data>(cancellationToken);
 
-        var sendLoloRequestCreatedNotificationJob = JobBuilder.Create<SendLoloRequestCreatedNotificationJob>()
-            .WithIdentity($"SendLoloRequestCreatedNotification-{notification.LoloRequest.Id}")
-            .UsingJobData("loloRequest", JsonSerializer.Serialize(notification.LoloRequest))
-            .UsingJobData("loloRequestsUrl", notification.LoloRequestsUrl)
-            .Build();
+        sendLoloRequestCreatedNotificationJob.Data(new SendLoloRequestCreatedNotificationJob.Data
+        {
+            LoloRequest = notification.LoloRequest,
+            LoloRequestsUrl = notification.LoloRequestsUrl
+        });
 
-        var sendLoloRequestCreatedNotificationTrigger = TriggerBuilder.Create().StartNow().Build();
-
-        await scheduler.ScheduleJob(sendLoloRequestCreatedNotificationJob, sendLoloRequestCreatedNotificationTrigger,
-            cancellationToken);
+        await sendLoloRequestCreatedNotificationJob.FireAsync(cancellationToken);
     }
 }

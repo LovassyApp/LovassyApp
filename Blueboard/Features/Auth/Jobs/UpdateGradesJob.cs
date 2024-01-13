@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Blueboard.Core.Auth.Services;
 using Blueboard.Core.Backboard.Services;
 using Blueboard.Features.School.Events;
@@ -6,32 +5,40 @@ using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
 using MediatR;
 using Quartz;
+using Shimmer.Core;
 
 namespace Blueboard.Features.Auth.Jobs;
 
 /// <summary>
 ///     The background job that updates the grades of a user. Fired when a session is created (login/refresh)
 /// </summary>
-public class UpdateGradesJob(ApplicationDbContext dbContext, UserAccessor userAccessor,
-        EncryptionManager encryptionManager,
-        BackboardAdapter backboardAdapter, IPublisher publisher)
-    : IJob
+public class UpdateGradesJob(
+    ApplicationDbContext dbContext,
+    UserAccessor userAccessor,
+    EncryptionManager encryptionManager,
+    BackboardAdapter backboardAdapter,
+    IPublisher publisher)
+    : ShimmerJob<UpdateGradesJob.Data>
 {
-    public async Task Execute(IJobExecutionContext context)
+    protected override async Task Process(Data data, IJobExecutionContext context)
     {
-        var user = JsonSerializer.Deserialize<User>((context.MergedJobDataMap.Get("userJson") as string)!);
-        var masterKey = context.MergedJobDataMap.Get("masterKey") as string;
+        dbContext.Attach(data
+            .User); // We have to attach the user to the context, because it's not tracked yet in this scope (It caused an issue back when we used hangfire, maybe it wouldn't now)
+        userAccessor.User = data.User;
 
-        dbContext.Attach(user); // We have to attach the user to the context, because it's not tracked yet in this scope (It caused an issue back when we used hangfire, maybe it wouldn't now)
-        userAccessor.User = user!;
-
-        encryptionManager.SetMasterKeyTemporarily(masterKey!);
+        encryptionManager.SetMasterKeyTemporarily(data.MasterKey);
 
         await backboardAdapter.UpdateAsync();
 
         await publisher.Publish(new GradesUpdatedEvent
         {
-            UserId = user!.Id
+            UserId = data.User.Id
         });
+    }
+
+    public class Data
+    {
+        public User User { get; set; }
+        public string MasterKey { get; set; }
     }
 }

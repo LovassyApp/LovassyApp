@@ -2,13 +2,14 @@ using Blueboard.Features.Feed.Events;
 using Blueboard.Features.Feed.Services;
 using MediatR;
 using Quartz;
+using Shimmer.Core;
 
 namespace Blueboard.Features.Feed.Jobs;
 
 public class UpdateFeedJob(FeedService feedService, ILogger<UpdateFeedJob> logger, IPublisher publisher)
-    : IJob
+    : ShimmerJob
 {
-    public async Task Execute(IJobExecutionContext context)
+    protected override async Task Process(IJobExecutionContext context)
     {
         logger.LogInformation("Updating feed");
         try

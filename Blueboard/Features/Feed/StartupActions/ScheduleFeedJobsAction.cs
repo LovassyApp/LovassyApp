@@ -1,25 +1,20 @@
 using Blueboard.Features.Feed.Jobs;
 using Helpers.WebApi.Interfaces;
 using Quartz;
+using Shimmer.Services;
 
 namespace Blueboard.Features.Feed.StartupActions;
 
-public class ScheduleFeedJobsAction(ILogger<ScheduleFeedJobsAction> logger, ISchedulerFactory schedulerFactory)
+public class ScheduleFeedJobsAction(ILogger<ScheduleFeedJobsAction> logger, IShimmerJobFactory jobFactory)
     : IStartupAction
 {
     public async Task Execute()
     {
-        var scheduler = await schedulerFactory.GetScheduler();
+        var updateFeedJob = await jobFactory.CreateAsync<UpdateFeedJob>();
 
-        var updateFeedJob = JobBuilder.Create<UpdateFeedJob>()
-            .WithIdentity("updateFeed", "scheduledFeedJobs").Build();
+        updateFeedJob.Schedule(SimpleScheduleBuilder.RepeatHourlyForever(12));
 
-        var updateFeedTrigger = TriggerBuilder.Create().WithIdentity("updateFeedTrigger", "scheduledFeedJobs")
-            .StartNow()
-            .WithSchedule(SimpleScheduleBuilder.RepeatHourlyForever(12))
-            .Build();
-
-        await scheduler.ScheduleJob(updateFeedJob, updateFeedTrigger);
+        await updateFeedJob.FireAsync();
 
         logger.LogInformation($"Added {nameof(UpdateFeedJob)} to recurring jobs");
     }

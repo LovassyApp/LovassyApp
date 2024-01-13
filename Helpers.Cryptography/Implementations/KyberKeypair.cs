@@ -9,6 +9,7 @@ namespace Helpers.Cryptography.Implementations;
 /// <summary>
 ///     The implementation of <see cref="IKeypair" /> using the Kyber post quantum encryption algorithm.
 /// </summary>
+/// <remarks>Not thread safe!</remarks>
 public class KyberKeypair : IKeypair
 {
     private readonly InternalKeypair _keypair;

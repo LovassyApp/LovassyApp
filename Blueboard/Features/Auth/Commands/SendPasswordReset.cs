@@ -1,10 +1,9 @@
-using System.Text.Json;
 using Blueboard.Features.Auth.Jobs;
 using Blueboard.Infrastructure.Persistence;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Quartz;
+using Shimmer.Services;
 
 namespace Blueboard.Features.Auth.Commands;
 
@@ -41,7 +40,7 @@ public static class SendPasswordReset
         }
     }
 
-    internal sealed class Handler(ApplicationDbContext context, ISchedulerFactory schedulerFactory)
+    internal sealed class Handler(ApplicationDbContext context, IShimmerJobFactory jobFactory)
         : IRequestHandler<Command>
     {
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -49,19 +48,17 @@ public static class SendPasswordReset
             var user = await context.Users
                 .Where(x => x.Email == request.Body.Email).AsNoTracking().FirstOrDefaultAsync(cancellationToken);
 
-            var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
+            var sendPasswordResetJob =
+                await jobFactory.CreateAsync<SendPasswordResetJob, SendPasswordResetJob.Data>(cancellationToken);
 
-            var sendPasswordResetJob = JobBuilder.Create<SendPasswordResetJob>()
-                .UsingJobData("userJson", JsonSerializer.Serialize(user))
-                .UsingJobData("passwordResetUrl", request.PasswordResetUrl)
-                .UsingJobData("passwordResetTokenQueryKey", request.PasswordResetTokenQueryKey)
-                .Build();
+            sendPasswordResetJob.Data(new SendPasswordResetJob.Data
+            {
+                User = user!,
+                PasswordResetUrl = request.PasswordResetUrl,
+                PasswordResetTokenQueryKey = request.PasswordResetTokenQueryKey
+            });
 
-            var sendPasswordResetTrigger = TriggerBuilder.Create()
-                .StartNow()
-                .Build();
-
-            await scheduler.ScheduleJob(sendPasswordResetJob, sendPasswordResetTrigger, cancellationToken);
+            await sendPasswordResetJob.FireAsync(cancellationToken);
 
             return Unit.Value;
         }

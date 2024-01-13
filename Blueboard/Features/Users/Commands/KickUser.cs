@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Blueboard.Features.Users.Jobs;
 using Blueboard.Infrastructure.Persistence;
 using Blueboard.Infrastructure.Persistence.Entities;
@@ -6,7 +5,7 @@ using Helpers.WebApi.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Quartz;
+using Shimmer.Services;
 using SessionOptions = Blueboard.Core.Auth.Services.Options.SessionOptions;
 
 namespace Blueboard.Features.Users.Commands;
@@ -18,8 +17,10 @@ public static class KickUser
         public Guid Id { get; set; }
     }
 
-    internal sealed class Handler(ApplicationDbContext context, ISchedulerFactory schedulerFactory,
-            IOptions<SessionOptions> sessionOptions)
+    internal sealed class Handler(
+        ApplicationDbContext context,
+        IShimmerJobFactory jobFactory,
+        IOptions<SessionOptions> sessionOptions)
         : IRequestHandler<Command>
     {
         private readonly SessionOptions _sessionOptions = sessionOptions.Value;
@@ -33,16 +34,14 @@ public static class KickUser
 
             if (user == null) throw new NotFoundException(nameof(User), request.Id);
 
-            var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
+            var kickUsersJob = await jobFactory.CreateAsync<KickUsersJob, KickUsersJob.Data>(cancellationToken);
 
-            var kickUsersJob = JobBuilder.Create<KickUsersJob>()
-                .UsingJobData("tokensJson", JsonSerializer.Serialize(user.PersonalAccessTokens.Select(t => t.Token)))
-                .Build();
+            kickUsersJob.Data(new KickUsersJob.Data
+            {
+                Tokens = user.PersonalAccessTokens.Select(t => t.Token).ToList()
+            });
 
-            var kickUsersTrigger = TriggerBuilder.Create()
-                .StartNow().Build();
-
-            await scheduler.ScheduleJob(kickUsersJob, kickUsersTrigger, cancellationToken);
+            await kickUsersJob.FireAsync(cancellationToken);
 
             return Unit.Value;
         }

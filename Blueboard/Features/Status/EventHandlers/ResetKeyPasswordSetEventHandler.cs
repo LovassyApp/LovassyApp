@@ -1,22 +1,18 @@
 using Blueboard.Features.Import.Events;
 using Blueboard.Features.Status.Jobs;
 using MediatR;
-using Quartz;
+using Shimmer.Services;
 
 namespace Blueboard.Features.Status.EventHandlers;
 
-public class ResetKeyPasswordSetEventHandler(ISchedulerFactory schedulerFactory) : INotificationHandler<ResetKeyPasswordSetEvent>
+public class ResetKeyPasswordSetEventHandler(IShimmerJobFactory jobFactory)
+    : INotificationHandler<ResetKeyPasswordSetEvent>
 {
     public async Task Handle(ResetKeyPasswordSetEvent notification, CancellationToken cancellationToken)
     {
-        var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
+        var sendResetKeyPasswordSetNotificationsJob =
+            await jobFactory.CreateAsync<SendResetKeyPasswordSetNotificationsJob>(cancellationToken);
 
-        var sendResetKeyPasswordSetNotificationsJob = JobBuilder.Create<SendResetKeyPasswordSetNotificationsJob>()
-            .Build();
-
-        var sendResetKeyPasswordSetNotificationsTrigger = TriggerBuilder.Create().StartNow().Build();
-
-        await scheduler.ScheduleJob(sendResetKeyPasswordSetNotificationsJob,
-            sendResetKeyPasswordSetNotificationsTrigger, cancellationToken);
+        await sendResetKeyPasswordSetNotificationsJob.FireAsync(cancellationToken);
     }
 }
