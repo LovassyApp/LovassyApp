@@ -1,8 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Blueboard",
-    "version": "4.1.0"
+    "title": "Blueboard"
   },
   "servers": [
     {
