@@ -11,6 +11,14 @@ namespace Blueboard.Features.ImageVotings.Queries;
 
 public static class ViewImageVotingEntry
 {
+    public enum ResponseIncrementType
+    {
+        None,
+        Incremented,
+        SuperIncremented,
+        Decremented
+    }
+
     public class Query : IRequest<Response>
     {
         public int Id { get; set; }
@@ -32,6 +40,8 @@ public static class ViewImageVotingEntry
         public bool? CanChoose { get; set; }
         public bool? Chosen { get; set; }
 
+        public string? IncrementType { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -43,13 +53,16 @@ public static class ViewImageVotingEntry
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager,
-            UserAccessor userAccessor)
+    internal sealed class Handler(
+        ApplicationDbContext context,
+        PermissionManager permissionManager,
+        UserAccessor userAccessor)
         : IRequestHandler<Query, Response>
     {
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {
             var entry = await context.ImageVotingEntries
+                .Include(e => e.Increments.Where(i => i.UserId == userAccessor.User.Id))
                 .Include(e => e.User)
                 .Include(e => e.ImageVoting)
                 .ThenInclude(i => i.Choices)
@@ -76,6 +89,18 @@ public static class ViewImageVotingEntry
                 response.CanChoose = !entry.ImageVoting.Choices.Any();
 
                 response.Chosen = entry.ImageVoting.Choices.Any(c => c.ImageVotingEntryId == entry.Id);
+            }
+
+            if (entry.ImageVoting.Type == ImageVotingType.Increment && !entry.ImageVoting.Aspects.Any())
+            {
+                var increment = entry.Increments.FirstOrDefault(i => i.UserId == userAccessor.User.Id);
+                response.IncrementType = (increment != null
+                    ? increment.Increment == entry.ImageVoting.SuperIncrementValue
+                        ? ResponseIncrementType.SuperIncremented
+                        : increment.Increment < 0
+                            ? ResponseIncrementType.Decremented
+                            : ResponseIncrementType.Incremented
+                    : ResponseIncrementType.None).Adapt<string>();
             }
 
             if (entry.UserId == userAccessor.User.Id)

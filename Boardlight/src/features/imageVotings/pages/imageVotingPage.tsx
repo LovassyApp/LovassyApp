@@ -21,6 +21,7 @@ import {
     useMantineTheme,
 } from "@mantine/core";
 import { IconCheck, IconPlus, IconTrophy } from "@tabler/icons-react";
+import { ImageVotingIncrementableCard, IncrementType } from "../components/imageVotingIncrementableEntryCard";
 import { NotFoundError, ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
 import { Suspense, lazy, useMemo, useState } from "react";
 import { isNotEmpty, useForm } from "@mantine/form";
@@ -34,7 +35,7 @@ import {
 } from "../../../api/generated/features/image-votings/image-votings";
 
 import { FullScreenLoading } from "../../../core/components/fullScreenLoading";
-import { ImageVotingEntryCard } from "../components/imageVotingEntryCard";
+import { ImageVotingChoosableEntryCard } from "../components/imageVotingChoosableEntryCard";
 import { ImageVotingEntryImageSelector } from "../components/imageVotingEntryImageSelector";
 import { ImageVotingsViewImageVotingResponse } from "../../../api/generated/models";
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
@@ -119,7 +120,7 @@ const ResultsModal = ({
 
     const getAspectVotes = (entry, aspectKey) => {
         const aspect = entry.aspects.find((a) => a.key === aspectKey);
-        return aspect?.choicesCount ?? aspect?.incrementSum ?? "NaN";
+        return imageVoting.type === "SingleChoice" ? aspect?.choicesCount : aspect?.incrementSum;
     };
 
     const orderedEntries = useMemo(() => {
@@ -197,7 +198,11 @@ const ResultsModal = ({
                             {entry.title}
                         </Text>
                         <Text>
-                            {aspectKey ? getAspectVotes(entry, aspectKey) : entry.choicesCount ?? entry.incrementSum}
+                            {aspectKey
+                                ? getAspectVotes(entry, aspectKey)
+                                : imageVoting.type === "SingleChoice"
+                                ? entry.choicesCount
+                                : entry.incrementSum}
                         </Text>
                     </Group>
                 </Paper>
@@ -345,18 +350,34 @@ const ImageVotingPage = (): JSX.Element => {
                     { maxWidth: theme.breakpoints.xs, cols: 1, spacing: "sm" },
                 ]}
             >
-                {imageVotingEntries.data.map((imageVotingEntry) => (
-                    <ImageVotingEntryCard
-                        imageVoting={imageVoting.data}
-                        imageVotingEntry={imageVotingEntry}
-                        key={imageVotingEntry.id}
-                        chosen={
-                            imageVoting.data.aspects.find((aspect) => aspect.key === aspectKey)?.chosenEntryId ===
-                            imageVotingEntry.id
-                        }
-                        aspectKey={aspectKey}
-                    />
-                ))}
+                {imageVoting.data.type === "SingleChoice" &&
+                    imageVotingEntries.data.map((imageVotingEntry) => (
+                        <ImageVotingChoosableEntryCard
+                            imageVoting={imageVoting.data}
+                            imageVotingEntry={imageVotingEntry}
+                            key={imageVotingEntry.id}
+                            chosen={
+                                imageVoting.data.aspects.find((aspect) => aspect.key === aspectKey)?.chosenEntryId ===
+                                imageVotingEntry.id
+                            }
+                            aspectKey={aspectKey}
+                        />
+                    ))}
+                {imageVoting.data.type === "Increment" &&
+                    imageVotingEntries.data.map((imageVotingEntry) => (
+                        <ImageVotingIncrementableCard
+                            imageVoting={imageVoting.data}
+                            imageVotingEntry={imageVotingEntry}
+                            key={imageVotingEntry.id}
+                            incrementType={
+                                imageVoting.data.aspects
+                                    .find((aspect) => aspect.key === aspectKey)
+                                    ?.imageVotingAspectEntryIncrements.find((i) => i.entryId === imageVotingEntry.id)
+                                    ?.type as IncrementType
+                            }
+                            aspectKey={aspectKey}
+                        />
+                    ))}
             </SimpleGrid>
             {imageVoting.data.aspects.length > 0 && (
                 <Card

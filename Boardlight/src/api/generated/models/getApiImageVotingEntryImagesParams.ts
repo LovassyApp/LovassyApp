@@ -6,6 +6,7 @@
  */
 
 export type GetApiImageVotingEntryImagesParams = {
+ImageVotingId?: number;
 Filters?: string;
 Sorts?: string;
 Page?: number;

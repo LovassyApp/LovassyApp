@@ -4,6 +4,7 @@
  * Blueboard
  * OpenAPI spec version: v4.0.0
  */
+import type { ImageVotingsViewImageVotingResponseImageVotingAspectEntryIncrement } from './imageVotingsViewImageVotingResponseImageVotingAspectEntryIncrement';
 
 export interface ImageVotingsViewImageVotingResponseImageVotingAspect {
   key?: string | null;
@@ -11,4 +12,5 @@ export interface ImageVotingsViewImageVotingResponseImageVotingAspect {
   description?: string | null;
   canChoose?: boolean | null;
   chosenEntryId?: number | null;
+  imageVotingAspectEntryIncrements?: ImageVotingsViewImageVotingResponseImageVotingAspectEntryIncrement[] | null;
 }

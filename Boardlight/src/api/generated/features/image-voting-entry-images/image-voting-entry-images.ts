@@ -19,7 +19,6 @@ import type {
 import type {
   ImageVotingsIndexImageVotingEntryImagesResponse,
   ProblemDetails,
-  ImageVotingsIndexImageVotingEntryImagesRequestBody,
   GetApiImageVotingEntryImagesParams,
   ImageVotingsUploadImageVotingEntryImageResponse,
   PostApiImageVotingEntryImagesBody
@@ -37,34 +36,30 @@ type AwaitedInput<T> = PromiseLike<T> | T;
  * @summary List all images of an image voting
  */
 export const getApiImageVotingEntryImages = (
-    imageVotingsIndexImageVotingEntryImagesRequestBody: BodyType<ImageVotingsIndexImageVotingEntryImagesRequestBody>,
     params?: GetApiImageVotingEntryImagesParams,
  signal?: AbortSignal
 ) => {
       return useCustomClient<ImageVotingsIndexImageVotingEntryImagesResponse[]>(
       {url: `/Api/ImageVotingEntryImages`, method: 'get',
-      headers: {'Content-Type': 'application/json', },
         params, signal
     },
       );
     }
   
 
-export const getGetApiImageVotingEntryImagesQueryKey = (imageVotingsIndexImageVotingEntryImagesRequestBody: ImageVotingsIndexImageVotingEntryImagesRequestBody,
-    params?: GetApiImageVotingEntryImagesParams,) => [`/Api/ImageVotingEntryImages`, ...(params ? [params]: []), imageVotingsIndexImageVotingEntryImagesRequestBody] as const;
+export const getGetApiImageVotingEntryImagesQueryKey = (params?: GetApiImageVotingEntryImagesParams,) => [`/Api/ImageVotingEntryImages`, ...(params ? [params]: [])] as const;
   
 
     
-export const getGetApiImageVotingEntryImagesQueryOptions = <TData = Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError = ErrorType<void | ProblemDetails>>(imageVotingsIndexImageVotingEntryImagesRequestBody: ImageVotingsIndexImageVotingEntryImagesRequestBody,
-    params?: GetApiImageVotingEntryImagesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError, TData>, }
+export const getGetApiImageVotingEntryImagesQueryOptions = <TData = Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError = ErrorType<void | ProblemDetails>>(params?: GetApiImageVotingEntryImagesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError, TData>, }
 ): UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError, TData> & { queryKey: QueryKey } => {
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiImageVotingEntryImagesQueryKey(imageVotingsIndexImageVotingEntryImagesRequestBody,params);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiImageVotingEntryImagesQueryKey(params);
 
   
   
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiImageVotingEntryImages>>> = ({ signal }) => getApiImageVotingEntryImages(imageVotingsIndexImageVotingEntryImagesRequestBody,params, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiImageVotingEntryImages>>> = ({ signal }) => getApiImageVotingEntryImages(params, signal);
     
       
       
@@ -77,12 +72,11 @@ export type GetApiImageVotingEntryImagesQueryError = ErrorType<void | ProblemDet
  * @summary List all images of an image voting
  */
 export const useGetApiImageVotingEntryImages = <TData = Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError = ErrorType<void | ProblemDetails>>(
- imageVotingsIndexImageVotingEntryImagesRequestBody: ImageVotingsIndexImageVotingEntryImagesRequestBody,
-    params?: GetApiImageVotingEntryImagesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError, TData>, }
+ params?: GetApiImageVotingEntryImagesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiImageVotingEntryImages>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetApiImageVotingEntryImagesQueryOptions(imageVotingsIndexImageVotingEntryImagesRequestBody,params,options)
+  const queryOptions = getGetApiImageVotingEntryImagesQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

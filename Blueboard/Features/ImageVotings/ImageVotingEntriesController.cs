@@ -6,6 +6,7 @@ using Blueboard.Features.ImageVotings.Queries;
 using Helpers.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.FeatureManagement.Mvc;
 using Sieve.Models;
 
@@ -99,6 +100,7 @@ public class ImageVotingEntriesController : ApiControllerBase
         return NoContent();
     }
 
+    [EnableRateLimiting("Relaxed")]
     [HttpPost("{id}/Choice")]
     [Permissions(typeof(ImageVotingsPermissions.ChooseActiveImageVotingEntry),
         typeof(ImageVotingsPermissions.ChooseImageVotingEntry))]
@@ -117,6 +119,7 @@ public class ImageVotingEntriesController : ApiControllerBase
         return NoContent();
     }
 
+    [EnableRateLimiting("Relaxed")]
     [HttpDelete("{id}/Choice")]
     [Permissions(typeof(ImageVotingsPermissions.UnchooseActiveImageVotingEntry),
         typeof(ImageVotingsPermissions.UnchooseImageVotingEntry))]
@@ -135,6 +138,7 @@ public class ImageVotingEntriesController : ApiControllerBase
         return NoContent();
     }
 
+    [EnableRateLimiting("Relaxed")]
     [HttpPost("{id}/Increment")]
     [Permissions(typeof(ImageVotingsPermissions.CreateImageVotingEntryIncrement),
         typeof(ImageVotingsPermissions.CreateActiveImageVotingEntryIncrement))]
@@ -153,6 +157,7 @@ public class ImageVotingEntriesController : ApiControllerBase
         return NoContent();
     }
 
+    [EnableRateLimiting("Relaxed")]
     [HttpDelete("{id}/Increment")]
     [Permissions(typeof(ImageVotingsPermissions.DeleteImageVotingEntryIncrement),
         typeof(ImageVotingsPermissions.DeleteActiveImageVotingEntryIncrement))]

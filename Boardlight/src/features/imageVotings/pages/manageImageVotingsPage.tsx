@@ -155,13 +155,28 @@ const CreateImageVotingModal = ({ opened, close }: { opened: boolean; close(): v
                     label="Típus"
                     data={[
                         { value: "SingleChoice", label: "Választásos" },
-                        { value: "Increment", label: "Inkrementáló", disabled: true },
+                        { value: "Increment", label: "Inkrementáló" },
                     ]}
                     required={true}
                     {...form.getInputProps("type")}
                     withinPortal={true}
                     mt="sm"
                 />
+                {form.values.type === "Increment" && (
+                    <>
+                        <Group position="apart" spacing={0} mt="md">
+                            <Text size="sm">Szuperszavazat engedélyezése</Text>
+                            <Switch {...form.getInputProps("superIncrementAllowed", { type: "checkbox" })} />
+                        </Group>
+                        <NumberInput
+                            label="Szperszavazat értéke"
+                            min={1}
+                            required={true}
+                            {...form.getInputProps("superIncrementValue")}
+                            mt="sm"
+                        />
+                    </>
+                )}
                 <Group position="apart" spacing={0} mt="md">
                     <Text size="sm">Aktív</Text>
                     <Switch {...form.getInputProps("active", { type: "checkbox" })} />
@@ -525,13 +540,28 @@ const DetailsModal = ({
                         label="Típus"
                         data={[
                             { value: "SingleChoice", label: "Választásos" },
-                            { value: "Increment", label: "Inkrementáló", disabled: true },
+                            { value: "Increment", label: "Inkrementáló" },
                         ]}
                         required={true}
                         {...form.getInputProps("type")}
                         withinPortal={true}
                         mt="sm"
                     />
+                    {form.values.type === "Increment" && (
+                        <>
+                            <Group position="apart" spacing={0} mt="md">
+                                <Text size="sm">Szuperszavazat engedélyezése</Text>
+                                <Switch {...form.getInputProps("superIncrementAllowed", { type: "checkbox" })} />
+                            </Group>
+                            <NumberInput
+                                label="Szperszavazat értéke"
+                                min={1}
+                                required={true}
+                                {...form.getInputProps("superIncrementValue")}
+                                mt="sm"
+                            />
+                        </>
+                    )}
                     <Group position="apart" spacing={0} mt="md">
                         <Text size="sm">Aktív</Text>
                         <Switch {...form.getInputProps("active", { type: "checkbox" })} />

@@ -21,12 +21,12 @@ public class ImageVotingEntryImagesController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [EndpointSummary("List all images of an image voting")]
     public async Task<ActionResult<IEnumerable<IndexImageVotingEntryImages.Response>>> Index(
-        [FromBody] IndexImageVotingEntryImages.RequestBody body,
+        [FromQuery] int ImageVotingId,
         [FromQuery] SieveModel sieveModel)
     {
         var response = await Mediator.Send(new IndexImageVotingEntryImages.Query
         {
-            Body = body,
+            ImageVotingId = ImageVotingId,
             SieveModel = sieveModel
         });
 

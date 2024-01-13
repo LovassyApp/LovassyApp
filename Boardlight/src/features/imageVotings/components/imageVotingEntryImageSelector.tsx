@@ -57,7 +57,7 @@ const SelectableImage = ({
     const { classes, cx } = useStyles();
 
     const queryClient = useQueryClient();
-    const imagesQueryKey = getGetApiImageVotingEntryImagesQueryKey({ imageVotingId });
+    const imagesQueryKey = getGetApiImageVotingEntryImagesQueryKey({ ImageVotingId: imageVotingId });
 
     const deleteEntryImage = useDeleteApiImageVotingEntryImagesId();
 
@@ -113,7 +113,7 @@ export const ImageVotingEntryImageSelector = ({
     const { classes } = useStyles();
 
     const queryClient = useQueryClient();
-    const imagesQueryKey = getGetApiImageVotingEntryImagesQueryKey({ imageVotingId: imageVoting.id });
+    const imagesQueryKey = getGetApiImageVotingEntryImagesQueryKey({ ImageVotingId: imageVoting.id });
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
@@ -128,9 +128,7 @@ export const ImageVotingEntryImageSelector = ({
 
     const imageVotingEntryImages = useGetApiImageVotingEntryImages(
         {
-            imageVotingId: imageVoting.id,
-        },
-        {
+            ImageVotingId: imageVoting.id,
             Filters:
                 control.data?.permissions?.includes("ImageVotings.IndexImageVotingEntryImages") ||
                 control.data?.isSuperUser

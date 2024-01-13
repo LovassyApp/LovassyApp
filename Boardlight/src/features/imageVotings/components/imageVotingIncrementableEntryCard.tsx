@@ -1,15 +1,26 @@
-import { ActionIcon, Box, Card, Image, Overlay, Text, createStyles, rem } from "@mantine/core";
-import { IconCheck, IconSquareForbid2, IconTrash, IconX, IconZoomIn } from "@tabler/icons-react";
+import { ActionIcon, Box, Card, Group, Image, Overlay, Text, createStyles, rem, useMantineTheme } from "@mantine/core";
+import {
+    IconArrowBigDown,
+    IconArrowBigDownFilled,
+    IconArrowBigUp,
+    IconArrowBigUpFilled,
+    IconCheck,
+    IconSquareForbid2,
+    IconStar,
+    IconStarFilled,
+    IconTrash,
+    IconX,
+    IconZoomIn,
+} from "@tabler/icons-react";
 import {
     ImageVotingsIndexImageVotingEntriesResponse,
     ImageVotingsViewImageVotingResponse,
 } from "../../../api/generated/models";
 import {
     useDeleteApiImageVotingEntriesId,
-    useDeleteApiImageVotingEntriesIdChoice,
-    usePostApiImageVotingEntriesIdChoice,
+    useDeleteApiImageVotingEntriesIdIncrement,
+    usePostApiImageVotingEntriesIdIncrement,
 } from "../../../api/generated/features/image-voting-entries/image-voting-entries";
-import { useMemo, useState } from "react";
 
 import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { ValidationError } from "../../../helpers/apiHelpers";
@@ -17,15 +28,13 @@ import { getGetApiImageVotingsIdQueryKey } from "../../../api/generated/features
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
+import { useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles((theme) => ({
     section: {
         padding: theme.spacing.sm,
         borderTop: `${rem(1)} solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
-    },
-    activeCard: {
-        borderColor: `${theme.colors.blue[6]} !important`,
     },
     overlayContainer: {
         ["&:after"]: {
@@ -43,53 +52,58 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export const ImageVotingEntryCard = ({
+export enum IncrementType {
+    None = "None",
+    Incremented = "Incremented",
+    SuperIncremented = "SuperIncremented",
+    Decremented = "Decremented",
+}
+
+export const ImageVotingIncrementableCard = ({
     imageVotingEntry,
-    chosen,
+    incrementType,
     aspectKey,
     imageVoting,
 }: {
     imageVotingEntry: ImageVotingsIndexImageVotingEntriesResponse;
-    chosen?: boolean;
+    incrementType?: IncrementType;
     aspectKey?: string;
     imageVoting: ImageVotingsViewImageVotingResponse;
 }): JSX.Element => {
     const { classes } = useStyles();
+    const theme = useMantineTheme();
 
     const queryClient = useQueryClient();
     const imageVotingQueryKey = getGetApiImageVotingsIdQueryKey(imageVoting.id);
 
     const control = useGetApiAuthControl({ query: { enabled: false } }); // Should have it already
 
-    const canChoose = useMemo(
+    const canCreateIncrement = useMemo(
         () =>
-            (control.data.permissions.includes("ImageVotings.ChooseImageVotingEntry") ||
-                (control.data.permissions.includes("ImageVotings.ChooseActiveImageVotingEntry") &&
+            (control.data.permissions.includes("ImageVotings.CreateImageVotingEntryIncrement") ||
+                (control.data.permissions.includes("ImageVotings.CreateActiveImageVotingEntryIncrement") &&
                     imageVoting.active) ||
                 control.data.isSuperUser) &&
-            !chosen &&
-            !imageVotingEntry.chosen &&
-            (imageVotingEntry.canChoose || (imageVotingEntry.canChoose === null && aspectKey)),
+            imageVotingEntry.userId !== control.data.user.id &&
+            (!imageVotingEntry.incrementType ? aspectKey : true),
         [control]
     );
 
-    const canUnchoose = useMemo(
+    const canDeleteIncrement = useMemo(
         () =>
-            (control.data.permissions.includes("ImageVotings.UnchooseImageVotingEntry") ||
-                (control.data.permissions.includes("ImageVotings.UnchooseActiveImageVotingEntry") &&
-                    imageVoting.active) ||
-                control.data.isSuperUser) &&
-            (chosen || imageVotingEntry.chosen),
+            control.data.permissions.includes("ImageVotings.DeleteImageVotingEntryIncrement") ||
+            (control.data.permissions.includes("ImageVotings.DeleteActiveImageVotingEntryIncrement") &&
+                imageVoting.active) ||
+            control.data.isSuperUser,
         [control]
     );
 
-    const chooseEntry = usePostApiImageVotingEntriesIdChoice();
-    const unchooseEntry = useDeleteApiImageVotingEntriesIdChoice();
+    const createIncrement = usePostApiImageVotingEntriesIdIncrement();
+    const deleteIncrement = useDeleteApiImageVotingEntriesIdIncrement();
 
     const deleteImageVotingEntry = useDeleteApiImageVotingEntriesId();
 
     const [magnifiedViewOpen, { close: closeMagnifiedViewOpen, open: openMagnifiedViewOpen }] = useDisclosure();
-    const [optimisticallyChosen, setOptimisticallyChosen] = useState<boolean | undefined>(undefined);
 
     const doDeleteImageVotingEntry = async () => {
         try {
@@ -113,30 +127,102 @@ export const ImageVotingEntryCard = ({
         }
     };
 
-    const onClick = async () => {
+    const onIncrementClick = async () => {
+        const shouldRemove =
+            (incrementType === IncrementType.Incremented ||
+                imageVotingEntry.incrementType === IncrementType.Incremented) &&
+            canDeleteIncrement;
+
         try {
-            if (chosen || imageVotingEntry.chosen) {
-                setOptimisticallyChosen(false);
-                await unchooseEntry.mutateAsync({ id: imageVotingEntry.id, data: { aspectKey: aspectKey } });
-                notifications.show({
-                    title: "Kép kiválasztásának visszavonása",
-                    color: "green",
-                    icon: <IconCheck />,
-                    message: "A kép kiválasztását sikeresen visszavontad.",
+            if (shouldRemove) {
+                await deleteIncrement.mutateAsync({
+                    id: imageVotingEntry.id,
+                    data: {
+                        aspectKey: aspectKey,
+                    },
                 });
-                setOptimisticallyChosen(undefined);
             } else {
-                setOptimisticallyChosen(true);
-                await chooseEntry.mutateAsync({ id: imageVotingEntry.id, data: { aspectKey: aspectKey } });
-                notifications.show({
-                    title: "Kép kiválasztva",
-                    color: "green",
-                    icon: <IconCheck />,
-                    message: "A képet sikeresen kiválasztottad.",
+                await createIncrement.mutateAsync({
+                    id: imageVotingEntry.id,
+                    data: {
+                        type: "Increment",
+                        aspectKey: aspectKey,
+                    },
                 });
-                setOptimisticallyChosen(undefined);
             }
-            if (aspectKey) await queryClient.invalidateQueries({ queryKey: [imageVotingQueryKey[0]] });
+            await queryClient.invalidateQueries({ queryKey: [imageVotingQueryKey[0]] });
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                notifications.show({
+                    title: "Hiba (400)",
+                    color: "red",
+                    icon: <IconX />,
+                    message: err.message,
+                });
+            }
+        }
+    };
+
+    const onSuperIncrementClick = async () => {
+        const shouldRemove =
+            (incrementType === IncrementType.SuperIncremented ||
+                imageVotingEntry.incrementType === IncrementType.SuperIncremented) &&
+            canDeleteIncrement;
+
+        try {
+            if (shouldRemove) {
+                await deleteIncrement.mutateAsync({
+                    id: imageVotingEntry.id,
+                    data: {
+                        aspectKey: aspectKey,
+                    },
+                });
+            } else {
+                await createIncrement.mutateAsync({
+                    id: imageVotingEntry.id,
+                    data: {
+                        type: "SuperIncrement",
+                        aspectKey: aspectKey,
+                    },
+                });
+            }
+            await queryClient.invalidateQueries({ queryKey: [imageVotingQueryKey[0]] });
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                notifications.show({
+                    title: "Hiba (400)",
+                    color: "red",
+                    icon: <IconX />,
+                    message: err.message,
+                });
+            }
+        }
+    };
+
+    const onDecrementClick = async () => {
+        const shouldRemove =
+            incrementType ===
+                (IncrementType.Decremented || imageVotingEntry.incrementType === IncrementType.Decremented) &&
+            canDeleteIncrement;
+
+        try {
+            if (shouldRemove) {
+                await deleteIncrement.mutateAsync({
+                    id: imageVotingEntry.id,
+                    data: {
+                        aspectKey: aspectKey,
+                    },
+                });
+            } else {
+                await createIncrement.mutateAsync({
+                    id: imageVotingEntry.id,
+                    data: {
+                        type: "Decrement",
+                        aspectKey: aspectKey,
+                    },
+                });
+            }
+            await queryClient.invalidateQueries({ queryKey: [imageVotingQueryKey[0]] });
         } catch (err) {
             if (err instanceof ValidationError) {
                 notifications.show({
@@ -172,13 +258,7 @@ export const ImageVotingEntryCard = ({
                     </Text>
                 </Overlay>
             )}
-            <Card
-                radius="md"
-                withBorder={true}
-                className={chosen || imageVotingEntry.chosen ? classes.activeCard : undefined}
-                sx={{ cursor: canChoose || canUnchoose || optimisticallyChosen ? "pointer" : "default" }}
-                onClick={canChoose || canUnchoose ? onClick : undefined}
-            >
+            <Card radius="md" withBorder={true}>
                 <Card.Section>
                     <Box className={classes.overlayContainer} pos="relative">
                         <Image
@@ -254,6 +334,39 @@ export const ImageVotingEntryCard = ({
                                     : imageVotingEntry.user.name}
                             </Text>
                         </Box>
+                    </Card.Section>
+                )}
+                {canCreateIncrement && (
+                    <Card.Section className={classes.section} mt={1}>
+                        <Group spacing="xs" position="center">
+                            <ActionIcon variant="subtle" color={theme.primaryColor} onClick={onIncrementClick}>
+                                {(imageVotingEntry.incrementType as IncrementType) === IncrementType.Incremented ||
+                                incrementType === IncrementType.Incremented ? (
+                                    <IconArrowBigUpFilled size={rem(18)} />
+                                ) : (
+                                    <IconArrowBigUp size={rem(18)} />
+                                )}
+                            </ActionIcon>
+                            {imageVoting.superIncrementAllowed && (
+                                <ActionIcon variant="subtle" color={theme.primaryColor} onClick={onSuperIncrementClick}>
+                                    {(imageVotingEntry.incrementType as IncrementType) ===
+                                        IncrementType.SuperIncremented ||
+                                    incrementType === IncrementType.SuperIncremented ? (
+                                        <IconStarFilled size={rem(18)} />
+                                    ) : (
+                                        <IconStar size={rem(18)} />
+                                    )}
+                                </ActionIcon>
+                            )}
+                            <ActionIcon variant="subtle" color={theme.primaryColor} onClick={onDecrementClick}>
+                                {(imageVotingEntry.incrementType as IncrementType) === IncrementType.Decremented ||
+                                incrementType === IncrementType.Decremented ? (
+                                    <IconArrowBigDownFilled size={rem(18)} />
+                                ) : (
+                                    <IconArrowBigDown size={rem(18)} />
+                                )}
+                            </ActionIcon>
+                        </Group>
                     </Card.Section>
                 )}
             </Card>

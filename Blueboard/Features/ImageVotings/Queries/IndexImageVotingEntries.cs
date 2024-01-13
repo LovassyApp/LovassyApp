@@ -12,6 +12,14 @@ namespace Blueboard.Features.ImageVotings.Queries;
 
 public static class IndexImageVotingEntries
 {
+    public enum ResponseIncrementType
+    {
+        None,
+        Incremented,
+        SuperIncremented,
+        Decremented
+    }
+
     public class Query : IRequest<IEnumerable<Response>>
     {
         public SieveModel SieveModel { get; set; } = null!;
@@ -33,6 +41,8 @@ public static class IndexImageVotingEntries
         public bool? CanChoose { get; set; }
         public bool? Chosen { get; set; }
 
+        public string? IncrementType { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -44,14 +54,17 @@ public static class IndexImageVotingEntries
         public string? Class { get; set; }
     }
 
-    internal sealed class Handler(ApplicationDbContext context, PermissionManager permissionManager,
-            SieveProcessor sieveProcessor,
-            UserAccessor userAccessor)
+    internal sealed class Handler(
+        ApplicationDbContext context,
+        PermissionManager permissionManager,
+        SieveProcessor sieveProcessor,
+        UserAccessor userAccessor)
         : IRequestHandler<Query, IEnumerable<Response>>
     {
         public async Task<IEnumerable<Response>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var entries = context.ImageVotingEntries.Include(e => e.ImageVoting)
+            var entries = context.ImageVotingEntries
+                .Include(e => e.Increments.Where(i => i.UserId == userAccessor.User.Id)).Include(e => e.ImageVoting)
                 .ThenInclude(v => v.Choices.Where(c => c.UserId == userAccessor.User.Id)).Include(e => e.User)
                 .AsNoTracking(); //I verified that there is no cartesian explosion here
 
@@ -78,6 +91,18 @@ public static class IndexImageVotingEntries
             {
                 response.CanChoose = true;
                 response.Chosen = entry.ImageVoting.Choices.Any(c => c.ImageVotingEntryId == entry.Id);
+            }
+
+            if (entry.ImageVoting.Type == ImageVotingType.Increment && !entry.ImageVoting.Aspects.Any())
+            {
+                var increment = entry.Increments.FirstOrDefault(i => i.UserId == userAccessor.User.Id);
+                response.IncrementType = (increment != null
+                    ? increment.Increment == entry.ImageVoting.SuperIncrementValue
+                        ? ResponseIncrementType.SuperIncremented
+                        : increment.Increment < 0
+                            ? ResponseIncrementType.Decremented
+                            : ResponseIncrementType.Incremented
+                    : ResponseIncrementType.None).Adapt<string>();
             }
 
             if (entry.UserId == userAccessor.User.Id)

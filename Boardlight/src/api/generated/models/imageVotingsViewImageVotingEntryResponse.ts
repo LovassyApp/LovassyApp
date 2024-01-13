@@ -15,6 +15,7 @@ export interface ImageVotingsViewImageVotingEntryResponse {
   imageVotingId?: number;
   canChoose?: boolean | null;
   chosen?: boolean | null;
+  incrementType?: string | null;
   createdAt?: string;
   updatedAt?: string;
 }
