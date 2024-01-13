@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## api_image_voting_entry_images_get
 
-> Vec<crate::models::ImageVotingsIndexImageVotingEntryImagesResponse> api_image_voting_entry_images_get(filters, sorts, page, page_size, image_votings_index_image_voting_entry_images_request_body)
+> Vec<crate::models::ImageVotingsIndexImageVotingEntryImagesResponse> api_image_voting_entry_images_get(image_voting_id, filters, sorts, page, page_size)
 List all images of an image voting
 
 Requires verified email; Requires one of the following permissions: ImageVotings.IndexOwnImageVotingEntryImages, ImageVotings.IndexImageVotingEntryImages
@@ -22,11 +22,11 @@ Requires verified email; Requires one of the following permissions: ImageVotings
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
+**image_voting_id** | Option<**i32**> |  |  |
 **filters** | Option<**String**> |  |  |
 **sorts** | Option<**String**> |  |  |
 **page** | Option<**i32**> |  |  |
 **page_size** | Option<**i32**> |  |  |
-**image_votings_index_image_voting_entry_images_request_body** | Option<[**ImageVotingsIndexImageVotingEntryImagesRequestBody**](ImageVotingsIndexImageVotingEntryImagesRequestBody.md)> |  |  |
 
 ### Return type
 
@@ -38,7 +38,7 @@ Name | Type | Description  | Required | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json, text/json, application/*+json
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

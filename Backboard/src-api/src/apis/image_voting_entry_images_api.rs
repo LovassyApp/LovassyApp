@@ -47,7 +47,7 @@ pub enum ApiImageVotingEntryImagesPostError {
 
 
 /// Requires verified email; Requires one of the following permissions: ImageVotings.IndexOwnImageVotingEntryImages, ImageVotings.IndexImageVotingEntryImages
-pub async fn api_image_voting_entry_images_get(configuration: &configuration::Configuration, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>, image_votings_index_image_voting_entry_images_request_body: Option<crate::models::ImageVotingsIndexImageVotingEntryImagesRequestBody>) -> Result<Vec<crate::models::ImageVotingsIndexImageVotingEntryImagesResponse>, Error<ApiImageVotingEntryImagesGetError>> {
+pub async fn api_image_voting_entry_images_get(configuration: &configuration::Configuration, image_voting_id: Option<i32>, filters: Option<&str>, sorts: Option<&str>, page: Option<i32>, page_size: Option<i32>) -> Result<Vec<crate::models::ImageVotingsIndexImageVotingEntryImagesResponse>, Error<ApiImageVotingEntryImagesGetError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -55,6 +55,9 @@ pub async fn api_image_voting_entry_images_get(configuration: &configuration::Co
     let local_var_uri_str = format!("{}/Api/ImageVotingEntryImages", local_var_configuration.base_path);
     let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
+    if let Some(ref local_var_str) = image_voting_id {
+        local_var_req_builder = local_var_req_builder.query(&[("ImageVotingId", &local_var_str.to_string())]);
+    }
     if let Some(ref local_var_str) = filters {
         local_var_req_builder = local_var_req_builder.query(&[("Filters", &local_var_str.to_string())]);
     }
@@ -73,7 +76,6 @@ pub async fn api_image_voting_entry_images_get(configuration: &configuration::Co
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&image_votings_index_image_voting_entry_images_request_body);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

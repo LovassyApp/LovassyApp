@@ -23,6 +23,8 @@ pub struct ImageVotingsViewImageVotingResponseImageVotingAspect {
     pub can_choose: Option<Option<bool>>,
     #[serde(rename = "chosenEntryId", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub chosen_entry_id: Option<Option<i32>>,
+    #[serde(rename = "imageVotingAspectEntryIncrements", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub image_voting_aspect_entry_increments: Option<Option<Vec<crate::models::ImageVotingsViewImageVotingResponseImageVotingAspectEntryIncrement>>>,
 }
 
 impl ImageVotingsViewImageVotingResponseImageVotingAspect {
@@ -33,6 +35,7 @@ impl ImageVotingsViewImageVotingResponseImageVotingAspect {
             description: None,
             can_choose: None,
             chosen_entry_id: None,
+            image_voting_aspect_entry_increments: None,
         }
     }
 }
