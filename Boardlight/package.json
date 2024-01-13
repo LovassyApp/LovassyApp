@@ -1,7 +1,7 @@
 {
     "name": "boardlight",
     "private": true,
-    "version": "2.0.0",
+    "version": "2.1.0",
     "type": "module",
     "repository": "https://github.com/LovassyApp/LovassyApp",
     "license": "MIT",
