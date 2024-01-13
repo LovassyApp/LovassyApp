@@ -25,7 +25,7 @@ builder.Services.AddWebApiHelpers(builder.Configuration, Assembly.GetExecutingAs
     new FrameworkHelpersConfiguration
     {
         ApiName = "Blueboard",
-        ApiVersion = "v4.0.0",
+        ApiVersion = builder.Configuration["Status:Version"]!,
         SchemaIdResolver = type => type.ToString().Replace("Blueboard.Features.", string.Empty)
             .Replace("Microsoft.AspNetCore.Mvc", string.Empty).Replace("+", string.Empty)
             .Replace(".", string.Empty).Replace("Commands", string.Empty).Replace("Queries", string.Empty),
