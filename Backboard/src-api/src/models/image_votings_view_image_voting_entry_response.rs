@@ -29,6 +29,8 @@ pub struct ImageVotingsViewImageVotingEntryResponse {
     pub can_choose: Option<Option<bool>>,
     #[serde(rename = "chosen", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
     pub chosen: Option<Option<bool>>,
+    #[serde(rename = "incrementType", default, with = "::serde_with::rust::double_option", skip_serializing_if = "Option::is_none")]
+    pub increment_type: Option<Option<String>>,
     #[serde(rename = "createdAt", skip_serializing_if = "Option::is_none")]
     pub created_at: Option<String>,
     #[serde(rename = "updatedAt", skip_serializing_if = "Option::is_none")]
@@ -46,6 +48,7 @@ impl ImageVotingsViewImageVotingEntryResponse {
             image_voting_id: None,
             can_choose: None,
             chosen: None,
+            increment_type: None,
             created_at: None,
             updated_at: None,
         }

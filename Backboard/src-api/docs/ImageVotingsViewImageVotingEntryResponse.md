@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **image_voting_id** | Option<**i32**> |  | [optional]
 **can_choose** | Option<**bool**> |  | [optional]
 **chosen** | Option<**bool**> |  | [optional]
+**increment_type** | Option<**String**> |  | [optional]
 **created_at** | Option<**String**> |  | [optional]
 **updated_at** | Option<**String**> |  | [optional]
 
