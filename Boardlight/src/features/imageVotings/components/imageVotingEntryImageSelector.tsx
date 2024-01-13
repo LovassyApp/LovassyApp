@@ -205,7 +205,11 @@ export const ImageVotingEntryImageSelector = ({
                     error={imageError ?? error}
                     sx={{ flex: "1 !important" }}
                 />
-                <Button onClick={() => doUploadImage()} mb={imageError || error ? rem(19) : 0}>
+                <Button
+                    onClick={() => doUploadImage()}
+                    loading={uploadImage.isLoading}
+                    mb={imageError || error ? rem(19) : 0}
+                >
                     Feltöltés
                 </Button>
             </Group>
