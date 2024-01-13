@@ -161,13 +161,13 @@ export const CoinsStats = ({
                         </Title>
                         <Text>
                             Meglévő jegyek:{" "}
-                            <Text component="span" weight="bold" color="pink">
+                            <Text component="span" weight="bold" color="green">
                                 {fiveGrades - fromFive * 3} db
                             </Text>
                         </Text>
                         <Text>
                             Szükséges jegyek:{" "}
-                            <Text component="span" weight="bold" color="grape">
+                            <Text component="span" weight="bold" color="red">
                                 {3 - (fiveGrades - fromFive * 3)} db
                             </Text>
                         </Text>
@@ -175,14 +175,14 @@ export const CoinsStats = ({
                     <RingProgress
                         sections={[
                             {
-                                value: ((5 - (fiveGrades - fromFive * 3)) / 3) * 100,
-                                color: "cyan.5",
-                                tooltip: `Meglévő jegyek - ${fiveGrades - fromFive * 3} db`,
+                                value: ((3 - (fiveGrades - fromFive * 3)) / 3) * 100,
+                                color: "red.7",
+                                tooltip: `Szükséges jegyek - ${3 - (fiveGrades - fromFive * 3)} db`,
                             },
                             {
                                 value: ((fiveGrades - fromFive * 3) / 3) * 100,
-                                color: "blue.7",
-                                tooltip: `Szükséges jegyek - ${3 - (fiveGrades - fromFive * 3)} db`,
+                                color: "green.5",
+                                tooltip: `Meglévő jegyek - ${fiveGrades - fromFive * 3} db`,
                             },
                         ]}
                     />
@@ -199,13 +199,13 @@ export const CoinsStats = ({
                         </Title>
                         <Text>
                             Meglévő jegyek:{" "}
-                            <Text component="span" weight="bold" color="pink">
+                            <Text component="span" weight="bold" color="green">
                                 {fourGrades - fromFour * 5} db
                             </Text>
                         </Text>
                         <Text>
                             Szükséges jegyek:{" "}
-                            <Text component="span" weight="bold" color="grape">
+                            <Text component="span" weight="bold" color="red">
                                 {5 - (fourGrades - fromFour * 5)} db
                             </Text>
                         </Text>
@@ -214,13 +214,13 @@ export const CoinsStats = ({
                         sections={[
                             {
                                 value: ((5 - (fourGrades - fromFour * 5)) / 5) * 100,
-                                color: "cyan.5",
-                                tooltip: `Meglévő jegyek - ${fourGrades - fromFour * 5} db`,
+                                color: "red.7",
+                                tooltip: `Szükséges jegyek - ${5 - (fourGrades - fromFour * 5)} db`,
                             },
                             {
                                 value: ((fourGrades - fromFour * 5) / 5) * 100,
-                                color: "blue.7",
-                                tooltip: `Szükséges jegyek - ${5 - (fourGrades - fromFour * 5)} db`,
+                                color: "green.5",
+                                tooltip: `Meglévő jegyek - ${fourGrades - fromFour * 5} db`,
                             },
                         ]}
                     />
