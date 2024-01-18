@@ -1,0 +1,12 @@
+version: '3'
+services:
+  boardlight:
+    build: 
+      dockerfile: docker/Dockerfile.boardlight
+    ports:
+      - 80:80
+      - 443:443
+      - 5279:5279
+      - 5173:5173
+    volumes:
+      - ./Boardlight/src:/app/Boardlight/src
