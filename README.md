@@ -15,15 +15,11 @@ A Lovassy László Gimnázium diákjainak életét megkönnyíteni hivatott alka
   - [x] Vásárolt termékek felhasználása
 - [X] Jegyek megtekintése
 - [X] Hírek megtekintése a [Lovassy weboldaláról](http://web.lovassy.hu)
+- [x] Szavazó rendszer (farsangi jelmezversenyhez, stb.)
 - [ ] Párt rendszer (párthéthez)
   - [ ] Pártok létrehozása, regisztálása
   - [ ] Pártprogramok megtekintése
   - [ ] Szavazás
-- [ ] Szavazó rendszer (farsangi jelmezversenyhez, stb.)
-- [ ] Éjszakai röpi rendszer
-  - [ ] Röpi csapatok létrehozása, regisztálása
-  - [ ] Értesítések meccsek előtt
-  - [ ] Pontozás, kivetítendő pontozó tábla
 - [ ] Menza rendszer
   - [ ] A vagy B menü igénylése digitálisan
   - [ ] Kajajegy helyett újra felhasználható NFC kártyák/telefonos NFC
