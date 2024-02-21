@@ -4,7 +4,7 @@ A Lovassy László Gimnázium diákjainak életét megkönnyíteni hivatott alka
 
 ![LovassyAppProductImage.png](.github/LovassyAppProductImage.png)
 
-*Megjegyzés: Ez a repo a jelenlegi legújabb, fejlesztés alatti verziót tartalmazza. Blueboard v4 előtti verziók megtekinthetők itt: https://github.com/LovassyApp/LovassyAppLegacy. Ezt a verziót a 2023/2024-es tanév elején tervezzük bevezetni.*
+*Megjegyzés: Ez a repo a jelenlegi legújabb, fejlesztés alatti verziót tartalmazza. Blueboard v4 előtti verziók megtekinthetők itt: https://github.com/LovassyApp/LovassyAppLegacy. Ezt a verziót a 2023/2024-es tanév elején vezettük be.*
 
 ## Funkciók
 
@@ -48,7 +48,7 @@ A publikus API dokumentáció az aktuális vezrióhoz elérhető [itt](https://b
 
 #### Blueboard
 
-A Blueboard futtatásához szükséges a [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0). Amennyiben ez megvan ajánlott a `LovassyApp.sln` fájlt egy választott fejlesztői környezetben megnyitni és a solutionben található futási konfigurációt használni.
+A Blueboard futtatásához szükséges a [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). Amennyiben ez megvan ajánlott a `LovassyApp.sln` fájlt egy választott fejlesztői környezetben megnyitni és a solutionben található futási konfigurációt használni.
 
 Alternatív módon a `dotnet restore` parancs futtatása után a `Blueboard` mappában futtatható `dotnet run` parancs, amennyiben a .NET 7 SDK telepítve van.
 
