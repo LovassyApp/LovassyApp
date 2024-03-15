@@ -7143,6 +7143,10 @@
             "type": "string",
             "nullable": true
           },
+          "theme": {
+            "type": "string",
+            "nullable": true
+          },
           "teacher": {
             "type": "string",
             "nullable": true
@@ -7174,10 +7178,6 @@
           "createDate": {
             "type": "string",
             "format": "date-time"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
           },
           "type": {
             "type": "string",

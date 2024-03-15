@@ -44,6 +44,9 @@ public static class IndexOwnLolos
 
         public string Subject { get; set; }
         public string SubjectCategory { get; set; }
+
+        public string Theme { get; set; }
+
         public string Teacher { get; set; }
         public string Group { get; set; }
 
@@ -56,7 +59,6 @@ public static class IndexOwnLolos
         public DateTime EvaluationDate { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public string Name { get; set; }
         public string Type { get; set; }
         public string GradeType { get; set; }
 
@@ -64,7 +66,8 @@ public static class IndexOwnLolos
         public DateTime UpdatedAt { get; set; }
     }
 
-    internal sealed class Handler(LoloManager loloManager, SieveProcessor sieveProcessor) : IRequestHandler<Query, Response>
+    internal sealed class Handler(LoloManager loloManager, SieveProcessor sieveProcessor)
+        : IRequestHandler<Query, Response>
     {
         public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
         {

@@ -3,11 +3,19 @@ import { Box, Group, Paper, Stack, Text, useMantineTheme } from "@mantine/core";
 import { IconCoin } from "@tabler/icons-react";
 import { ShopIndexOwnLolosResponseCoin } from "../../../api/generated/models";
 
-export const CoinCard = ({ coin }: { coin: ShopIndexOwnLolosResponseCoin }): JSX.Element => {
+export const CoinCard = ({
+    coin,
+    openDetails,
+}: {
+    coin: ShopIndexOwnLolosResponseCoin;
+    openDetails(): void;
+}): JSX.Element => {
     const theme = useMantineTheme();
 
+    console.log(coin);
+
     return (
-        <Paper withBorder={true} radius="md" p="xs">
+        <Paper withBorder={true} radius="md" p="xs" onClick={() => openDetails()} sx={{ cursor: "pointer" }}>
             <Group position="apart" maw="100%" sx={{ flexWrap: "nowrap" }}>
                 <Stack justify="space-between" align="stretch" spacing={0} sx={{ flex: 1, overflow: "hidden" }}>
                     <Box maw="100%">
