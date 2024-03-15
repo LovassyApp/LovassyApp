@@ -336,7 +336,7 @@ export const ImageVotingIncrementableCard = ({
                         </Box>
                     </Card.Section>
                 )}
-                {canCreateIncrement && (
+                {canCreateIncrement ? (
                     <Card.Section className={classes.section} mt={1}>
                         <Group spacing="xs" position="center">
                             <ActionIcon variant="subtle" color={theme.primaryColor} onClick={onIncrementClick}>
@@ -367,6 +367,12 @@ export const ImageVotingIncrementableCard = ({
                                 )}
                             </ActionIcon>
                         </Group>
+                    </Card.Section>
+                ) : (
+                    <Card.Section className={classes.section} mt={1}>
+                        <Text size="sm" color="dimmed" align="center">
+                            A saját képedre nem szavazhatsz.
+                        </Text>
                     </Card.Section>
                 )}
             </Card>
