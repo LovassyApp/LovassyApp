@@ -10,6 +10,7 @@ export interface ShopIndexOwnLolosResponseGrade {
   uid?: string | null;
   subject?: string | null;
   subjectCategory?: string | null;
+  theme?: string | null;
   teacher?: string | null;
   group?: string | null;
   gradeValue?: number;
@@ -18,7 +19,6 @@ export interface ShopIndexOwnLolosResponseGrade {
   weight?: number;
   evaluationDate?: string;
   createDate?: string;
-  name?: string | null;
   type?: string | null;
   gradeType?: string | null;
   createdAt?: string;
