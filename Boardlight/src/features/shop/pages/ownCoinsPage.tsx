@@ -16,11 +16,12 @@ import { CoinCard } from "../components/coinCard";
 import { CoinsStats } from "../components/coinStats";
 import { GradeCard } from "../../school/components/gradeCard";
 import { ShopIndexOwnLolosResponseCoin } from "../../../api/generated/models";
+import { SchoolIndexGradesResponseGrade } from "../../../api/generated/models";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetApiGrades } from "../../../api/generated/features/grades/grades";
 import { useGetApiLolosOwn } from "../../../api/generated/features/lolos/lolos";
 import { useState } from "react";
-
+import { GradeDetailsModal } from "../../school/components/gradeDetailsModal";
 const useStyles = createStyles((theme) => ({
     center: {
         height: "100%",
@@ -36,8 +37,12 @@ const DetailsModal = ({
     opened: boolean;
     close(): void;
 }): JSX.Element => {
+    const [gdetailsModalOpened, { close: closegDetailsModal, open: opengDetailsModal }] = useDisclosure(false);
+    const [gdetailsModalGrade, setgDetailsModalGrade] = useState<SchoolIndexGradesResponseGrade>();
     return (
+        <>
         <Modal opened={opened} onClose={close} title="Részletek" size="lg">
+            <GradeDetailsModal grade={gdetailsModalGrade} opened={gdetailsModalOpened} close={closegDetailsModal}/>
             <Group position="apart" spacing={0}>
                 <Text>Indoklás:</Text>
                 <Text weight="bold">{coin?.reason}</Text>
@@ -52,7 +57,10 @@ const DetailsModal = ({
                     <Text mb="sm">Jegyek:</Text>
                     <Stack mb="lg">
                         {coin.grades.map((grade) => (
-                            <GradeCard key={grade.id} grade={grade} openDetails={null} />
+                            <GradeCard key={grade.id} grade={grade} openDetails={() => {
+                                setgDetailsModalGrade(grade);
+                                opengDetailsModal();
+                            }} />
                         ))}
                     </Stack>
                 </>
@@ -67,6 +75,7 @@ const DetailsModal = ({
                 <Text weight="bold">{new Date(coin?.updatedAt).toLocaleString("hu-HU", {})}</Text>
             </Group>
         </Modal>
+        </>
     );
 };
 
