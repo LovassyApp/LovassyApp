@@ -38,9 +38,27 @@ export const GradeCard = ({ grade, openDetails }: { grade: SchoolIndexGradesResp
                         {new Date(grade.evaluationDate).toLocaleDateString("hu-HU", {})} - {grade.weight}%
                     </Text>
                 </Stack>
-                <Text size={rem(60)} sx={{ lineHeight: rem(60) }} color={color} align="center" weight={500} pr="md">
-                    {grade.gradeValue !== 0 ? grade.gradeValue : "-"}
-                </Text>
+                <Box pos="relative">
+                    <Text size={rem(60)} sx={{ lineHeight: rem(60) }} color={color} align="center" weight={400} pr="md">
+                        {grade.gradeValue !== 0 ? grade.gradeValue : "-"}
+                    </Text>
+                    {grade.weight === 200 && (
+                        <Text
+                            size={rem(60)}
+                            sx={{ lineHeight: rem(60) }}
+                            color={color}
+                            align="center"
+                            weight={400}
+                            pr="md"
+                            pos="absolute"
+                            top={3}
+                            left={3}
+                            opacity={0.5}
+                        >
+                            {grade.gradeValue !== 0 ? grade.gradeValue : "-"}
+                        </Text>
+                    )}
+                </Box>
             </Group>
         </Paper>
     );
