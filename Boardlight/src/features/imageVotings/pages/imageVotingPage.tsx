@@ -177,10 +177,13 @@ const ResultsModal = ({
                 <Text>Feltöltők száma:</Text>
                 <Text weight="bold">{results.data.uploaderCount}</Text>
             </Group>
-            <Group position="apart" spacing={0}>
-                <Text>Szavazók száma:</Text>
-                <Text weight="bold">{results.data.chooserCount ?? results.data.incrementerCount}</Text>
-            </Group>
+            {imageVoting.type === "SingleChoice" && (
+                <Group position="apart" spacing={0}>
+                    {/** TODO: Fix this, data from the backend is incorrect for incremental type */}
+                    <Text>Szavazók száma:</Text>
+                    <Text weight="bold">{results.data.chooserCount ?? results.data.incrementerCount}</Text>
+                </Group>
+            )}
             <Divider my="sm" />
             <Text mb="md">Toplista {imageVoting.aspects.length > 0 && !aspectKey && " (összesített értékek)"}</Text>
             {orderedEntries.slice(0, !expanded ? 5 : undefined).map((entry) => (
