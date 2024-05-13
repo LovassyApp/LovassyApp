@@ -2,7 +2,13 @@ import { Box, Group, Paper, Stack, Text, rem } from "@mantine/core";
 
 import { SchoolIndexGradesResponseGrade } from "../../../api/generated/models";
 
-export const GradeCard = ({ grade, openDetails }: { grade: SchoolIndexGradesResponseGrade, openDetails(): void, }): JSX.Element => {
+export const GradeCard = ({
+    grade,
+    openDetails,
+}: {
+    grade: SchoolIndexGradesResponseGrade;
+    openDetails(): void;
+}): JSX.Element => {
     const color =
         grade.gradeValue === 5
             ? "green"
@@ -17,7 +23,7 @@ export const GradeCard = ({ grade, openDetails }: { grade: SchoolIndexGradesResp
             : "blue";
 
     return (
-        <Paper withBorder={true} radius="md" p="sm" onClick={() => openDetails()} sx={{cursor: "pointer"}}>
+        <Paper withBorder={true} radius="md" p="sm" onClick={() => openDetails()} sx={{ cursor: "pointer" }}>
             <Group position="apart" align="center" maw="100%" sx={{ flexWrap: "nowrap" }}>
                 <Stack justify="space-between" align="stretch" spacing={0} sx={{ flex: 1, overflow: "hidden" }}>
                     <Box maw="100%">
@@ -32,9 +38,27 @@ export const GradeCard = ({ grade, openDetails }: { grade: SchoolIndexGradesResp
                         {new Date(grade.evaluationDate).toLocaleDateString("hu-HU", {})} - {grade.weight}%
                     </Text>
                 </Stack>
-                <Text size={rem(60)} sx={{ lineHeight: rem(60) }} color={color} align="center" weight={400*grade.weight/100} pr="md">
-                    {grade.gradeValue !== 0 ? grade.gradeValue : "-"}
-                </Text>
+                <Box pos="relative">
+                    <Text size={rem(60)} sx={{ lineHeight: rem(60) }} color={color} align="center" weight={400} pr="md">
+                        {grade.gradeValue !== 0 ? grade.gradeValue : "-"}
+                    </Text>
+                    {grade.weight === 200 && (
+                        <Text
+                            size={rem(60)}
+                            sx={{ lineHeight: rem(60) }}
+                            color={color}
+                            align="center"
+                            weight={400}
+                            pr="md"
+                            pos="absolute"
+                            top={3}
+                            left={3}
+                            opacity={0.5}
+                        >
+                            {grade.gradeValue !== 0 ? grade.gradeValue : "-"}
+                        </Text>
+                    )}
+                </Box>
             </Group>
         </Paper>
     );
