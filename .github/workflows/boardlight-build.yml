@@ -22,18 +22,6 @@ jobs:
         with:
           version: latest
           run_install: false
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
       - name: Install Boardlight dependencies
         run: |
           cd Boardlight
@@ -51,4 +39,3 @@ jobs:
         with:
           file_pattern: Boardlight/src/api/generated/**
           commit_message: Updated the Typescript API client for Boardlight
-          

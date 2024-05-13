@@ -1,7 +1,7 @@
 name: Backboard Release
 run-name: ${{ github.actor }} is releasing a new version of Backboard 📣
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
 jobs:
   build-backboard:
     name: Build Backboard binary
@@ -19,18 +19,6 @@ jobs:
         with:
           version: latest
           run_install: false
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
       - name: Setup rust
         uses: dtolnay/rust-toolchain@stable
       - name: Setup rust cache
@@ -52,4 +40,3 @@ jobs:
           releaseDraft: true
           prerelease: false
           projectPath: ./Backboard
-      
