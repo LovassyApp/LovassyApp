@@ -2,13 +2,7 @@ import { Box, Group, Paper, Stack, Text, rem } from "@mantine/core";
 
 import { SchoolIndexGradesResponseGrade } from "../../../api/generated/models";
 
-export const GradeCard = ({
-    grade,
-    openDetails,
-}: {
-    grade: SchoolIndexGradesResponseGrade;
-    openDetails(): void;
-}): JSX.Element => {
+export const GradeCard = ({ grade, openDetails }: { grade: SchoolIndexGradesResponseGrade; openDetails?(): void }) => {
     const color =
         grade.gradeValue === 5
             ? "green"
@@ -23,7 +17,13 @@ export const GradeCard = ({
             : "blue";
 
     return (
-        <Paper withBorder={true} radius="md" p="sm" onClick={() => openDetails()} sx={{ cursor: "pointer" }}>
+        <Paper
+            withBorder={true}
+            radius="md"
+            p="sm"
+            onClick={openDetails !== null ? () => openDetails() : null}
+            sx={{ cursor: openDetails !== null ? "pointer" : "auto" }}
+        >
             <Group position="apart" align="center" maw="100%" sx={{ flexWrap: "nowrap" }}>
                 <Stack justify="space-between" align="stretch" spacing={0} sx={{ flex: 1, overflow: "hidden" }}>
                     <Box maw="100%">

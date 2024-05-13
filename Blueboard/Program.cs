@@ -61,7 +61,7 @@ builder.Services.AddCryptographyHelpers(builder.Configuration);
 var dataSourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString("DefaultConnection"));
 dataSourceBuilder.EnableDynamicJson();
 
-await using var dataSource = dataSourceBuilder.Build();
+var dataSource = dataSourceBuilder.Build();
 
 builder.Services.AddInfrastructure(dataSource);
 
