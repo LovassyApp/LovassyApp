@@ -46,6 +46,9 @@ A publikus API dokumentáció az aktuális vezrióhoz elérhető [itt](https://b
 
 ### Futtatás lokálisan
 
+Lehetőség van Docker konténerek futtatására. Ehhez adjuk ki a `docker compose -f docker-compose-dev.yml up` parancsot! Így a Boardlight a 80-as porton, a Blueboard az 5279-es porton, a PostgreSQL az 5432-es porton és az Adminer (webes adatbázis-kezelő) a 8080-as porton indul el.
+Az adatbázis-migrációk futtatásához be kell lépni a Blueboard konténerébe: `docker exec -it lovassyapp-blueboard-1 bash`, majd ott `dotnet ef database update`. Felhasználók létrehozásához: `dotnet run -- seed:users`. Az összes felhasználónak `password` a jelszava.
+
 #### Blueboard
 
 A Blueboard futtatásához szükséges a [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). Amennyiben ez megvan ajánlott a `LovassyApp.sln` fájlt egy választott fejlesztői környezetben megnyitni és a solutionben található futási konfigurációt használni.
