@@ -1,0 +1,33 @@
+# Ignore Git
+.git
+.gitignore
+
+# Ignore Docker files themselves
+docker-compose*.yml
+# docker/
+
+# Build output
+**/bin/
+**/obj/
+[Bb]uild/
+artifacts/
+
+# IDE / editor configs
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Node modules
+node_modules/
+
+# Logs & temp
+*.log
+*.tmp
+*.pid
+*.svclog
+
+# Secrets
+.env

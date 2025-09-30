@@ -65,3 +65,9 @@ A Boardlight futtatásához szükséges a [Node.js](https://nodejs.org/en/) és 
 #### Backboard
 
 A Backboard futtatásához szükséges a [Node.js](https://nodejs.org/en/), a [Rust](https://www.rust-lang.org/) és a [pnpm](https://pnpm.io/) telepítése. Amennyiben ez megvan ajánlott a `Backboard` mappában a `pnpm install` parancs után a `pnpm tauri dev` parancs futtatása.
+
+### Futtatás dockerben
+
+#### Blueboard - *[dokumentáció](docker/README-blueboard.hu.md)*
+#### Boardlight - *[dokumentáció](docker/README-boardlight.hu.md)*
+#### Backboard - *[dokumentáció](docker/README-backboard.hu.md)*

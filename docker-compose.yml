@@ -1,26 +1,54 @@
-version: '3.4'
+networks:
+  blueboard-network:
+    name: blueboard-network
 
 services:
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus_dev
+## BOARDLIGHT
+  boardlight:
+    networks:
+      - blueboard-network
+    build:
+      context: Boardlight/
+      dockerfile: ../docker/Dockerfile.boardlight
     ports:
-      - "5280:9090"
-    environment:
-      - TZ=UTC
+      - 80:80
     volumes:
-      - ./metrics_dev/prom/prometheus.yml:/etc/prometheus/prometheus.yml
-    restart: unless-stopped
+      - .:/app
+      - /app/node_modules
 
-  grafana:
-    image: grafana/grafana-oss:latest
-    container_name: grafana_dev
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
+## BLUEBOARD
+  blueboard:
+    networks:
+      - blueboard-network
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile.blueboard
     depends_on:
-      - prometheus
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: http://+:5279
+      ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
     ports:
-      - "5281:3000"
-    volumes:
-      - ./metrics_dev/grafana_data/data:/var/lib/grafana
+      - "${BLUEBOARD_PORT}:5279"
     restart: unless-stopped
+    volumes:
+      - blueboard-data:/app
+
+  db:
+    networks:
+      - blueboard-network
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+  blueboard-data:
