@@ -23,3 +23,15 @@ services:
     image: adminer
     ports:
       - 8080:8080
+
+  boardlight:
+    build:
+      dockerfile: docker/Dockerfile.boardlight-dev
+    ports:
+      - 80:80
+    volumes:
+      - ./Boardlight:/app/Boardlight
+    depends_on:
+      - blueboard
+    environment:
+      VITE_BLUEBOARD_URL: "http://localhost:5279"
