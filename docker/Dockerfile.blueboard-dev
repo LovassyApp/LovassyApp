@@ -4,7 +4,6 @@ COPY ./LovassyApp.sln ./
 COPY ./Blueboard Blueboard/
 COPY ./Helpers.WebApi Helpers.WebApi/
 COPY ./Helpers.Cryptography Helpers.Cryptography/
-COPY ./Helpers.Cryptography Helpers.Cryptography/
 COPY ./Helpers.Email Helpers.Email/
 WORKDIR /app/Blueboard
 EXPOSE 5279
