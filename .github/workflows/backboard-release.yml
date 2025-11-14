@@ -54,7 +54,7 @@ jobs:
           cd Backboard
           pnpm install --no-frozen-lockfile
       - name: Build Backboard
-        uses: tauri-apps/tauri-action@v0.5.24
+        uses: tauri-apps/tauri-action@v0.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
