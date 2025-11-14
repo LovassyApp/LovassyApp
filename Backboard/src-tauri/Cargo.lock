@@ -175,7 +175,7 @@ dependencies = [
  "libaes",
  "log",
  "pbkdf2",
- "rand 0.8.5",
+ "rand 0.9.2",
  "safe_pqc_kyber",
  "serde",
  "serde_json",
