@@ -2206,6 +2206,50 @@
         ]
       }
     },
+    "/Api/Increment": {
+      "post": {
+        "tags": [
+          "Increment"
+        ],
+        "summary": "Delete all users' grades, lolos, and owned saves to increment the academic year",
+        "description": "Requires verified email; Requires one of the following permissions: Increment.IncrementYear; Requires the following features to be enabled: Increment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncrementIncrementYearRequestBody"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncrementIncrementYearRequestBody"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncrementIncrementYearRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Token": [ ]
+          }
+        ]
+      }
+    },
     "/Api/LoloRequestCreatedNotifiers": {
       "get": {
         "tags": [
@@ -6411,6 +6455,19 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IncrementIncrementYearRequestBody": {
+        "required": [
+          "confirmationText"
+        ],
+        "type": "object",
+        "properties": {
+          "confirmationText": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
