@@ -12,7 +12,7 @@ jobs:
     name: New Relic
     steps:
       - name: Checkout master
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Set Appsettings Var
         id: set_var
         run: |
