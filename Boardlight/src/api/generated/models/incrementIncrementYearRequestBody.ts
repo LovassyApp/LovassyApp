@@ -5,10 +5,7 @@
  * OpenAPI spec version: 4.1.0
  */
 
-export interface ShopCreateOwnedItemRequestBody {
-  productId: number;
-  /** @nullable */
-  usedAt?: string | null;
+export interface IncrementIncrementYearRequestBody {
   /** @minLength 1 */
-  userId: string;
+  confirmationText: string;
 }
