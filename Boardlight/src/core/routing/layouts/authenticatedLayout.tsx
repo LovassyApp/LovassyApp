@@ -659,6 +659,12 @@ const links = [
                 permissions: ["Shop.IndexOwnedItems"],
                 features: ["Shop"],
             },
+            {
+                link: "/increment/year",
+                label: "Tanév léptetése",
+                permissions: ["Increment.IncrementYear"],
+                features: ["Increment"],
+            },
         ],
     },
 ];
