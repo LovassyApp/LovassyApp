@@ -30,7 +30,7 @@ const useStyles = createStyles(() => ({
     },
 }));
 
-const CreateImportKeyModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
+const IncrementYearModal = ({ opened, close }: { opened: boolean; close(): void }): JSX.Element => {
     const incrementYear = usePostApiIncrement();
 
     const form = useForm({
@@ -74,18 +74,18 @@ const IncrementYearPage = (): JSX.Element => {
     const theme = useMantineTheme();
 
 
-    const [createImportKeyModalOpened, { close: closeCreateImportKeyModal, open: openCreateImportKeyModal }] = useDisclosure(false);
+    const [incrementYearModalOpened, { close: closeIncrementYearModal, open: openIncrementYearModal }] = useDisclosure(false);
 
     return (
         <>
-            <CreateImportKeyModal opened={createImportKeyModalOpened} close={closeCreateImportKeyModal} />
+            <IncrementYearModal opened={incrementYearModalOpened} close={closeIncrementYearModal} />
             <Title mb="md">Tanév léptetése</Title>
             <Text color="dimmed">
                 Az alábbi gombbal új tanévet lehet kezdeni. Ekkor az adatbázisból törlődnek az előző tanévben szerzett osztályzatok, lolók; az évfolyamok léptetésre kerülnek.
             </Text>
             <Text color="dimmed" mb="md">A gombot használd körültekintően!</Text>
             <Center>
-                <Button color="red" onClick={() => openCreateImportKeyModal()}>Tanév léptetése</Button>
+                <Button color="red" onClick={() => openIncrementYearModal()}>Tanév léptetése</Button>
             </Center>
         </>
     );
