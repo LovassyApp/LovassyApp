@@ -40,6 +40,7 @@ const IncrementYearModal = ({ opened, close }: { opened: boolean; close(): void 
     });
 
     const submit = form.onSubmit(async (values) => {
+        form.reset();
         try {
             await incrementYear.mutateAsync({
                 data: values,
