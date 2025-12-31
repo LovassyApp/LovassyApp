@@ -61,7 +61,7 @@ const CreateImportKeyModal = ({ opened, close }: { opened: boolean; close(): voi
             <form onSubmit={submit}>
                 <Text mb="md">A folytatáshoz írd be az alábbi mezőbe a következő szöveget: „<i>Mit sütsz, kis szűcs? Sós húst sütsz, kis szűcs?</i>”</Text>
                 <TextInput label="Megerősítő szöveg" required={true} {...form.getInputProps("confirmationText")} mb="sm" placeholder="Mit sütsz, kis szűcs? Sós húst sütsz, kis szűcs?"/>
-                <Button type="submit" fullWidth={true} mt="sm" color="red">
+                <Button type="submit" fullWidth={true} mt="sm" color="red" loading={incrementYear.isLoading}>
                     Tanév léptetése
                 </Button>
             </form>
