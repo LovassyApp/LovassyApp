@@ -8,21 +8,13 @@ import {
     createStyles,
     useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconCopy, IconPlus, IconX } from "@tabler/icons-react";
+import { IconCheck } from "@tabler/icons-react";
 import { ValidationError, handleValidationErrors } from "../../../helpers/apiHelpers";
-import {
-    postApiIncrement,
-    usePostApiIncrement,
-} from "../../../api/generated/features/increment/increment";
-import { useEffect, useMemo, useState } from "react";
-
+import { usePostApiIncrement } from "../../../api/generated/features/increment/increment";
 import { IncrementIncrementYearRequestBody } from "../../../api/generated/models";
-import { PermissionRequirement } from "../../../core/components/requirements/permissionsRequirement";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { useGetApiAuthControl } from "../../../api/generated/features/auth/auth";
-import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles(() => ({
     center: {
@@ -37,13 +29,16 @@ const IncrementYearModal = ({ opened, close }: { opened: boolean; close(): void 
         initialValues: {
             confirmationText: "",
         },
+        validate: {
+            confirmationText: (value) => (value !== "Mit sütsz, kis szűcs? Sós húst sütsz, kis szűcs?" ? "A megerősítőszöveg helytelen!" : null)
+        }
     });
 
     const submit = form.onSubmit(async (values) => {
         form.reset();
         try {
             await incrementYear.mutateAsync({
-                data: values,
+                data: values as IncrementIncrementYearRequestBody,
             });
             notifications.show({
                 title: "Tanév léptetve",
