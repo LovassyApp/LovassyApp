@@ -77,8 +77,12 @@ const IncrementYearPage = (): JSX.Element => {
             <IncrementYearModal opened={incrementYearModalOpened} close={closeIncrementYearModal} />
             <Title mb="md">Tanév léptetése</Title>
             <Text color="dimmed">
-                Az alábbi gombbal új tanévet lehet kezdeni. Ekkor az adatbázisból törlődnek az előző tanévben szerzett osztályzatok, lolók; az évfolyamok léptetésre kerülnek.
+                Az alábbi gombbal új tanévet lehet kezdeni. Ekkor az adatbázisból törlődnek az előző tanévben szerzett osztályzatok, lolók, megvásárolt termékek.
+            </Text> 
+            <Text c="dimmed" fs="italic">
+                (A felhasználók osztálya csak a jegyimport után változik!)
             </Text>
+            <Text/>
             <Text color="dimmed" mb="md">A gombot használd körültekintően!</Text>
             <Center>
                 <Button color="red" onClick={() => openIncrementYearModal()}>Tanév léptetése</Button>

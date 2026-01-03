@@ -19,36 +19,32 @@ public static class IncrementYear
 
     public class RequestBodyValidator : AbstractValidator<RequestBody>
     {
+        // For future developers (who probably don't exist): Please accept my condolences for having to work on this project.
+        
+        private const string ExpectedConfirmationText = "Mit sütsz, kis szűcs? Sós húst sütsz, kis szűcs?";
         public RequestBodyValidator()
         {
-            RuleFor(x => x.ConfirmationText).NotEmpty().NotNull();
+            RuleFor(x => x.ConfirmationText)
+                .NotEmpty()
+                .WithMessage("A megerősítő szöveg nem lehet üres.");
+            
+            RuleFor(x => x.ConfirmationText)
+                .Must(s=> string.Equals(s?.Trim(), ExpectedConfirmationText, StringComparison.Ordinal))
+                .When(x => !string.IsNullOrWhiteSpace(x.ConfirmationText))
+                .WithMessage("A megerősítő szöveg nem egyezik.");
         }    
     }
 
     internal sealed class Handler: IRequestHandler<Command, Unit>
     {
         private readonly ApplicationDbContext _context;
-
-        private readonly IMediator _mediator;
-        
-        public Handler(ApplicationDbContext context, IMediator mediator)
+        public Handler(ApplicationDbContext context)
         {
             _context = context;
-            _mediator = mediator;
         }
         
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (request?.Body.ConfirmationText == null)
-            {
-                throw new ValidationException("A megerősítő szöveg nem lehet üres.");
-            }
-            
-            if (!string.Equals(request.Body.ConfirmationText, "Mit sütsz, kis szűcs? Sós húst sütsz, kis szűcs?"))
-            {
-                throw new ValidationException("A megerősítő szöveg nem egyezik.");
-            }
-            
             await _context.GradeImports.ExecuteDeleteAsync(cancellationToken);
             await _context.LoloRequests.ExecuteDeleteAsync(cancellationToken);
             await _context.Lolos.ExecuteDeleteAsync(cancellationToken);
