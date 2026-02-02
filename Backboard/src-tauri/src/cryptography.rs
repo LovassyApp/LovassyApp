@@ -47,6 +47,7 @@ pub fn kyber_encrypt(data: &str, public_key: String) -> Result<String, KyberErro
     Ok(general_purpose::STANDARD.encode(encapsulation) + "|" + &salt + "|" + &encrypted_data)
 }
 
+/// `base64(sha256(data))`
 pub fn hash(data: &str) -> String {
     let mut hasher = Hasher::new(Algorithm::SHA256);
     let _ = hasher.write_all(data.as_bytes());

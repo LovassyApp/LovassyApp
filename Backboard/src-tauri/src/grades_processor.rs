@@ -71,6 +71,8 @@ impl BackboardStudent {
 /// reads, parses and processes a csv grades export from the `path`\
 /// a valid example can be found [here](../test_grades.csv)\
 /// **NOTE**: the csv shall use the ';' character as delimiter
+/// # Returns
+/// hashed-om-id->grades
 /// # Errors
 /// invalid csv
 pub fn process_grades_csv_file(

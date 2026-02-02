@@ -96,14 +96,14 @@ async fn import_grades(
     };
 
     // fetches data of users(already registered students) from the server, will add imported data to these later
-    let users = api_import_users_get(&config, None, None, None, None)
+    let srv_users = api_import_users_get(&config, None, None, None, None)
         .await
         .map_err(handle_api_err)?;
-    let num_users = users.len();
-    log::info!("users fetched from server already there ({num_users})");
-    log::trace!("{users:?}");
+    let num_srv_users = srv_users.len();
+    log::info!("users fetched from server already there ({num_srv_users})");
+    log::trace!("{srv_users:?}");
 
-    window.emit("import-users", num_users).unwrap(); // GUI report
+    window.emit("import-users", num_srv_users).unwrap(); // GUI report
 
     let imported_grade_map =
         process_grades_csv_file(grades_file_path).map_err(|err| err.to_string())?;
@@ -114,18 +114,15 @@ async fn import_grades(
         HashMap::new() // leave it empty if file path not provided
     };
 
-    let mut count = 0; // number of users already processed
-    for user in users {
-        log::debug!("processing {count}. user: {user:?}");
-        let hashed_om = &user.om_code_hashed.clone().unwrap().unwrap(); // used as key to its data
+    let mut processed_n = 0; // number of users already processed
+    for srv_usr in srv_users {
+        let hashed_om = &srv_usr.om_code_hashed.clone().unwrap().unwrap(); // used as key to its data
         let Some(user_grades) = imported_grade_map.get(hashed_om) else {
-            log::warn!("no imported grades found");
+            log::warn!("no imported grades, skipping server user with id {hashed_om:?}");
             continue;
         };
+        log::debug!("processing {processed_n}. user: {srv_usr:?}");
         log::trace!("user's freshly imported grades: {user_grades:?}");
-
-        let pub_key = user.public_key.clone().unwrap().unwrap(); // public key used for encryption
-        log::debug!("user's public key: {pub_key:?}");
 
         // extract student info from data provided, fall back to grades sometimes containing it
         let (school_class, student_name) =
@@ -136,22 +133,22 @@ async fn import_grades(
                 let cls = user_grades.iter().find_map(|g| g.school_class.as_ref());
                 (cls, &user_grades[0].student_name)
             };
-        log::debug!("user's school class: {school_class:?}");
-        log::debug!("user's name: {student_name}");
+        log::debug!("user's info: {student_name} ({school_class:?})");
 
         // pack useful information about user to be sent
         let grade_collection = GradeCollection {
             grades: user_grades.clone(),
             school_class: school_class.cloned(),
             student_name: student_name.clone(),
-            user: user.clone().into(),
+            user: srv_usr.clone().into(),
         };
         log::trace!("user's grade collection: {grade_collection:?}");
 
+        let pub_key = srv_usr.public_key.clone().unwrap().unwrap(); // public key used for encryption
         log::info!("posting user's data");
         api_import_grades_user_id_post(
             &config,
-            &user.id.unwrap().to_string(),
+            &srv_usr.id.unwrap().to_string(),
             Some(ImportImportGradesRequestBody {
                 json_encrypted: grade_collection.to_encrypted_json(pub_key)?,
             }),
@@ -160,10 +157,17 @@ async fn import_grades(
         .map_err(handle_api_err)?;
         log::info!("successfully posted user's data");
 
-        count += 1;
+        processed_n += 1;
         window
-            .emit("import-progress", (count / num_users) * 100)
+            .emit("import-progress", (processed_n / num_srv_users) * 100)
             .unwrap(); // GUI progress report
+    }
+    let imported_n = imported_grade_map.len();
+    if processed_n != imported_n {
+        log::warn!(
+            "number of processed users ({processed_n} != {imported_n}) number of imported users, there are {} ignored ones",
+            imported_n - processed_n
+        );
     }
 
     Ok(())
