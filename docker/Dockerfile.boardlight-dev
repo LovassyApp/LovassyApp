@@ -1,9 +1,10 @@
 FROM node:20-slim
-RUN corepack enable pnpm
+RUN npm install -g pnpm@latest-10
 WORKDIR /app
 COPY ./Boardlight/package.json /app/
 RUN pnpm install
+COPY ./openapi_dev /app/
 COPY ./Boardlight /app/
 WORKDIR /app/Boardlight
 EXPOSE 80
-CMD pnpm dev --host
+CMD pnpm install && pnpm dev --host

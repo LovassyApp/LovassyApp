@@ -11,6 +11,7 @@ services:
       ConnectionStrings__DefaultConnection: Host=db;Database=BlueboardDb;Username=postgres;Password=postgres
     volumes:
       - ./Blueboard:/app/Blueboard
+      - ./openapi_dev:/app/openapi_dev
   db:
     image: postgres:17-alpine
     environment:
@@ -31,6 +32,7 @@ services:
       - 80:80
     volumes:
       - ./Boardlight:/app/Boardlight
+      - ./openapi_dev:/app/openapi_dev
     depends_on:
       - blueboard
     environment:
