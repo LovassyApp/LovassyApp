@@ -34,6 +34,6 @@
     </ItemGroup>
     <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
         <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)"/>
-        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)"/>
+        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="DOTNET_ROLL_FORWARD=LatestMajor"/>
     </Target>
 </Project>
