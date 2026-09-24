@@ -42,7 +42,7 @@ const SettingsPage = (): JSX.Element => {
                         onChange={(event) => settings.setBlueboardUrl(event.currentTarget.value)}
                         onBlur={async () => await saveSettings()}
                         withAsterisk={true}
-                        placeholder="https://blueboard.lovassy.hu"
+                        placeholder="https://app.lovassy.hu"
                     />
                     <TextInput
                         label="Import kulcs"

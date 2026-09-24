@@ -24,7 +24,7 @@ const StatusPage = (): JSX.Element => {
             setError(null);
             setData(response);
         } catch (error) {
-            setError("Nem sikerült lekérni az adatokat");
+            setError(`Nem sikerült lekérni az adatokat (${error})`);
         }
     };
 

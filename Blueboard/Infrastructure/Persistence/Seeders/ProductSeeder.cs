@@ -38,7 +38,8 @@ public class ProductSeeder(ApplicationDbContext context)
             Quantity = Faker.Random.Bool() ? Faker.Random.Int(25, 50) : Faker.Random.Int(1, 10),
             Inputs = new List<ProductInput>(),
             NotifiedEmails = new string[] { },
-            ThumbnailUrl = Faker.Image.LoremFlickrUrl()
+            ThumbnailUrl = Faker.Image.LoremFlickrUrl(),
+            IsSpecial = Faker.Random.Bool()
         };
 
         //Notified emails

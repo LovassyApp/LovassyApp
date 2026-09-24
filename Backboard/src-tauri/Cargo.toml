@@ -4,6 +4,7 @@ version = "2.1.1"
 description = "Backboard - Desktop App for LovassyApp"
 authors = ["Xeretis"]
 license = "MIT"
+readme = "../README.md"
 repository = "https://github.com/LovassyApp/LovassyApp"
 edition = "2024"
 
@@ -14,24 +15,22 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 tauri = { version = "2", features = [] }
-serde = { version = "1.0", features = ["derive"] }
-tauri-plugin-store = "2"
-tauri-plugin-autostart = "2"
-serde_json = "1.0"
-api = { path = "../src-api" }
-calamine = "0.30.0"
-crypto-hash = "0.3.4"
-base64 = "0.22.1"
-pqc_kyber = { version = "0.7.1", features = ["std"] }
-rand = "0.8.5"
-pbkdf2 = { version = "0.12.2", features = ["simple"] }
-aes = "0.8.4"
-sha2 = "0.10.9"
-block-modes = "0.9.1"
-libaes = "0.7.0"
-tauri-plugin-http = "2"
 tauri-plugin-dialog = "2"
-tauri-plugin-shell = "2"
+tauri-plugin-http = "2"
+tauri-plugin-store = "2"
+api = { path = "../src-api" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+crypto-hash = "0.3"
+base64 = "0.22"
+rand = "0.8"
+pbkdf2 = "0.12"
+sha2 = "0.10"
+libaes = "0.7"
+ftail = { version = "0.3", features = ["console", "formatted", "single_file"], default-features = false }
+log = "0.4"
+csv = "1.4"
+safe_pqc_kyber = { version = "0.6", default-features = false, features = ["std"] }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
@@ -41,3 +40,10 @@ custom-protocol = ["tauri/custom-protocol"]
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-autostart = "2"
 tauri-plugin-global-shortcut = "2"
+
+# quits the app on panic instead of letting down the JS promise, that'd wait forever
+[profile.release]
+panic = "abort"
+
+[profile.dev]
+panic = "abort"

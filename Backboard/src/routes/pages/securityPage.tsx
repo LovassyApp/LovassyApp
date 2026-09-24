@@ -17,8 +17,10 @@ const SecurityPage = (): JSX.Element => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (settings.blueboardUrl === "" || settings.importKey === "") {
-            setError("Nincs beállítva Blueboard URL vagy import kulcs!");
+        if (settings.blueboardUrl === "") {
+            setError("Nincs beállítva Blueboard URL!"); }
+        else if (settings.importKey === "") {
+            setError("Nincs beállítva import kulcs!");
         } else {
             setError(null);
         }
@@ -47,7 +49,7 @@ const SecurityPage = (): JSX.Element => {
             else if (error === "404") setError("Egy megadott felhasználó nem létezik!");
             else if (error === "500") setError("Szerver hiba történt!");
             else if (error === "unknown") setError("Ismeretlen reqwest hiba történt!");
-            else setError("Nem sikerült feltölteni a visszaállítási jelszót!");
+            else setError(`Nem sikerült feltölteni a visszaállítási jelszót! (${error})`);
         }
         setUploadLoading(false);
     };

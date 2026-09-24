@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+COPY ./LovassyApp.sln ./
+COPY ./Blueboard/Blueboard.csproj Blueboard/
+COPY ./Helpers.WebApi/Helpers.WebApi.csproj Helpers.WebApi/
+COPY ./Helpers.Cryptography/Helpers.Cryptography.csproj Helpers.Cryptography/
+COPY ./Helpers.Cryptography.Tests/Helpers.Cryptography.Tests.csproj Helpers.Cryptography.Tests/
+COPY ./Helpers.Email/Helpers.Email.csproj Helpers.Email/
+RUN dotnet restore
+
+COPY ./Blueboard Blueboard/
+COPY ./Helpers.WebApi Helpers.WebApi/
+COPY ./Helpers.Cryptography Helpers.Cryptography/
+COPY ./Helpers.Cryptography.Tests Helpers.Cryptography.Tests/
+COPY ./Helpers.Email Helpers.Email/
+WORKDIR /app/Blueboard
+EXPOSE 5279
+ENTRYPOINT ["dotnet", "watch"]

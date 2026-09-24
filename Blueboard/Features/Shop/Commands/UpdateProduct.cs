@@ -35,6 +35,8 @@ public static class UpdateProduct
 
         public bool UserLimited { get; set; }
         public int UserLimit { get; set; }
+        
+        public bool IsSpecial { get; set; }
 
         public List<RequestBodyInput> Inputs { get; set; }
 
@@ -81,6 +83,7 @@ public static class UpdateProduct
             RuleFor(x => x.NotifiedEmails).NotNull();
             RuleForEach(x => x.NotifiedEmails).EmailAddress();
             RuleFor(x => x.ThumbnailUrl).NotEmpty();
+            RuleFor(x => x.IsSpecial).NotNull();
         }
 
         private async Task<bool> BeExistingQRCodes(RequestBody model, int[] qrCodes,

@@ -11,13 +11,13 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: 18
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         id: pnpm-install
         with:
           version: latest
@@ -35,7 +35,7 @@ jobs:
           cd Boardlight
           pnpm build
       - name: Commit new API Client
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           file_pattern: Boardlight/src/api/generated/**
           commit_message: Updated the Typescript API client for Boardlight

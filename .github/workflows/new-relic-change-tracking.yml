@@ -12,7 +12,7 @@ jobs:
     name: New Relic
     steps:
       - name: Checkout master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Set Appsettings Var
         id: set_var
         run: |
@@ -26,7 +26,7 @@ jobs:
         run: echo "RELEASE_VERSION=${{ fromJson(steps.set_var.outputs.appsettings).Status.Version }}" >> $GITHUB_ENV
       # This step creates a new Change Tracking Marker
       - name: New Relic Application Deployment Marker
-        uses: newrelic/deployment-marker-action@v2.3.0
+        uses: newrelic/deployment-marker-action@v2.6.2
         with:
           apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
           guid: ${{ secrets.NEW_RELIC_DEPLOYMENT_ENTITY_GUID }}

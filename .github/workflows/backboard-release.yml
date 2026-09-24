@@ -3,34 +3,58 @@ run-name: ${{ github.actor }} is releasing a new version of Backboard 📣
 on:
   workflow_dispatch:
 jobs:
-  build-backboard:
-    name: Build Backboard binary
-    runs-on: windows-latest
+  release-backboard:
+    name: Build Backboard binary and draft a release
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest'
+            args: '--no-bundle'
+          - platform: 'ubuntu-24.04'
+            args: '--no-bundle'
+          - platform: 'windows-latest'
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+
+      - name: setup node
+        uses: actions/setup-node@v6
         with:
           node-version: 18
+
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         id: pnpm-install
         with:
           version: latest
           run_install: false
-      - name: Setup rust
+
+      - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+
       - name: Setup rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: 'Backboard/src-tauri -> target'
+      
+      - name: Install Tauri dependencies (ubuntu only)
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        if: matrix.platform == 'ubuntu-24.04' # This must match the platform value defined above.
+        with:
+          packages: libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+          version: latest          
+
       - name: Install Backboard dependencies
         run: |
           cd Backboard
           pnpm install --no-frozen-lockfile
       - name: Build Backboard
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@v0.5.24
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -40,3 +64,5 @@ jobs:
           releaseDraft: true
           prerelease: false
           projectPath: ./Backboard
+          args: ${{ matrix.args }}
+          uploadPlainBinary: true

@@ -34,7 +34,6 @@
     </ItemGroup>
     <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
         <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)"/>
-        <!--    Uncomment the following line before making a PR or when generating api schema    -->
-<!--        <Exec Command="dotnet swagger tofile &#45;&#45;output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)"/>-->
+        <Exec Command="dotnet swagger tofile --output ../openapi_dev/schema.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="DOTNET_ROLL_FORWARD=LatestMajor"/>
     </Target>
 </Project>

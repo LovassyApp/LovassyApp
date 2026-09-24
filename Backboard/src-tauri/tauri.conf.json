@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "bun dev",
-    "beforeBuildCommand": "bun run build",
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420"
   },
@@ -16,8 +16,8 @@
       "icons/icon.ico"
     ]
   },
-  "productName": "LovassyApp - Backboard",
-  "mainBinaryName": "LovassyApp - Backboard",
+  "productName": "LovassyApp-Backboard",
+  "mainBinaryName": "LovassyApp-Backboard",
   "version": "2.1.1",
   "identifier": "me.lovassyapp.backboard",
   "plugins": {},
@@ -25,7 +25,7 @@
     "withGlobalTauri": false,
     "windows": [
       {
-        "decorations": false,
+        "decorations": true,
         "fullscreen": false,
         "resizable": true,
         "title": "LovassyApp - Backboard",

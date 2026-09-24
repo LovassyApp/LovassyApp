@@ -1,6 +1,7 @@
 name: Backboard Build
 run-name: ${{ github.actor }} is doing a development build of Backboard 🚀
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Blueboard Build"]
     branches: [master]
@@ -11,27 +12,33 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: 18
+
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         id: pnpm-install
         with:
           version: latest
           run_install: false
+
       - name: Install Tauri dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev build-essential libxdo-dev libayatana-appindicator3-dev librsvg2-dev
+          version: latest          
+
       - name: Setup rust
         uses: dtolnay/rust-toolchain@stable
+
       - name: Setup rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: 'Backboard/src-tauri -> target'
+
       - name: Generate Rust API Client
         uses: openapi-generators/openapitools-generator-action@v1
         with:
@@ -39,16 +46,22 @@ jobs:
           openapi-file: openapi_dev/schema.json
           command-args: -o Backboard/src-api --additional-properties=packageName=api
           generator-tag: v7.15.0
+
       - name: Install Backboard dependencies
         run: |
           cd Backboard
           pnpm install --no-frozen-lockfile
-      - name: Build Backboard
+
+      - name: Check, test and build Backboard
         run: |
-          cd Backboard
-          pnpm tauri build -b none
+          cd Backboard/src-tauri
+          cargo check
+          cargo test
+          cd .. # Back to board
+          pnpm tauri build --ci --no-bundle
+
       - name: Commit new API Client
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           file_pattern: Backboard/src-api/**
           commit_message: Updated the Rust API client for Backboard

@@ -1,0 +1,39 @@
+services:
+  blueboard:
+    build:
+      dockerfile: docker/Dockerfile.blueboard-dev
+    ports:
+      - 5279:5279
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: Host=db;Database=BlueboardDb;Username=postgres;Password=postgres
+    volumes:
+      - ./Blueboard:/app/Blueboard
+      - ./openapi_dev:/app/openapi_dev
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: BlueboardDb
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+
+  boardlight:
+    build:
+      dockerfile: docker/Dockerfile.boardlight-dev
+    ports:
+      - 80:80
+    volumes:
+      - ./Boardlight:/app/Boardlight
+      - ./openapi_dev:/app/openapi_dev
+    depends_on:
+      - blueboard
+    environment:
+      VITE_BLUEBOARD_URL: "http://localhost:5279"

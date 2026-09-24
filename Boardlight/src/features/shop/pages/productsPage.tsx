@@ -70,6 +70,7 @@ const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void 
             richTextContent: "",
             visible: false,
             qrCodeActivated: false,
+            isNotSpecial: true,
             qrCodes: [],
             price: 0,
             quantity: 0,
@@ -100,6 +101,7 @@ const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void 
 
     const submit = form.onSubmit(async (values) => {
         try {
+            values.isSpecial = !values.isNotSpecial;
             await createProduct.mutateAsync({ data: values as ShopUpdateProductRequestBody });
             notifications.show({
                 title: "Termék létrehozva",
@@ -194,6 +196,10 @@ const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void 
                 <Group position="apart" spacing={0} mt="md">
                     <Text size="sm">QR kód aktivált</Text>
                     <Switch {...form.getInputProps("qrCodeActivated", { type: "checkbox" })} />
+                </Group>
+                <Group position="apart" spacing={0} mt="md">
+                    <Text size="sm">Kimentés</Text>
+                    <Switch {...form.getInputProps("isNotSpecial", { type: "checkbox" })} />
                 </Group>
                 {qrCodes.data && qrCodesData.length > 0 ? (
                     <MultiSelect
@@ -334,6 +340,7 @@ const DetailsModal = ({
             richTextContent: productDetailed.data?.richTextContent ?? "",
             visible: product?.visible,
             qrCodeActivated: product?.qrCodeActivated,
+            isSpecial: product?.isSpecial,
             qrCodes: productDetailed.data?.qrCodes.map((qrCode) => qrCode.id.toString()) ?? [],
             price: product?.price,
             quantity: product?.quantity,
@@ -361,6 +368,7 @@ const DetailsModal = ({
             richTextContent: productDetailed.data?.richTextContent ?? "",
             visible: product?.visible,
             qrCodeActivated: product?.qrCodeActivated,
+            isSpecial: product?.isSpecial,
             qrCodes: productDetailed.data?.qrCodes.map((qrCode) => qrCode.id.toString()) ?? [],
             price: product?.price,
             quantity: product?.quantity,
@@ -491,6 +499,10 @@ const DetailsModal = ({
                 <Text>QR kód aktivált:</Text>
                 <Text weight="bold">{product?.qrCodeActivated ? "Igen" : "Nem"}</Text>
             </Group>
+            <Group position="apart" spacing={0}>
+                <Text>Kimentés:</Text>
+                <Text weight="bold">{product?.isSpecial ? "Nem" : "Igen"}</Text>
+            </Group>
             {productDetailed.data?.inputs.length > 0 && (
                 <>
                     <Group position="apart" spacing={0}>
@@ -548,6 +560,10 @@ const DetailsModal = ({
                     <Group position="apart" spacing={0} mt="md">
                         <Text size="sm">QR kód aktivált</Text>
                         <Switch {...form.getInputProps("qrCodeActivated", { type: "checkbox" })} />
+                    </Group>
+                    <Group position="apart" spacing={0} mt="md">
+                        <Text size="sm">Nem kimentés</Text>
+                        <Switch {...form.getInputProps("isSpecial", { type: "checkbox" })} />
                     </Group>
                     {qrCodes.data && qrCodesData.length > 0 ? (
                         <MultiSelect

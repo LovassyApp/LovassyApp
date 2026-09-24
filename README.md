@@ -38,13 +38,16 @@ A publikus API dokumentáció az aktuális vezrióhoz elérhető [itt](https://b
 
 ### A LovassyApp részei
 
-- **Blueboard**: A LovassyApp backend-je, [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0) keretrendszerben íródott.
-- **Boardlight**: A LovassyApp diákoknak szánt frontend-je, [React](https://react.dev/) keretrendszerben íródott.
-- **Backboard**: A LovassyApp iskolavezetőségnek szánt asztali frontend-je, [Tauri](https://tauri.app/) és [React](https://react.dev/) keretrendszerben íródott.
+- **Blueboard**: A LovassyApp backend-je, [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0), [további info itt](Blueboard/README.md).
+- **Boardlight**: A LovassyApp diákoknak szánt frontend-je, [React](https://react.dev/).
+- **Backboard**: A LovassyApp iskolavezetőségnek szánt asztali frontend-je, [React](https://react.dev/) + [Tauri](https://tauri.app/), [további leírás itt](Backboard/README.md).
 
 ![LovassyAppDiagram.png](.github/LovassyAppDiagram.png)
 
 ### Futtatás lokálisan
+
+Lehetőség van Docker konténerek futtatására. Ehhez adjuk ki a `docker compose -f docker-compose-dev.yml up` parancsot! Így a Boardlight a 80-as porton, a Blueboard az 5279-es porton, a PostgreSQL az 5432-es porton és az Adminer (webes adatbázis-kezelő) a 8080-as porton indul el.
+Az adatbázis-migrációk futtatásához be kell lépni a Blueboard konténerébe: `docker exec -it lovassyapp-blueboard-1 bash`, majd ott `dotnet ef database update`. Felhasználók létrehozásához: `dotnet run -- seed:users`. Az összes felhasználónak `password` a jelszava.
 
 #### Blueboard
 
@@ -64,4 +67,4 @@ A Boardlight futtatásához szükséges a [Node.js](https://nodejs.org/en/) és 
 
 #### Backboard
 
-A Backboard futtatásához szükséges a [Node.js](https://nodejs.org/en/), a [Rust](https://www.rust-lang.org/) és a [pnpm](https://pnpm.io/) telepítése. Amennyiben ez megvan ajánlott a `Backboard` mappában a `pnpm install` parancs után a `pnpm tauri dev` parancs futtatása.
+Lásd: [leírás](Backboard/README.md)
