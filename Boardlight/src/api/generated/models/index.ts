@@ -89,6 +89,7 @@ export * from './importIndexUsersResponse';
 export * from './importUpdateImportKeyRequestBody';
 export * from './importUpdateResetKeyPasswordRequestBody';
 export * from './importViewImportKeyResponse';
+export * from './incrementIncrementYearRequestBody';
 export * from './postApiAuthRefreshParams';
 export * from './postApiAuthResendVerifyEmailParams';
 export * from './postApiAuthResetPasswordParams';
