@@ -60,6 +60,7 @@ const FiltersDrawer = ({
 }): JSX.Element => {
     const [search, setSearch] = useState<string>(params.Search ?? "");
     const [buyable, setBuyable] = useState<boolean>(params.Filters?.includes("Quantity>0") ?? false);
+    const [isSpecial, setIsSpecial] = useState<boolean>(params.Filters?.includes("IsSpecial==true") ?? false);
 
     const doSetParams = () => {
         const filters = [];
@@ -67,6 +68,9 @@ const FiltersDrawer = ({
         if (buyable) {
             filters.push("Quantity>0");
             if (balance) filters.push(`Price<${balance}`);
+        }
+        if (isSpecial) {
+            filters.push("IsSpecial==true");
         }
 
         setParams({ Search: search, Filters: filters.join(",") });
@@ -91,6 +95,10 @@ const FiltersDrawer = ({
             <Group position="apart" align="center" mt="sm">
                 <Text size="sm">Csak megvásárolható</Text>
                 <Switch checked={buyable} onChange={() => setBuyable(!buyable)} />
+            </Group>
+             <Group position="apart" align="center" mt="sm">
+                <Text size="sm">Csak nem kimentés jellegű termékek</Text>
+                <Switch checked={isSpecial} onChange={() => setIsSpecial(!isSpecial)} />
             </Group>
             <Button onClick={() => doSetParams()} fullWidth={true} variant="outline" mt="md">
                 Gyerünk!
@@ -181,6 +189,10 @@ const DetailsModal = ({
             <Group position="apart" spacing={0}>
                 <Text>QR kód aktivált:</Text>
                 <Text weight="bold">{storeProduct?.qrCodeActivated ? "Igen" : "Nem"}</Text>
+            </Group>
+            <Group position="apart" spacing={0}>
+                <Text>Kimentés:</Text>
+                <Text weight="bold">{storeProduct?.isSpecial ? "Nem" : "Igen"}</Text>
             </Group>
             {storeProductDetailed.data?.inputs.length > 0 && (
                 <>

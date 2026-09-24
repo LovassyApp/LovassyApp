@@ -6705,6 +6705,7 @@
         "required": [
           "description",
           "inputs",
+          "isSpecial",
           "name",
           "notifiedEmails",
           "price",
@@ -6764,6 +6765,9 @@
             "exclusiveMinimum": true,
             "type": "integer",
             "format": "int32"
+          },
+          "isSpecial": {
+            "type": "boolean"
           },
           "inputs": {
             "type": "array",
@@ -6857,6 +6861,9 @@
           "userLimit": {
             "type": "integer",
             "format": "int32"
+          },
+          "isSpecial": {
+            "type": "boolean"
           },
           "inputs": {
             "type": "array",
@@ -7406,6 +7413,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "isSpecial": {
+            "type": "boolean"
+          },
           "thumbnailUrl": {
             "type": "string",
             "nullable": true
@@ -7515,6 +7525,7 @@
         "required": [
           "description",
           "inputs",
+          "isSpecial",
           "name",
           "notifiedEmails",
           "price",
@@ -7573,6 +7584,9 @@
             "minimum": 0,
             "type": "integer",
             "format": "int32"
+          },
+          "isSpecial": {
+            "type": "boolean"
           },
           "inputs": {
             "type": "array",
@@ -7827,6 +7841,9 @@
           "quantity": {
             "type": "integer",
             "format": "int32"
+          },
+          "isSpecial": {
+            "type": "boolean"
           },
           "userLimited": {
             "type": "boolean"

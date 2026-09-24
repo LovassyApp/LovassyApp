@@ -10,9 +10,9 @@ public class TokenPermissionsClaimsAdder : IClaimsAdder<User>
 {
     private readonly PermissionsOptions _permissionsOptions;
 
-    public TokenPermissionsClaimsAdder(IOptionsSnapshot<PermissionsOptions> permissionsOptions)
+    public TokenPermissionsClaimsAdder(IOptionsMonitor<PermissionsOptions> permissionsOptions)
     {
-        _permissionsOptions = permissionsOptions.Value;
+        _permissionsOptions = permissionsOptions.CurrentValue;
     }
 
     public async Task AddClaimsAsync(List<Claim> claims, User user)

@@ -53,6 +53,11 @@ public class Product : TimestampedEntity
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
     public int UserLimit { get; set; }
+    
+    [Required]
+    [Sieve(CanFilter = true, CanSort = true)]
+    public bool IsSpecial { get; set; }
+
 
     [Required] public List<ProductInput> Inputs { get; set; }
 
