@@ -2,6 +2,7 @@ import { getAuthRoutes } from "../../features/auth/getAuthRoutes";
 import { getBaseRoutes } from "../../features/base/getBaseRoutes";
 import { getImageVotingsRoutes } from "../../features/imageVotings/getImageVotingsRoutes";
 import { getImportRoutes } from "../../features/import/getImportRoutes";
+import { getIncrementRoutes } from "../../features/increment/getIncrementRoutes";
 import { getSchoolRoutes } from "../../features/school/getSchoolRoutes";
 import { getShopRoutes } from "../../features/shop/getShopRoutes";
 import { getUsersRoutes } from "../../features/users/getUsersRoutes";
@@ -12,6 +13,7 @@ export const getAppRoutes = () => {
     const schoolRoutes = getSchoolRoutes();
     const shopRoutes = getShopRoutes();
     const importRoutes = getImportRoutes();
+    const incrementRoutes = getIncrementRoutes();
     const usersRoutes = getUsersRoutes();
     const imageVotingRoutes = getImageVotingsRoutes();
 
@@ -22,6 +24,7 @@ export const getAppRoutes = () => {
             {schoolRoutes}
             {shopRoutes}
             {importRoutes}
+            {incrementRoutes}
             {usersRoutes}
             {imageVotingRoutes}
         </>
