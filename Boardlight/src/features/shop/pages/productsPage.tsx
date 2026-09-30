@@ -70,6 +70,7 @@ const CreateProductModal = ({ opened, close }: { opened: boolean; close(): void 
             richTextContent: "",
             visible: false,
             qrCodeActivated: false,
+            isSpecial: false,
             isNotSpecial: true,
             qrCodes: [],
             price: 0,

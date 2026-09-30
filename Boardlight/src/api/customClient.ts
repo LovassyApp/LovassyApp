@@ -43,7 +43,7 @@ export const useCustomClient = async <T>({
     signal,
 }: {
     url: string;
-    method: 'get' | 'post' | 'put' | 'delete' | 'patch';
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     params?: any;
     headers?: any;
     data?: unknown;
