@@ -1,11 +1,15 @@
 name: Boardlight Build
 run-name: ${{ github.actor }} is doing a development build of Boardlight 🚀
 on:
-  workflow_run:
-    workflows: ["Blueboard Build"]
+  push:
     branches: [master]
-    types:
-      - completed
+    paths:
+      - "Boardlight/**"
+      - ".github/workflows/boardlight-build.yml"
+  pull_request:
+    paths:
+      - "Boardlight/**"
+      - ".github/workflows/boardlight-build.yml"
 jobs:
   build:
     name: Build
@@ -15,7 +19,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 20
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         id: pnpm-install

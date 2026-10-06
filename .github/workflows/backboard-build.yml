@@ -1,12 +1,15 @@
 name: Backboard Build
 run-name: ${{ github.actor }} is doing a development build of Backboard 🚀
 on:
-  workflow_dispatch:
-  workflow_run:
-    workflows: ["Blueboard Build"]
+  push:
     branches: [master]
-    types:
-      - completed
+    paths:
+      - "Backboard/**"
+      - ".github/workflows/backboard-build.yml"
+  pull_request:
+    paths:
+      - "Backboard/**"
+      - ".github/workflows/backboard-build.yml"
 jobs:
   build:
     name: Build

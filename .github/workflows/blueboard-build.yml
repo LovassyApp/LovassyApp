@@ -2,11 +2,24 @@ name: Blueboard Build
 run-name: ${{ github.actor }} is doing a development build of Blueboard 🚀
 on:
   push:
-    branches:
-      - master
+    branches: [master]
+    paths:
+      - "Blueboard/**"
+      - "Helpers.Cryptography/**"
+      - "Helpers.Cryptography.Tests/**"
+      - "Helpers.Email/**"
+      - "Helpers.WebApi/**"
+      - "LovassyApp.sln"
+      - ".github/workflows/blueboard-build.yml"
   pull_request:
-    branches:
-      - master
+    paths:
+      - "Blueboard/**"
+      - "Helpers.Cryptography/**"
+      - "Helpers.Cryptography.Tests/**"
+      - "Helpers.Email/**"
+      - "Helpers.WebApi/**"
+      - "LovassyApp.sln"
+      - ".github/workflows/blueboard-build.yml"
 jobs:
   build:
     name: Build
